@@ -98,7 +98,7 @@
 
     /* Active navigation styles */
     .app-nav .nav-link.active {
-        background-color: #8A775A!important;
+        background-color: #8A775A !important;
         color: white !important;
         border-radius: 0.375rem;
     }
@@ -165,12 +165,24 @@
                         <div class="app-utilities col-auto">
 
                             <div class="app-utility-item app-user-dropdown dropdown">
-                                <a class="dropdown-toggle" id="user-dropdown-toggle" data-bs-toggle="dropdown"
-                                    href="#" role="button" aria-expanded="false"><img
-                                        src="assets/images/user.png" alt="user profile"></a>
+                                <a class="dropdown-toggle d-flex align-items-center" id="user-dropdown-toggle"
+                                    data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                                    <img src="{{ Auth::user()->image ? asset('images/users/' . Auth::user()->image) : asset('assets/images/user.png') }}"
+                                        alt="User Profile"
+                                        style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; margin-right: 8px;">
+                                    <span>{{ Auth::user()->name }}</span>
+                                </a>
+
                                 <ul class="dropdown-menu" aria-labelledby="user-dropdown-toggle">
-                                    <li><a class="dropdown-item" href="{{ route('logout') }}">Log Out</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('logout') }}"
+                                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                            Log Out
+                                        </a></li>
                                 </ul>
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
                             </div>
                             <!--//app-user-dropdown-->
                         </div>
@@ -195,7 +207,8 @@
                     <ul class="app-menu list-unstyled accordion" id="menu-accordion">
                         <li class="nav-item">
                             <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-                            <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
+                            <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}"
+                                href="{{ route('dashboard') }}">
                                 <span class="nav-icon">
                                     <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-house-door"
                                         fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -210,7 +223,8 @@
                             <!--//nav-link-->
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('users*') ? 'active' : '' }}" href="{{ route('users') }}">
+                            <a class="nav-link {{ request()->routeIs('users*') ? 'active' : '' }}"
+                                href="{{ route('users') }}">
                                 <span class="nav-icon">
                                     <i class="fa-solid fa-users"></i>
                                 </span>
@@ -230,7 +244,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('contactUs') }}">
                                 <span class="nav-icon">
-                                    <i class="fa-solid fa-envelope"></i> 
+                                    <i class="fa-solid fa-envelope"></i>
                                 </span>
                                 <span class="nav-link-text">Contact US</span>
                             </a>
