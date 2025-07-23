@@ -219,6 +219,15 @@
                             </a>
                         </li>
 
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('category') }}">
+                                <span class="nav-icon">
+                                    <i class="fa-solid fa-users"></i>
+                                </span>
+                                <span class="nav-link-text">Category</span>
+                            </a>
+                        </li>
+
                         <!--//nav-item-->
                     </ul>
                     <!--//app-menu-->
