@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ContactUsController;
+
 
 Auth::routes();
 
@@ -28,3 +30,8 @@ Route::post('/category/store', [CategoryController::class, 'store'])->name('cate
 Route::get('/category/edit/{id}', [CategoryController::class, 'edit'])->name('edit.category');
 Route::post('/category/update/{id}', [CategoryController::class, 'update'])->name('update.category');
 Route::delete('/category/destroy/{id}',[CategoryController::class,'destroy'])->name('destroy.category');
+
+
+// Contact Us
+Route::get('/contact-us', [ContactUsController::class, 'contactUs'])->name('contactUs');
+Route::delete('/contact-us/delete/{id}', [ContactUSController::class, 'deleteContactUs'])->name('contactUs.delete');
