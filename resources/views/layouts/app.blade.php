@@ -221,7 +221,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('category') }}">
                                 <span class="nav-icon">
-                                    <i class="fa-solid fa-users"></i>
+                                    <i class="fa-solid fa-layer-group"></i>
                                 </span>
                                 <span class="nav-link-text">Category</span>
                             </a>
@@ -230,9 +230,18 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('contactUs') }}">
                                 <span class="nav-icon">
-                                    <i class="fa-solid fa-users"></i>
+                                    <i class="fa-solid fa-envelope"></i> 
                                 </span>
                                 <span class="nav-link-text">Contact US</span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('our_teams') }}">
+                                <span class="nav-icon">
+                                    <i class="fa-solid fa-people-group"></i>
+                                </span>
+                                <span class="nav-link-text">Our Teams</span>
                             </a>
                         </li>
 
