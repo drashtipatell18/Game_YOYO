@@ -47,10 +47,10 @@
                                                         <img src="{{ $imageUrl }}" alt="User Image" class="img-fluid" style="width: 100px; height: 100px;">
                                                     </td>
                                                     <td class="text-center">
-                                                        <a href="{{ route('user.edit', $user->id) }}" class="btn btn-sm btn-warning text-white" title="Edit">
+                                                        <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-warning text-white" title="Edit">
                                                             <i class="fas fa-edit"></i>
                                                         </a>
-                                                        <form action="{{ route('user.delete', $user->id) }}" method="POST" style="display:inline;">
+                                                        <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display:inline;">
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="submit" class="btn btn-sm btn-danger" title="Delete"

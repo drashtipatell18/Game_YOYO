@@ -248,15 +248,24 @@
 
     </div><!--//app-wrapper-->
 
-    <!--//app-wrapper-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
     <!-- Javascript -->
     <script src="{{ asset('assets/plugins/popper.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
+
     <!-- Charts JS -->
     <script src="{{ asset('assets/plugins/chart.js/chart.min.js') }}"></script>
     <script src="{{ asset('assets/js/index-charts.js') }}"></script>
+
     <!-- Page Specific JS -->
     <script src="{{ asset('assets/js/app.js') }}"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     @stack('scripts')
 </body>
 
