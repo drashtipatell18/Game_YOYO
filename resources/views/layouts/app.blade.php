@@ -2,14 +2,14 @@
 <html lang="en">
 
 <head>
-    <title>Portal - Bootstrap 5 Admin Dashboard Template For Developers</title>
+    <title> Game Ecommerce</title>
     <!-- Meta -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Portal - Bootstrap 5 Admin Dashboard Template For Developers">
+    <meta name="description" content="Game Ecommerce">
     <meta name="author" content="Xiaoying Riley at 3rd Wave Media">
-    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}">
     <!-- FontAwesome JS-->
     <script defer src="{{ asset('assets/plugins/fontawesome/js/all.min.js') }}"></script>
     <!-- App CSS -->
@@ -73,18 +73,18 @@
         padding: 0.5rem 1rem;
         margin: 0 0.1rem;
         border-radius: 0.25rem;
-        border: 1px solid #000;
-        color: #000;
+        border: 1px solid #8A775A;
+        color: #8A775A;
         cursor: pointer;
     }
 
     .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-        background-color: #000;
+        background-color: #8A775A;
         color: white;
     }
 
     .dataTables_wrapper .dataTables_paginate .paginate_button.current {
-        background-color: #000;
+        background-color: #8A775A;
         color: white;
     }
 
@@ -98,13 +98,13 @@
 
     /* Active navigation styles */
     .app-nav .nav-link.active {
-        background-color: #000 !important;
+        background-color: #8A775A!important;
         color: white !important;
         border-radius: 0.375rem;
     }
 
     .app-nav .nav-link.active:hover {
-        background-color: #333 !important;
+        background-color: #8A775A !important;
         color: white !important;
     }
 
@@ -117,12 +117,12 @@
 
     .app-nav .sub-menu .nav-link.active:hover {
         background-color: #e9ecef !important;
-        color: #000 !important;
+        color: #8A775A !important;
     }
 
     /* Collapsed menu active state */
     .app-nav .nav-link.collapsed.active {
-        background-color: #000 !important;
+        background-color: #8A775A !important;
         color: white !important;
     }
 
@@ -187,16 +187,15 @@
             <div id="sidepanel-drop" class="sidepanel-drop"></div>
             <div class="sidepanel-inner d-flex flex-column">
                 <a href="#" id="sidepanel-close" class="sidepanel-close d-xl-none">&times;</a>
-                <div class="app-branding">
-                    <a class="app-logo" href="index.html"><img class="logo-icon me-2" src="assets/images/app-logo.svg"
-                            alt="logo"><span class="logo-text">PORTAL</span></a>
+                <div class="app-branding d-flex justify-content-center">
+                    <img src="{{ asset('assets/images/logo.png') }}" alt="logo" class="logo-icon me-2">
                 </div>
                 <!--//app-branding-->
                 <nav id="app-nav-main" class="app-nav app-nav-main flex-grow-1">
                     <ul class="app-menu list-unstyled accordion" id="menu-accordion">
                         <li class="nav-item">
                             <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-                            <a class="nav-link active" href="index.html">
+                            <a class="nav-link" href="index.html">
                                 <span class="nav-icon">
                                     <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-house-door"
                                         fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -211,7 +210,7 @@
                             <!--//nav-link-->
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('users') }}">
+                            <a class="nav-link {{ request()->routeIs('users*') ? 'active' : '' }}" href="{{ route('users') }}">
                                 <span class="nav-icon">
                                     <i class="fa-solid fa-users"></i>
                                 </span>
