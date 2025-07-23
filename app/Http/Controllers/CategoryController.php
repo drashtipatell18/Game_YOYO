@@ -45,39 +45,39 @@ class CategoryController extends Controller
         $category = Category::findOrFail($id);
         return view('category.create_category', compact('category'));
     }
-  public function update(Request $request, $id)
-{
-    $category = Category::findOrFail($id);
+    public function update(Request $request, $id)
+    {
+        $category = Category::findOrFail($id);
 
-    // Keep existing image and icon names
-    $imageName = $category->image;
-    $iconName = $category->icon;
+        // Keep existing image and icon names
+        $imageName = $category->image;
+        $iconName = $category->icon;
 
-    // Check if a new image file was uploaded
-    if ($request->hasFile('image')) {
-        $image = $request->file('image');
-        $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-        $image->move(public_path('images/category'), $imageName);
+        // Check if a new image file was uploaded
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images/category'), $imageName);
+        }
+
+        // Check if a new icon file was uploaded
+        if ($request->hasFile('icon')) {
+            $icon = $request->file('icon');
+            $iconName = time() . '_' . uniqid() . '.' . $icon->getClientOriginalExtension();
+            $icon->move(public_path('images/category'), $iconName);
+        }
+
+        // Prepare update data, keep existing images if no new uploads
+        $updateData = [
+            'name' => $request->input('name'),
+            'image' => $imageName,
+            'icon' => $iconName,
+        ];
+
+        $category->update($updateData);
+
+        return redirect()->route('category')->with('success', 'Category updated successfully');
     }
-
-    // Check if a new icon file was uploaded
-    if ($request->hasFile('icon')) {
-        $icon = $request->file('icon');
-        $iconName = time() . '_' . uniqid() . '.' . $icon->getClientOriginalExtension();
-        $icon->move(public_path('images/category'), $iconName);
-    }
-
-    // Prepare update data, keep existing images if no new uploads
-    $updateData = [
-        'name' => $request->input('name'),
-        'image' => $imageName,
-        'icon' => $iconName,
-    ];
-
-    $category->update($updateData);
-
-    return redirect()->route('category')->with('success', 'Category updated successfully');
-}
 
 
     public function destroy($id)

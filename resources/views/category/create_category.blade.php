@@ -5,7 +5,7 @@
         <div class="col-md-6 grid-margin stretch-card" style="margin: 0 auto;">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">{{ isset($category) ? 'Edit User' : 'Create User' }}</h4>
+                    <h4 class="card-title">{{ isset($category) ? 'Edit Category' : 'Create Category' }}</h4>
                     <form action="{{ isset($category) ? route('update.category', $category->id) : route('category.store') }}" method="post"
                         enctype="multipart/form-data" id="category-form">
                         @csrf
