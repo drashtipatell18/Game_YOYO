@@ -7,7 +7,7 @@ use App\Models\Category;
 
 class CategoryController extends Controller
 {
-      public function create(){
+    public function create(){
         return view('category.create_category');
     }
     public  function category()
@@ -28,14 +28,14 @@ class CategoryController extends Controller
         $iconName = null;
         if ($request->hasFile('icon')) {
             $icon = $request->file('icon');
-            $iconName = time() . '_' . uniqid() . '.' . $icon->getClientOriginalExtension(); // fixed here
-            $icon->move(public_path('images/category'), $iconName); // fixed here
+            $iconName = time() . '_' . uniqid() . '.' . $icon->getClientOriginalExtension();
+            $icon->move(public_path('images/category'), $iconName);
         }
 
         Category::create([
             'name' => $request->input('name'),
             'image' => $imageName,
-            'icon' => $iconName, // fixed here
+            'icon' => $iconName,
         ]);
 
         return redirect()->route('category')->with('success', 'Category created successfully');
@@ -49,25 +49,20 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($id);
 
-        // Keep existing image and icon names
         $imageName = $category->image;
         $iconName = $category->icon;
 
-        // Check if a new image file was uploaded
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('images/category'), $imageName);
         }
-
-        // Check if a new icon file was uploaded
         if ($request->hasFile('icon')) {
             $icon = $request->file('icon');
             $iconName = time() . '_' . uniqid() . '.' . $icon->getClientOriginalExtension();
             $icon->move(public_path('images/category'), $iconName);
         }
 
-        // Prepare update data, keep existing images if no new uploads
         $updateData = [
             'name' => $request->input('name'),
             'image' => $imageName,

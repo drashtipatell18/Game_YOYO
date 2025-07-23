@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactUsController;
+use App\Http\Controllers\OurTeamController;
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DashboardController;
@@ -54,4 +55,15 @@ Route::delete('/category/destroy/{id}',[CategoryController::class,'destroy'])->n
 // Contact Us
 Route::get('/contact-us', [ContactUsController::class, 'contactUs'])->name('contactUs');
 Route::delete('/contact-us/delete/{id}', [ContactUSController::class, 'deleteContactUs'])->name('contactUs.delete');
+
+
+
+// Our Teams
+Route::get('/our_teams', [OurTeamController::class, 'ourTeams'])->name('our_teams');
+Route::get('/our_teams/create', [OurTeamController::class, 'create'])->name('our_teams.create');
+Route::post('/our_teams/store', [OurTeamController::class, 'store'])->name('our_teams.store');
+Route::get('/our_teams/edit/{id}', [OurTeamController::class, 'edit'])->name('edit.our_teams');
+Route::post('/our_teams/update/{id}', [OurTeamController::class, 'update'])->name('update.our_teams');
+Route::delete('/our_teams/destroy/{id}',[OurTeamController::class,'destroy'])->name('destroy.our_teams');
+
 });
