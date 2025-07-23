@@ -6,12 +6,31 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactUsController;
 
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\DashboardController;
 
 Auth::routes();
 
 Route::get('/', function () {
-    return view('layouts.app');
+    return view('auth.login');
 });
+
+Route::get('/login', [HomeController::class, 'Login'])->name('login');
+Route::post('/login', [HomeController::class, 'LoginStore'])->name('loginstore');
+Route::get('/logout',[HomeController::class,'logout'])->name('logout');
+Route::get('/forget-password', [DashboardController::class, 'showForgetPasswordForm'])->name('forget.password');
+Route::post('/forget-password', [DashboardController::class, 'sendResetLinkEmail'])->name('forget.password.email');
+Route::get('/reset/{token}', [DashboardController::class, 'reset'])->name('reset');
+Route::post('/reset/{token}', [DashboardController::class, 'postReset'])->name('post_reset');
+Route::post('/check-current-password', [HomeController::class, 'checkCurrentPassword'])->name('checkCurrentPassword');
+Route::get('/change-password', [HomeController::class, 'cPassword'])->name('change-password');
+Route::post('/change-password', [HomeController::class, 'changePassword'])->name('change-password');
+
+
+Route::middleware(['auth'])->group(function () {
+
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
 
 // User Routes
 Route::get('/users', [UserController::class, 'ViewUsers'])->name('users');
@@ -35,3 +54,4 @@ Route::delete('/category/destroy/{id}',[CategoryController::class,'destroy'])->n
 // Contact Us
 Route::get('/contact-us', [ContactUsController::class, 'contactUs'])->name('contactUs');
 Route::delete('/contact-us/delete/{id}', [ContactUSController::class, 'deleteContactUs'])->name('contactUs.delete');
+});
