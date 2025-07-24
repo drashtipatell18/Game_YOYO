@@ -7,6 +7,7 @@
     <meta name="description" content="Game Ecommerce">
     <meta name="author" content="Game Ecommerce">
     <title>Forget Password</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <style>
         * {
             margin: 0;
@@ -376,8 +377,9 @@
             </button>
         </form>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script>
         $(document).ready(function() {
             // Initialize jQuery Validation
@@ -459,6 +461,17 @@
             }, 600);
         }
     </script>
+    @if(session('success'))
+        <script>
+            toastr.success("{{ session('success') }}", "Success", { timeOut: 2000 });
+        </script>
+    @endif
+
+    @if(session('error'))
+        <script>
+            toastr.error("{{ session('error') }}", "Error", { timeOut: 2000 });
+        </script>
+    @endif
 </body>
 
 </html>
