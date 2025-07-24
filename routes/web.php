@@ -6,7 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\OurTeamController;
-
+use App\Http\Controllers\TopArticlesController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DashboardController;
@@ -106,4 +106,12 @@ Route::post('/blog/update/{id}', [BlogController::class, 'UpdateBlog'])->name('u
 Route::delete('/blog/destroy/{id}',[BlogController::class,'DestroyBlog'])->name('destroy.blog');
 Route::post('/blog/image/destroy', [BlogController::class, 'destroyImage'])->name('blog.image.destroy');
 Route::post('/blog/video/destroy', [BlogController::class, 'destroyVideo'])->name('blog.video.destroy');
+
+// Our Teams
+Route::get('/articles', [TopArticlesController::class, 'articles'])->name('articles');
+Route::get('/articles/create', [TopArticlesController::class, 'create'])->name('articles.create');
+Route::post('/articles/store', [TopArticlesController::class, 'store'])->name('articles.store');
+Route::get('/articles/edit/{id}', [TopArticlesController::class, 'edit'])->name('edit.articles');
+Route::post('/articles/update/{id}', [TopArticlesController::class, 'update'])->name('update.articles');
+Route::delete('/articles/destroy/{id}',[TopArticlesController::class,'destroy'])->name('destroy.articles');
 });

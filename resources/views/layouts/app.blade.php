@@ -301,6 +301,15 @@
                                 <span class="nav-link-text">Blog</span>
                             </a>
                         </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('articles') }}">
+                                <span class="nav-icon">
+                                    <i class="fa-solid fa-blog"></i>
+                                </span>
+                                <span class="nav-link-text">Articles</span>
+                            </a>
+                        </li>
                         <!--//nav-item-->
                     </ul>
                     <!--//app-menu-->
