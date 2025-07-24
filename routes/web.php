@@ -7,6 +7,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\OurTeamController;
 
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PrivacyController;
@@ -84,5 +85,15 @@ Route::post('/service/store', [ServiceController::class, 'StoreService'])->name(
 Route::get('/service/edit/{id}', [ServiceController::class, 'EditService'])->name('edit.service');
 Route::post('/service/update/{id}', [ServiceController::class, 'UpdateService'])->name('update.service');
 Route::delete('/service/destroy/{id}',[ServiceController::class,'DestroyService'])->name('destroy.service');
+
+// Products
+Route::get('/product',[ProductController::class, 'Product'])->name('product');
+Route::get('/product/create',[ProductController::class, 'CreateProduct'])->name('product.create');
+Route::post('/product/store',[ProductController::class, 'StoreProduct'])->name('product.store');
+Route::get('/product/edit/{id}',[ProductController::class, 'EditProduct'])->name('product.edit');
+Route::post('/product/update/{id}',[ProductController::class, 'UpdateProduct'])->name('product.update');
+Route::delete('/product/delete/{id}',[ProductController::class, 'DeleteProduct'])->name('product.delete');
+Route::post('/product/image/destroy', [ProductController::class, 'destroyImage'])->name('product.image.destroy');
+Route::post('/product/toggle-status/{id}', [ProductController::class, 'toggleStatus']);
 
 });

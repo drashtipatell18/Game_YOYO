@@ -277,6 +277,15 @@
                             </a>
                         </li>
 
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('product') }}">
+                                <span class="nav-icon">
+                                    <i class="fa-solid fa-people-group"></i>
+                                </span>
+                                <span class="nav-link-text">Product</span>
+                            </a>
+                        </li>
+
                         <!--//nav-item-->
                     </ul>
                     <!--//app-menu-->
