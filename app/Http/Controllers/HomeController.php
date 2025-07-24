@@ -74,19 +74,13 @@ class HomeController extends Controller
             return redirect()->route('login')->with('error', 'Please log in to change your password.');
         }
 
-        $request->validate([
-            'current_password' => 'required',
-            'new_password' => 'required|string|min:8|same:confirm_password',
-            'confirm_password' => 'required|string|min:8|same:new_password',
-        ]);
-
         $user = Auth::user();
 
-        if (!Hash::check($request->current_password, $user->password)) {
+        if (!Hash::check($request->input('current_password'), $user->password)) {
             return back()->withErrors(['current_password' => 'The current password is incorrect.']);
         }
 
-        $user->password = Hash::make($request->new_password);
+        $user->password = Hash::make($request->input('new_password'));
         $user->save();
 
         return redirect()->route('dashboard')->with('success', 'Password changed successfully.');
@@ -102,7 +96,7 @@ class HomeController extends Controller
     public function checkCurrentPassword(Request $request)
     {
         $user = Auth::user();
-        $isValid = Hash::check($request->current_password, $user->password);
+        $isValid = Hash::check($request->input('current_password'), $user->password);
         return response()->json(['valid' => $isValid]);
     }
 }
