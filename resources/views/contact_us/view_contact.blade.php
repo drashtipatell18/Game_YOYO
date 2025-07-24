@@ -85,8 +85,8 @@
                     timeOut: 2000
                 });
             @endif
-            @if (session('error'))
-                toastr.error("{{ session('error') }}", "Error", {
+            @if (session('danger'))
+                toastr.error("{{ session('danger') }}", "Error", {
                     timeOut: 2000
                 });
             @endif
