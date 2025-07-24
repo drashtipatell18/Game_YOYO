@@ -280,7 +280,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('product') }}">
                                 <span class="nav-icon">
-                                    <i class="fa-solid fa-people-group"></i>
+                                    <i class="fa-solid fa-box"></i>
                                 </span>
                                 <span class="nav-link-text">Product</span>
                             </a>
