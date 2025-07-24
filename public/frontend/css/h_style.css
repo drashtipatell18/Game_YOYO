@@ -8,7 +8,7 @@ html {
 
 .login-page {
   height: 100vh;
-  background: url(/images/login.jpg) no-repeat center center/cover;
+  background: url(../images/login.jpg) no-repeat center center/cover;
   position: relative;
 }
 
@@ -129,7 +129,7 @@ a {
   .login-content {
     padding: 22px;
   }
-  
+
 }
 @media (max-width: 400px) {
   .login-content {

@@ -52,7 +52,7 @@
 
                         <div class="d_user_dropdown" id="db_user_dropdown">
                             <ul>
-                                <li><a href="./auth/Login.html">Sign in</a></li>
+                                <li><a href="{{ route('frontend.login') }}">Sign in</a></li>
                                 <li><a href="./auth/ForgetPass.html">Change Password</a></li>
                                 <li><a href="Profile.html">My Profile</a></li>
                                 <li><a href="#">Logout</a></li>
