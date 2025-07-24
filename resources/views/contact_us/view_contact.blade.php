@@ -33,7 +33,7 @@
                                                 <td class="text-center">Customer</td>
                                                 <td class="text-center">Hello, I need help with my order.</td>
                                                <td class="text-center">
-                                                    <button class="btn btn-sm btn-danger" style="color:white">
+                                                    <button class="btn btn-sm btn-danger custom-btn" style="color:white">
                                                         <i class="fas fa-trash-alt"></i>
                                                     </button>
                                                 </td>
@@ -45,7 +45,7 @@
                                                 <td class="text-center">Support</td>
                                                 <td class="text-center">Please update me on ticket #1234.</td>
                                                <td class="text-center">
-                                                    <button class="btn btn-sm btn-danger" style="color:white">
+                                                    <button class="btn btn-sm btn-danger custom-btn" style="color:white">
                                                         <i class="fas fa-trash-alt"></i>
                                                     </button>
                                                 </td>

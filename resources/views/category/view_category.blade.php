@@ -14,7 +14,7 @@
                                         <h2 class="mb-2 page-title">Category List</h2>
                                         <div class="mb-3">
                                             <a href="{{ route('category.create') }}"
-                                                class="btn btn-primary text-white">Create
+                                                class="btn btn-primary text-white custom-btn">Create
                                                 Category</a>
                                         </div>
                                     </div>
@@ -55,14 +55,14 @@
                                                     {{-- Actions --}}
                                                     <td class="text-center">
                                                         <a href="{{ route('edit.category', $category->id) }}"
-                                                            class="btn btn-sm btn-warning text-white" title="Edit">
+                                                            class="btn btn-sm btn-warning text-white custom-btn" title="Edit">
                                                             <i class="fas fa-edit"></i>
                                                         </a>
 
                                                         <form action="{{ route('destroy.category', $category->id) }}" method="POST" style="display:inline;">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit" class="btn btn-sm btn-danger" title="Delete"
+                                                            <button type="submit" class="btn btn-sm btn-danger custom-btn" title="Delete"
                                                                 onclick="return confirm('Are you sure you want to delete this category?')">
                                                                 <i class="fas fa-trash-alt text-white"></i>
                                                             </button>

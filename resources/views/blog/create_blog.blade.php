@@ -60,7 +60,7 @@
                                             <img src="{{ asset('images/blogs/' . $image) }}" alt="Blog Image"
                                                 class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;">
                                             <button type="button"
-                                                class="btn btn-danger btn-sm position-absolute top-0 end-0 remove-btn d-flex justify-content-center text-white align-items-center"
+                                                class="btn btn-danger custom-btn btn-sm position-absolute top-0 end-0 remove-btn d-flex justify-content-center text-white align-items-center"
                                                 style="width: 20px; height: 20px; border-radius: 50%; font-size: 12px;"
                                                 onclick="removeImageImmediately(this, '{{ $image }}')">×</button>
                                         </div>
@@ -81,7 +81,7 @@
                                             Your browser does not support the video tag.
                                         </video>
                                         <button type="button"
-                                            class="btn btn-danger btn-sm position-absolute top-0 end-0 remove-btn d-flex justify-content-center text-white align-items-center"
+                                            class="btn btn-danger custom-btn btn-sm position-absolute top-0 end-0 remove-btn d-flex justify-content-center text-white align-items-center"
                                             style="width: 20px; height: 20px; border-radius: 50%; font-size: 12px;"
                                             onclick="removeVideoImmediately()">×</button>
                                     </div>
@@ -92,7 +92,7 @@
                             </div>
                         </div>
                         <div class="form-group text-center p-3">
-                            <button type="submit" class="btn btn-primary mr-2 text-white" style="pointer-events: auto;">
+                            <button type="submit" class="btn btn-primary mr-2 text-white custom-btn" style="pointer-events: auto;">
                                 {{ isset($blog) ? 'Update' : 'Submit' }}
                             </button>
                         </div>

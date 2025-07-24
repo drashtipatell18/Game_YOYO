@@ -63,14 +63,14 @@
                                         $mediaFiles = explode(',', $product->image);
                                     @endphp
                                     @foreach ($mediaFiles as $index => $file)
-                                      
+
                                         <div class="image-container position-relative" data-image="{{ $file }}">
-                                           
+
                                                 <img src="{{ asset('images/products/' . $file) }}" alt="Product Media"
                                                     style="width: 70px; height: 70px; object-fit: cover;">
-                                         
+
                                             <button type="button"
-                                                class="btn btn-primary btn-sm position-absolute top-0 end-0 remove-btn d-flex justify-content-center text-white align-items-center"
+                                                class="btn btn-primary btn-sm position-absolute top-0 end-0 remove-btn d-flex justify-content-center text-white align-items-center custom-btn"
                                                 style="width: 20px; height: 20px; border-radius: 50%;"
                                                 onclick="removeImageImmediately(this, '{{ $file }}')">×</button>
                                         </div>
@@ -133,7 +133,7 @@
 
                         {{-- Submit Button --}}
                         <div class="form-group text-center p-3">
-                            <button type="submit" class="btn btn-primary mr-2 text-white" style="pointer-events: auto;">
+                            <button type="submit" class="btn btn-primary mr-2 text-white custom-btn" style="pointer-events: auto;">
                                 {{ isset($product) ? 'Update' : 'Submit' }}
                             </button>
                         </div>
@@ -191,8 +191,8 @@
                         required: true,
                         number: true
                     }
-                   
-                  
+
+
                 },
                 messages: {
                     category_id: "Please select a category",
@@ -216,7 +216,7 @@
                         number: "Weight must be a number"
                     },
 
-                 
+
                     length: "Enter length",
                         width: "Enter width",
                         height: "Enter height"

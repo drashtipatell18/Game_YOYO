@@ -14,7 +14,7 @@
                                         <h2 class="mb-2 page-title">Service List</h2>
                                         <div class="mb-3">
                                             <a href="{{ route('service.create') }}"
-                                                class="btn btn-primary text-white">Create
+                                                class="btn btn-primary text-white custom-btn">Create
                                                 Service</a>
                                         </div>
                                     </div>
@@ -42,14 +42,14 @@
                                                     </td>
                                                     <td class="text-center">
                                                         <a href="{{ route('edit.service', $service->id) }}"
-                                                            class="btn btn-sm btn-warning text-white" title="Edit">
+                                                            class="btn btn-sm btn-warning text-white custom-btn" title="Edit">
                                                             <i class="fas fa-edit"></i>
                                                         </a>
                                                         <form action="{{ route('destroy.service', $service->id) }}"
                                                             method="POST" style="display:inline;">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit" class="btn btn-sm btn-danger"
+                                                            <button type="submit" class="btn btn-sm btn-danger custom-btn"
                                                                 title="Delete"
                                                                 onclick="return confirm('Are you sure you want to delete this user?')">
                                                                 <i class="fas fa-trash-alt text-white"></i>

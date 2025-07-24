@@ -46,7 +46,7 @@
                         </div>
 
                         <div class="form-group text-center p-3">
-                            <button type="submit" class="btn btn-primary mr-2 text-white" style="pointer-events: auto;">
+                            <button type="submit" class="btn btn-primary mr-2 text-white custom-btn" style="pointer-events: auto;">
                                 {{ isset($category) ? 'Update' : 'Submit' }}
                             </button>
                         </div>

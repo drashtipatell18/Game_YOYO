@@ -14,7 +14,7 @@
                                         <h2 class="mb-2 page-title">Product List</h2>
                                         <div class="mb-3">
                                             <a href="{{ route('product.create') }}"
-                                                class="btn btn-primary text-white">Create Product</a>
+                                                class="btn btn-primary text-white custom-btn">Create Product</a>
                                         </div>
                                     </div>
                                     <!-- table -->
@@ -50,7 +50,7 @@
                                                         @endif
                                                     </td>
                                                     <td class="text-center">{{ $product->name }}</td>
-                                                   
+
                                                     <td class="text-center">
                                                         <a href="{{ route('product.edit', $product->id) }}"
                                                             class="btn btn-sm btn-warning text-white"
@@ -61,7 +61,7 @@
                                                             method="POST" style="display:inline;">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit" class="btn btn-sm btn-danger"
+                                                            <button type="submit" class="btn btn-sm btn-danger custom-btn"
                                                                 title="Delete"
                                                                 onclick="return confirm('Are you sure you want to delete this product?')">
                                                                 <i class="fas fa-trash-alt text-white"></i>
@@ -74,7 +74,7 @@
                                     </table>
 
                                     <!-- View Model Code -->
-                                  
+
                                 </div>
                             </div>
                         </div>
@@ -132,7 +132,7 @@
                 });
             });
 
-            
+
             // Check for session messages and display them
             @if (session('success'))
                 toastr.success("{{ session('success') }}", "Success", {

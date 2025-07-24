@@ -13,7 +13,7 @@
                                     <div class="mb-3 d-flex justify-content-between">
                                         <h2 class="mb-2 page-title">Blog List</h2>
                                         <div class="mb-3">
-                                            <a href="{{ route('blog.create') }}" class="btn btn-primary text-white">Create
+                                            <a href="{{ route('blog.create') }}" class="btn btn-primary  text-white custom-btn">Create
                                                 Blog</a>
                                         </div>
                                     </div>
@@ -57,14 +57,14 @@
                                                     </td>
                                                     <td class="text-center">
                                                         <a href="{{ route('edit.blog', $blog->id) }}"
-                                                            class="btn btn-sm btn-warning text-white" title="Edit">
+                                                            class="btn btn-sm btn-warning text-white custom-btn" title="Edit">
                                                             <i class="fas fa-edit"></i>
                                                         </a>
                                                         <form action="{{ route('destroy.blog', $blog->id) }}" method="POST"
                                                             style="display:inline;">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit" class="btn btn-sm btn-danger"
+                                                            <button type="submit" class="btn btn-sm btn-danger custom-btn"
                                                                 title="Delete"
                                                                 onclick="return confirm('Are you sure you want to delete this user?')">
                                                                 <i class="fas fa-trash-alt text-white"></i>

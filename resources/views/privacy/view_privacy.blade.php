@@ -14,7 +14,7 @@
                                         <h2 class="mb-2 page-title">Privacy List</h2>
                                         <div class="mb-3">
                                             <a href="{{ route('privacy.create') }}"
-                                                class="btn btn-primary text-white">Create
+                                                class="btn btn-primary text-white custom-btn">Create
                                                 Privacy</a>
                                         </div>
                                     </div>
@@ -36,14 +36,14 @@
                                                     <td class="text-center">{{ Str::limit($privacy->description, 50) }}</td>
                                                     <td class="text-center">
                                                         <a href="{{ route('edit.privacy', $privacy->id) }}"
-                                                            class="btn btn-sm btn-warning text-white" title="Edit">
+                                                            class="btn btn-sm btn-warning text-white custom-btn" title="Edit">
                                                             <i class="fas fa-edit"></i>
                                                         </a>
                                                         <form action="{{ route('destroy.privacy', $privacy->id) }}"
                                                             method="POST" style="display:inline;">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit" class="btn btn-sm btn-danger"
+                                                            <button type="submit" class="btn btn-sm btn-danger custom-btn"
                                                                 title="Delete"
                                                                 onclick="return confirm('Are you sure you want to delete this user?')">
                                                                 <i class="fas fa-trash-alt text-white"></i>

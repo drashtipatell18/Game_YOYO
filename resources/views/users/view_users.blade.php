@@ -13,7 +13,7 @@
                                     <div class="mb-3 d-flex justify-content-between">
                                         <h2 class="mb-2 page-title">User List</h2>
                                         <div class="mb-3">
-                                            <a href="{{ route('users.create') }}" class="btn btn-primary text-white">Create
+                                            <a href="{{ route('users.create') }}" class="btn btn-primary text-white custom-btn">Create
                                                 User</a>
                                         </div>
                                     </div>
@@ -39,22 +39,27 @@
                                                     <td class="text-center">
                                                         @php
                                                             $imagePath = public_path('images/users/' . $user->image);
-                                                            $imageUrl = file_exists($imagePath) && $user->image
-                                                                ? asset('images/users/' . $user->image)
-                                                                : asset('images/users/dummy-profile.jpg'); // Dummy image fallback
+                                                            $imageUrl =
+                                                                file_exists($imagePath) && $user->image
+                                                                    ? asset('images/users/' . $user->image)
+                                                                    : asset('images/users/dummy-profile.jpg'); // Dummy image fallback
                                                         @endphp
 
-                                                        <img src="{{ $imageUrl }}" alt="User Image" class="img-fluid" style="width: 100px; height: 100px;">
+                                                        <img src="{{ $imageUrl }}" alt="User Image" class="img-fluid"
+                                                            style="width: 100px; height: 100px;">
                                                     </td>
                                                     <td class="text-center">
-                                                        <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-warning text-white" title="Edit">
+                                                        <a href="{{ route('users.edit', $user->id) }}"
+                                                            class="btn btn-sm btn-warning text-white custom-btn" title="Edit">
                                                             <i class="fas fa-edit"></i>
                                                         </a>
-                                                        <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display:inline;">
+                                                        <form action="{{ route('users.destroy', $user->id) }}"
+                                                            method="POST" style="display:inline;">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit" class="btn btn-sm btn-danger" title="Delete"
-                                                                    onclick="return confirm('Are you sure you want to delete this user?')">
+                                                            <button type="submit" class="btn btn-sm btn-danger custom-btn"
+                                                                title="Delete"
+                                                                onclick="return confirm('Are you sure you want to delete this user?')">
                                                                 <i class="fas fa-trash-alt text-white"></i>
                                                             </button>
                                                         </form>
@@ -75,7 +80,7 @@
 
 @push('scripts')
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('#dataTable-1').DataTable({
                 "pageLength": 10,
                 "language": {
@@ -95,11 +100,15 @@
             });
 
             // Check for session messages and display them
-            @if(session('success'))
-            toastr.success("{{ session('success') }}", "Success", { timeOut: 2000 });
+            @if (session('success'))
+                toastr.success("{{ session('success') }}", "Success", {
+                    timeOut: 2000
+                });
             @endif
-            @if(session('error'))
-            toastr.error("{{ session('error') }}", "Error", { timeOut: 2000 });
+            @if (session('error'))
+                toastr.error("{{ session('error') }}", "Error", {
+                    timeOut: 2000
+                });
             @endif
         });
     </script>

@@ -130,6 +130,12 @@
         background-color: #333 !important;
         color: white !important;
     }
+
+    .custom-btn:hover {
+        background-color: #8A775A !important;
+        border-color: #8A775A !important;
+        color: white !important;
+    }
 </style>
 
 <body class="app">
@@ -157,7 +163,7 @@
                             <form class="app-search-form">
                                 <input type="text" placeholder="Search..." name="search"
                                     class="form-control search-input">
-                                <button type="submit" class="btn search-btn btn-primary" value="Search"><i
+                                <button type="submit" class="btn search-btn btn-primary custom-btn" value="Search"><i
                                         class="fa-solid fa-magnifying-glass"></i></button>
                             </form>
                         </div>
@@ -315,7 +321,7 @@
                 <!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
                 <span class="text-muted text-center" style="font-weight: bold; font-size:16px">
                     Copyright © 2025.
-                    <a style="font-weight: bold; font-size:16px; text-decoration: none;"
+                    <a style="font-weight: bold; font-size:16px; text-decoration: none; color: #8A775A;"
                         href="https://kalathiyainfotech.com/" target="_blank">Kalathiya Infotech</a>
                 </span>
             </div>
