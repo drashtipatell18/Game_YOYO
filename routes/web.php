@@ -12,6 +12,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PrivacyController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\BlogController;
 
 Auth::routes();
 
@@ -96,4 +97,13 @@ Route::delete('/product/delete/{id}',[ProductController::class, 'DeleteProduct']
 Route::post('/product/image/destroy', [ProductController::class, 'destroyImage'])->name('product.image.destroy');
 Route::post('/product/toggle-status/{id}', [ProductController::class, 'toggleStatus']);
 
+// Blog
+Route::get('/blog', [BlogController::class, 'ViewBlog'])->name('blog');
+Route::get('/blog/create', [BlogController::class, 'CreateBlog'])->name('blog.create');
+Route::post('/blog/store', [BlogController::class, 'StoreBlog'])->name('blog.store');
+Route::get('/blog/edit/{id}', [BlogController::class, 'EditBlog'])->name('edit.blog');
+Route::post('/blog/update/{id}', [BlogController::class, 'UpdateBlog'])->name('update.blog');
+Route::delete('/blog/destroy/{id}',[BlogController::class,'DestroyBlog'])->name('destroy.blog');
+Route::post('/blog/image/destroy', [BlogController::class, 'destroyImage'])->name('blog.image.destroy');
+Route::post('/blog/video/destroy', [BlogController::class, 'destroyVideo'])->name('blog.video.destroy');
 });

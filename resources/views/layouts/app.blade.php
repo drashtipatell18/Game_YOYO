@@ -286,6 +286,14 @@
                             </a>
                         </li>
 
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('blog') }}">
+                                <span class="nav-icon">
+                                    <i class="fa-solid fa-blog"></i>
+                                </span>
+                                <span class="nav-link-text">Blog</span>
+                            </a>
+                        </li>
                         <!--//nav-item-->
                     </ul>
                     <!--//app-menu-->
