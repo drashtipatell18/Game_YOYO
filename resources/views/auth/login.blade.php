@@ -370,6 +370,9 @@
                         placeholder="Enter your email">
                         <span class="input-icon">✉️</span>
                     </div>
+                    @error('email')
+                        <label class="error">{{ $message }}</label>
+                    @enderror
             </div>
 
             <div class="form-group">
@@ -379,6 +382,9 @@
                         placeholder="Enter your password">
                     <span class="input-icon">🔒</span>
                 </div>
+                @error('password')
+                    <label class="error">{{ $message }}</label>
+                @enderror
             </div>
 
             <div class="forgot-password">
