@@ -28,6 +28,7 @@ class DashboardController extends Controller
     {
         $request->validate(['email' => 'required|email']);
         $user = User::where('email', '=', $request->email)->first();
+       
         if (!empty($user)) {
             $user->remember_token = Str::random(40);
             $user->save();

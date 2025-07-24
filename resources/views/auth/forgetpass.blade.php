@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Game Ecommerce">
     <meta name="author" content="Game Ecommerce">
-    <title>Login</title>
+    <title>Forget Password</title>
     <style>
         * {
             margin: 0;
@@ -358,10 +358,10 @@
                     style="width: 80px; height: 80px;">
             </div>
             <h1 class="title">Game Ecommerce</h1>
-            <h3>Reset Password</h3>
+            <h3>Password Reset</h3>
         </div>
 
-        <form id="loginForm" action="{{ route('loginstore') }}" method="post">
+        <form method="POST" action="{{ route('forget.password.email') }}" id="forgetForm">
             @csrf
             <div class="form-group">
                 <label for="email">Email</label>
@@ -371,23 +371,8 @@
                         <span class="input-icon">✉️</span>
                     </div>
             </div>
-
-            <div class="form-group">
-                <label for="password">Password</label>
-                <div class="input-wrapper">
-                    <input type="password" id="password" class="form-control" name="password"
-                        placeholder="Enter your password">
-                    <span class="input-icon">🔒</span>
-                </div>
-            </div>
-
-            <div class="forgot-password">
-                <a href="{{ route('forget.password') }}">Forgot
-                    password?</a>
-            </div>
-
             <button type="submit" class="login-btn">
-                Sign In
+                Reset Password
             </button>
         </form>
     </div>
@@ -396,29 +381,20 @@
     <script>
         $(document).ready(function() {
             // Initialize jQuery Validation
-            $("#loginForm").validate({
-                rules: {
+            $("#forgetForm").validate({
+               rules: {
                     email: {
                         required: true,
+                        email: true
                     },
-                    password: {
-                        required: true,
-                        minlength: 6,
-                        maxlength: 50
-                    }
                 },
                 messages: {
                     email: {
                         required: "Please enter your email",
-                    },
-                    password: {
-                        required: "Please enter your password",
-                        minlength: "Password must be at least 6 characters long",
-                        maxlength: "Password cannot exceed 50 characters"
+                        email: "Please enter a valid email address"
                     }
                 },
                 errorPlacement: function(error, element) {
-                    // Place error message after the input wrapper
                     error.insertAfter(element.closest('.input-wrapper'));
                 },
                 highlight: function(element) {
@@ -428,42 +404,16 @@
                     $(element).removeClass('error').addClass('valid');
                 },
                 submitHandler: function(form) {
-                    handleFormSubmission();
+                    const submitBtn = $(form).find('button[type="submit"]');
+                    const originalText = submitBtn.text();
+                    submitBtn.prop('disabled', true).text('Processing...');
+                    form.submit();
                 }
             });
-
-            // Add real-time validation feedback
-            $('#username, #password').on('keyup blur', function() {
-                $(this).valid();
-            });
+           
         });
 
-        function handleFormSubmission() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-
-            // Simulate loading
-            const btn = document.querySelector('.login-btn');
-            const originalText = btn.textContent;
-            btn.textContent = 'Signing in...';
-            btn.disabled = true;
-
-            setTimeout(() => {
-                // Show success message
-                const successMsg = document.getElementById('successMessage');
-                successMsg.textContent = `Welcome ${username}! You would now be redirected to the admin dashboard.`;
-                successMsg.style.display = 'block';
-
-                // Reset button
-                btn.textContent = originalText;
-                btn.disabled = false;
-
-                // Hide success message after 5 seconds
-                setTimeout(() => {
-                    successMsg.style.display = 'none';
-                }, 5000);
-            }, 2000);
-        }
+       
 
         // Helper function for alerts
         function showAlert(message) {
