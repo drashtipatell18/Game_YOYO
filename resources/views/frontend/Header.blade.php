@@ -33,7 +33,7 @@
                         <li class="nav-item"><a class="nav-link" href="allProduct.html">Games</a></li>
                         <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ route('aboutus') }}">About</a></li>
-                        <li class="nav-item"><a class="nav-link" href="./Contact_us.html">Contact</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ route('frontendcontactus') }}">Contact</a></li>
                     </ul>
 
                     <form class="d_search_form ">

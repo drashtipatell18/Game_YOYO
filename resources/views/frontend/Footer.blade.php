@@ -33,7 +33,7 @@
                             <li><a href="{{ route('index') }}" class="active">Home</a></li>
                             <li><a href="allProduct.html">Games</a></li>
                             <li><a href="{{ route('aboutus') }}">About</a></li>
-                            <li><a href="Contact_us.html">Contact</a></li>
+                            <li><a href="{{ route('frontendcontactus') }}">Contact</a></li>
                         </ul>
                     </div>
                     <div class="col-md-2 col-6">
