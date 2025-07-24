@@ -137,6 +137,7 @@ Route::delete('/members-say/destroy/{id}',[MembersSayController::class,'DestroyM
 // Frontend Route
 
 Route::get('/frontend-login',[FrontendLoginController::class,'login'])->name('frontend.login');
+Route::get('/frontend-forget',[FrontendLoginController::class,'Forget'])->name('frontend.forget');
 Route::get('/index', [FrontendHomeController::class, 'index'])->name('index');
 Route::get('/aboutsus', [AboutUSController::class, 'aboutus'])->name(name: 'aboutus');
 Route::get('/contactus', [FrontendContactUsController::class, 'contactus'])->name('frontendcontactus');
