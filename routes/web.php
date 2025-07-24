@@ -20,6 +20,8 @@ use App\Http\Controllers\frontend\LoginController as FrontendLoginController;
 use App\Http\Controllers\frontend\AboutUSController;
 use App\Http\Controllers\frontend\ContactUsController as FrontendContactUsController;
 use App\Http\Controllers\frontend\PrivacyController as FrontendPrivacyController;
+use App\Http\Controllers\frontend\ServiceController as FrontendServiceController;
+
 
 Auth::routes();
 
@@ -142,3 +144,4 @@ Route::get('/index', [FrontendHomeController::class, 'index'])->name('index');
 Route::get('/aboutsus', [AboutUSController::class, 'aboutus'])->name(name: 'aboutus');
 Route::get('/contactus', [FrontendContactUsController::class, 'contactus'])->name('frontendcontactus');
 Route::get('/privacy', [FrontendPrivacyController::class, 'privacy'])->name('frontendprivacy');
+Route::get('/services', [FrontendServiceController::class, 'service'])->name('frontendservice');

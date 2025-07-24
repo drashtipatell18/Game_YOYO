@@ -42,7 +42,7 @@
                             <li><a href="{{ route('index') }}" class="active">Home</a></li>
                             <li><a href="Contact_us.html">Blog</a></li>
                             <li><a href="{{ route('frontendprivacy') }}">Privacy</a></li>
-                            <li><a href="services.html">Service</a></li>
+                            <li><a href="{{ route('frontendservice') }}">Service</a></li>
                         </ul>
                     </div>
                     <div class="col-md-4">

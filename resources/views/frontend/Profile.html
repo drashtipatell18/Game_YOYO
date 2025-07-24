@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./css/z_style.css">
+    <link rel="stylesheet" href="./css/d_style.css">
+
+    <title>Profile</title>
+</head>
+
+<body>
+    <div class="d_main">
+        <!-- Header -->
+        <header class="d_header d-flex align-items-center justify-content-between">
+            <div class="d_logo">
+                <img src="./images/yoyo logo done.png" style="padding: 7px; height: 60px;" alt="logo" class="img-fluid">
+            </div>
+
+            <!-- Desktop Nav -->
+            <nav class="d_navbar navbar navbar-expand-lg d-none d-lg-flex">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link " href="landingpage.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="allProduct.html">Games</a></li>
+                    <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
+                    <li class="nav-item"><a class="nav-link" href="About_us.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="./Contact_us.html">Contact</a></li>
+                </ul>
+
+                <form class="d_search_form ">
+                    <input type="search" placeholder="Search games..." />
+                    <button type="submit"><i class="fas fa-search"></i></button>
+                </form>
+
+                <div class="d_social_icons me-3">
+                    <a href="./Cart.html"><i class="fa fa-cart-plus"></i></a>
+                </div>
+
+                <div class="d_user_icon_wrapper position-relative">
+                    <div class="d_user_icon active" id="db_user_icon" title="User Profile">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+
+                    <div class="d_user_dropdown" id="db_user_dropdown">
+                        <ul>
+                            <li><a href="./auth/Login.html">Sign in</a></li>
+                            <li><a href="./auth/ForgetPass.html">Change Password</a></li>
+                            <li><a href="Profile.html" class="active">My Profile</a></li>
+                            <li><a href="#">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+            </nav>
+
+            <!-- Mobile Toggler -->
+            <button class="d_toggler_btn d-lg-none" aria-label="Menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </header>
+
+        <!-- Offcanvas Mobile Menu -->
+        <aside class="d_offcanvas_menu" id="d_offcanvas_menu">
+            <button class="close_btn" aria-label="Close Menu">&times;</button>
+            <nav>
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="landingpage.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="allProduct.html">Games</a></li>
+                    <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
+                    <li class="nav-item"><a class="nav-link" href="About_us.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="./Contact_us.html">Contact</a></li>
+                </ul>
+            </nav>
+            <form class="d_search_form_offcanvas">
+                <input type="search" placeholder="Search games..." />
+                <button type="submit"><i class="fas fa-search"></i></button>
+            </form>
+            <div class="d_social_icons_offcanvas">
+                <a href="./Cart.html"><i class="fa fa-cart-plus"></i></a>
+                <a href="Profile.html" class="active"><i class="fas fa-user-circle"></i></a>
+            </div>
+        </aside>
+    </div>
+    <!-- Hero Section Start -->
+    <div class="Z_profile_hero">
+        <div class="Z_cart_hero-overlay">
+            <h1 class="Z_about_title">Profile</h1>
+        </div>
+    </div>
+
+    <section class="Z_profile_page">
+        <div class="Z_profile_container">
+            <div class="Z_profile_card">
+                <div class="Z_profile_online_status"></div>
+
+                <div class="row w-100 m-0">
+                    <div
+                        class="col-12 col-md-4 mx-auto Z_profile_left d-flex flex-column align-items-center justify-content-center">
+                        <div class="Z_profile_avatar-wrap">
+                            <img src="images/Profile.jpg" alt="Profile Avatar" class="Z_profile_avatar"
+                                id="Z_profile_avatar_preview">
+                            <label for="Z_profile_avatar_input" class="Z_profile_avatar_upload_btn">
+                                <i class="fa fa-camera"></i>
+                            </label>
+                            <input type="file" id="Z_profile_avatar_input" class="Z_profile_avatar_input"
+                                accept="image/*" style="display:none;">
+                        </div>
+                        <h2 class="Z_profile_name" id="Z_profile_name_heading">Maria Fernanda</h2>
+                    </div>
+
+                    <div class="col-12 col-md-8 Z_profile_right">
+                        <h3 class="Z_profile_section_title">
+                            <i class="fas fa-info-circle"></i>
+                            Bio & other details
+                            <button class="Z_profile_edit_btn" title="Edit Profile"><i
+                                    class="fas fa-pen"></i>Edit</button>
+                        </h3>
+
+                        <div class="Z_profile_details_grid" id="Z_profile_details_grid">
+                            <div class="Z_profile_detail_item">
+                                <div class="Z_profile_detail_label">Username</div>
+                                <div class="Z_profile_detail_value" id="Z_profile_username_view">gamer_fernanda</div>
+                                <input type="text" class="Z_profile_input" id="Z_profile_username_input"
+                                    value="gamer_fernanda" style="display:none;">
+                            </div>
+                            <div class="Z_profile_detail_item">
+                                <div class="Z_profile_detail_label">Email</div>
+                                <div class="Z_profile_detail_value" id="Z_profile_email_view">maria.fernanda@email.com
+                                </div>
+                                <input type="email" class="Z_profile_input" id="Z_profile_email_input"
+                                    value="maria.fernanda@email.com" style="display:none;">
+                            </div>
+                            <div class="Z_profile_detail_item">
+                                <div class="Z_profile_detail_label">Mobile Number</div>
+                                <div class="Z_profile_detail_value" id="Z_profile_mobile_view">+1 555-123-4567</div>
+                                <input type="tel" class="Z_profile_input" id="Z_profile_mobile_input"
+                                    value="+1 555-123-4567" style="display:none;">
+                            </div>
+                            <div class="Z_profile_detail_item">
+                                <div class="Z_profile_detail_label">Favorite Game</div>
+                                <div class="Z_profile_detail_value" id="Z_profile_game_view">Valorant</div>
+                                <input type="text" class="Z_profile_input" id="Z_profile_game_input" value="Valorant"
+                                    style="display:none;">
+                            </div>
+                            <div class="Z_profile_detail_item">
+                                <div class="Z_profile_detail_label">Gaming Platform</div>
+                                <div class="Z_profile_detail_value" id="Z_profile_platform_view">PC</div>
+                                <input type="text" class="Z_profile_input" id="Z_profile_platform_input" value="PC"
+                                    style="display:none;">
+                            </div>
+                            <div class="Z_profile_detail_item">
+                                <div class="Z_profile_detail_label">Country/Region</div>
+                                <div class="Z_profile_detail_value" id="Z_profile_country_view">USA</div>
+                                <input type="text" class="Z_profile_input" id="Z_profile_country_input" value="USA"
+                                    style="display:none;">
+                            </div>
+                            <!-- Add more fields as needed -->
+                        </div>
+                        <div class="d-flex justify-content-center" id="Z_profile_edit_actions" style="display:none;">
+                            <button class="Z_profile_btn_save" id="Z_profile_btn_save">Save</button>
+                            <button class="Z_profile_btn_cancel me-0" id="Z_profile_btn_cancel">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer class="d_footer text-white">
+        <div class="container py-md-3 ">
+            <div class="row gy-4">
+                <div class="col-md-4">
+                    <h4 class="d_footer-logo mb-3">YOYO</h4>
+                    <p class="d_footer_text">A realm where ancient horrors dwell and forgotten heroes rise again.
+                        Unleash your
+                        legend in the shadows.</p>
+                </div>
+                <div class="col-md-2 col-6">
+                    <h5 class="text-white mb-3">Quick Links</h5>
+                    <ul class="list-unstyled d_footer-links">
+                        <li><a href="landingpage.html" class="">Home</a></li>
+                        <li><a href="allProduct.html">Games</a></li>
+                        <li><a href="About_us.html">About</a></li>
+                        <li><a href="Contact_us.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-2 col-6">
+                    <h5 class="text-white mb-3">Our Policy</h5>
+                    <ul class="list-unstyled d_footer-links">
+                        <li><a href="landingpage.html" class="">Home</a></li>
+                        <li><a href="Contact_us.html">Blog</a></li>
+                        <li><a href="Privacy.html">Privacy</a></li>
+                        <li><a href="services.html">Service</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="text-white mb-3">Contact</h5>
+                    <ul class="list-unstyled d_footer-links d_footer_text d_footer_text">
+                        <li><i class="fas fa-envelope me-2"></i> support@yoyo.com</li>
+                        <li><i class="fas fa-phone me-2"></i> +91 98765 43210</li>
+                        <li><i class="fas fa-location-dot me-2"></i> Yoyo HQ, Darkrealm</li>
+                    </ul>
+                    <div class="d_footer-social mt-3">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-x-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-discord"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="border-secondary mt-4" />
+            <div class="text-center d_footer_text small">
+                &copy; 2025 YOYO. All rights reserved.
+            </div>
+        </div>
+    </footer>
+    <script>
+        // Helper: Get user_id from localStorage
+        const userId = localStorage.getItem('user_id');
+        let userData = null;
+
+        // Field mapping for API
+        const profileFields = [
+            { key: 'name', view: 'Z_profile_username_view', input: 'Z_profile_username_input', heading: 'Z_profile_name_heading' },
+            { key: 'email', view: 'Z_profile_email_view', input: 'Z_profile_email_input' },
+            { key: 'mobile', view: 'Z_profile_mobile_view', input: 'Z_profile_mobile_input' },
+            { key: 'game', view: 'Z_profile_game_view', input: 'Z_profile_game_input' },
+            { key: 'platform', view: 'Z_profile_platform_view', input: 'Z_profile_platform_input' },
+            { key: 'country', view: 'Z_profile_country_view', input: 'Z_profile_country_input' },
+        ];
+
+        // Load user data from API
+        async function loadProfileFromAPI() {
+            if (!userId) {
+                alert('No user logged in.');
+                return;
+            }
+            try {
+                const res = await fetch(`http://localhost:4000/users/${userId}`);
+                if (!res.ok) throw new Error('User not found');
+                userData = await res.json();
+                // Fill fields
+                profileFields.forEach(f => {
+                    const value = userData[f.key] || '';
+                    document.getElementById(f.view).textContent = value;
+                    document.getElementById(f.input).value = value;
+                    if (f.heading) {
+                        document.getElementById(f.heading).textContent = value;
+                    }
+                });
+                // Avatar
+                if (userData.avatar) {
+                    document.getElementById('Z_profile_avatar_preview').src = userData.avatar;
+                }
+            } catch (e) {
+                alert('Failed to load user profile.');
+            }
+        }
+
+        // Save to API
+        async function saveProfileToAPI() {
+            if (!userData) return;
+            // Update userData with new values
+            profileFields.forEach(f => {
+                userData[f.key] = document.getElementById(f.input).value;
+            });
+            // Avatar
+            userData.avatar = document.getElementById('Z_profile_avatar_preview').src;
+            // PUT to API
+            const res = await fetch(`http://localhost:4000/users/${userId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(userData)
+            });
+            if (res.ok) {
+                // alert('Profile updated!');
+                setEditMode(false);
+                loadProfileFromAPI();
+            } else {
+                alert('Failed to update profile.');
+            }
+        }
+
+        // Avatar upload
+        document.getElementById('Z_profile_avatar_input').addEventListener('change', function (event) {
+            const [file] = event.target.files;
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const base64 = e.target.result;
+                    document.getElementById('Z_profile_avatar_preview').src = base64;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Edit/save/cancel logic
+        const editBtn = document.querySelector('.Z_profile_edit_btn');
+        const saveBtn = document.getElementById('Z_profile_btn_save');
+        const cancelBtn = document.getElementById('Z_profile_btn_cancel');
+        function setEditMode(editing) {
+            profileFields.forEach(f => {
+                document.getElementById(f.view).style.display = editing ? 'none' : '';
+                document.getElementById(f.input).style.display = editing ? '' : 'none';
+            });
+            document.getElementById('Z_profile_edit_actions').style.display = editing ? '' : 'none';
+            editBtn.style.display = editing ? 'none' : '';
+        }
+        editBtn.addEventListener('click', () => setEditMode(true));
+        cancelBtn.addEventListener('click', () => { setEditMode(false); loadProfileFromAPI(); });
+        saveBtn.addEventListener('click', saveProfileToAPI);
+
+        // On page load
+        loadProfileFromAPI();
+        setEditMode(false);
+
+
+    </script>
+   
+    <script>
+        // Show first letter of user email in user icon if logged in
+        document.addEventListener('DOMContentLoaded', async function() {
+            const userId = localStorage.getItem('user_id');
+            const userIconDiv = document.getElementById('db_user_icon');
+            if (userId && userIconDiv) {
+                try {
+                    const res = await fetch(`http://localhost:4000/users/${userId}`);
+                    if (res.ok) {
+                        const user = await res.json();
+                        if (user.email && user.email.length > 0) {
+                            userIconDiv.innerHTML = `<span style="font-size:20px;font-weight:200;display:inline-block;width:2.2rem;height:2.2rem;line-height:2.2rem;text-align:center;background:#ad9d79;color:#fff;border-radius:50%;">${user.email[0].toUpperCase()}</span>`;
+                        }
+                    }
+                } catch (e) {
+                    // fallback: keep icon
+                }
+            }
+        });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Logout functionality
+        document.querySelectorAll('a').forEach(function (link) {
+            if (link.textContent.trim().toLowerCase() === 'logout') {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    localStorage.removeItem('user_id');
+                    window.location.href = 'landingpage.html';
+                });
+            }
+        });
+    </script>
+    <script>
+        const dbUserIcon = document.getElementById('db_user_icon');
+        const dbUserDropdown = document.getElementById('db_user_dropdown');
+
+        dbUserIcon.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dbUserDropdown.style.display = dbUserDropdown.style.display === 'block' ? 'none' : 'block';
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', () => {
+            dbUserDropdown.style.display = 'none';
+        });
+    </script>
+    <script>
+        (function () {
+            const toggler = document.querySelector('.d_toggler_btn');
+            const offcanvas = document.getElementById('d_offcanvas_menu');
+            const closeBtn = offcanvas.querySelector('.close_btn');
+
+            toggler.addEventListener('click', () => {
+                offcanvas.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+
+            closeBtn.addEventListener('click', () => {
+                offcanvas.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!offcanvas.contains(e.target) && !toggler.contains(e.target)) {
+                    offcanvas.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    offcanvas.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+
+            // Sticky header scroll effect
+            window.addEventListener('scroll', () => {
+                const header = document.querySelector('.d_header');
+                if (window.scrollY > 20) {
+                    header.classList.add('d_scrolled');
+                } else {
+                    header.classList.remove('d_scrolled');
+                }
+            });
+        })();
+    </script>
+</body>
+
+</html>
