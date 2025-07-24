@@ -41,7 +41,7 @@
                         <ul class="list-unstyled d_footer-links">
                             <li><a href="{{ route('index') }}" class="active">Home</a></li>
                             <li><a href="Contact_us.html">Blog</a></li>
-                            <li><a href="Privacy.html">Privacy</a></li>
+                            <li><a href="{{ route('frontendprivacy') }}">Privacy</a></li>
                             <li><a href="services.html">Service</a></li>
                         </ul>
                     </div>
