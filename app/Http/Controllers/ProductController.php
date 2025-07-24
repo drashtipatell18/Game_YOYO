@@ -17,8 +17,8 @@ class ProductController extends Controller
     public function StoreProduct(Request $request)
     {
         $imageNames = [];
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
+        if ($request->hasFile('image')) {
+            foreach ($request->file('image') as $image) {
                 $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
                 $image->move(public_path('images/products'), $imageName);
                 $imageNames[] = $imageName;

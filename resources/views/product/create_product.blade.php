@@ -94,23 +94,37 @@
 
                         {{-- Weight and Dimensions --}}
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="form-group mb-3">
                                     <label for="weight">Weight (kg)</label>
                                     <input type="number" name="weight" id="weight" class="form-control" step="0.01"
                                         value="{{ old('weight', $product->weight ?? '') }}">
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                    <label>Dimensions (cm)</label>
-                                    <div class="d-flex gap-2">
-                                        <input type="number" name="length" class="form-control me-2" placeholder="Length"
+
+                       <div class="form-group mb-3">
+                            <label>Dimensions (cm)</label>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="length">Length</label>
+                                        <input type="number" name="length" id="length" class="form-control" placeholder="Length"
                                             value="{{ old('length', $product->length ?? '') }}">
-                                        <input type="number" name="width" class="form-control me-2" placeholder="Width"
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="width">Width</label>
+                                        <input type="number" name="width" id="width" class="form-control" placeholder="Width"
                                             value="{{ old('width', $product->width ?? '') }}">
-                                        <input type="number" name="height" class="form-control" placeholder="Height"
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="height">Height</label>
+                                        <input type="number" name="height" id="height" class="form-control" placeholder="Height"
                                             value="{{ old('height', $product->height ?? '') }}">
                                     </div>
                                 </div>
@@ -140,7 +154,84 @@
             }
             reader.readAsDataURL(this.files[0]);
         });
-    });
+
+        $('#product-form').validate({
+                rules: {
+                    category_id: {
+                        required: true
+                    },
+                    name: {
+                        required: true,
+                        minlength: 2
+                    },
+                    price: {
+                        required: true,
+                        number: true,
+                    },
+                    tags: {
+                        required: true
+                    },
+                    description: {
+                        required: false,
+                        minlength: 10
+                    },
+                    weight: {
+                        required: true,
+                        number: true
+                    },
+                    length: {
+                        required: true,
+                        number: true
+                    },
+                    width: {
+                        required: true,
+                        number: true
+                    },
+                    height: {
+                        required: true,
+                        number: true
+                    }
+                   
+                  
+                },
+                messages: {
+                    category_id: "Please select a category",
+                    name: {
+                        required: "Please enter product name",
+                        minlength: "Name must be at least 2 characters"
+                    },
+                    price: {
+                        required: "Please enter price",
+                        number: "Enter a valid number",
+                    },
+                    tags: {
+                        required: "Please enter product tag",
+                        minlength: "Name must be at least 2 characters"
+                    },
+                    description: {
+                        minlength: "Description must be at least 10 characters"
+                    },
+                    weight: {
+                        required: "Enter product weight",
+                        number: "Weight must be a number"
+                    },
+
+                 
+                    length: "Enter length",
+                        width: "Enter width",
+                        height: "Enter height"
+                    },
+                    errorClass: 'text-danger',
+                    errorElement: 'small',
+                    highlight: function (element) {
+                        $(element).addClass('is-invalid');
+                    },
+                    unhighlight: function (element) {
+                        $(element).removeClass('is-invalid');
+                }
+            });
+        });
+
 
         let deletedImages = [];
         const productId = {{ isset($product) ? $product->id : 'null' }};
