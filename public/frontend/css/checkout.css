@@ -1,0 +1,234 @@
+.payment_model_bg{
+  background-image: url('../images/inner-background-img-3.jpg') !important;
+  /* background-color: #1a1a1a; */
+  color: white !important ;
+}
+.payment-method {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  cursor: pointer;
+}
+.method-details {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.method-label {
+  font-size: 16px;
+  font-weight: 500;
+}
+.confirm-btn {
+  border: 2px solid #8a775a00;
+  background-color: #8a775a;
+  color: #fff;
+}
+.cancel-btn {
+  border: 2px solid #8a775a;
+  color: #8a775a;
+  font-weight: 600;
+}
+.confirm-btn:hover {
+  border: 2px solid #8a775a;
+  color: #8a775a;
+}
+.confirm-btn:hover a {
+  color: #8a775a;
+  font-weight: 600;
+}
+.cancel-btn:hover {
+  background-color: #8a775a;
+  color: #fff;
+}
+.confirm-btn a {
+  color: #fff;
+  text-decoration: none;
+}
+/* Custom radio styling */
+.custom-radio {
+  position: relative;
+  height: 20px;
+  width: 20px;
+  border: 2px solid #ccc;
+  border-radius: 50%;
+  transition: border 0.3s ease;
+}
+.custom-radio::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  background: #8a775a;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.2s ease;
+}
+.payment-method.active .custom-radio {
+  border-color: #8a775a;
+}
+.payment-method.active .custom-radio::after {
+  transform: translate(-50%, -50%) scale(1);
+}
+/* payment */
+.payment-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.payment-card-body {
+  background: white;
+  max-width: 400px;
+  margin: auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+}
+
+.form-control {
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+}
+
+.form-label {
+  font-weight: 500;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+.paypal-btn {
+  background-color: #ffc439;
+  color: #8a775a;
+  font-weight: 500;
+  border-radius: 8px;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.paypal-btn img {
+  height: 18px;
+  margin-right: 8px;
+}
+
+.section-title {
+  font-weight: 600;
+  font-size: 18px;
+  margin-bottom: 24px;
+}
+
+.summary {
+  font-size: 15px;
+  margin-top: 20px;
+}
+
+.summary .row {
+  margin-bottom: 8px;
+}
+
+.total {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.promo-code {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  margin: 10px 0;
+}
+
+.promo-code input {
+  width: auto;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 12px;
+  text-decoration: none;
+  font-size: 14px;
+  color: #8a775a;
+}
+
+.terms {
+  font-size: 12px;
+  color: #8a775a;
+  margin-top: 20px;
+  text-align: center;
+}
+/* custom checkbox */
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.custom-checkbox {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  position: relative;
+  transition: 0.2s;
+}
+
+.checkbox-item.active .custom-checkbox {
+  border-color: #8a775a;
+  background-color: #8a775a;
+}
+
+.custom-checkbox::after {
+  content: "";
+  position: absolute;
+  top: 1px;
+  left: 4px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg) scale(0);
+  transition: transform 0.2s ease;
+}
+.checkbox-item.active .custom-checkbox::after {
+  transform: rotate(45deg) scale(1);
+}
+.checkbox-label {
+  font-size: 16px;
+}
+.terms a {
+  color: #2d66f8;
+  text-decoration: none;
+}
+@media (max-width: 480px) {
+  .modal-content {
+    padding: 0;
+  }
+  .checkbox-item {
+    gap: 10px;
+  }
+  .custom-checkbox {
+    width: 26px;
+    height: 19px;
+  }
+
+}
+@media (max-width: 320px) {
+    .custom-checkbox {
+        width: 34px;
+        height: 19px;
+    }
+}
+
+.payment_model_bg .form-control:focus {
+    color: var(--bs-body-color);
+    background-color: var(--bs-body-bg);
+    border-color: #86b6fe00;
+    outline: 0;
+    box-shadow: 0 0 0 .25rem rgba(13, 109, 253, 0);
+}
