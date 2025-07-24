@@ -36,9 +36,15 @@
                                                     <td class="text-center">{{ $service->title }}</td>
                                                     <td class="text-center">{{ Str::limit($service->description, 50) }}</td>
                                                     <td class="text-center">
+                                                        @if($service->icon)
                                                         <img src="{{ asset('images/services/' . $service->icon) }}"
                                                             alt="Service Icon" class="img-fluid"
                                                             style="width: 50px; height: 50px;">
+
+                                                        @endif
+
+                                                            <img src="{{ asset('assets/images/unnamed.jpg') }}" alt="User Image" class="img-fluid"
+    style="width: 60px; height: 60px; object-fit: cover;">
                                                     </td>
                                                     <td class="text-center">
                                                         <a href="{{ route('edit.service', $service->id) }}"

@@ -40,7 +40,8 @@
                                                         @if ($team->image)
                                                             <img src="{{ asset('images/ourteam/' . $team->image) }}" alt="Team Image" width="60" height="60">
                                                         @else
-                                                            <span>No image</span>
+                                                            <img src="{{ asset('assets/images/unnamed.jpg') }}" alt="User Image" class="img-fluid"
+    style="width: 60px; height: 60px; object-fit: cover;">
                                                         @endif
                                                     </td>
                                                     <td class="text-center">{{ $team->designation }}</td>

@@ -45,6 +45,8 @@
                                                                 alt="Blog Image" class="img-fluid"
                                                                 style="width: 100px; height: 100px;">
                                                         @endif
+                                                        <img src="{{ asset('assets/images/unnamed.jpg') }}" alt="User Image" class="img-fluid"
+    style="width: 60px; height: 60px; object-fit: cover;">
                                                     </td>
                                                     <td class="text-center">
                                                         @if ($blog->video)
@@ -54,6 +56,8 @@
                                                                 Your browser does not support the video tag.
                                                             </video>
                                                         @endif
+                                                        <img src="{{ asset('assets/images/unnamed.jpg') }}" alt="User Image" class="img-fluid"
+    style="width: 60px; height: 60px; object-fit: cover;">
                                                     </td>
                                                     <td class="text-center">
                                                         <a href="{{ route('edit.blog', $blog->id) }}"

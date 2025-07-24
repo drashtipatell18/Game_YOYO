@@ -46,7 +46,8 @@
                                                                 alt="Product Image"
                                                                 style="width: 30px; height: 30px; object-fit: cover; border: 2px solid #dee2e6;">
                                                         @else
-                                                            <span>No Image</span>
+                                                           <img src="{{ asset('assets/images/unnamed.jpg') }}" alt="User Image" class="img-fluid"
+    style="width: 60px; height: 60px; object-fit: cover;">
                                                         @endif
                                                     </td>
                                                     <td class="text-center">{{ $product->name }}</td>

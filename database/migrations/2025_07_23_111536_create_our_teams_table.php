@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('our_teams', function (Blueprint $table) {
             $table->id();
-            $table->string('image');
-            $table->string('name');
-            $table->string('designation');
+            $table->string('image')->nullable();
+            $table->string('name')->nullable();
+            $table->string('designation')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

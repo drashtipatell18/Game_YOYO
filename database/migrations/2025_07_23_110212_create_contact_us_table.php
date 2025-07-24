@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('contact_us', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email');
-            $table->string('tag');
-            $table->text('message');
+            $table->string('name')->nullable();
+            $table->string('email')->nullable();
+            $table->string('tag')->nullable();
+            $table->text('message')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

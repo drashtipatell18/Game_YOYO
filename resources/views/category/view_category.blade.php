@@ -40,7 +40,8 @@
                                                         @if ($category->image)
                                                             <img src="{{ asset('images/category/' . $category->image) }}" alt="Category Image" width="60" height="60">
                                                         @else
-                                                            <span>No image</span>
+                                                           <img src="{{ asset('assets/images/unnamed.jpg') }}" alt="User Image" class="img-fluid"
+    style="width: 60px; height: 60px; object-fit: cover;">
                                                         @endif
                                                     </td>
 
@@ -48,7 +49,8 @@
                                                         @if ($category->image)
                                                             <img src="{{ asset('images/category/' . $category->icon) }}" alt="Category Image" width="60" height="60">
                                                         @else
-                                                            <span>No image</span>
+                                                           <img src="{{ asset('assets/images/unnamed.jpg') }}" alt="User Image" class="img-fluid"
+    style="width: 60px; height: 60px; object-fit: cover;">
                                                         @endif
                                                     </td>
 

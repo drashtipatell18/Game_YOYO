@@ -44,9 +44,9 @@
                                                                     ? asset('images/users/' . $user->image)
                                                                     : asset('images/users/dummy-profile.jpg'); // Dummy image fallback
                                                         @endphp
+ <img src="{{ asset('assets/images/dummy-avatar.jpg') }}" alt="User Image" class="img-fluid"
+    style="width: 60px; height: 60px; object-fit: cover;">
 
-                                                        <img src="{{ $imageUrl }}" alt="User Image" class="img-fluid"
-                                                            style="width: 100px; height: 100px;">
                                                     </td>
                                                     <td class="text-center">
                                                         <a href="{{ route('users.edit', $user->id) }}"
