@@ -259,6 +259,24 @@
                             </a>
                         </li>
 
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('privacy') }}">
+                                <span class="nav-icon">
+                                    <i class="fa-solid fa-shield-halved"></i>
+                                </span>
+                                <span class="nav-link-text">Privacy</span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('service') }}">
+                                <span class="nav-icon">
+                                    <i class="fa-solid fa-shield-halved"></i>
+                                </span>
+                                <span class="nav-link-text">Service</span>
+                            </a>
+                        </li>
+
                         <!--//nav-item-->
                     </ul>
                     <!--//app-menu-->

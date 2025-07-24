@@ -9,6 +9,8 @@ use App\Http\Controllers\OurTeamController;
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PrivacyController;
+use App\Http\Controllers\ServiceController;
 
 Auth::routes();
 
@@ -65,5 +67,22 @@ Route::post('/our_teams/store', [OurTeamController::class, 'store'])->name('our_
 Route::get('/our_teams/edit/{id}', [OurTeamController::class, 'edit'])->name('edit.our_teams');
 Route::post('/our_teams/update/{id}', [OurTeamController::class, 'update'])->name('update.our_teams');
 Route::delete('/our_teams/destroy/{id}',[OurTeamController::class,'destroy'])->name('destroy.our_teams');
+
+
+// Privacy
+Route::get('/privacy', [PrivacyController::class, 'ViewPrivacy'])->name('privacy');
+Route::get('/privacy/create', [PrivacyController::class, 'CreatePrivacy'])->name('privacy.create');
+Route::post('/privacy/store', [PrivacyController::class, 'StorePrivacy'])->name('privacy.store');
+Route::get('/privacy/edit/{id}', [PrivacyController::class, 'EditPrivacy'])->name('edit.privacy');
+Route::post('/privacy/update/{id}', [PrivacyController::class, 'UpdatePrivacy'])->name('update.privacy');
+Route::delete('/privacy/destroy/{id}',[PrivacyController::class,'DestroyPrivacy'])->name('destroy.privacy');
+
+// Service
+Route::get('/service', [ServiceController::class, 'ViewService'])->name('service');
+Route::get('/service/create', [ServiceController::class, 'CreateService'])->name('service.create');
+Route::post('/service/store', [ServiceController::class, 'StoreService'])->name('service.store');
+Route::get('/service/edit/{id}', [ServiceController::class, 'EditService'])->name('edit.service');
+Route::post('/service/update/{id}', [ServiceController::class, 'UpdateService'])->name('update.service');
+Route::delete('/service/destroy/{id}',[ServiceController::class,'DestroyService'])->name('destroy.service');
 
 });
