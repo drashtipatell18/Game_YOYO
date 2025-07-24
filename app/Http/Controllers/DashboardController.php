@@ -11,12 +11,15 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use App\Mail\ForgotPasswordMail;
-
+use App\Models\Service;
+use App\Models\Blog;
 class DashboardController extends Controller
 {
     public function index(){
         $users = User::count();
-        return view('dashboard',compact('users'));
+        $blog = Blog::count();
+        $service = Service::count();
+        return view('dashboard',compact('users','blog','service'));
     }
 
     public function showForgetPasswordForm()
@@ -28,7 +31,7 @@ class DashboardController extends Controller
     {
         $request->validate(['email' => 'required|email']);
         $user = User::where('email', '=', $request->email)->first();
-       
+
         if (!empty($user)) {
             $user->remember_token = Str::random(40);
             $user->save();
