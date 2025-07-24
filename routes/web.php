@@ -16,6 +16,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\MembersSayController;
 
 use App\Http\Controllers\frontend\HomeController as FrontendHomeController;
+use App\Http\Controllers\frontend\AboutUSController;
 
 Auth::routes();
 
@@ -134,3 +135,4 @@ Route::delete('/members-say/destroy/{id}',[MembersSayController::class,'DestroyM
 
 
 Route::get('/index', [FrontendHomeController::class, 'index'])->name('index');
+Route::get('/aboutsus', [AboutUSController::class, 'aboutus'])->name('aboutus');

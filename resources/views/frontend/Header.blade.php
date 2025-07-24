@@ -29,10 +29,10 @@
                 <!-- Desktop Nav -->
                 <nav class="d_navbar navbar navbar-expand-lg d-none d-lg-flex">
                     <ul class="navbar-nav me-auto">
-                        <li class="nav-item"><a class="nav-link active" href="landingpage.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="{{ route('index') }}">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="allProduct.html">Games</a></li>
                         <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
-                        <li class="nav-item"><a class="nav-link" href="About_us.html">About</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ route('aboutus') }}">About</a></li>
                         <li class="nav-item"><a class="nav-link" href="./Contact_us.html">Contact</a></li>
                     </ul>
 
