@@ -18,7 +18,7 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
     </head>
     <body>
-<footer class="d_footer text-white">
+        <footer class="d_footer text-white">
             <div class="container py-md-3 ">
                 <div class="row gy-4">
                     <div class="col-md-4">
@@ -30,18 +30,18 @@
                     <div class="col-md-2 col-6">
                         <h5 class="text-white mb-3">Quick Links</h5>
                         <ul class="list-unstyled d_footer-links">
-                            <li><a href="landingpage.html" class="active">Home</a></li>
+                            <li><a href="{{ route('index') }}" class="active">Home</a></li>
                             <li><a href="allProduct.html">Games</a></li>
-                            <li><a href="About_us.html">About</a></li>
-                            <li><a href="Contact_us.html">Contact</a></li>
+                            <li><a href="{{ route('aboutus') }}">About</a></li>
+                            <li><a href="{{ route('frontendcontactus') }}">Contact</a></li>
                         </ul>
                     </div>
                     <div class="col-md-2 col-6">
                         <h5 class="text-white mb-3">Our Policy</h5>
                         <ul class="list-unstyled d_footer-links">
-                            <li><a href="landingpage.html" class="active">Home</a></li>
+                            <li><a href="{{ route('index') }}" class="active">Home</a></li>
                             <li><a href="Contact_us.html">Blog</a></li>
-                            <li><a href="Privacy.html">Privacy</a></li>
+                            <li><a href="{{ route('frontendprivacy') }}">Privacy</a></li>
                             <li><a href="services.html">Service</a></li>
                         </ul>
                     </div>

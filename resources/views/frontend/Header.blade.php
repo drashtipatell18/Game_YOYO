@@ -14,6 +14,7 @@
         <link rel="stylesheet" href="{{ asset('frontend/css/style.css') }}" />
         <link rel="stylesheet" href="{{ asset('frontend/css/s_style.css') }}" />
         <link rel="stylesheet" href="{{ asset('frontend/css/z_style.css') }}" />
+        <link rel="stylesheet" href="{{ asset('frontend/css/x_style.css') }}">
 
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
     </head>
@@ -29,11 +30,11 @@
                 <!-- Desktop Nav -->
                 <nav class="d_navbar navbar navbar-expand-lg d-none d-lg-flex">
                     <ul class="navbar-nav me-auto">
-                        <li class="nav-item"><a class="nav-link active" href="landingpage.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="{{ route('index') }}">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="allProduct.html">Games</a></li>
                         <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
-                        <li class="nav-item"><a class="nav-link" href="About_us.html">About</a></li>
-                        <li class="nav-item"><a class="nav-link" href="./Contact_us.html">Contact</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ route('aboutus') }}">About</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ route('frontendcontactus') }}">Contact</a></li>
                     </ul>
 
                     <form class="d_search_form ">
@@ -52,8 +53,8 @@
 
                         <div class="d_user_dropdown" id="db_user_dropdown">
                             <ul>
-                                <li><a href="./auth/Login.html">Sign in</a></li>
-                                <li><a href="./auth/ForgetPass.html">Change Password</a></li>
+                                <li><a href="{{ route('frontend.login') }}">Sign in</a></li>
+                                <li><a href="{{ route('frontend.forget')}}">Change Password</a></li>
                                 <li><a href="Profile.html">My Profile</a></li>
                                 <li><a href="#">Logout</a></li>
                             </ul>

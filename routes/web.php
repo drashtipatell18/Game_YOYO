@@ -16,6 +16,10 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\MembersSayController;
 
 use App\Http\Controllers\frontend\HomeController as FrontendHomeController;
+use App\Http\Controllers\frontend\LoginController as FrontendLoginController;
+use App\Http\Controllers\frontend\AboutUSController;
+use App\Http\Controllers\frontend\ContactUsController as FrontendContactUsController;
+use App\Http\Controllers\frontend\PrivacyController as FrontendPrivacyController;
 
 Auth::routes();
 
@@ -132,5 +136,9 @@ Route::delete('/members-say/destroy/{id}',[MembersSayController::class,'DestroyM
 
 // Frontend Route
 
-
+Route::get('/frontend-login',[FrontendLoginController::class,'login'])->name('frontend.login');
+Route::get('/frontend-forget',[FrontendLoginController::class,'Forget'])->name('frontend.forget');
 Route::get('/index', [FrontendHomeController::class, 'index'])->name('index');
+Route::get('/aboutsus', [AboutUSController::class, 'aboutus'])->name(name: 'aboutus');
+Route::get('/contactus', [FrontendContactUsController::class, 'contactus'])->name('frontendcontactus');
+Route::get('/privacy', [FrontendPrivacyController::class, 'privacy'])->name('frontendprivacy');
