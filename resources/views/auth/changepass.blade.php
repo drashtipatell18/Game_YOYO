@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Change Password')
 @section('content')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 <div class="row">
     <div class="col-md-6 grid-margin stretch-card" style="margin: 0 auto;">
         <div class="card">
@@ -31,6 +32,7 @@
     </div>
 @endsection
 @push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script>
         $(document).ready(function() {
             // Add custom validation method for current password
@@ -109,4 +111,15 @@
             });
         });
     </script>
+    @if(session('success'))
+        <script>
+            toastr.success("{{ session('success') }}", "Success", { timeOut: 2000 });
+        </script>
+    @endif
+
+    @if(session('error'))
+        <script>
+            toastr.error("{{ session('error') }}", "Error", { timeOut: 2000 });
+        </script>
+    @endif
 @endpush
