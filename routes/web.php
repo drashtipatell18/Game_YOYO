@@ -13,6 +13,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PrivacyController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\MembersSayController;
 
 Auth::routes();
 
@@ -114,4 +115,14 @@ Route::post('/articles/store', [TopArticlesController::class, 'store'])->name('a
 Route::get('/articles/edit/{id}', [TopArticlesController::class, 'edit'])->name('edit.articles');
 Route::post('/articles/update/{id}', [TopArticlesController::class, 'update'])->name('update.articles');
 Route::delete('/articles/destroy/{id}',[TopArticlesController::class,'destroy'])->name('destroy.articles');
+
+// Members Say
+Route::get('/members-say', [MembersSayController::class, 'ViewMembersSay'])->name('members-say');
+Route::get('/members-say/create', [MembersSayController::class, 'CreateMembersSay'])->name('members-say.create');
+Route::post('/members-say/store', [MembersSayController::class, 'StoreMembersSay'])->name('members-say.store');
+Route::get('/members-say/edit/{id}', [MembersSayController::class, 'EditMembersSay'])->name('edit.members-say');
+Route::post('/members-say/update/{id}', [MembersSayController::class, 'UpdateMembersSay'])->name('update.members-say');
+Route::delete('/members-say/destroy/{id}',[MembersSayController::class,'DestroyMembersSay'])->name('destroy.members-say');
+
+
 });

@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'View Category')
+@section('title', 'E-commerce | View Members Say')
 @section('content')
     <main role="main" class="main-content">
         <div class="container-fluid">
@@ -11,11 +11,11 @@
                             <div class="card shadow">
                                 <div class="card-body">
                                     <div class="mb-3 d-flex justify-content-between">
-                                        <h2 class="mb-2 page-title">Category List</h2>
+                                        <h2 class="mb-2 page-title">Members Say</h2>
                                         <div class="mb-3">
-                                            <a href="{{ route('category.create') }}"
+                                            <a href="{{ route('members-say.create') }}"
                                                 class="btn btn-primary text-white custom-btn">Create
-                                                Category</a>
+                                                Members Say</a>
                                         </div>
                                     </div>
                                     <!-- table -->
@@ -23,47 +23,35 @@
                                         <thead class="custom-thead">
                                             <tr>
                                                 <th class="text-center">Id</th>
-                                                <th class="text-center">Category Name</th>
+                                                <th class="text-center">Name</th>
+                                                <th class="text-center">Description</th>
                                                 <th class="text-center">Image</th>
-                                                <th class="text-center">Icon</th>
                                                 <th class="text-center">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($categories as $key => $category)
+                                            @foreach ($membersSay as $members)
                                                 <tr>
-                                                    <td class="text-center">{{ $loop->iteration }}</td>
-                                                    <td class="text-center">{{ $category->name }}</td>
-
-                                                    {{-- Category Image --}}
+                                                    <td class="text-center">{{ $members->id }}</td>
+                                                    <td class="text-center">{{ $members->name }}</td>
+                                                    <td class="text-center">{{ Str::limit($members->description, 50) }}</td>
                                                     <td class="text-center">
-                                                        @if ($category->image)
-                                                            <img src="{{ asset('images/category/' . $category->image) }}" alt="Category Image" width="60" height="60">
-                                                        @else
-                                                            <span>No image</span>
-                                                        @endif
+                                                        <img src="{{ asset('images/members_say/' . $members->image) }}"
+                                                            alt="Service Icon" class="img-fluid"
+                                                            style="width: 50px; height: 50px;">
                                                     </td>
-
-                                                     <td class="text-center">
-                                                        @if ($category->image)
-                                                            <img src="{{ asset('images/category/' . $category->icon) }}" alt="Category Image" width="60" height="60">
-                                                        @else
-                                                            <span>No image</span>
-                                                        @endif
-                                                    </td>
-
-                                                    {{-- Actions --}}
                                                     <td class="text-center">
-                                                        <a href="{{ route('edit.category', $category->id) }}"
-                                                            class="btn btn-sm btn-warning text-white " title="Edit">
+                                                        <a href="{{ route('edit.members-say', $members->id) }}"
+                                                            class="btn btn-sm btn-warning text-white custom-btn" title="Edit">
                                                             <i class="fas fa-edit"></i>
                                                         </a>
-
-                                                        <form action="{{ route('destroy.category', $category->id) }}" method="POST" style="display:inline;">
+                                                        <form action="{{ route('destroy.members-say', $members->id) }}"
+                                                            method="POST" style="display:inline;">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit" class="btn btn-sm btn-danger" title="Delete"
-                                                                onclick="return confirm('Are you sure you want to delete this category?')">
+                                                            <button type="submit" class="btn btn-sm btn-danger custom-btn"
+                                                                title="Delete"
+                                                                onclick="return confirm('Are you sure you want to delete this user?')">
                                                                 <i class="fas fa-trash-alt text-white"></i>
                                                             </button>
                                                         </form>
@@ -81,7 +69,6 @@
         </div>
     </main>
 @endsection
-
 @push('scripts')
     <script>
         $(document).ready(function() {
@@ -90,9 +77,13 @@
                 "language": {
                     "lengthMenu": "Show _MENU_ entries",
                     "search": "Search:",
+                    "info": "Showing _START_ to _END_ of _TOTAL_ entries",
+                    "infoEmpty": "Showing 0 to 0 of 0 entries",
+                    "infoFiltered": "(filtered from _MAX_ total entries)",
+                    "infoPostFix": "",
                     "paginate": {
-                        "previous": "<i class='fa fa-angle-double-left'></i>",
-                        "next": "<i class='fa fa-angle-double-right'></i>"
+                        "previous": "<i class='fa fa-angle-left'></i>",
+                        "next": "<i class='fa fa-angle-right'></i>"
                     }
                 },
                 "order": [],
@@ -110,6 +101,7 @@
                     timeOut: 2000
                 });
             @endif
+
         });
     </script>
 @endpush

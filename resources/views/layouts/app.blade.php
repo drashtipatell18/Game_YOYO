@@ -310,6 +310,14 @@
                                 <span class="nav-link-text">Articles</span>
                             </a>
                         </li>
+                            <a class="nav-link" href="{{ route('members-say') }}">
+                                <span class="nav-icon">
+                                    <i class="fa-solid fa-people-group"></i>
+                                </span>
+                                <span class="nav-link-text">Member Say</span>
+                            </a>
+                        </li>
+
                         <!--//nav-item-->
                     </ul>
                     <!--//app-menu-->
