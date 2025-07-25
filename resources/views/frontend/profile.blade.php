@@ -1,30 +1,5 @@
 @extends('frontend.layouts.main')
 @section('content')
-
-    <body style="padding-right: 0px;">
-        <div class="d_main">
-            <!-- Offcanvas Mobile Menu -->
-            <aside class="d_offcanvas_menu" id="d_offcanvas_menu">
-                <button class="close_btn" aria-label="Close Menu">&times;</button>
-                <nav>
-                    <ul class="navbar-nav me-auto">
-                        <li class="nav-item"><a class="nav-link" href="landingpage.html">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="allProduct.html">Games</a></li>
-                        <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
-                        <li class="nav-item"><a class="nav-link" href="About_us.html">About</a></li>
-                        <li class="nav-item"><a class="nav-link" href="./Contact_us.html">Contact</a></li>
-                    </ul>
-                </nav>
-                <form class="d_search_form_offcanvas">
-                    <input type="search" placeholder="Search games..." />
-                    <button type="submit"><i class="fas fa-search"></i></button>
-                </form>
-                <div class="d_social_icons_offcanvas">
-                    <a href="{{ route('cart') }}"><i class="fa fa-cart-plus"></i></a>
-                    <a href="{{ route('profile')}}" class="active"><i class="fas fa-user-circle"></i></a>
-                </div>
-            </aside>
-        </div>
         <!-- Hero Section Start -->
         <div class="Z_profile_hero">
             <div class="Z_cart_hero-overlay">
@@ -109,7 +84,7 @@
                 </div>
             </div>
         </section>
-    </body>
+ @endsection
 
     @push('script')
         <script>
@@ -243,94 +218,6 @@
             setEditMode(false);
         </script>
 
-        <script>
-            // Show first letter of user email in user icon if logged in
-            document.addEventListener('DOMContentLoaded', async function() {
-                const userId = localStorage.getItem('user_id');
-                const userIconDiv = document.getElementById('db_user_icon');
-                if (userId && userIconDiv) {
-                    try {
-                        const res = await fetch(`http://localhost:4000/users/${userId}`);
-                        if (res.ok) {
-                            const user = await res.json();
-                            if (user.email && user.email.length > 0) {
-                                userIconDiv.innerHTML =
-                                    `<span style="font-size:20px;font-weight:200;display:inline-block;width:2.2rem;height:2.2rem;line-height:2.2rem;text-align:center;background:#ad9d79;color:#fff;border-radius:50%;">${user.email[0].toUpperCase()}</span>`;
-                            }
-                        }
-                    } catch (e) {
-                        // fallback: keep icon
-                    }
-                }
-            });
-        </script>
-        <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script>
-            // Logout functionality
-            document.querySelectorAll('a').forEach(function(link) {
-                if (link.textContent.trim().toLowerCase() === 'logout') {
-                    link.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        localStorage.removeItem('user_id');
-                        window.location.href = 'landingpage.html';
-                    });
-                }
-            });
-        </script>
-        <script>
-            const dbUserIcon = document.getElementById('db_user_icon');
-            const dbUserDropdown = document.getElementById('db_user_dropdown');
 
-            dbUserIcon.addEventListener('click', (e) => {
-                e.stopPropagation();
-                dbUserDropdown.style.display = dbUserDropdown.style.display === 'block' ? 'none' : 'block';
-            });
-
-            // Close dropdown when clicking outside
-            document.addEventListener('click', () => {
-                dbUserDropdown.style.display = 'none';
-            });
-        </script>
-        <script>
-            (function() {
-                const toggler = document.querySelector('.d_toggler_btn');
-                const offcanvas = document.getElementById('d_offcanvas_menu');
-                const closeBtn = offcanvas.querySelector('.close_btn');
-
-                toggler.addEventListener('click', () => {
-                    offcanvas.classList.add('active');
-                    document.body.style.overflow = 'hidden';
-                });
-
-                closeBtn.addEventListener('click', () => {
-                    offcanvas.classList.remove('active');
-                    document.body.style.overflow = '';
-                });
-
-                document.addEventListener('click', (e) => {
-                    if (!offcanvas.contains(e.target) && !toggler.contains(e.target)) {
-                        offcanvas.classList.remove('active');
-                        document.body.style.overflow = '';
-                    }
-                });
-
-                document.addEventListener('keydown', (e) => {
-                    if (e.key === 'Escape') {
-                        offcanvas.classList.remove('active');
-                        document.body.style.overflow = '';
-                    }
-                });
-
-                // Sticky header scroll effect
-                window.addEventListener('scroll', () => {
-                    const header = document.querySelector('.d_header');
-                    if (window.scrollY > 20) {
-                        header.classList.add('d_scrolled');
-                    } else {
-                        header.classList.remove('d_scrolled');
-                    }
-                });
-            })();
-        </script>
+      
     @endpush
