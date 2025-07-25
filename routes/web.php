@@ -147,3 +147,4 @@ Route::get('/contactus', [FrontendContactUsController::class, 'contactus'])->nam
 Route::get('/privacy', [FrontendPrivacyController::class, 'privacy'])->name('frontendprivacy');
 Route::get('/services', [FrontendServiceController::class, 'service'])->name('frontendservice');
 Route::get('/allproducts', [FrontendProductController::class, 'allProducts'])->name('allProducts');
+Route::get('/profile', [FrontendLoginController::class, 'profile'])->name('profile');

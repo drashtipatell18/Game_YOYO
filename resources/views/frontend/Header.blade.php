@@ -79,7 +79,7 @@
                             <ul>
                                 <li><a href="{{ route('frontend.login') }}">Sign in</a></li>
                                 <li><a href="{{ route('frontend.forget')}}">Change Password</a></li>
-                                <li><a href="Profile.html">My Profile</a></li>
+                                <li><a href="{{ route('profile')}}">My Profile</a></li>
                                 <li><a href="#">Logout</a></li>
                             </ul>
                         </div>
@@ -111,7 +111,7 @@
                 </form>
                 <div class="d_social_icons_offcanvas">
                     <a href="./Cart.html"><i class="fa fa-cart-plus"></i></a>
-                    <a href="Profile.html"><i class="fas fa-user-circle"></i></a>
+                    <a href="{{ route('profile')}}"><i class="fas fa-user-circle"></i></a>
                 </div>
             </aside>
         </div>
