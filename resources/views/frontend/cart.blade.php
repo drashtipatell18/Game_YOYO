@@ -10,11 +10,11 @@
                 <button class="close_btn" aria-label="Close Menu">&times;</button>
                 <nav>
                     <ul class="navbar-nav me-auto">
-                        <li class="nav-item"><a class="nav-link " href="landingpage.html">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="allProduct.html">Games</a></li>
-                        <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
-                        <li class="nav-item"><a class="nav-link" href="About_us.html">About</a></li>
-                        <li class="nav-item"><a class="nav-link" href="./Contact_us.html">Contact</a></li>
+                        <li class="nav-item"><a class="nav-link " href="{{ route('index') }}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ route('allProducts')}}">Games</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ route('blog') }}">Blog</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ route('aboutus')}}">About</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ route('frontendcontactus')}}">Contact</a></li>
                     </ul>
                 </nav>
                 <form class="d_search_form_offcanvas">
@@ -471,7 +471,7 @@
                 if (updateCartBtn) {
                     updateCartBtn.addEventListener('click', function(e) {
                         e.preventDefault();
-                        window.location.href = 'allProduct.html';
+                        window.location.href = '/allProduct';
                     });
                 }
             });

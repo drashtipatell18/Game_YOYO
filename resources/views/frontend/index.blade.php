@@ -61,7 +61,7 @@
       <div class="container">
          <div class="db_section_header">
             <h2 class="db_section_title">Featured Games</h2>
-            <a href="/allProduct.html" class="db_view_all_btn">View All</a>
+            <a href="{{ route('allProducts')}}" class="db_view_all_btn">View All</a>
          </div>
          <div class="swiper mySwiper py-4 mt-3">
             <div class="swiper-wrapper" id="swiperCards">
