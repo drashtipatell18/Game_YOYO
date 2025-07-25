@@ -20,7 +20,7 @@
                     <button type="submit"><i class="fas fa-search"></i></button>
                 </form>
                 <div class="d_social_icons_offcanvas">
-                    <a href="./Cart.html"><i class="fa fa-cart-plus"></i></a>
+                    <a href="{{ route('cart') }}"><i class="fa fa-cart-plus"></i></a>
                     <a href="{{ route('profile')}}" class="active"><i class="fas fa-user-circle"></i></a>
                 </div>
             </aside>

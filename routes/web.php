@@ -22,6 +22,7 @@ use App\Http\Controllers\frontend\ContactUsController as FrontendContactUsContro
 use App\Http\Controllers\frontend\PrivacyController as FrontendPrivacyController;
 use App\Http\Controllers\frontend\ServiceController as FrontendServiceController;
 use App\Http\Controllers\frontend\ProductController as FrontendProductController;
+use App\Http\Controllers\frontend\CartController as FrontendCartController;
 
 
 Auth::routes();
@@ -148,3 +149,4 @@ Route::get('/privacy', [FrontendPrivacyController::class, 'privacy'])->name('fro
 Route::get('/services', [FrontendServiceController::class, 'service'])->name('frontendservice');
 Route::get('/allproducts', [FrontendProductController::class, 'allProducts'])->name('allProducts');
 Route::get('/profile', [FrontendLoginController::class, 'profile'])->name('profile');
+Route::get('/cart', [FrontendCartController::class, 'Cart'])->name('cart');

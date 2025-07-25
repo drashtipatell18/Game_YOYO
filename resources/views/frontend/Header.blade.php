@@ -67,7 +67,7 @@
                     </form>
 
                     <div class="d_social_icons me-3">
-                        <a href="./Cart.html"><i class="fa fa-cart-plus"></i></a>
+                        <a href="{{ route('cart') }}"><i class="fa fa-cart-plus"></i></a>
                     </div>
 
                     <div class="d_user_icon_wrapper position-relative">
@@ -110,7 +110,7 @@
                     <button type="submit"><i class="fas fa-search"></i></button>
                 </form>
                 <div class="d_social_icons_offcanvas">
-                    <a href="./Cart.html"><i class="fa fa-cart-plus"></i></a>
+                    <a href="{{ route('cart') }}"><i class="fa fa-cart-plus"></i></a>
                     <a href="{{ route('profile')}}"><i class="fas fa-user-circle"></i></a>
                 </div>
             </aside>
