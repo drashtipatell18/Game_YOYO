@@ -755,9 +755,8 @@ s_bg_img_overlay,
   font-size: 1rem;
 }
 .contact-input {
-  background: #181828;
   border: 1.5px solid #2a004f;
-  color: #fff;
+  
   border-radius: 8px;
   font-size: 1rem;
   padding: 0.75rem 1rem;
@@ -766,8 +765,7 @@ s_bg_img_overlay,
 .contact-input:focus {
   border-color: #8a775a;
   box-shadow: 0 0 0 2px #8a775a33;
-  background: #181828;
-  color: #fff;
+  
 }
 .contact-send-btn {
   background: #ad9d79 !important;
@@ -920,7 +918,7 @@ s_bg_img_overlay,
   max-width: 500px;
 }
 .Z_newsletter-input {
-  background: rgba(20, 20, 30, 0.85);
+
   border: 1.5px solid #2a004f;
   color: #fff;
   border-radius: 0 !important;

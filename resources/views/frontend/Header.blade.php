@@ -23,6 +23,11 @@
             --bs-offcanvas-width: 350px;
             background-color: #1a1a1a;
         }
+        .error {
+            color: red; /* Change the color to red */
+            font-size: 0.875em; /* Optional: Adjust the font size */
+            margin-top: 0.25em; /* Optional: Add some space above the error message */
+        }
 
         @media (max-width: 991px) {
             .a_header_container {

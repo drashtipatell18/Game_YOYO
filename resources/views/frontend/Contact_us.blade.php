@@ -22,21 +22,29 @@
                   <p class="contact-form-desc mb-4">We love to hear from fellow gamers! Fill out the form and
                      our team will get back to you soon.
                   </p>
-                  <form id="contactForm">
+                  <div id="formSuccessMsg"></div>
+                  <form id="contactForm" action="{{ route('contactus.store') }}" method="POST">
+                     @csrf
+                     @if (session('success'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                     @endif
                      <div class="mb-3">
-                        <input type="text" class="form-control contact-input" placeholder="Name*" required>
+                        <input type="text" name="name" id="name" class="form-control contact-input" placeholder="Name*">
                      </div>
                      <div class="mb-3">
-                        <input type="email" class="form-control contact-input" placeholder="Email*"
-                           required>
+                        <input type="email" name="email" id="email" class="form-control contact-input" placeholder="Email*"
+                           >
                      </div>
                      <div class="mb-3">
-                        <input type="text" class="form-control contact-input"
+                        <input type="text" name="tag" id="tag"  class="form-control contact-input"
                            placeholder="Discord / Gamer Tag">
                      </div>
                      <div class="mb-3">
-                        <textarea class="form-control contact-input" rows="4" placeholder="Your message*"
-                           required></textarea>
+                        <textarea type="text" name="message" id="message" class="form-control contact-input" rows="4" placeholder="Your message*"
+                           ></textarea>
                      </div>
                      <button type="submit" class="btn contact-send-btn w-100">SEND MESSAGE</button>
                   </form>
@@ -95,25 +103,79 @@
 </div>
 @endsection
 @push('script')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
 <script>
-   document.getElementById('contactForm').addEventListener('submit', function(e) {
-       e.preventDefault();
-       const name = this.querySelector('input[placeholder="Name*"]').value;
-       const email = this.querySelector('input[placeholder="Email*"]').value;
-       const discord = this.querySelector('input[placeholder="Discord / Gamer Tag"]').value;
-       const message = this.querySelector('textarea[placeholder="Your message*"]').value;
-   
-       fetch('http://localhost:4000/contact', {
-           method: 'POST',
-           headers: { 'Content-Type': 'application/json' },
-           body: JSON.stringify({ name, email, discord, message })
-       })
-       .then(res => res.json())
-       .then(data => {
-           window.location.href = 'About_us.html';
-           this.reset();
-       })
-       .catch(err => alert('Error sending message'));
+   $(document).ready(function() {
+       $("#contactForm").validate({
+           rules: {
+               name: {
+                   required: true,
+                   minlength: 2
+               },
+               email: {
+                   required: true,
+                   email: true
+               },
+               tag:{
+                  required: true,
+               },
+               message: {
+                   required: true,
+                   minlength: 10
+               }
+           },
+           messages: {
+               name: {
+                   required: "Please enter your name",
+                   minlength: "Your name must be at least 2 characters long"
+               },
+               email: {
+                   required: "Please enter your email",
+                   email: "Please enter a valid email address"
+               },
+               tag:{
+                  required: "Please enter your Tag",
+               },
+               message: {
+                   required: "Please enter a message",
+                   minlength: "Your message must be at least 10 characters long"
+               }
+           },
+           submitHandler: function(form) {
+               let formData = {
+                   name: $('input[name="name"]').val(),
+                   email: $('input[name="email"]').val(),
+                   tag: $('input[name="tag"]').val(),
+                   message: $('textarea[name="message"]').val(),
+                   _token: $('input[name="_token"]').val() // CSRF token
+               };
+
+               $.ajax({
+                  url: '{{ route("contactus.store") }}',
+                  type: 'POST',
+                  data: formData,
+                  success: function(response) {
+                     // Show success message in the div
+                     $('#formSuccessMsg').html(`
+                           <div class="alert alert-success alert-dismissible fade show" role="alert">
+                              ${response.success}
+                              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                           </div>
+                     `);
+                     form.reset();
+                  },
+                  error: function(xhr) {
+                     $('#formSuccessMsg').html(`
+                           <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                              Error sending message. Please try again.
+                              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                           </div>
+                     `);
+                  }
+               });
+            }
+       });
    });
 </script>
 @endpush
