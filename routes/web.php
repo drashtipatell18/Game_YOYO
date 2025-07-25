@@ -23,6 +23,7 @@ use App\Http\Controllers\frontend\PrivacyController as FrontendPrivacyController
 use App\Http\Controllers\frontend\ServiceController as FrontendServiceController;
 use App\Http\Controllers\frontend\ProductController as FrontendProductController;
 use App\Http\Controllers\frontend\CartController as FrontendCartController;
+use App\Http\Controllers\frontend\BlogController as FrontendBlogController;
 
 
 Auth::routes();
@@ -150,3 +151,4 @@ Route::get('/services', [FrontendServiceController::class, 'service'])->name('fr
 Route::get('/allproducts', [FrontendProductController::class, 'allProducts'])->name('allProducts');
 Route::get('/profile', [FrontendLoginController::class, 'profile'])->name('profile');
 Route::get('/cart', [FrontendCartController::class, 'Cart'])->name('cart');
+Route::get('/blog', [FrontendBlogController::class, 'blog'])->name('blog');
