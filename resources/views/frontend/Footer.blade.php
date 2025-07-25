@@ -31,7 +31,7 @@
                         <h5 class="text-white mb-3">Quick Links</h5>
                         <ul class="list-unstyled d_footer-links">
                             <li><a href="{{ route('index') }}" class="active">Home</a></li>
-                            <li><a href="allProduct.html">Games</a></li>
+                            <li><a href="{{ route('allProducts') }}">Games</a></li>
                             <li><a href="{{ route('aboutus') }}">About</a></li>
                             <li><a href="{{ route('frontendcontactus') }}">Contact</a></li>
                         </ul>

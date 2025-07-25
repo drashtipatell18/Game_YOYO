@@ -21,6 +21,7 @@ use App\Http\Controllers\frontend\AboutUSController;
 use App\Http\Controllers\frontend\ContactUsController as FrontendContactUsController;
 use App\Http\Controllers\frontend\PrivacyController as FrontendPrivacyController;
 use App\Http\Controllers\frontend\ServiceController as FrontendServiceController;
+use App\Http\Controllers\frontend\ProductController as FrontendProductController;
 
 
 Auth::routes();
@@ -145,3 +146,4 @@ Route::get('/aboutsus', [AboutUSController::class, 'aboutus'])->name(name: 'abou
 Route::get('/contactus', [FrontendContactUsController::class, 'contactus'])->name('frontendcontactus');
 Route::get('/privacy', [FrontendPrivacyController::class, 'privacy'])->name('frontendprivacy');
 Route::get('/services', [FrontendServiceController::class, 'service'])->name('frontendservice');
+Route::get('/allproducts', [FrontendProductController::class, 'allProducts'])->name('allProducts');

@@ -18,6 +18,30 @@
 
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
     </head>
+    <style>
+          .offcanvas {
+            --bs-offcanvas-width: 350px;
+            background-color: #1a1a1a;
+        }
+
+        @media (max-width: 991px) {
+            .a_header_container {
+                padding: 0px 8% !important;
+            }
+        }
+
+        @media (max-width:375px) {
+            .offcanvas {
+                --bs-offcanvas-width: 300px;
+            }
+        }
+
+        @media (max-width:320px) {
+            .offcanvas {
+                --bs-offcanvas-width: 280px;
+            }
+        }
+    </style>
 
     <body>
         <div class="d_main">
@@ -31,7 +55,7 @@
                 <nav class="d_navbar navbar navbar-expand-lg d-none d-lg-flex">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item"><a class="nav-link active" href="{{ route('index') }}">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="allProduct.html">Games</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ route('allProducts') }}">Games</a></li>
                         <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ route('aboutus') }}">About</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ route('frontendcontactus') }}">Contact</a></li>

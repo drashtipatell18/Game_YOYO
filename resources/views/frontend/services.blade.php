@@ -1,4 +1,9 @@
 @extends('frontend.layouts.main')
+    <style>
+        .text-theme {
+            color: #ad9d79 !important; /* your website’s gold theme */
+            }
+    </style>
 @section('content')
     <!-- page title section -->
     <section class="xs_contact-hero-section">
@@ -94,6 +99,7 @@
             </div>
         </div>
     </section>
+    
 @endsection
 
  
