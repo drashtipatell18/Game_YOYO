@@ -67,11 +67,6 @@
             <div class="swiper-wrapper" id="swiperCards">
                <!-- Cards will be injected here by JS -->
             </div>
-            <!-- Add navigation buttons
-               <div class="swiper-button-next"></div>
-               <div class="swiper-button-prev"></div>
-               Add pagination
-               <div class="swiper-pagination"></div> -->
          </div>
       </div>
    </section>

@@ -17,6 +17,15 @@
 
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
     </head>
+    <style>
+        .d_icon_top{
+            height: 32px !important;
+            width: 32px !important;
+            background: white !important;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
     <body>
         <footer class="d_footer text-white">
             <div class="container py-md-3 ">
@@ -274,43 +283,32 @@
         </script>
         <script>
             document.addEventListener("DOMContentLoaded", function () {
-                fetch("http://localhost:4000/categories")
+                fetch("/categories")
                     .then(res => res.json())
                     .then(categories => {
                         const wrapper = document.getElementById("categoryWrapper");
-                        wrapper.innerHTML = ""; // Clear any existing content
+                        wrapper.innerHTML = "";
 
                         categories.forEach(cat => {
-                            // Choose icon based on category name
-                            let icon = "";
-                            switch (cat.name) {
-                                case "Action": icon = "fa-bolt"; break;
-                                case "Adventure": icon = "fa-compass"; break;
-                                case "Puzzle": icon = "fa-puzzle-piece"; break;
-                                case "Racing": icon = "fa-car"; break;
-                                case "Shooter": icon = "fa-crosshairs"; break;
-                                case "Sports": icon = "fa-futbol"; break;
-                                case "Strategy": icon = "fa-chess-knight"; break;
-                                case "Horror": icon = "fa-ghost"; break;
-                                default: icon = "fa-gamepad";
-                            }
-
                             wrapper.innerHTML += `
-                    <div class="d_category_card">
-                        <img src="${cat.image}" alt="${cat.name} Game" />
-                        <div class="d_category_overlay">
-                            <div class="d_category_text">${cat.name}</div>
-                        </div>
-                        <i class="fa-solid ${icon} d_icon_top"></i>
-                    </div>
-                    `;
+                                <div class="d_category_card">
+                                    <img src="${cat.image}" alt="${cat.name} Game" />
+                                    <div class="d_category_overlay">
+                                        <div class="d_category_text">${cat.name}</div>
+                                    </div>
+                                
+                                    <img src="${cat.icon}" class="d_icon_top" alt="${cat.name} Icon" />
+                                </div>
+                            `;
                         });
                     })
                     .catch(() => {
-                        document.getElementById("categoryWrapper").innerHTML = "<div class='text-danger'>Failed to load categories.</div>";
+                        document.getElementById("categoryWrapper").innerHTML =
+                            "<div class='text-danger'>Failed to load categories.</div>";
                     });
             });
         </script>
+
         <script>
             async function fetchAndRenderSwiperCards() {
                 try {

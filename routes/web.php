@@ -161,3 +161,6 @@ Route::get('/cart', [FrontendCartController::class, 'Cart'])->name('cart');
 Route::get('/blog', [FrontendBlogController::class, 'blog'])->name('blog');
 
 
+Route::get('/categories', [FrontendHomeController::class, 'getCategoriesJson']);
+
+

@@ -1,4 +1,5 @@
 @extends('frontend.layouts.main')
+@section('title', 'YOYO Games: About Us')
 @section('content')
    <div class="Z_about_hero">
       <div class="Z_about_hero-overlay">
