@@ -145,10 +145,15 @@ Route::get('/frontend-login',[FrontendLoginController::class,'login'])->name('fr
 Route::get('/frontend-forget',[FrontendLoginController::class,'Forget'])->name('frontend.forget');
 Route::get('/index', [FrontendHomeController::class, 'index'])->name('index');
 Route::get('/aboutsus', [AboutUSController::class, 'aboutus'])->name(name: 'aboutus');
+
 Route::get('/contactus', [FrontendContactUsController::class, 'contactus'])->name('frontendcontactus');
-Route::get('/privacy', [FrontendPrivacyController::class, 'privacy'])->name('frontendprivacy');
+Route::post('/contactus/store', [FrontendContactUsController::class, 'contactusStore'])->name('contactus.store');
+
+Route::get('/frontprivacy', [FrontendPrivacyController::class, 'frontPrivacy'])->name('frontendprivacy');
 Route::get('/services', [FrontendServiceController::class, 'service'])->name('frontendservice');
 Route::get('/allproducts', [FrontendProductController::class, 'allProducts'])->name('allProducts');
 Route::get('/profile', [FrontendLoginController::class, 'profile'])->name('profile');
 Route::get('/cart', [FrontendCartController::class, 'Cart'])->name('cart');
 Route::get('/blog', [FrontendBlogController::class, 'blog'])->name('blog');
+
+
