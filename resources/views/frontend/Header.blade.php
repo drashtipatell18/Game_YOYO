@@ -19,7 +19,7 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
     </head>
     <style>
-          .offcanvas {
+        .offcanvas {
             --bs-offcanvas-width: 350px;
             background-color: #1a1a1a;
         }
@@ -41,6 +41,18 @@
                 --bs-offcanvas-width: 280px;
             }
         }
+        .user-initial {
+            background-color: #444;
+            color: white;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 16px;
+        }
     </style>
 
     <body>
@@ -48,7 +60,8 @@
             <!-- Header -->
             <header class="d_header d-flex align-items-center justify-content-between">
                 <div class="d_logo">
-                    <img src="{{ asset('frontend/images/yoyo logo done.png') }}" style="padding: 7px; height: 60px;" alt="logo" class="img-fluid">
+                    <img src="{{ asset('frontend/images/yoyo logo done.png') }}" style="padding: 7px; height: 60px;"
+                        alt="logo" class="img-fluid">
                 </div>
 
                 <!-- Desktop Nav -->
@@ -58,7 +71,8 @@
                         <li class="nav-item"><a class="nav-link" href="{{ route('allProducts') }}">Games</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ route('blog') }}">Blog</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ route('aboutus') }}">About</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ route('frontendcontactus') }}">Contact</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ route('frontendcontactus') }}">Contact</a>
+                        </li>
                     </ul>
 
                     <form class="d_search_form ">
@@ -72,15 +86,23 @@
 
                     <div class="d_user_icon_wrapper position-relative">
                         <div class="d_user_icon" id="db_user_icon" title="User Profile">
-                            <i class="fas fa-user-circle"></i>
+                            @if (Auth::check())
+                                <div class="user-initial">
+                                    {{ strtoupper(Auth::user()->name[0]) }}
+                                </div>
+                            @else
+                                <i class="fas fa-user-circle"></i>
+                            @endif
                         </div>
+
+
 
                         <div class="d_user_dropdown" id="db_user_dropdown">
                             <ul>
                                 <li><a href="{{ route('frontend.login') }}">Sign in</a></li>
-                                <li><a href="{{ route('frontend.forget')}}">Change Password</a></li>
-                                <li><a href="{{ route('profile')}}">My Profile</a></li>
-                                <li><a href="#">Logout</a></li>
+                                <li><a href="{{ route('frontend.forget') }}">Change Password</a></li>
+                                <li><a href="{{ route('profile') }}">My Profile</a></li>
+                                <li><a href="{{ route('frontlogout')}}">Logout</a></li>
                             </ul>
                         </div>
                     </div>
@@ -102,7 +124,8 @@
                         <li class="nav-item"><a class="nav-link" href="{{ route('allProducts') }}">Games</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ route('blog') }}">Blog</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ route('aboutus') }}">About</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ route('frontendcontactus') }}">Contact</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ route('frontendcontactus') }}">Contact</a>
+                        </li>
                     </ul>
                 </nav>
                 <form class="d_search_form_offcanvas">
@@ -111,9 +134,10 @@
                 </form>
                 <div class="d_social_icons_offcanvas">
                     <a href="{{ route('cart') }}"><i class="fa fa-cart-plus"></i></a>
-                    <a href="{{ route('profile')}}"><i class="fas fa-user-circle"></i></a>
+                    <a href="{{ route('profile') }}"><i class="fas fa-user-circle"></i></a>
                 </div>
             </aside>
         </div>
     </body>
-</html>
+
+    </html>

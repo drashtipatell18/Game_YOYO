@@ -72,18 +72,6 @@
         <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
         <script>
-            // Logout functionality
-            document.querySelectorAll('a').forEach(function (link) {
-                if (link.textContent.trim().toLowerCase() === 'logout') {
-                    link.addEventListener('click', function (e) {
-                        e.preventDefault();
-                        localStorage.removeItem('user_id');
-                        window.location.href = 'landingpage.html';
-                    });
-                }
-            });
-        </script>
-        <script>
             // Show first letter of user email in user icon if logged in
             document.addEventListener('DOMContentLoaded', async function () {
                 const userId = localStorage.getItem('user_id');
