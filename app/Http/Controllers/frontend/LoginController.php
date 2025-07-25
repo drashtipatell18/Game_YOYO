@@ -48,7 +48,36 @@ class LoginController extends Controller
         return view('frontend.Frontend_change');
     }
 
-    public function profile(){
-        return view('frontend.profile');
+    public function profile($id){
+        $user = User::find($id);
+        return view('frontend.profile', compact('user'));
+    }
+
+    public function updateProfile(Request $request,$id)
+    {
+        // Get the currently authenticated user
+        $user = User::find($id);
+        $imageName = $user->image;
+        if($request->hasFile('image'))
+        {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images/users'), $imageName);
+        }
+        $user->update([
+            'username' => $request->input('username'),
+            'email' => $request->input('email'),
+            'mobile_number' => $request->input('mobile_number'),
+            'favorite_game' => $request->input('favorite_game'),
+            'gaming_platform' => $request->input('gaming_platform'),
+            'country' => $request->input('country'),
+            'image' => $imageName,
+
+        ]);
+
+        // Save the changes
+        $user->save();
+
+        return redirect()->back()->with('success', 'Profile updated successfully!');
     }
 }

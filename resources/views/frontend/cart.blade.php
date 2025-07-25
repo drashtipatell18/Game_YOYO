@@ -23,7 +23,7 @@
                 </form>
                 <div class="d_social_icons_offcanvas">
                     <a href="{{ route('cart') }}" class="active"><i class="fa fa-cart-plus"></i></a>
-                    <a href="{{ route('profile')}}"><i class="fas fa-user-circle"></i></a>
+                    <a href="{{ route('profile', Auth::id()) }}"><i class="fas fa-user-circle"></i></a>
                 </div>
             </aside>
         </div>
