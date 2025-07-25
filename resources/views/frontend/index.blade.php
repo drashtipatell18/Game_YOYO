@@ -13,7 +13,7 @@
                      monster,<br /> of a
                      form which only a diseased fancy could conceive.
                   </div>
-                  <a href="#" class="d_hero-btn">BUY THEME</a>
+                  <a href="{{ route('aboutus') }}" class="d_hero-btn">BUY THEME</a>
                </div>
             </div>
             <div class="carousel-item">
@@ -25,7 +25,7 @@
                      when it
                      calls your name?
                   </div>
-                  <a href="/About_us.html" class="d_hero-btn">EXPLORE NOW</a>
+                  <a href="{{ route('aboutus') }}" class="d_hero-btn">EXPLORE NOW</a>
                </div>
             </div>
             <div class="carousel-item">
@@ -37,7 +37,7 @@
                      rise begins
                      now.
                   </div>
-                  <a href="#" class="d_hero-btn">JOIN THE FIGHT</a>
+                  <a href="{{ route('aboutus') }}" class="d_hero-btn">JOIN THE FIGHT</a>
                </div>
             </div>
          </div>
@@ -115,66 +115,21 @@
          <h2 class="d_section_title" data-aos="fade-down">Our Team</h2>
          <p class="d_section_subtitle" data-aos="fade-up">Creative minds behind the game</p>
          <div class="row justify-content-center">
-            <!-- Founder -->
-            <div class="col-12 col-sm-4 col-lg-3" data-aos="zoom-in" data-aos-delay="100">
-               <div class="d_member_card">
-                  <img src="https://i.pinimg.com/736x/d0/cb/d1/d0cbd1380c72ddf3750c896433b2dea1.jpg" alt="Founder"
-                     class="d_member_img">
-                  <div class="d_member_content">
-                     <h4 class="d_member_name">Alex Knight</h4>
-                     <p class="d_member_role"><i class="fas fa-gamepad"></i> Founder</p>
-                     <div class="d_member_social">
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
+               @foreach($ourTeams as $team)
+                  <div class="col-12 col-sm-4 col-lg-3" data-aos="zoom-in" data-aos-delay="100">
+                     <div class="d_member_card">
+                        <img src="{{ asset('images/ourteam/' . ($team->image ?? 'default.jpg')) }}" alt="{{ $team->name }}" class="d_member_img">
+                        <div class="d_member_content">
+                           <h4 class="d_member_name">{{ $team->name }}</h4>
+                           <p class="d_member_role"><i class="fas fa-gamepad"></i> {{ $team->designation }}</p>
+                           <div class="d_member_social">
+                              <a href="{{ $team->twitter }}"><i class="fab fa-twitter"></i></a>
+                              <a href="{{ $team->linkedin }}"><i class="fab fa-linkedin"></i></a>
+                           </div>
+                        </div>
                      </div>
                   </div>
-               </div>
-            </div>
-            <!-- Team Member 1 -->
-            <div class="col-12 col-sm-4 col-lg-3" data-aos="zoom-in" data-aos-delay="200">
-               <div class="d_member_card">
-                  <img src="https://avatars.mds.yandex.net/i?id=b21df524f3cd6e6d72d8c1d12ca23ff54e1b9d56-10503706-images-thumbs&n=13"
-                     alt="Dev" class="d_member_img">
-                  <div class="d_member_content">
-                     <h4 class="d_member_name">Ryan Smith</h4>
-                     <p class="d_member_role">Lead Dev</p>
-                     <div class="d_member_social">
-                        <a href="#"><i class="fab fa-github"></i></a>
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
-                     </div>
-                  </div>
-               </div>
-            </div>
-            <!-- Team Member 2 -->
-            <div class="col-12 col-sm-4 col-lg-3" data-aos="zoom-in" data-aos-delay="300">
-               <div class="d_member_card">
-                  <img src="https://avatars.mds.yandex.net/i?id=3fdf8c2c5a8d0d62d31f6b74a0f22f644943d27d-5257871-images-thumbs&n=13"
-                     alt="Designer" class="d_member_img">
-                  <div class="d_member_content">
-                     <h4 class="d_member_name">Emily Ray</h4>
-                     <p class="d_member_role">UI/UX Designer</p>
-                     <div class="d_member_social">
-                        <a href="#"><i class="fab fa-behance"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                     </div>
-                  </div>
-               </div>
-            </div>
-            <!-- Team Member 3 -->
-            <div class="col-12 col-sm-4 col-lg-3" data-aos="zoom-in" data-aos-delay="400">
-               <div class="d_member_card">
-                  <img src="https://avatars.mds.yandex.net/i?id=69733bdc9e798a69a804b7aa5a2845f9999bbe99-5087049-images-thumbs&n=13"
-                     alt="QA" class="d_member_img">
-                  <div class="d_member_content">
-                     <h4 class="d_member_name">Liam Jones</h4>
-                     <p class="d_member_role">QA Engineer</p>
-                     <div class="d_member_social">
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-github"></i></a>
-                     </div>
-                  </div>
-               </div>
-            </div>
+               @endforeach
          </div>
       </div>
    </section>
