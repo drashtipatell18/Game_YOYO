@@ -156,7 +156,7 @@ Route::post('/contactus/store', [FrontendContactUsController::class, 'contactusS
 Route::get('/frontprivacy', [FrontendPrivacyController::class, 'frontPrivacy'])->name('frontendprivacy');
 Route::get('/services', [FrontendServiceController::class, 'service'])->name('frontendservice');
 Route::get('/allproducts', [FrontendProductController::class, 'allProducts'])->name('allProducts');
-Route::get('/profile/{id}', [FrontendLoginController::class, 'profile'])->name('profile');
+Route::get('/profile/{id?}', [FrontendLoginController::class, 'profile'])->name('profile');
 Route::get('/cart', [FrontendCartController::class, 'Cart'])->name('cart');
 Route::get('/blog', [FrontendBlogController::class, 'blog'])->name('blog');
 Route::post('/profile/update/{id}', [FrontendLoginController::class, 'updateProfile'])->name('profile.update');
