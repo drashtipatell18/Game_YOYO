@@ -28,10 +28,10 @@ use App\Http\Controllers\frontend\CartController as FrontendCartController;
 Auth::routes();
 
 Route::get('/', function () {
-    return view('auth.login');
+    return redirect()->route('index');
 });
 
-Route::get('/login', [HomeController::class, 'Login'])->name('login');
+Route::get('/admin/login', [HomeController::class, 'Login'])->name('login');
 Route::post('/login', [HomeController::class, 'LoginStore'])->name('loginstore');
 Route::get('/logout',[HomeController::class,'logout'])->name('logout');
 Route::get('/forget-password', [DashboardController::class, 'showForgetPasswordForm'])->name('forget.password');
