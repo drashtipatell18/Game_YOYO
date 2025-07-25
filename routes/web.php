@@ -162,5 +162,5 @@ Route::get('/blog', [FrontendBlogController::class, 'blog'])->name('blog');
 Route::post('/profile/update/{id}', [FrontendLoginController::class, 'updateProfile'])->name('profile.update');
 
 Route::get('/categories', [FrontendHomeController::class, 'getCategoriesJson']);
-
+Route::get('/products', [FrontendHomeController::class, 'getProductJson']);
 

@@ -161,8 +161,8 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             Promise.all([
-                fetch("http://localhost:4000/products").then(res => res.json()),
-                fetch("http://localhost:4000/categories").then(res => res.json())
+                fetch("/products").then(res => res.json()),
+                fetch("/categories").then(res => res.json())
             ]).then(([products, categories]) => {
                 // Map category id to name for quick lookup
                 const catMap = {};
@@ -175,20 +175,20 @@
                 listContainer.innerHTML = "";
 
                 products.forEach(product => {
-                    const categoryName = catMap[product.cat_id] || "Unknown";
+                    const categoryName = product.category_name || "Unknown";
                     // Grid Card
                     gridContainer.innerHTML += `
                         <div class="col-xl-4 col-lg-6 col-md-4     col-sm-6 col-12 mb-4 d-flex justify-content-center">
                           <div class="game-card position-relative">
-                            <img src="${product.image}" alt="${product.title}" class="card-img-top" />
+                            <img src="${product.image}" alt="${product.name}" class="card-img-top" />
                             <div class="position-absolute card-content">
                               <div class="icons d-flex gap-2 mb-3">
                                 <i class="fa-brands fa-apple"></i>
                                 <i class="fa-brands fa-windows"></i>
                               </div>
-                              <h3>${product.title}</h3>
+                              <h3>${product.name}</h3>
                               <h3 class="mb-0">$${product.price.toFixed(2)}</h3>
-                              <span class="badge bg-secondary mt-2">${categoryName}</span>
+                             <span class="badge bg-secondary mt-2">${categoryName}</span>
                             </div>
                             <div class="card-actions d-flex align-items-center gap-3">
                               <div class="d_main_button w-100">
@@ -450,7 +450,7 @@
     </script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            fetch("http://localhost:4000/categories")
+            fetch("/categories")
                 .then(res => res.json())
                 .then(categories => {
                     // Desktop filter
@@ -494,6 +494,8 @@
 
         let allProducts = [];
         let allCategories = [];
+
+        
 
         function renderProducts(products, categories) {
             const catMap = {};
@@ -547,8 +549,8 @@
 
         document.addEventListener("DOMContentLoaded", function () {
             Promise.all([
-                fetch("http://localhost:4000/products").then(res => res.json()),
-                fetch("http://localhost:4000/categories").then(res => res.json())
+                fetch("/products").then(res => res.json()),
+                fetch("/categories").then(res => res.json())
             ]).then(([products, categories]) => {
                 allProducts = products;
                 allCategories = categories;
