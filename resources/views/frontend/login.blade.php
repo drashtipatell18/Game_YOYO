@@ -79,21 +79,6 @@
         .social-icons .icon {
             cursor: pointer;
         }
-
-        .google.icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .google.icon:hover {
-            background: #f5f5f5;
-        }
     </style>
 </head>
 
@@ -158,12 +143,12 @@
                             </div>
                             <!-- Social Icons -->
                             <div class="d-flex justify-content-center gap-4 mb-3 social-icons">
-                                <a href="{{ url('auth/google') }}">
-                                    <div class="google icon">
+                                <div class="google icon">
+                                    <a href="{{ url('auth/google') }}">
                                         <img src="{{ asset('frontend/images/google-logo.png') }}" alt="Google"
                                             width="25" />
-                                    </div>
-                                </a>
+                                    </a>
+                                </div>
                                 <div class="apple icon">
                                     <img src="{{ asset('frontend/images/apple-logo.png') }}" alt="Apple"
                                         width="20" />

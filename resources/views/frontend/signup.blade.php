@@ -87,8 +87,10 @@
                                     <!-- Social Icons -->
                                     <div class="d-flex justify-content-center gap-4 mb-3 social-icons">
                                         <div class="google icon">
-                                            <img src="{{ asset('frontend/images/google-logo.png') }}" alt="Google"
-                                                width="25" />
+                                            <a href="{{ url('auth/google') }}">
+                                                <img src="{{ asset('frontend/images/google-logo.png') }}" alt="Google"
+                                                    width="25" />
+                                            </a>
                                         </div>
                                         <div class="apple icon">
                                             <img src="{{ asset('frontend/images/apple-logo.png') }}" alt="Apple"
