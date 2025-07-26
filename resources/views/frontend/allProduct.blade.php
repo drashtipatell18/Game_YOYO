@@ -729,9 +729,8 @@
                 card.addEventListener('click', function (e) {
                     // Prevent navigation if the click was on the ADD TO CART button
                     if (e.target.closest('.custom-cart-btn')) return;
-                    const id = this.getAttribute('data-id');
-                    localStorage.setItem('item_id', id);
-                    window.location.href = 'singleProduct.html';
+                    const productId = this.getAttribute('data-id');
+                    window.location.href = `http://127.0.0.1:8000/productDetails/${productId}`;
                 });
             });
             // Add click event to all .custom-cart-btn buttons for cart functionality

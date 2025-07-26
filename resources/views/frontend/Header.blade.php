@@ -15,6 +15,10 @@
         <link rel="stylesheet" href="{{ asset('frontend/css/s_style.css') }}" />
         <link rel="stylesheet" href="{{ asset('frontend/css/z_style.css') }}" />
         <link rel="stylesheet" href="{{ asset('frontend/css/x_style.css') }}">
+        <link rel="stylesheet" href="{{ asset('frontend/css/checkout.css') }}" />
+        <link rel="stylesheet" href="{{ asset('frontend/css/card.css') }}">
+
+
 
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
     </head>

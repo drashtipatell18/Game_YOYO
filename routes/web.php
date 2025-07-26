@@ -152,7 +152,6 @@ Route::get('/frontend-login',[FrontendLoginController::class,'login'])->name('fr
 Route::post('frontlogin', [FrontendLoginController::class, 'frontLogin'])->name('frontlogin');
 Route::get('frontregister', [FrontendLoginController::class, 'frontRegister'])->name('frontregister');
 Route::post('/front-register', [FrontendLoginController::class, 'showRegisterForm'])->name('front.register');
-
 Route::get('/frontlogout',[FrontendLoginController::class,'frontlogout'])->name('frontlogout');
 
 Route::get('demo', [FrontendLoginController::class, 'demo'])->name('demo');
@@ -170,6 +169,7 @@ Route::get('/profile/{id?}', [FrontendLoginController::class, 'profile'])->name(
 Route::get('/cart', [FrontendCartController::class, 'Cart'])->name('cart');
 Route::get('/blog', [FrontendBlogController::class, 'blog'])->name('blog');
 Route::post('/profile/update/{id}', [FrontendLoginController::class, 'updateProfile'])->name('profile.update');
+Route::get('/productDetails/{id}', [FrontendProductController::class, 'productDetails'])->name('productDetails');
 
 // Json Data
 Route::get('/categoriesJson', [FrontendHomeController::class, 'getCategoriesJson']);
