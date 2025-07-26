@@ -1,6 +1,27 @@
 @extends('layouts.app')
 @section('title', 'View Blog')
 @section('content')
+<style>
+    @media (max-width: 768px) {
+        .custom-btn {
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        table.dataTable {
+            width: 100% !important;
+        }
+
+        div.dataTables_wrapper {
+            overflow-x: auto;
+        }
+
+        .dataTables_filter input {
+            width: 100% !important;
+            margin-top: 10px;
+        }
+    }
+</style>
     <main role="main" class="main-content">
         <div class="container-fluid">
             <div class="row justify-content-center">
