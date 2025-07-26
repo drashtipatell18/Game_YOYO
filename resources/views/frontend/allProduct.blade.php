@@ -705,10 +705,16 @@
             gridContainer.innerHTML = "";
             products.forEach(product => {
                 const categoryName = product.category_name || "Unknown";
+                let firstImage = '';
+                if (Array.isArray(product.image)) {
+                    firstImage = product.image[0];
+                } else if (typeof product.image === 'string') {
+                    firstImage = product.image.split(',')[0].trim(); // comma-separated string
+                }
                 gridContainer.innerHTML += `
                     <div class="col-lg-4 col-md-6 col-sm-6 col-12 mb-4 d-flex justify-content-center">
                       <div class="game-card position-relative" data-id="${product.id}">
-                        <img src="${product.image}" alt="${product.name}" class="card-img-top" />
+                         <img src="${firstImage}" alt="${product.name}" class="card-img-top" />
                         <div class="position-absolute card-content">
                           <h3>${product.name}</h3>
                           <h3 class="mb-0">$${Number(product.price).toFixed(2)}</h3>
