@@ -72,4 +72,5 @@ class GoogleAuthController extends Controller
             return redirect()->route('index')->with('error', 'Something went wrong!');
         }
     }
+
 }

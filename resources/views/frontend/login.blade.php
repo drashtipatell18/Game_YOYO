@@ -154,8 +154,10 @@
                                         width="20" />
                                 </div>
                                 <div class="facebook icon">
-                                    <img src="{{ asset('frontend/images/Facebook-logo.png') }}" alt="Facebook"
-                                        width="25" />
+                                    <a href="{{ url('auth/facebook') }}">
+                                        <img src="{{ asset('frontend/images/Facebook-logo.png') }}" alt="Facebook"
+                                            width="25" />
+                                    </a>
                                 </div>
                             </div>
                             <!-- Create Account -->

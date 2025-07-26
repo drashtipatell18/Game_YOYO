@@ -24,7 +24,7 @@ use App\Http\Controllers\frontend\ServiceController as FrontendServiceController
 use App\Http\Controllers\frontend\ProductController as FrontendProductController;
 use App\Http\Controllers\frontend\CartController as FrontendCartController;
 use App\Http\Controllers\frontend\BlogController as FrontendBlogController;
-use App\Http\Controllers\frontend\GoogleAuthController;
+use App\Http\Controllers\frontend\GoogleAuthController as FrontGoogleAuthController;
 
 
 Auth::routes();
@@ -142,8 +142,11 @@ Route::delete('/members-say/destroy/{id}',[MembersSayController::class,'DestroyM
 
 // Frontend Route
 
-Route::get('auth/google',[GoogleAuthController::class,'redirectToGoogle'])->name('redirect_to_google');
-Route::get('auth/google/callback',[GoogleAuthController::class,'handleGoogleCallback'])->name('GoogleAuthCallback');
+Route::get('auth/google',[FrontGoogleAuthController::class,'redirectToGoogle'])->name('redirect_to_google');
+Route::get('auth/google/callback',[FrontGoogleAuthController::class,'handleGoogleCallback'])->name('GoogleAuthCallback');
+
+Route::get('auth/facebook',[FrontGoogleAuthController::class,'redirectToFacebook'])->name('redirect_to_facebook');
+Route::get('auth/facebook/callback',[FrontGoogleAuthController::class,'handleFacebookCallback'])->name('FacebookAuthCallback');
 
 Route::get('/frontend-login',[FrontendLoginController::class,'login'])->name('frontend.login');
 Route::post('frontlogin', [FrontendLoginController::class, 'frontLogin'])->name('frontlogin');
