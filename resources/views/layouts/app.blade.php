@@ -155,7 +155,7 @@
                             </a>
                         </div>
                         <!--//col-->
-                        <div class="search-mobile-trigger d-sm-none col">
+                        {{-- <div class="search-mobile-trigger d-sm-none col">
                             <i class="search-mobile-trigger-icon fa-solid fa-magnifying-glass"></i>
                         </div>
                         <!--//col-->
@@ -166,17 +166,20 @@
                                 <button type="submit" class="btn search-btn btn-primary custom-btn" value="Search"><i
                                         class="fa-solid fa-magnifying-glass"></i></button>
                             </form>
-                        </div>
+                        </div> --}}
                         <!--//app-search-box-->
                         <div class="app-utilities col-auto">
 
                             <div class="app-utility-item app-user-dropdown dropdown">
                                 <a class="dropdown-toggle d-flex align-items-center" id="user-dropdown-toggle"
                                     data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
-                                    <img src="{{ Auth::user()->image ? asset('images/users/' . Auth::user()->image) : asset('assets/images/user.png') }}"
+                                   @if(Auth::check() && Auth::user()->name)
+                                    <img src="{{ Auth::user()->image ? asset('images/users/' . Auth::user()->image) : asset('assets/images/dummy-avatar.jpg') }}"
                                         alt="User Profile"
                                         style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; margin-right: 8px;">
                                     <span>{{ Auth::user()->name }}</span>
+                                @endif
+
                                 </a>
 
                                 <ul class="dropdown-menu" aria-labelledby="user-dropdown-toggle">

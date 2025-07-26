@@ -1,6 +1,33 @@
 @extends('layouts.app')
 @section('title', 'View Category')
 @section('content')
+<style>
+    @media (max-width: 768px) {
+        .custom-btn {
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        table.dataTable {
+            width: 100% !important;
+        }
+
+        div.dataTables_wrapper {
+            overflow-x: auto;
+        }
+
+        .dataTables_filter input {
+            width: 100% !important;
+            margin-top: 10px;
+        }
+        .custom-btn{
+            width: 107%;
+        }
+        .page-title{
+            width: 50%;
+        }
+    }
+</style>
     <main role="main" class="main-content">
         <div class="container-fluid">
             <div class="row justify-content-center">
@@ -57,14 +84,14 @@
                                                     {{-- Actions --}}
                                                     <td class="text-center">
                                                         <a href="{{ route('edit.category', $category->id) }}"
-                                                            class="btn btn-sm btn-warning text-white " title="Edit">
+                                                            class="btn btn-sm btn-warning text-white custom-btn" title="Edit">
                                                             <i class="fas fa-edit"></i>
                                                         </a>
 
                                                         <form action="{{ route('destroy.category', $category->id) }}" method="POST" style="display:inline;">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit" class="btn btn-sm btn-danger" title="Delete"
+                                                            <button type="submit" class="btn btn-sm btn-danger custom-btn" title="Delete"
                                                                 onclick="return confirm('Are you sure you want to delete this category?')">
                                                                 <i class="fas fa-trash-alt text-white"></i>
                                                             </button>
