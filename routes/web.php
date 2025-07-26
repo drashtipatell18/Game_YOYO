@@ -164,6 +164,8 @@ Route::get('/cart', [FrontendCartController::class, 'Cart'])->name('cart');
 Route::get('/blog', [FrontendBlogController::class, 'blog'])->name('blog');
 Route::post('/profile/update/{id}', [FrontendLoginController::class, 'updateProfile'])->name('profile.update');
 
-Route::get('/categories', [FrontendHomeController::class, 'getCategoriesJson']);
-Route::get('/products', [FrontendHomeController::class, 'getProductJson']);
+// Json Data
+Route::get('/categoriesJson', [FrontendHomeController::class, 'getCategoriesJson']);
+Route::get('/productsJson', [FrontendHomeController::class, 'getProductJson']);
+
 

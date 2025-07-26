@@ -314,8 +314,8 @@
                 try {
                     // Fetch products and technology data in parallel
                     const [productsRes, techRes] = await Promise.all([
-                        fetch('http://localhost:4000/products'),
-                        fetch('http://localhost:4000/technology')
+                        fetch('/products'),
+                        fetch('/technology')
                     ]);
                     const [products, technologies] = await Promise.all([
                         productsRes.json(),
@@ -457,44 +457,11 @@
             document.addEventListener('DOMContentLoaded', fetchAndRenderSwiperCards);
         </script>
 
-        <script>
-            // New function to render product cards
-            function renderProductCards(products, categories) {
-                const catMap = {};
-                categories.forEach(cat => { catMap[cat.id] = cat.name; });
-                const gridContainer = document.getElementById('gridContainer');
-                gridContainer.innerHTML = "";
-                products.forEach(product => {
-                    const categoryName = catMap[product.cat_id] || "Unknown";
-                    gridContainer.innerHTML += `
-                        <div class="col-lg-4 col-md-6 col-sm-6 col-12 mb-4 d-flex justify-content-center">
-                        <div class="game-card position-relative">
-                            <img src="${product.image}" alt="${product.title}" class="card-img-top" />
-                            <div class="position-absolute card-content">
-                            <h3>${product.title}</h3>
-                            <h3 class="mb-0">$${Number(product.price).toFixed(2)}</h3>
-                            <span class="badge bg-secondary mt-2">${categoryName}</span>
-                            </div>
-                        </div>
-                        </div>
-                    `;
-                });
-            }
-
-            // Fetch and render products on page load
-            document.addEventListener("DOMContentLoaded", function () {
-                Promise.all([
-                    fetch("http://localhost:4000/products").then(res => res.json()),
-                    fetch("http://localhost:4000/categories").then(res => res.json())
-                ]).then(([products, categories]) => {
-                    renderProductCards(products, categories);
-                });
-            });
-        </script>
+       
         <script>
             async function renderLastFourProducts() {
                 try {
-                    const res = await fetch('http://localhost:4000/products');
+                    const res = await fetch('/products');
                     let products = await res.json();
 
                     // Reverse and get last 4

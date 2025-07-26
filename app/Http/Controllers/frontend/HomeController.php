@@ -18,7 +18,7 @@ class HomeController extends Controller
 
     public function getCategoriesJson()
     {
-        $categories = Category::select('name', 'image', 'icon')->get();
+        $categories = Category::select('id','name', 'image', 'icon')->get();
 
         foreach ($categories as $category) {
             $category->image = asset('images/category/' . $category->image); // Converts to full URL
