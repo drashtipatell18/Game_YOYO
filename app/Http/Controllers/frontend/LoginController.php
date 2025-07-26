@@ -82,6 +82,19 @@ class LoginController extends Controller
     }
 
     public function frontregister(){
+
         return view('frontend.signup');
+    }
+
+    public function showRegisterForm(Request $request){
+        User::create([
+            'username' => $request->input('username'),
+            'email' => $request->input('email'),
+            'role_id' => 2,
+            'password' => Hash::make($request->input('password')),
+        ]);
+
+        // Redirect or login the user
+        return redirect()->route('index')->with('success', 'Account created successfully!');
     }
 }

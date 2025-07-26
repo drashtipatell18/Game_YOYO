@@ -4,6 +4,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Game Ecommerce">
+    <meta name="author" content="Xiaoying Riley at 3rd Wave Media">
+    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}">
     <title>Login Page</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
@@ -156,7 +159,7 @@
                             <!-- Create Account -->
                             <p class="text-center text-white-50 login-page-last">
                                 Don’t have an account?
-                                <a href="{{ route('frontregister')}}" class="text-white">Create Account!</a>
+                                <a href="{{ route('frontregister') }}" class="text-white">Create Account!</a>
                             </p>
                         </div>
                     </div>
