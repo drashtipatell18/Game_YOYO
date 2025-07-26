@@ -17,6 +17,15 @@
 
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
     </head>
+    <style>
+        .d_icon_top{
+            height: 32px !important;
+            width: 32px !important;
+            background: white !important;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
     <body>
         <footer class="d_footer text-white">
             <div class="container py-md-3 ">
@@ -71,18 +80,6 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
-        <script>
-            // Logout functionality
-            document.querySelectorAll('a').forEach(function (link) {
-                if (link.textContent.trim().toLowerCase() === 'logout') {
-                    link.addEventListener('click', function (e) {
-                        e.preventDefault();
-                        localStorage.removeItem('user_id');
-                        window.location.href = 'landingpage.html';
-                    });
-                }
-            });
-        </script>
         <script>
             // Show first letter of user email in user icon if logged in
             document.addEventListener('DOMContentLoaded', async function () {
@@ -286,50 +283,39 @@
         </script>
         <script>
             document.addEventListener("DOMContentLoaded", function () {
-                fetch("http://localhost:4000/categories")
+                fetch("/categories")
                     .then(res => res.json())
                     .then(categories => {
                         const wrapper = document.getElementById("categoryWrapper");
-                        wrapper.innerHTML = ""; // Clear any existing content
+                        wrapper.innerHTML = "";
 
                         categories.forEach(cat => {
-                            // Choose icon based on category name
-                            let icon = "";
-                            switch (cat.name) {
-                                case "Action": icon = "fa-bolt"; break;
-                                case "Adventure": icon = "fa-compass"; break;
-                                case "Puzzle": icon = "fa-puzzle-piece"; break;
-                                case "Racing": icon = "fa-car"; break;
-                                case "Shooter": icon = "fa-crosshairs"; break;
-                                case "Sports": icon = "fa-futbol"; break;
-                                case "Strategy": icon = "fa-chess-knight"; break;
-                                case "Horror": icon = "fa-ghost"; break;
-                                default: icon = "fa-gamepad";
-                            }
-
                             wrapper.innerHTML += `
-                    <div class="d_category_card">
-                        <img src="${cat.image}" alt="${cat.name} Game" />
-                        <div class="d_category_overlay">
-                            <div class="d_category_text">${cat.name}</div>
-                        </div>
-                        <i class="fa-solid ${icon} d_icon_top"></i>
-                    </div>
-                    `;
+                                <div class="d_category_card">
+                                    <img src="${cat.image}" alt="${cat.name} Game" />
+                                    <div class="d_category_overlay">
+                                        <div class="d_category_text">${cat.name}</div>
+                                    </div>
+                                
+                                    <img src="${cat.icon}" class="d_icon_top" alt="${cat.name} Icon" />
+                                </div>
+                            `;
                         });
                     })
                     .catch(() => {
-                        document.getElementById("categoryWrapper").innerHTML = "<div class='text-danger'>Failed to load categories.</div>";
+                        document.getElementById("categoryWrapper").innerHTML =
+                            "<div class='text-danger'>Failed to load categories.</div>";
                     });
             });
         </script>
+
         <script>
             async function fetchAndRenderSwiperCards() {
                 try {
                     // Fetch products and technology data in parallel
                     const [productsRes, techRes] = await Promise.all([
-                        fetch('http://localhost:4000/products'),
-                        fetch('http://localhost:4000/technology')
+                        fetch('/products'),
+                        fetch('/technology')
                     ]);
                     const [products, technologies] = await Promise.all([
                         productsRes.json(),
@@ -471,44 +457,11 @@
             document.addEventListener('DOMContentLoaded', fetchAndRenderSwiperCards);
         </script>
 
-        <script>
-            // New function to render product cards
-            function renderProductCards(products, categories) {
-                const catMap = {};
-                categories.forEach(cat => { catMap[cat.id] = cat.name; });
-                const gridContainer = document.getElementById('gridContainer');
-                gridContainer.innerHTML = "";
-                products.forEach(product => {
-                    const categoryName = catMap[product.cat_id] || "Unknown";
-                    gridContainer.innerHTML += `
-                        <div class="col-lg-4 col-md-6 col-sm-6 col-12 mb-4 d-flex justify-content-center">
-                        <div class="game-card position-relative">
-                            <img src="${product.image}" alt="${product.title}" class="card-img-top" />
-                            <div class="position-absolute card-content">
-                            <h3>${product.title}</h3>
-                            <h3 class="mb-0">$${Number(product.price).toFixed(2)}</h3>
-                            <span class="badge bg-secondary mt-2">${categoryName}</span>
-                            </div>
-                        </div>
-                        </div>
-                    `;
-                });
-            }
-
-            // Fetch and render products on page load
-            document.addEventListener("DOMContentLoaded", function () {
-                Promise.all([
-                    fetch("http://localhost:4000/products").then(res => res.json()),
-                    fetch("http://localhost:4000/categories").then(res => res.json())
-                ]).then(([products, categories]) => {
-                    renderProductCards(products, categories);
-                });
-            });
-        </script>
+       
         <script>
             async function renderLastFourProducts() {
                 try {
-                    const res = await fetch('http://localhost:4000/products');
+                    const res = await fetch('/products');
                     let products = await res.json();
 
                     // Reverse and get last 4

@@ -4,11 +4,13 @@ namespace App\Http\Controllers\frontend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Privacy;
 
 class PrivacyController extends Controller
 {
-    public function privacy()
+    public function frontPrivacy()
     {
-        return view('frontend.Privacy');
+        $privacy = Privacy::all();
+        return view('frontend.Privacy', compact('privacy'));
     }
 }

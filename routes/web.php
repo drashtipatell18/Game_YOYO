@@ -24,6 +24,7 @@ use App\Http\Controllers\frontend\ServiceController as FrontendServiceController
 use App\Http\Controllers\frontend\ProductController as FrontendProductController;
 use App\Http\Controllers\frontend\CartController as FrontendCartController;
 use App\Http\Controllers\frontend\BlogController as FrontendBlogController;
+use App\Http\Controllers\frontend\GoogleAuthController as FrontGoogleAuthController;
 
 
 Auth::routes();
@@ -141,14 +142,37 @@ Route::delete('/members-say/destroy/{id}',[MembersSayController::class,'DestroyM
 
 // Frontend Route
 
+Route::get('auth/google',[FrontGoogleAuthController::class,'redirectToGoogle'])->name('redirect_to_google');
+Route::get('auth/google/callback',[FrontGoogleAuthController::class,'handleGoogleCallback'])->name('GoogleAuthCallback');
+
+Route::get('auth/facebook',[FrontGoogleAuthController::class,'redirectToFacebook'])->name('redirect_to_facebook');
+Route::get('auth/facebook/callback',[FrontGoogleAuthController::class,'handleFacebookCallback'])->name('FacebookAuthCallback');
+
 Route::get('/frontend-login',[FrontendLoginController::class,'login'])->name('frontend.login');
+Route::post('frontlogin', [FrontendLoginController::class, 'frontLogin'])->name('frontlogin');
+Route::get('frontregister', [FrontendLoginController::class, 'frontRegister'])->name('frontregister');
+Route::post('/front-register', [FrontendLoginController::class, 'showRegisterForm'])->name('front.register');
+Route::get('/frontlogout',[FrontendLoginController::class,'frontlogout'])->name('frontlogout');
+
+Route::get('demo', [FrontendLoginController::class, 'demo'])->name('demo');
 Route::get('/frontend-forget',[FrontendLoginController::class,'Forget'])->name('frontend.forget');
 Route::get('/index', [FrontendHomeController::class, 'index'])->name('index');
 Route::get('/aboutsus', [AboutUSController::class, 'aboutus'])->name(name: 'aboutus');
+
 Route::get('/contactus', [FrontendContactUsController::class, 'contactus'])->name('frontendcontactus');
-Route::get('/privacy', [FrontendPrivacyController::class, 'privacy'])->name('frontendprivacy');
+Route::post('/contactus/store', [FrontendContactUsController::class, 'contactusStore'])->name('contactus.store');
+
+Route::get('/frontprivacy', [FrontendPrivacyController::class, 'frontPrivacy'])->name('frontendprivacy');
 Route::get('/services', [FrontendServiceController::class, 'service'])->name('frontendservice');
 Route::get('/allproducts', [FrontendProductController::class, 'allProducts'])->name('allProducts');
-Route::get('/profile', [FrontendLoginController::class, 'profile'])->name('profile');
+Route::get('/profile/{id?}', [FrontendLoginController::class, 'profile'])->name('profile');
 Route::get('/cart', [FrontendCartController::class, 'Cart'])->name('cart');
 Route::get('/blog', [FrontendBlogController::class, 'blog'])->name('blog');
+Route::post('/profile/update/{id}', [FrontendLoginController::class, 'updateProfile'])->name('profile.update');
+Route::get('/productDetails/{id}', [FrontendProductController::class, 'productDetails'])->name('productDetails');
+
+// Json Data
+Route::get('/categoriesJson', [FrontendHomeController::class, 'getCategoriesJson']);
+Route::get('/productsJson', [FrontendHomeController::class, 'getProductJson']);
+
+

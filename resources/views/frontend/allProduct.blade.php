@@ -46,7 +46,7 @@
                                 <div id="collapseTwo" class="accordion-collapse collapse"
                                     data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
-                                        <ul class="ps-0" id="categoryFilterListDesktop"></ul>
+                                        <ul class="ps-0" id="categoryFilterListDesktop" name="categoryFilterListDesktop"></ul>
                                     </div>
                                 </div>
                             </div>
@@ -152,22 +152,38 @@
             </div>
         </div>
     </div>
-   
-   
-
 @endsection
 
+
+
+
+
 @push('script')
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        let cardsData = [];
         document.addEventListener("DOMContentLoaded", function () {
             Promise.all([
-                fetch("http://localhost:4000/products").then(res => res.json()),
-                fetch("http://localhost:4000/categories").then(res => res.json())
+                fetch("productsJson").then(res => res.json()),
+                fetch("categoriesJson").then(res => res.json())
             ]).then(([products, categories]) => {
                 // Map category id to name for quick lookup
                 const catMap = {};
                 categories.forEach(cat => { catMap[cat.id] = cat.name; });
 
+                cardsData = products.map(product => ({
+                    id: product.id,
+                    name: product.name,
+                    price: `$${parseFloat(product.price).toFixed(2)}`, // normalize price
+                    image: product.image,
+                    description: product.description || '',
+                    category: product.category_id ? product.category_id.toString() : '',
+                    category_name: catMap[product.category_id] || "Unknown"
+                }));
+
+                filterCards();
+                
                 // Render product cards
                 const gridContainer = document.getElementById('gridContainer');
                 const listContainer = document.getElementById('listContainer');
@@ -175,18 +191,18 @@
                 listContainer.innerHTML = "";
 
                 products.forEach(product => {
-                    const categoryName = catMap[product.cat_id] || "Unknown";
+                     const categoryName = product.category_name || "Unknown";
                     // Grid Card
                     gridContainer.innerHTML += `
                         <div class="col-xl-4 col-lg-6 col-md-4     col-sm-6 col-12 mb-4 d-flex justify-content-center">
                           <div class="game-card position-relative">
-                            <img src="${product.image}" alt="${product.title}" class="card-img-top" />
+                            <img src="${product.image}" alt="${product.name}" class="card-img-top" />
                             <div class="position-absolute card-content">
                               <div class="icons d-flex gap-2 mb-3">
                                 <i class="fa-brands fa-apple"></i>
                                 <i class="fa-brands fa-windows"></i>
                               </div>
-                              <h3>${product.title}</h3>
+                              <h3>${product.name}</h3>
                               <h3 class="mb-0">$${product.price.toFixed(2)}</h3>
                               <span class="badge bg-secondary mt-2">${categoryName}</span>
                             </div>
@@ -207,13 +223,13 @@
                           <div class="row g-0 align-items-center">
                             <div class="col-sm-4 d-flex align-items-center justify-content-center" style="min-height:180px;">
                               <div style="background:rgba(24,24,24,0.95); border-radius:16px; padding:12px; display:flex; align-items:center; justify-content:center; width:130px; height:130px;">
-                                <img src="${product.image}" alt="${product.title}" style="width: 120px; height: 120px; object-fit: cover; border-radius: 12px; box-shadow:0 2px 8px rgba(0,0,0,0.2); background:#181818;" />
+                                <img src="${product.image}" alt="${product.name}" style="width: 120px; height: 120px; object-fit: cover; border-radius: 12px; box-shadow:0 2px 8px rgba(0,0,0,0.2); background:#181818;" />
                               </div>
                             </div>
                             <div class="col-sm-8">
                               <div class="card-body d-flex flex-column justify-content-between h-100" style="min-height: 160px;">
                                 <div>
-                                  <h5 class="card-title mb-2" style="color:#ad9d79;">${product.title}</h5>
+                                  <h5 class="card-title mb-2" style="color:#ad9d79;">${product.name}</h5>
                                   <p class="card-text fw-bold mb-1 text-white">$${product.price.toFixed(2)}</p>
                                   <p class="card-text mb-2 text-white"><small>${product.description}</small></p>
                                   <span class="badge bg-secondary">${categoryName}</span>
@@ -246,13 +262,13 @@
             return `
             <div class="col-12 col-sm-6 col-md-4 col-lg-6 col-xl-4  mb-4 d-flex justify-content-center">
               <div class="game-card position-relative">
-                <img src="${cardData.image}" alt="${cardData.title}" class="card-img-top" />
+                <img src="${cardData.image}" alt="${cardData.name}" class="card-img-top" />
                 <div class="position-absolute card-content">
                   <div class="icons d-flex gap-2 mb-3">
                     <i class="fa-brands fa-apple"></i>
                     <i class="fa-brands fa-windows"></i>
                   </div>
-                  <h3>${cardData.title}</h3>
+                  <h3>${cardData.name}</h3>
                   <h3 class="mb-0">${cardData.price}</h3>
                 </div>
                 <div class="card-actions d-flex align-items-center gap-3">
@@ -272,13 +288,13 @@
           <div class="row g-0 align-items-center">
             <div class="col-sm-4 d-flex align-items-center justify-content-center" style="min-height:180px;">
               <div style="background:rgba(24,24,24,0.95); border-radius:16px; padding:12px; display:flex; align-items:center; justify-content:center; width:130px; height:130px;">
-                <img src="${cardData.image}" alt="${cardData.title}" style="width: 120px; height: 120px; object-fit: cover; border-radius: 12px; box-shadow:0 2px 8px rgba(0,0,0,0.2); background:#181818;" />
+                <img src="${cardData.image}" alt="${cardData.name}" style="width: 120px; height: 120px; object-fit: cover; border-radius: 12px; box-shadow:0 2px 8px rgba(0,0,0,0.2); background:#181818;" />
               </div>
             </div>
             <div class="col-sm-8">
               <div class="card-body d-flex flex-column justify-content-between h-100" style="min-height: 160px;">
                 <div>
-                  <h5 class="card-title mb-2" style="color:#ad9d79;">${cardData.title}</h5>
+                  <h5 class="card-title mb-2" style="color:#ad9d79;">${cardData.name}</h5>
                   <p class="card-text fw-bold mb-1 text-white" >${cardData.price}</p>
                   <p class="card-text mb-2 text-white"><small class="">${cardData.description}</small></p>
                 </div>
@@ -370,12 +386,12 @@
             gridBtn.classList.remove('active');
         });
 
-        function sortCards(cards, sortValue) {
+       function sortCards(cards, sortValue) {
             return [...cards].sort((a, b) => {
                 const priceA = parseFloat(a.price.replace('$', ''));
                 const priceB = parseFloat(b.price.replace('$', ''));
-                const nameA = a.title.toLowerCase();
-                const nameB = b.title.toLowerCase();
+                const nameA = (a.name || '').toLowerCase(); // ✅ safe access
+                const nameB = (b.name || '').toLowerCase(); // ✅ safe access
 
                 switch (sortValue) {
                     case 'name-asc':
@@ -391,6 +407,7 @@
                 }
             });
         }
+        
         document.querySelectorAll('.dropdown-item').forEach(item => {
             item.addEventListener('click', e => {
                 e.preventDefault();
@@ -450,17 +467,19 @@
     </script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            fetch("http://localhost:4000/categories")
+            fetch("categoriesJson")
                 .then(res => res.json())
                 .then(categories => {
-                    // Desktop filter
+                    console.log("Fetched categories:", categories); // Debug output
                     const filterListDesktop = document.getElementById("categoryFilterListDesktop");
                     if (filterListDesktop) {
                         filterListDesktop.innerHTML = "";
                         categories.forEach(cat => {
+                            const catId = cat.id ;
+                            console.log(cat);
                             filterListDesktop.innerHTML += `
                                 <li>
-                                    <input type="checkbox" name="category" value="${cat.id}"> ${cat.name}
+                                    <input type="checkbox" name="category" value="${catId}"> ${cat.name || "Unnamed"}
                                 </li>
                             `;
                         });
@@ -470,9 +489,10 @@
                     if (filterListMobile) {
                         filterListMobile.innerHTML = "";
                         categories.forEach(cat => {
+                            const catId = cat.id !== undefined ? cat.id : (cat._id !== undefined ? cat._id : "");
                             filterListMobile.innerHTML += `
                                 <li>
-                                    <input type="checkbox" name="category" value="${cat.id}"> ${cat.name}
+                                    <input type="checkbox" name="category" value="${cat.id}"> ${cat.name || "Unnamed"}
                                 </li>
                             `;
                         });
@@ -503,36 +523,44 @@
             gridContainer.innerHTML = "";
 
             products.forEach(product => {
-                const categoryName = catMap[product.cat_id] || "Unknown";
-                gridContainer.innerHTML += `
-            <div class="col-lg-4 col-md-6 col-sm-6 col-12 mb-4 d-flex justify-content-center">
-              <div class="game-card position-relative">
-                <img src="${product.image}" alt="${product.title}" class="card-img-top" />
-                <div class="position-absolute card-content">
-                  <h3>${product.title}</h3>
-                  <h3 class="mb-0">$${product.price.toFixed(2)}</h3>
-                  <span class="badge bg-secondary mt-2">${categoryName}</span>
-                </div>
-              </div>
-            </div>
-        `;
+            const categoryName = product.category_name || "Unknown";
+            gridContainer.innerHTML += `
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 mb-4 d-flex justify-content-center">
+                    <div class="game-card position-relative">
+                        <img src="${product.image}" alt="${product.name}" class="card-img-top" />
+                        <div class="position-absolute card-content">
+                        <h3>${product.name}</h3>
+                        <h3 class="mb-0">$${product.price.toFixed(2)}</h3>
+                        <span class="badge bg-secondary mt-2">${categoryName}</span>
+                        </div>
+                    </div>
+                    </div>
+                `;
             });
         }
-
         function filterAndRenderProducts() {
-            // Get checked categories (as numbers)
-            const checkedCategories = Array.from(document.querySelectorAll('input[name="category"]:checked')).map(cb => Number(cb.value));
-            // Get checked price ranges
-            const checkedPrices = Array.from(document.querySelectorAll('input[name="price"]:checked')).map(cb => cb.value);
-
+            const checkedCategories = Array.from(document.querySelectorAll('input[name="category"]:checked'))
+                .map(cb => cb.value)
+                .filter(id => id); 
+            const checkedPrices = Array.from(document.querySelectorAll('input[name="price"]:checked'))
+                .map(cb => cb.value);
+            
             let filtered = allProducts;
 
-            // Category filter
+            console.log("Checked categories:", checkedCategories);
+            console.log("Sample product category_id:", allProducts[0]?.category_id);
+            
+            // Filter by category if any selected
             if (checkedCategories.length > 0) {
-                filtered = filtered.filter(p => checkedCategories.includes(p.cat_id));
+                filtered = filtered.filter(p => {
+                    const productCategoryId = String(p.category_id);
+                    const isIncluded = checkedCategories.includes(productCategoryId);
+                    console.log(`Product category_id: "${productCategoryId}", Checked categories:`, checkedCategories, `Includes: ${isIncluded}`);
+                    return isIncluded;
+                });
             }
-
-            // Price filter
+            
+            console.log('After category filter:', filtered);
             if (checkedPrices.length > 0) {
                 filtered = filtered.filter(p => {
                     return checkedPrices.some(range => {
@@ -541,14 +569,16 @@
                     });
                 });
             }
-
+            
+            console.log('After price filter:', filtered);
+            
             renderProducts(filtered, allCategories);
         }
 
         document.addEventListener("DOMContentLoaded", function () {
             Promise.all([
-                fetch("http://localhost:4000/products").then(res => res.json()),
-                fetch("http://localhost:4000/categories").then(res => res.json())
+                fetch("productsJson").then(res => res.json()),
+                fetch("categoriesJson").then(res => res.json())
             ]).then(([products, categories]) => {
                 allProducts = products;
                 allCategories = categories;
@@ -641,8 +671,8 @@
 
         function fetchAndRenderProducts(sortType) {
             Promise.all([
-                fetch("http://localhost:4000/products").then(res => res.json()),
-                fetch("http://localhost:4000/categories").then(res => res.json())
+                fetch("productsJson").then(res => res.json()),
+                fetch("categoriesJson").then(res => res.json())
             ]).then(([products, categories]) => {
                 // Sort products based on sortType
                 let sortedProducts = [...products];
@@ -674,13 +704,13 @@
             const gridContainer = document.getElementById('gridContainer');
             gridContainer.innerHTML = "";
             products.forEach(product => {
-                const categoryName = catMap[product.cat_id] || "Unknown";
+                const categoryName = product.category_name || "Unknown";
                 gridContainer.innerHTML += `
                     <div class="col-lg-4 col-md-6 col-sm-6 col-12 mb-4 d-flex justify-content-center">
                       <div class="game-card position-relative" data-id="${product.id}">
-                        <img src="${product.image}" alt="${product.title}" class="card-img-top" />
+                        <img src="${product.image}" alt="${product.name}" class="card-img-top" />
                         <div class="position-absolute card-content">
-                          <h3>${product.title}</h3>
+                          <h3>${product.name}</h3>
                           <h3 class="mb-0">$${Number(product.price).toFixed(2)}</h3>
                           <span class="badge bg-secondary mt-2">${categoryName}</span>
                         </div>
@@ -699,9 +729,8 @@
                 card.addEventListener('click', function (e) {
                     // Prevent navigation if the click was on the ADD TO CART button
                     if (e.target.closest('.custom-cart-btn')) return;
-                    const id = this.getAttribute('data-id');
-                    localStorage.setItem('item_id', id);
-                    window.location.href = 'singleProduct.html';
+                    const productId = this.getAttribute('data-id');
+                    window.location.href = `http://127.0.0.1:8000/productDetails/${productId}`;
                 });
             });
             // Add click event to all .custom-cart-btn buttons for cart functionality

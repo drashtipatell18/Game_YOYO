@@ -1,9 +1,16 @@
 @extends('frontend.layouts.main')
-    <style>
-        .text-theme {
-            color: #ad9d79 !important; /* your website’s gold theme */
-            }
-    </style>
+<style>
+    .text-theme {
+        color: #ad9d79 !important;
+        /* your website’s gold theme */
+    }
+
+    .x_service-card {
+        background-color: #1a1a1a;
+        border: none;
+        color: #fff;
+    }
+</style>
 @section('content')
     <!-- page title section -->
     <section class="xs_contact-hero-section">
@@ -24,7 +31,8 @@
                     <h2 class="mb-3 fw-bold x_privacy-title" style="color:#ad9d79 ; text-shadow:none;">Game Ecomm
                         Services
                     </h2>
-                    <p class="lead x_text-secondary x_fs_small">We provide a range of services to enhance your gaming experience,
+                    <p class="lead x_text-secondary x_fs_small">We provide a range of services to enhance your gaming
+                        experience,
                         from
                         curated product selections to expert support and fast delivery. Buy your favorite games, pay
                         securely, and get instant installation on your device after purchase. Discover what makes us
@@ -32,74 +40,23 @@
                 </div>
             </div>
             <div class="row g-4">
-                <div class="col-md-6 col-lg-4">
-                    <div class="card h-100 shadow-sm x_service-card">
-                        <div class="card-body text-center">
-                            <div class="mb-3"><i class="fa-solid fa-gamepad fa-2x text-theme"></i></div>
-                            <h5 class="card-title  mb-2">Curated Game Store</h5>
-                            <p class="card-text x_text_color ">Explore a handpicked selection of the latest and
-                                greatest
-                                games, accessories, and collectibles for every type of gamer.</p>
+                @foreach ($services as $service)
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100 shadow-sm x_service-card text-center bg-dark text-light">
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <img src="{{ asset('images/services/' . $service->icon) }}" alt="{{ $service->title }}"
+                                        style="width: 50px; height: 50px; filter: brightness(0) saturate(100%) invert(74%) sepia(19%) saturate(871%) hue-rotate(16deg) brightness(94%) contrast(87%);">
+
+                                </div>
+                                <h5 class="card-title mb-2">{{ $service->title }}</h5>
+                                <p class="card-text x_text_color">{{ $service->description }}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="card h-100 shadow-sm x_service-card">
-                        <div class="card-body text-center">
-                            <div class="mb-3"><i class="fa-solid fa-download fa-2x text-theme"></i></div>
-                            <h5 class="card-title  mb-2">Instant Installation</h5>
-                            <p class="card-text x_text_color ">Once payment is complete, your game is automatically
-                                installed on your
-                                device—no waiting, no hassle.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="card h-100 shadow-sm x_service-card">
-                        <div class="card-body text-center">
-                            <div class="mb-3"><i class="fa-solid fa-headset fa-2x text-theme"></i></div>
-                            <h5 class="card-title  mb-2">Expert Support</h5>
-                            <p class="card-text x_text_color ">Our knowledgeable team is here to help you with product
-                                advice, order issues, and any gaming-related questions.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="card h-100 shadow-sm x_service-card">
-                        <div class="card-body text-center">
-                            <div class="mb-3"><i class="fa-solid fa-shield-halved fa-2x text-theme"></i></div>
-                            <h5 class="card-title  mb-2">Secure Payments</h5>
-                            <p class="card-text x_text_color ">Shop with confidence using our encrypted payment
-                                gateways
-                                and multiple payment options.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="card h-100 shadow-sm x_service-card">
-                        <div class="card-body text-center">
-                            <div class="mb-3"><i class="fa-solid fa-gift fa-2x text-theme"></i></div>
-                            <h5 class="card-title  mb-2">Exclusive Offers</h5>
-                            <p class="card-text x_text_color ">Enjoy special deals, seasonal discounts, and loyalty
-                                rewards
-                                available only to our community members.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="card h-100 shadow-sm x_service-card">
-                        <div class="card-body text-center">
-                            <div class="mb-3"><i class="fa-solid fa-star fa-2x text-theme"></i></div>
-                            <h5 class="card-title  mb-2">Verified Reviews</h5>
-                            <p class="card-text x_text_color ">Read honest feedback from real gamers and share your own
-                                experiences to help others choose wisely.</p>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
+
         </div>
     </section>
-    
 @endsection
-
- 

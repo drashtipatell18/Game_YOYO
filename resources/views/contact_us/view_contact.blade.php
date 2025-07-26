@@ -47,30 +47,25 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                           <tr>
-                                                <td class="text-center">1</td>
-                                                <td class="text-center">John Doe</td>
-                                                <td class="text-center">john@example.com</td>
-                                                <td class="text-center">Customer</td>
-                                                <td class="text-center">Hello, I need help with my order.</td>
-                                               <td class="text-center">
-                                                    <button class="btn btn-sm btn-danger custom-btn" style="color:white">
-                                                        <i class="fas fa-trash-alt"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-center">2</td>
-                                                <td class="text-center">Jane Smith</td>
-                                                <td class="text-center">jane@example.com</td>
-                                                <td class="text-center">Support</td>
-                                                <td class="text-center">Please update me on ticket #1234.</td>
-                                               <td class="text-center">
-                                                    <button class="btn btn-sm btn-danger custom-btn" style="color:white">
-                                                        <i class="fas fa-trash-alt"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
+                                           @foreach ($contacts as $contact)
+                                                <tr>
+                                                    <td class="text-center">{{ $loop->iteration }}</td>
+                                                    <td class="text-center">{{ $contact->name }}</td>
+                                                    <td class="text-center">{{ $contact->email }}</td>
+                                                    <td class="text-center">{{ $contact->tag }}</td>
+                                                    <td class="text-center">{{ $contact->message }}</td>
+                                                    <td class="text-center">
+                                                        <form action="{{ route('contactUs.delete', $contact->id) }}" method="POST" style="display:inline;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-sm btn-danger custom-btn" title="Delete"
+                                                                onclick="return confirm('Are you sure you want to delete this Contact?')">
+                                                                <i class="fas fa-trash-alt text-white"></i>
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                           @endforeach
                                         </tbody>
                                     </table>
                                 </div>
