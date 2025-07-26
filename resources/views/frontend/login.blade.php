@@ -156,7 +156,7 @@
                             <!-- Create Account -->
                             <p class="text-center text-white-50 login-page-last">
                                 Don’t have an account?
-                                <a href="/auth/SignUp.html" class="text-white">Create Account!</a>
+                                <a href="{{ route('frontregister')}}" class="text-white">Create Account!</a>
                             </p>
                         </div>
                     </div>

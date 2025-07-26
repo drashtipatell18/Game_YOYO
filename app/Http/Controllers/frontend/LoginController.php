@@ -80,4 +80,8 @@ class LoginController extends Controller
 
         return redirect()->back()->with('success', 'Profile updated successfully!');
     }
+
+    public function frontregister(){
+        return view('frontend.signup');
+    }
 }
