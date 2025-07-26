@@ -152,14 +152,17 @@
             </div>
         </div>
     </div>
-   
-   
-
 @endsection
+
+
+
+
 
 @push('script')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        let cardsData = [];
         document.addEventListener("DOMContentLoaded", function () {
             Promise.all([
                 fetch("productsJson").then(res => res.json()),
@@ -169,6 +172,18 @@
                 const catMap = {};
                 categories.forEach(cat => { catMap[cat.id] = cat.name; });
 
+                cardsData = products.map(product => ({
+                    id: product.id,
+                    name: product.name,
+                    price: `$${parseFloat(product.price).toFixed(2)}`, // normalize price
+                    image: product.image,
+                    description: product.description || '',
+                    category: product.category_id ? product.category_id.toString() : '',
+                    category_name: catMap[product.category_id] || "Unknown"
+                }));
+
+                filterCards();
+                
                 // Render product cards
                 const gridContainer = document.getElementById('gridContainer');
                 const listContainer = document.getElementById('listContainer');
@@ -371,12 +386,12 @@
             gridBtn.classList.remove('active');
         });
 
-        function sortCards(cards, sortValue) {
+       function sortCards(cards, sortValue) {
             return [...cards].sort((a, b) => {
                 const priceA = parseFloat(a.price.replace('$', ''));
                 const priceB = parseFloat(b.price.replace('$', ''));
-                const nameA = a.title.toLowerCase();
-                const nameB = b.title.toLowerCase();
+                const nameA = (a.name || '').toLowerCase(); // ✅ safe access
+                const nameB = (b.name || '').toLowerCase(); // ✅ safe access
 
                 switch (sortValue) {
                     case 'name-asc':
@@ -392,6 +407,7 @@
                 }
             });
         }
+        
         document.querySelectorAll('.dropdown-item').forEach(item => {
             item.addEventListener('click', e => {
                 e.preventDefault();
@@ -655,8 +671,8 @@
 
         function fetchAndRenderProducts(sortType) {
             Promise.all([
-                fetch("http://localhost:4000/products").then(res => res.json()),
-                fetch("http://localhost:4000/categories").then(res => res.json())
+                fetch("productsJson").then(res => res.json()),
+                fetch("categoriesJson").then(res => res.json())
             ]).then(([products, categories]) => {
                 // Sort products based on sortType
                 let sortedProducts = [...products];
@@ -688,13 +704,13 @@
             const gridContainer = document.getElementById('gridContainer');
             gridContainer.innerHTML = "";
             products.forEach(product => {
-                const categoryName = catMap[product.cat_id] || "Unknown";
+                const categoryName = product.category_name || "Unknown";
                 gridContainer.innerHTML += `
                     <div class="col-lg-4 col-md-6 col-sm-6 col-12 mb-4 d-flex justify-content-center">
                       <div class="game-card position-relative" data-id="${product.id}">
-                        <img src="${product.image}" alt="${product.title}" class="card-img-top" />
+                        <img src="${product.image}" alt="${product.name}" class="card-img-top" />
                         <div class="position-absolute card-content">
-                          <h3>${product.title}</h3>
+                          <h3>${product.name}</h3>
                           <h3 class="mb-0">$${Number(product.price).toFixed(2)}</h3>
                           <span class="badge bg-secondary mt-2">${categoryName}</span>
                         </div>
