@@ -1,6 +1,22 @@
 @extends('frontend.layouts.main')
 @section('content')
-
+<style>
+    .x_review-form .form-control:focus {
+        background: transparent;
+        color: #fff;
+        border-color: #cfcfcf !important;
+        box-shadow: none;
+    }
+    .submitReviewButton:hover{
+        border-radius: 2px;
+        font-weight: 500;
+        letter-spacing: 1px;
+        border: 1px solid transparent;
+        background-color: #928e75 !important;
+        color: #fff !important;
+    }
+    
+</style>
     <!-- x_game-product-section START -->
     <section class="x_game-shop a_header_container">
         <div class=" x_game-product-section py-5">
@@ -156,7 +172,7 @@
                                         </div>
                                         <div class="text-center">
                                             <button type="submit"
-                                                class="x_btn btn btn-outline-light mx-auto">SUBMIT</button>
+                                                class="x_btn btn btn-outline-light mx-auto submitReviewButton">SUBMIT</button>
                                         </div>
                                     </form>
                                 </div>
