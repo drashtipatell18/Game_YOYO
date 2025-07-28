@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ForgotPasswordMail;
+
 class LoginController extends Controller
 {
     public function login(){
@@ -46,6 +50,21 @@ class LoginController extends Controller
 
     public function forget(){
         return view('frontend.Frontend_change');
+    }
+
+    public function frontsendResetLinkEmail(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+        $user = User::where('email', '=', $request->email)->first();
+
+        if (!empty($user)) {
+            $user->remember_token = Str::random(40);
+            $user->save();
+
+            Mail::to($user->email)->send(new ForgotPasswordMail($user));
+            return redirect()->route('frontendforget')->with('success', 'Password reset link sent successfully.');
+
+        }
     }
 
     public function profile($id){

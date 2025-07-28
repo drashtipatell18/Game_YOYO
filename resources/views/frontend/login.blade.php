@@ -127,7 +127,7 @@
                                 <input type="checkbox" id="rememberMe" />
                                 <span class="checkmark"></span> --}}
                                         </label>
-                                        <a href="/auth/ForgetPass.html" class="text-white-50 small">Forgot Password?</a>
+                                        <a href="{{ route('frontendforget')}}" class="text-white-50 small">Forgot Password?</a>
                                     </div>
                                 </div>
                                 <!-- Sign In Button -->
