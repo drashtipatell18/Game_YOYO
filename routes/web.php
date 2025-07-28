@@ -156,6 +156,7 @@ Route::get('/frontlogout',[FrontendLoginController::class,'frontlogout'])->name(
 
 Route::get('demo', [FrontendLoginController::class, 'demo'])->name('demo');
 Route::get('/frontend-forget',[FrontendLoginController::class,'Forget'])->name('frontend.forget');
+Route::get('/frontend-forget',[FrontendLoginController::class,'frontsendResetLinkEmail'])->name('frontresertlink');
 Route::get('/index', [FrontendHomeController::class, 'index'])->name('index');
 Route::get('/aboutsus', [AboutUSController::class, 'aboutus'])->name(name: 'aboutus');
 
