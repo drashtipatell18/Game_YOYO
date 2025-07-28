@@ -303,6 +303,10 @@
 
 @push('script')
     <script>
+        const isLoggedIn = @json(Auth::check()); // returns true or false
+        const loginUrl = "{{ route('frontend.login') }}";
+    </script>
+    <script>
         $(document).ready(function () {
             // Thumbnail image click
             $('.x_thumb-img').on('click', function () {
@@ -331,6 +335,11 @@
             // Review form submission with validation
             $('.x_review-form').on('submit', function (e) {
                 e.preventDefault();
+
+                if (!isLoggedIn) {
+                    window.location.href = loginUrl;
+                    return;
+                }
 
                 var valid = true;
                 var rating = $(this).data('rating') || 0;
