@@ -283,7 +283,7 @@
         </script>
         <script>
             document.addEventListener("DOMContentLoaded", function () {
-                fetch("/categories")
+                fetch("/categoriesJson")
                     .then(res => res.json())
                     .then(categories => {
                         const wrapper = document.getElementById("categoryWrapper");
