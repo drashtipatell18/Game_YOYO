@@ -21,7 +21,15 @@ class ProductController extends Controller
         $images = explode(',', $product->image);
         $reviewCount = $product->reviews()->count();
 
-        return view('frontend.singleProduct',compact('product','images','reviewCount'));
+        $relatedProducts = Product::where('category_id', $product->category_id)
+                              ->where('id', '!=', $product->id)
+                              ->take(10)
+                              ->get();
+
+                            // dd($relatedProducts);
+
+      
+        return view('frontend.singleProduct',compact('product','images','reviewCount','relatedProducts'));
     }
 
     public function getproductDetailJson($id)

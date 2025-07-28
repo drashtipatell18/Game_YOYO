@@ -440,87 +440,90 @@
             });
         });
     </script>
-  
-    <script>
-        // Example cards data (replace with your real data if needed)
-        const cardsData = [
-           
-        ];
 
-        function renderSwiperCards() {
-            const swiperCards = document.getElementById('swiperCards');
-            swiperCards.innerHTML = cardsData.map(card => `
-                <div class="swiper-slide d-flex justify-content-center">
-                    <div class="game-card position-relative" data-id="${card.id}" style="cursor: pointer;">
-                        <img src="${card.image}" alt="${card.title}" class="card-img-top" />
-                        <div class="position-absolute card-content">
-                            <div class="icons d-flex gap-2 mb-3">
-                                <i class="fa-brands fa-apple"></i>
-                                <i class="fa-brands fa-windows"></i>
-                            </div>
-                            <h3>${card.title}</h3>
-                            <h3 class="mb-0">${card.price}</h3>
+    <script>
+        const cardsData = {!! json_encode($relatedProducts->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'name' => $item->name,
+                'image' => asset('images/products/' . explode(',', $item->image)[0]),
+                'price' => '₹' . $item->price,
+            ];
+        })) !!};
+    </script>
+
+    <script>
+    function renderSwiperCards() {
+        const swiperCards = document.getElementById('swiperCards');
+        swiperCards.innerHTML = cardsData.map(card => `
+            <div class="swiper-slide d-flex justify-content-center">
+                <div class="game-card position-relative" data-id="${card.id}" style="cursor: pointer;">
+                    <img src="${card.image}" alt="${card.name}" class="card-img-top" />
+                    <div class="position-absolute card-content">
+                        <div class="icons d-flex gap-2 mb-3">
+                            <i class="fa-brands fa-apple"></i>
+                            <i class="fa-brands fa-windows"></i>
                         </div>
-                        <div class="card-actions d-flex align-items-center gap-3 ">
-                            <div class="d_main_button w-100">
-                                <button class="custom-cart-btn w-100" data-id="${card.id}">ADD TO CART</button>
-                                <div class="d_border"></div>
-                            </div>
-                           
+                        <h3>${card.name}</h3>
+                        <h3 class="mb-0">${card.price}</h3>
+                    </div>
+                    <div class="card-actions d-flex align-items-center gap-3">
+                        <div class="d_main_button w-100">
+                            <button class="custom-cart-btn w-100" data-id="${card.id}">ADD TO CART</button>
+                            <div class="d_border"></div>
                         </div>
                     </div>
                 </div>
-            `).join('');
+            </div>
+        `).join('');
 
-            // Add click event listeners to slider cards
-            document.querySelectorAll('.game-card').forEach(card => {
-                card.addEventListener('click', function (e) {
-                    // Don't trigger if clicking on ADD TO CART button
-                    if (e.target.closest('.custom-cart-btn')) {
-                        return;
-                    }
-
-                    const productId = this.getAttribute('data-id');
-                    localStorage.setItem('item_id', productId);
-                    window.location.href = 'singleProduct.html';
-                });
-            });
-
-            // Add click event listeners to ADD TO CART buttons
-            document.querySelectorAll('.custom-cart-btn').forEach(btn => {
-                btn.addEventListener('click', function (e) {
-                    e.stopPropagation(); // Prevent card click
-                    const productId = this.getAttribute('data-id');
-                    addToCartFromSlider(productId);
-                });
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', function () {
-            renderSwiperCards();
-            new Swiper('.mySwiper', {
-                slidesPerView: 3,
-                spaceBetween: 24,
-                navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
-                },
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true,
-                },
-                breakpoints: {
-                    0: { slidesPerView: 1 },
-                    576: { slidesPerView: 2 },
-                    768: { slidesPerView: 3 },
-                    1024: { slidesPerView: 3 },
-                    1200: { slidesPerView: 4 },
-                    1400: { slidesPerView: 4 },
-                    1600: { slidesPerView: 5 },
-                }
+        // Product card click
+        document.querySelectorAll('.game-card').forEach(card => {
+            card.addEventListener('click', function (e) {
+                if (e.target.closest('.custom-cart-btn')) return;
+                const productId = this.getAttribute('data-id');
+                localStorage.setItem('item_id', productId);
+                window.location.href = '/productDetails/' + productId; // Update route if needed
             });
         });
-    </script>
+
+        // Add to Cart button
+        document.querySelectorAll('.custom-cart-btn').forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                const productId = this.getAttribute('data-id');
+                addToCartFromSlider(productId); // Define this function separately
+            });
+        });
+    }
+
+    // Run Swiper and render cards
+    document.addEventListener('DOMContentLoaded', function () {
+        renderSwiperCards();
+        new Swiper('.mySwiper', {
+            slidesPerView: 3,
+            spaceBetween: 24,
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            breakpoints: {
+                0: { slidesPerView: 1 },
+                576: { slidesPerView: 2 },
+                768: { slidesPerView: 3 },
+                1024: { slidesPerView: 3 },
+                1200: { slidesPerView: 4 },
+                1400: { slidesPerView: 4 },
+                1600: { slidesPerView: 5 },
+            }
+        });
+    });
+</script>
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const promoCheckbox = document.querySelector(".promo-code");
@@ -824,7 +827,4 @@
             modal1El.addEventListener('show.bs.modal', updatePaymentSummary);
         });
     </script>
-
-  
-
     @endpush
