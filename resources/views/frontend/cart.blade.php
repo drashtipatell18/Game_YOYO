@@ -471,7 +471,7 @@
                 if (updateCartBtn) {
                     updateCartBtn.addEventListener('click', function(e) {
                         e.preventDefault();
-                        window.location.href = '/allProducts';
+                        window.location.href = '/allproducts';
                     });
                 }
             });
