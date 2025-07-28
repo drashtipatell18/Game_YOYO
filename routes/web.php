@@ -15,7 +15,7 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\MembersSayController;
 use App\Http\Controllers\ReviewController;
-
+use App\Http\Controllers\AddToCartController;
 use App\Http\Controllers\frontend\HomeController as FrontendHomeController;
 use App\Http\Controllers\frontend\LoginController as FrontendLoginController;
 use App\Http\Controllers\frontend\AboutUSController;
@@ -145,7 +145,14 @@ Route::get('/members-say/edit/{id}', [MembersSayController::class, 'EditMembersS
 Route::post('/members-say/update/{id}', [MembersSayController::class, 'UpdateMembersSay'])->name('update.members-say');
 Route::delete('/members-say/destroy/{id}',[MembersSayController::class,'DestroyMembersSay'])->name('destroy.members-say');
 
-
+// Add to Cart
+Route::get('/add-to-cart', [AddToCartController::class, 'AddToCart'])->name('add-to-cart');
+Route::get('/add-to-cart/create', [AddToCartController::class, 'CreateAddToCart'])->name('add-to-cart.create');
+Route::post('/add-to-cart/store', [AddToCartController::class, 'StoreAddToCart'])->name('add-to-cart.store');
+Route::get('/add-to-cart/{id}/edit', [AddToCartController::class, 'EditAddToCart'])->name('add-to-cart.edit');
+Route::post('/add-to-cart/update/{id}', [AddToCartController::class, 'UpdateAddToCart'])->name('add-to-cart.update');
+Route::delete('/add-to-cart/destroy/{id}', [AddToCartController::class, 'DeleteAddToCart'])->name('add-to-cart.destroy');
+Route::post('/add-to-cart/remove/{id}', [AddToCartController::class, 'removeFromCart'])->name('add-to-cart.remove');
 });
 
 

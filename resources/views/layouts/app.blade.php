@@ -330,6 +330,14 @@
                             </a>
                         </li>
 
+                        <li class="nav-item"></li>
+                            <a class="nav-link" href="{{ route('add-to-cart') }}">
+                                <span class="nav-icon">
+                                    <i class="fa-solid fa-cart-shopping"></i>
+                                </span>
+                                <span class="nav-link-text">Cart</span>
+                            </a>
+
                         <!--//nav-item-->
                     </ul>
                     <!--//app-menu-->
