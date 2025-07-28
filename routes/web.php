@@ -182,10 +182,11 @@ Route::get('/cart', [FrontendCartController::class, 'Cart'])->name('cart');
 Route::get('/blog', [FrontendBlogController::class, 'blog'])->name('blog');
 Route::post('/profile/update/{id}', [FrontendLoginController::class, 'updateProfile'])->name('profile.update');
 Route::get('/productDetails/{id}', [FrontendProductController::class, 'productDetails'])->name('productDetails');
+Route::post('/submit-review', [FrontendProductController::class, 'storeReviewProduct'])->name('frontReviewStore')->middleware('auth');
 
 // Json Data
 Route::get('/categoriesJson', [FrontendHomeController::class, 'getCategoriesJson']);
 Route::get('/productsJson', [FrontendHomeController::class, 'getProductJson']);
-Route::get('/productDetailJson', [FrontendHomeController::class, 'getproductDetailJson']);
+Route::get('/productDetailJson', [FrontendProductController::class, 'getproductDetailJson']);
 Route::get('/products/{id}', [ProductController::class, 'getProductDetailJson']);
 

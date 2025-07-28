@@ -118,7 +118,9 @@
                                     <p>Be the first to review <b>"Falldown Republic"</b></p>
                                     <p class="mb-1">Your email address will not be published. Required fields are marked
                                         *</p>
+                                    <div class="alert alert-success x_review-success" style="display:none;"></div>
                                     <form class="x_review-form">
+                                         <input type="hidden" id="product_id" value="{{ $product->id }}"> <!-- Add this -->
                                         <div class="mb-2">Your rating *</div>
                                         <div class="mb-3 x_rating-stars">
                                             <i class="fa-regular fa-star"></i>
@@ -140,7 +142,7 @@
                                             <label for="name" class="form-label">Name *</label>
                                             <input type="text"
                                                 class="form-control bg-transparent text-white border-secondary"
-                                                id="name">
+                                                id="name" value="{{ auth()->check() ? auth()->user()->name : '' }}"{{ auth()->check() ? 'disabled' : '' }}>
                                             <div class="invalid-feedback d-block x_name-error" style="display:none;">
                                             </div>
                                         </div>
@@ -148,17 +150,9 @@
                                             <label for="email" class="form-label">Email *</label>
                                             <input type="email"
                                                 class="form-control bg-transparent text-white border-secondary"
-                                                id="email">
+                                                id="email" value="{{ auth()->check() ? auth()->user()->email : '' }}"{{ auth()->check() ? 'disabled' : '' }}>
                                             <div class="invalid-feedback d-block x_email-error" style="display:none;">
                                             </div>
-                                        </div>
-                                        <div class="form-check promo-code  checkbox-item mb-3 p-0  ">
-                                            <!-- <input class="form-check-input" type="checkbox" id="saveInfo"> -->
-                                            <div class="custom-checkbox"></div>
-                                            <label class="form-check-label" for="saveInfo">
-                                                Save my name, email, and website in this browser for the next time I
-                                                comment.
-                                            </label>
                                         </div>
                                         <div class="text-center">
                                             <button type="submit"
@@ -306,17 +300,19 @@
         </div>
     </div>
 @endsection
+
 @push('script')
-<script>
-        // Image thumbnail click to main image swap
+    <script>
         $(document).ready(function () {
+            // Thumbnail image click
             $('.x_thumb-img').on('click', function () {
                 var newSrc = $(this).attr('src');
                 $('.x_main-img').attr('src', newSrc);
                 $('.x_thumb-img').removeClass('active');
                 $(this).addClass('active');
             });
-            // Set first thumb as active on load
+
+            // Set first thumbnail as active
             $('.x_thumb-img').first().addClass('active');
 
             // Star rating click
@@ -329,23 +325,27 @@
                         $(this).removeClass('fa-solid').addClass('fa-regular');
                     }
                 });
-                // Store rating value
                 $('.x_review-form').data('rating', index + 1);
             });
 
-            // Review form validation
+            // Review form submission with validation
             $('.x_review-form').on('submit', function (e) {
+                e.preventDefault();
+
                 var valid = true;
                 var rating = $(this).data('rating') || 0;
                 var review = $('#review').val().trim();
                 var name = $('#name').val().trim();
                 var email = $('#email').val().trim();
+                var product_id = $('#product_id').val();
                 var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                // Reset errors
-                $('.x_rating-error, .x_review-error, .x_name-error, .x_email-error').hide().text("");
+
+                // Reset previous errors
+                $('.x_rating-error, .x_review-error, .x_name-error, .x_email-error').hide().text('');
                 $('#review, #name, #email').removeClass('is-invalid');
                 $('.x_rating-stars').removeClass('is-invalid');
-                // Validate fields
+
+                // Validation checks
                 if (rating === 0) {
                     $('.x_rating-error').text('Please select a rating.').show();
                     $('.x_rating-stars').addClass('is-invalid');
@@ -366,12 +366,53 @@
                     $('#email').addClass('is-invalid');
                     valid = false;
                 }
-                if (!valid) {
-                    e.preventDefault();
-                }
+
+                if (!valid) return;
+
+                // Submit via AJAX
+                $.ajax({
+                    url: "{{ route('frontReviewStore') }}",
+                    method: "POST",
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    data: {
+                        product_id: product_id,
+                        rating: rating,
+                        review: review,
+                        name: name,
+                        email: email
+                    },
+                    success: function (response) {
+                        // Show success message
+                        $('.x_review-success')
+                            .text('Review submitted successfully!')
+                            .fadeIn();
+
+                        // Reset form
+                        $('.x_review-form')[0].reset();
+                        $('.x_rating-stars i').removeClass('fa-solid').addClass('fa-regular');
+                        $('.x_review-form').removeData('rating');
+
+                        // Hide alert after 4 seconds
+                        setTimeout(function () {
+                            $('.x_review-success').fadeOut();
+                        }, 4000);
+                    },
+                    error: function (xhr) {
+                        if (xhr.status === 422 && xhr.responseJSON.errors) {
+                            const errors = xhr.responseJSON.errors;
+                            if (errors.rating) $('.x_rating-error').text(errors.rating[0]).show();
+                            if (errors.review) $('.x_review-error').text(errors.review[0]).show();
+                            if (errors.name) $('.x_name-error').text(errors.name[0]).show();
+                            if (errors.email) $('.x_email-error').text(errors.email[0]).show();
+                        } else {
+                            console.error(xhr);
+                            alert('Something went wrong. Please try again.');
+                        }
+                    }
+                });
             });
-
-
         });
     </script>
   
@@ -758,4 +799,7 @@
             modal1El.addEventListener('show.bs.modal', updatePaymentSummary);
         });
     </script>
+
+  
+
     @endpush
