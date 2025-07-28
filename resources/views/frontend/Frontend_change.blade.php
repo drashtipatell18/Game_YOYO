@@ -17,6 +17,24 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('frontend/css/h_style.css') }}" />
 </head>
+<style>
+    .form-control.error {
+        border-color: #dc3545 !important;
+        box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+    }
+
+    .form-control.valid {
+        border-color: #28a745 !important;
+        box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25) !important;
+    }
+
+    .error {
+        color: #dc3545;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+        display: block;
+    }
+</style>
 
 <body>
     <div class="login-page">
@@ -34,10 +52,11 @@
                         <div class="text-center login-content w-100">
                             <h2 class="mb-5">Forget Password</h2>
                             <form method="POST" action="{{ route('frontresertlink') }}" id="forgetpassword">
+                                @csrf
                                 <!-- Email -->
-                                <div class="mb-3 d-flex flex-column align-items-start">
+                                <div class="mb-3 d-flex flex-column align-items-start input-wrapper">
                                     <label for="email" class="mb-1">Email</label>
-                                    <input type="email" id="email"
+                                    <input type="email" id="email" name="email"
                                         class="form-control rounded py-2 px-4 text-black" placeholder="Enter Email" />
                                 </div>
 

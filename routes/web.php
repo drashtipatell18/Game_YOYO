@@ -155,8 +155,8 @@ Route::post('/front-register', [FrontendLoginController::class, 'showRegisterFor
 Route::get('/frontlogout',[FrontendLoginController::class,'frontlogout'])->name('frontlogout');
 
 Route::get('demo', [FrontendLoginController::class, 'demo'])->name('demo');
-Route::get('/frontend-forget',[FrontendLoginController::class,'Forget'])->name('frontend.forget');
-Route::get('/frontend-forget',[FrontendLoginController::class,'frontsendResetLinkEmail'])->name('frontresertlink');
+Route::get('/frontend-forget',[FrontendLoginController::class,'Forget'])->name('frontendforget');
+Route::post('/frontend-reset',[FrontendLoginController::class,'frontsendResetLinkEmail'])->name('frontresertlink');
 Route::get('/index', [FrontendHomeController::class, 'index'])->name('index');
 Route::get('/aboutsus', [AboutUSController::class, 'aboutus'])->name(name: 'aboutus');
 

@@ -112,7 +112,6 @@
                         <div class="d_user_dropdown" id="db_user_dropdown">
                             <ul>
                                 <li><a href="{{ route('frontend.login') }}">Sign in</a></li>
-                                <li><a href="{{ route('frontend.forget') }}">Change Password</a></li>
                                 <li><a href="{{ route('profile', Auth::id()) }}">Profile</a></li>
                                 <li><a href="{{ route('frontlogout')}}">Logout</a></li>
                             </ul>
