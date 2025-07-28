@@ -9,41 +9,32 @@
                  <div class="row">
                     <!-- Thumbnails -->
                     <div class="col-md-1 d-none d-md-flex flex-column align-items-center x_thumb-list">
-                    @if(isset($product['images']) && !empty($product['images']))
-                        @php
-                            // Handle if images is a JSON string or array
-                            $images = is_string($product['images']) ? json_decode($product['images'], true) : $product['images'];
-                            $images = is_array($images) ? $images : [$product['images']];
-                        @endphp
-                        
-                        @foreach($images as $index => $image)
-                            <img src="{{ asset('storage/' . $image) }}" 
-                                 class="img-fluid mb-3 x_thumb-img {{ $index === 0 ? 'active' : '' }}" 
-                                 alt="thumb{{ $index + 1 }}" 
-                                 onclick="changeMainImage('{{ asset('storage/' . $image) }}', this)"
-                                 style="cursor: pointer; border: {{ $index === 0 ? '2px solid #007bff' : '1px solid #ddd' }};">
-                        @endforeach
-                    @elseif(isset($product['image']) && !empty($product['image']))
-                        <!-- Single image fallback -->
-                        <img src="{{ asset('storage/' . $product['image']) }}" 
-                             class="img-fluid mb-3 x_thumb-img active" 
-                             alt="thumb1"
-                             style="border: 2px solid #007bff;">
-                    @else
-                        <!-- Default images if no images available -->
-                        <img src="{{ asset('images/gg1.png') }}" class="img-fluid mb-3 x_thumb-img active" alt="thumb1" onclick="changeMainImage('{{ asset('images/gg1.png') }}', this)" style="cursor: pointer; border: 2px solid #007bff;">
-                        <img src="{{ asset('images/gg2.png') }}" class="img-fluid mb-3 x_thumb-img" alt="thumb2" onclick="changeMainImage('{{ asset('images/gg2.png') }}', this)" style="cursor: pointer; border: 1px solid #ddd;">
-                        <img src="{{ asset('images/gg3.png') }}" class="img-fluid x_thumb-img" alt="thumb3" onclick="changeMainImage('{{ asset('images/gg3.png') }}', this)" style="cursor: pointer; border: 1px solid #ddd;">
-                    @endif
-                </div>
+                        @if (!empty($images) && count($images) > 0)
+                            @foreach ($images as $index => $img)
+                                <img 
+                                    src="{{ asset('images/products/' . trim($img)) }}" 
+                                    class="img-fluid mb-3 x_thumb-img {{ $index === 0 ? 'active' : '' }}" 
+                                    alt="thumb{{ $index + 1 }}" 
+                                    onclick="changeMainImage(this)">
+                            @endforeach
+                        @else
+                            <!-- Optional: dummy thumbnail -->
+                            <img 
+                                src="{{ asset('images/products/dummy_product.png') }}" 
+                                class="img-fluid mb-3 x_thumb-img active" 
+                                alt="default-thumb">
+                        @endif
+                    </div>
                 
                     
                     <!-- Main Image -->
                     <div class="col-md-5 text-center x_main-img-wrap">
-                        <img src="{{ $product['image'] ?? './images/gg1.png' }}" 
-                             class="img-fluid x_main-img" 
-                             alt="{{ $product['name'] ?? 'Product Image' }}"
-                             id="mainProductImage">
+                     <img 
+                        id="mainImage" 
+                        class="img-fluid x_main-img" 
+                        src="{{ isset($images[0]) ? asset('images/products/' . trim($images[0])) : asset('images/products/dummy_product.png') }}" 
+                        alt="main"
+                    >
                     </div>
                     
                     <!-- Product Info -->
@@ -73,8 +64,8 @@
                             </div>
                             
                             <div class="x_product-meta x_line_tb mb-2">
-                                <div>SKU: {{ $product['sku'] ?? $product['id'] ?? '000' }}</div>
-                                <div>Category: {{ $product['category_name'] ?? 'Games' }}</div>
+                                <div>SKU: {{ $product['SKU'] ?? $product['id'] ?? '000' }}</div>
+                                <div>Category: {{ $product->category->name ?? 'Games' }}</div>
                                 @if(isset($product['tags']))
                                     <div>Tags: {{ is_array($product['tags']) ? implode(', ', $product['tags']) : $product['tags'] }}</div>
                                 @else
@@ -104,27 +95,22 @@
                         </ul>
                         <div class="tab-content x_tab-content p-4 bg-opacity-75" id="x_productTabContent">
                             <div class="tab-pane fade show active" id="desc" role="tabpanel">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean commodo ligula eget
-                                dolor.
-                                Aenean massa. Cum sociis Theme natoque penatibus et magnis dis parturient montes,
-                                nascetur
-                                ridiculus mus. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus.
-                                Phasellus
-                                viverra nulla ut metus varius laoreet. Quisque rutrum.
+                                {{ $product['description'] ?? 'No description available.' }}
                             </div>
                             <div class="tab-pane fade" id="addinfo" role="tabpanel">
                                 <div class="x_additional-info">
                                     <h5 class="mb-3">Additional information</h5>
                                     <div class="row mb-2">
                                         <div class="col-4 col-md-2">Weight</div>
-                                        <div class="col-8 col-md-10">0.100 kg</div>
+                                        <div class="col-8 col-md-10">{{ $product['weight'] ?? 'N/A' }}</div>
                                     </div>
                                     <div class="row mb-2">
                                         <div class="col-4 col-md-2">Dimensions</div>
-                                        <div class="col-8 col-md-10">30 × 15 × 3 cm</div>
+                                        <div class="col-8 col-md-10">{{ $product['dimensions'] ?? 'N/A' }}</div>
                                     </div>
                                 </div>
                             </div>
+
                             <div class="tab-pane fade" id="reviews" role="tabpanel">
                                 <div class="x_reviews">
                                     <h5 class="mb-3">Reviews</h5>
@@ -388,29 +374,11 @@
 
         });
     </script>
-    <script>
-        const dbUserIcon = document.getElementById('db_user_icon');
-        const dbUserDropdown = document.getElementById('db_user_dropdown');
-
-        dbUserIcon.addEventListener('click', (e) => {
-            e.stopPropagation();
-            dbUserDropdown.style.display = dbUserDropdown.style.display === 'block' ? 'none' : 'block';
-        });
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', () => {
-            dbUserDropdown.style.display = 'none';
-        });
-    </script>
+  
     <script>
         // Example cards data (replace with your real data if needed)
         const cardsData = [
-            { id: 1, title: "The Elder Scrolls V Skyrim", price: "$144.00", image: "/images/card_img1.png" },
-            { id: 2, title: "Grand Theft Auto V", price: "$89.99", image: "/images/card_img2.png" },
-            { id: 3, title: "Call of Duty: Modern Warfare", price: "$129.00", image: "/images/card_img3.png" },
-            { id: 4, title: "FIFA 24", price: "$99.99", image: "/images/card_img4.png" },
-            { id: 5, title: "Assassin's Creed Valhalla", price: "$79.99", image: "/images/card_img5.png" },
-            { id: 6, title: "Cyberpunk 2077", price: "$159.99", image: "/images/card_img6.png" }
+           
         ];
 
         function renderSwiperCards() {
@@ -496,39 +464,68 @@
             });
         });
     </script>
-    <!-- Swiper JS -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', async function () {
-            const itemId = localStorage.getItem('item_id');
-            if (!itemId) {
-                alert('No product selected!');
-                window.location.href = 'allProduct.html'; // fallback
-                return;
+
+ <script>
+    document.addEventListener('DOMContentLoaded', async function () {
+        const itemId = localStorage.getItem('item_id');
+        if (!itemId) {
+            alert('No product selected!');
+            window.location.href = 'allProduct.html';
+            return;
+        }
+
+        try {
+            const res = await fetch(`products/${id}`);
+            if (!res.ok) throw new Error('Product not found');
+
+            const product = await res.json();
+
+            // Split comma-separated image string
+            const imageArray = product.image ? product.image.split(',') : [];
+
+            if (imageArray.length > 0) {
+                // Set main image
+                document.querySelector('.x_main-img').src = `images/products/${imageArray[0]}`;
             }
-            try {
-                const res = await fetch(`http://localhost:4000/products/${itemId}`);
-                if (!res.ok) throw new Error('Product not found');
-                const product = await res.json();
 
-                // Fill product details
-                document.querySelector('.x_product-title').textContent = product.title;
-                document.querySelector('.x_product-price').textContent = `£${product.price}`;
-                document.querySelector('.x_main-img').src = product.image;
-                // If you want to update thumbnails, do it here as well
+            // Render thumbnails dynamically
+            const thumbList = document.querySelector('.x_thumb-list');
+            if (thumbList) {
+                thumbList.innerHTML = ''; // Clear previous
 
-                // Fill description tab
-                document.getElementById('desc').textContent = product.description;
+                imageArray.forEach((img, index) => {
+                    const imgTag = document.createElement('img');
+                    imgTag.src = `images/products/${img.trim()}`;
+                    imgTag.className = `img-fluid mb-3 x_thumb-img${index === 0 ? ' active' : ''}`;
+                    imgTag.alt = `thumb${index + 1}`;
+                    imgTag.onclick = () => changeMainImage(imgTag);
 
-                // Optionally fill other fields (category, tags, etc.)
-                // document.querySelector('.x_product-meta').innerHTML = ...;
-
-            } catch (e) {
-                alert('Error loading product');
-                window.location.href = 'allProduct.html';
+                    thumbList.appendChild(imgTag);
+                });
             }
-        });
-    </script>
+
+            // Product details
+            document.querySelector('.x_product-title').textContent = product.title;
+            document.querySelector('.x_product-price').textContent = `£${product.price}`;
+            document.getElementById('desc').textContent = product.description;
+
+        } catch (e) {
+            console.error(e);
+            // alert('Error loading product');
+            // window.location.href = 'allProduct.html';
+        }
+    });
+
+    function changeMainImage(thumb) {
+        const mainImage = document.querySelector('.x_main-img');
+        if (mainImage) mainImage.src = thumb.src;
+
+        // Toggle active class
+        document.querySelectorAll('.x_thumb-img').forEach(img => img.classList.remove('active'));
+        thumb.classList.add('active');
+    }
+</script>
+
     <script>
         // Function to add product to cart
         async function addToCart() {

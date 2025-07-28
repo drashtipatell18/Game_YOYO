@@ -648,20 +648,7 @@
             });
         })();
     </script>
-    <script>
-        const dbUserIcon = document.getElementById('db_user_icon');
-        const dbUserDropdown = document.getElementById('db_user_dropdown');
-
-        dbUserIcon.addEventListener('click', (e) => {
-            e.stopPropagation();
-            dbUserDropdown.style.display = dbUserDropdown.style.display === 'block' ? 'none' : 'block';
-        });
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', () => {
-            dbUserDropdown.style.display = 'none';
-        });
-    </script>
+ 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             // Initial fetch and render

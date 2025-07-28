@@ -174,5 +174,6 @@ Route::get('/productDetails/{id}', [FrontendProductController::class, 'productDe
 // Json Data
 Route::get('/categoriesJson', [FrontendHomeController::class, 'getCategoriesJson']);
 Route::get('/productsJson', [FrontendHomeController::class, 'getProductJson']);
-
+Route::get('/productDetailJson', [FrontendHomeController::class, 'getproductDetailJson']);
+Route::get('/products/{id}', [ProductController::class, 'getProductDetailJson']);
 
