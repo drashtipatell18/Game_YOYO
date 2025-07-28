@@ -468,11 +468,7 @@
  <script>
     document.addEventListener('DOMContentLoaded', async function () {
         const itemId = localStorage.getItem('item_id');
-        if (!itemId) {
-            alert('No product selected!');
-            window.location.href = 'allProduct.html';
-            return;
-        }
+       
 
         try {
             const res = await fetch(`products/${id}`);
