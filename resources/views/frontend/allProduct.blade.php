@@ -34,7 +34,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <!-- Category Filter -->
                             <div class="accordion-item" style="border: 1px solid #ad9d79;">
                                 <h2 class="accordion-header">
@@ -167,15 +166,15 @@
         let allCategories = [];
 
         document.addEventListener("DOMContentLoaded", function () {
-            
+
             // Universal event delegation for card clicks
             document.body.addEventListener('click', function(e) {
                 const gameCard = e.target.closest('.game-card');
-                
+
                 if (gameCard) {
                     // Prevent navigation if the click was on the ADD TO CART button
                     if (e.target.closest('.custom-cart-btn')) return;
-                    
+
                     const productId = gameCard.getAttribute('data-id');
                     if (productId) {
                         const baseUrl = window.location.origin;
@@ -187,15 +186,15 @@
             // Universal event delegation for cart buttons
             document.body.addEventListener('click', async function(e) {
                 const cartBtn = e.target.closest('.custom-cart-btn');
-                
+
                 if (cartBtn) {
                     e.stopPropagation();
                     const pro_id = Number(cartBtn.getAttribute('data-id'));
                     console.log('Add to cart clicked, product id:', pro_id);
-                    
+
                     localStorage.setItem('cart_id', pro_id);
                     const user_id = Number(localStorage.getItem('user_id'));
-                    
+
                     if (!user_id) {
                         alert('Please log in to add to cart!');
                         return;
@@ -252,7 +251,7 @@
                 // Store globally for other functions
                 allProducts = products;
                 allCategories = categories;
-                
+
                 // Map category id to name for quick lookup
                 const catMap = {};
                 categories.forEach(cat => { catMap[cat.id] = cat.name; });
@@ -268,7 +267,7 @@
                 }));
 
                 filterCards();
-                
+
                 // Render product cards
                 const gridContainer = document.getElementById('gridContainer');
                 const listContainer = document.getElementById('listContainer');
@@ -283,7 +282,7 @@
                     } else if (typeof product.image === 'string') {
                         firstImage = product.image.split(',')[0].trim();
                     }
-                    
+
                     // Grid Card - WITH data-id
                     gridContainer.innerHTML += `
                         <div class="col-xl-4 col-lg-6 col-md-4 col-sm-6 col-12 mb-4 d-flex justify-content-center">
@@ -307,7 +306,7 @@
                           </div>
                         </div>
                     `;
-                    
+
                     // List Card - WITH data-id
                     listContainer.innerHTML += `
                         <div class="card mb-3 list-card border-1 border-light" style="background: rgba(34,34,34,0.92); color:#fff; border:none;">
@@ -477,7 +476,7 @@
                 gridContainer.innerHTML = sorted.map(createGridCard).join('');
                 listContainer.innerHTML = sorted.map(createListCard).join('');
             }
-            
+
             const productCountEl = document.getElementById('productCount');
             if (productCountEl) {
                 productCountEl.innerText = `Showing ${sorted.length} products`;
@@ -490,13 +489,13 @@
             document.addEventListener('click', function(e) {
                 if (e.target.matches('.dropdown-item')) {
                     e.preventDefault();
-                    
+
                     // Remove active class from all
                     document.querySelectorAll('.dropdown-item').forEach(i => i.classList.remove('active'));
-                    
+
                     // Add active to selected
                     e.target.classList.add('active');
-                    
+
                     // Update visible text
                     const label = e.target.textContent;
                     const value = e.target.getAttribute('data-value');
@@ -504,7 +503,7 @@
                     if (selectedSortEl) {
                         selectedSortEl.textContent = label;
                     }
-                    
+
                     // Trigger filtering with sort
                     filterCards(value);
                 }
@@ -525,7 +524,7 @@
 
             const gridContainer = document.getElementById('gridContainer');
             if (!gridContainer) return;
-            
+
             gridContainer.innerHTML = "";
 
             products.forEach(product => {
@@ -536,7 +535,7 @@
                 } else if (typeof product.image === 'string') {
                     firstImage = product.image.split(',')[0].trim();
                 }
-                
+
                 gridContainer.innerHTML += `
                     <div class="col-lg-4 col-md-6 col-sm-6 col-12 mb-4 d-flex justify-content-center">
                         <div class="game-card position-relative" data-id="${product.id}">
@@ -561,12 +560,12 @@
         function filterAndRenderProducts() {
             const checkedCategories = Array.from(document.querySelectorAll('input[name="category"]:checked'))
                 .map(cb => cb.value)
-                .filter(id => id); 
+                .filter(id => id);
             const checkedPrices = Array.from(document.querySelectorAll('input[name="price"]:checked'))
                 .map(cb => cb.value);
-            
+
             let filtered = allProducts;
-            
+
             // Filter by category if any selected
             if (checkedCategories.length > 0) {
                 filtered = filtered.filter(p => {
@@ -574,7 +573,7 @@
                     return checkedCategories.includes(productCategoryId);
                 });
             }
-            
+
             // Filter by price if any selected
             if (checkedPrices.length > 0) {
                 filtered = filtered.filter(p => {
@@ -584,7 +583,7 @@
                     });
                 });
             }
-            
+
             renderProducts(filtered, allCategories);
         }
 
@@ -620,9 +619,9 @@
             categories.forEach(cat => { catMap[cat.id] = cat.name; });
             const gridContainer = document.getElementById('gridContainer');
             if (!gridContainer) return;
-            
+
             gridContainer.innerHTML = "";
-            
+
             products.forEach(product => {
                 const categoryName = product.category_name || "Unknown";
                 let firstImage = '';
@@ -631,7 +630,7 @@
                 } else if (typeof product.image === 'string') {
                     firstImage = product.image.split(',')[0].trim();
                 }
-                
+
                 gridContainer.innerHTML += `
                     <div class="col-lg-4 col-md-6 col-sm-6 col-12 mb-4 d-flex justify-content-center">
                       <div class="game-card position-relative" data-id="${product.id}">
@@ -673,7 +672,7 @@
                             `;
                         });
                     }
-                    
+
                     // Mobile filter
                     const filterListMobile = document.getElementById("categoryFilterListMobile");
                     if (filterListMobile) {
@@ -685,7 +684,7 @@
                                 </li>
                             `;
                         });
-                        
+
                         // Close offcanvas on selection
                         filterListMobile.addEventListener('change', function (e) {
                             const offcanvas = document.getElementById('filterOffcanvas');
@@ -707,7 +706,7 @@
         (function () {
             const toggler = document.querySelector('.d_toggler_btn');
             const offcanvas = document.getElementById('d_offcanvas_menu');
-            
+
             if (toggler && offcanvas) {
                 const closeBtn = offcanvas.querySelector('.close_btn');
 
@@ -764,17 +763,17 @@
             document.addEventListener('click', function(e) {
                 if (e.target.matches('.s_sort-dropdown .dropdown-item')) {
                     e.preventDefault();
-                    
+
                     // Remove active from all, add to selected
                     document.querySelectorAll('.s_sort-dropdown .dropdown-item').forEach(i => i.classList.remove('active'));
                     e.target.classList.add('active');
-                    
+
                     // Update label
                     const selectedSortEl = document.getElementById('selectedSort');
                     if (selectedSortEl) {
                         selectedSortEl.textContent = e.target.textContent;
                     }
-                    
+
                     // Fetch and render with selected sort
                     fetchAndRenderProducts(e.target.dataset.value);
                 }
