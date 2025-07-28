@@ -163,11 +163,96 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         let cardsData = [];
+        let allProducts = [];
+        let allCategories = [];
+
         document.addEventListener("DOMContentLoaded", function () {
+            
+            // Universal event delegation for card clicks
+            document.body.addEventListener('click', function(e) {
+                const gameCard = e.target.closest('.game-card');
+                
+                if (gameCard) {
+                    // Prevent navigation if the click was on the ADD TO CART button
+                    if (e.target.closest('.custom-cart-btn')) return;
+                    
+                    const productId = gameCard.getAttribute('data-id');
+                    if (productId) {
+                        const baseUrl = window.location.origin;
+                        window.location.href = `${baseUrl}/productDetails/${productId}`;
+                    }
+                }
+            });
+
+            // Universal event delegation for cart buttons
+            document.body.addEventListener('click', async function(e) {
+                const cartBtn = e.target.closest('.custom-cart-btn');
+                
+                if (cartBtn) {
+                    e.stopPropagation();
+                    const pro_id = Number(cartBtn.getAttribute('data-id'));
+                    console.log('Add to cart clicked, product id:', pro_id);
+                    
+                    localStorage.setItem('cart_id', pro_id);
+                    const user_id = Number(localStorage.getItem('user_id'));
+                    
+                    if (!user_id) {
+                        alert('Please log in to add to cart!');
+                        return;
+                    }
+
+                    try {
+                        let cartRes = await fetch(`http://localhost:4000/cart?user_id=${user_id}`);
+                        let carts = await cartRes.json();
+                        let cart = carts[0];
+
+                        if (cart) {
+                            let products = cart.products || [];
+                            let found = false;
+                            products = products.map(item => {
+                                if (item.pro_id === pro_id) {
+                                    found = true;
+                                    return { ...item, quantity: item.quantity + 1 };
+                                }
+                                return item;
+                            });
+                            if (!found) {
+                                products.push({ pro_id, quantity: 1 });
+                            }
+
+                            await fetch(`http://localhost:4000/cart/${cart.id}`, {
+                                method: 'PATCH',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ products })
+                            });
+                        } else {
+                            await fetch('http://localhost:4000/cart', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    user_id,
+                                    products: [{ pro_id, quantity: 1 }]
+                                })
+                            });
+                        }
+
+                        alert('Added to cart!');
+                    } catch (error) {
+                        console.error('Error adding to cart:', error);
+                        alert('Failed to add to cart. Please try again.');
+                    }
+                }
+            });
+
+            // Main data fetching and initialization
             Promise.all([
                 fetch("productsJson").then(res => res.json()),
                 fetch("categoriesJson").then(res => res.json())
             ]).then(([products, categories]) => {
+                // Store globally for other functions
+                allProducts = products;
+                allCategories = categories;
+                
                 // Map category id to name for quick lookup
                 const catMap = {};
                 categories.forEach(cat => { catMap[cat.id] = cat.name; });
@@ -175,7 +260,7 @@
                 cardsData = products.map(product => ({
                     id: product.id,
                     name: product.name,
-                    price: `$${parseFloat(product.price).toFixed(2)}`, // normalize price
+                    price: `$${parseFloat(product.price).toFixed(2)}`,
                     image: product.image,
                     description: product.description || '',
                     category: product.category_id ? product.category_id.toString() : '',
@@ -191,17 +276,18 @@
                 listContainer.innerHTML = "";
 
                 products.forEach(product => {
-                     const categoryName = product.category_name || "Unknown";
+                    const categoryName = product.category_name || "Unknown";
                     let firstImage = '';
                     if (Array.isArray(product.image)) {
                         firstImage = product.image[0];
                     } else if (typeof product.image === 'string') {
-                        firstImage = product.image.split(',')[0].trim(); // comma-separated string
+                        firstImage = product.image.split(',')[0].trim();
                     }
-                    // Grid Card
+                    
+                    // Grid Card - WITH data-id
                     gridContainer.innerHTML += `
-                        <div class="col-xl-4 col-lg-6 col-md-4     col-sm-6 col-12 mb-4 d-flex justify-content-center">
-                          <div class="game-card position-relative">
+                        <div class="col-xl-4 col-lg-6 col-md-4 col-sm-6 col-12 mb-4 d-flex justify-content-center">
+                          <div class="game-card position-relative" data-id="${product.id}">
                             <img src="${firstImage}" alt="${product.name}" class="card-img-top" />
                             <div class="position-absolute card-content">
                               <div class="icons d-flex gap-2 mb-3">
@@ -214,19 +300,18 @@
                             </div>
                             <div class="card-actions d-flex align-items-center gap-3">
                               <div class="d_main_button w-100">
-                                <button class="custom-cart-btn w-100" onclick="addToCart(${product.id})">ADD TO CART</button>
+                                <button class="custom-cart-btn w-100" data-id="${product.id}">ADD TO CART</button>
                                 <div class="d_border"></div>
                               </div>
-                              <!-- <i class="fa-regular fa-heart text-white" onclick="toggleWishlist(${product.id})"></i>
-                              <i class="fa-solid fa-ellipsis text-white"></i> -->
                             </div>
                           </div>
                         </div>
                     `;
-                    // List Card
+                    
+                    // List Card - WITH data-id
                     listContainer.innerHTML += `
                         <div class="card mb-3 list-card border-1 border-light" style="background: rgba(34,34,34,0.92); color:#fff; border:none;">
-                          <div class="row g-0 align-items-center">
+                          <div class="row g-0 align-items-center game-card" data-id="${product.id}">
                             <div class="col-sm-4 d-flex align-items-center justify-content-center" style="min-height:180px;">
                               <div style="background:rgba(24,24,24,0.95); border-radius:16px; padding:12px; display:flex; align-items:center; justify-content:center; width:130px; height:130px;">
                                 <img src="${product.image}" alt="${product.name}" style="width: 120px; height: 120px; object-fit: cover; border-radius: 12px; box-shadow:0 2px 8px rgba(0,0,0,0.2); background:#181818;" />
@@ -241,7 +326,7 @@
                                   <span class="badge bg-secondary">${categoryName}</span>
                                 </div>
                                 <div class="d-flex align-items-center gap-3 mt-auto">
-                                  <button class="btn btn-sm s_cart_btn" onclick="addToCart(${product.id})">ADD TO CART</button>
+                                  <button class="btn btn-sm s_cart_btn custom-cart-btn" data-id="${product.id}">ADD TO CART</button>
                                   <i class="fa-regular fa-heart fs-5" onclick="toggleWishlist(${product.id})" style="cursor:pointer;"></i>
                                   <i class="fa-solid fa-eye fs-6" onclick="viewDetails(${product.id})" style="cursor:pointer;"></i>
                                 </div>
@@ -254,21 +339,34 @@
             });
         });
 
-        // Dummy functions for cart/wishlist/details (replace with your real logic)
-        function addToCart(id) { alert('Add to cart: ' + id); }
-        function toggleWishlist(id) { alert('Wishlist: ' + id); }
-        function viewDetails(id) { alert('View details: ' + id); }
-
+        // Grid/List view toggle
         const gridBtn = document.getElementById('gridView');
         const listBtn = document.getElementById('listView');
         const gridContainer = document.getElementById('gridContainer');
         const listContainer = document.getElementById('listContainer');
 
+        if (gridBtn && listBtn) {
+            gridBtn.addEventListener('click', () => {
+                gridContainer.classList.remove('d-none');
+                listContainer.classList.add('d-none');
+                gridBtn.classList.add('active');
+                listBtn.classList.remove('active');
+            });
+
+            listBtn.addEventListener('click', () => {
+                gridContainer.classList.add('d-none');
+                listContainer.classList.remove('d-none');
+                listBtn.classList.add('active');
+                gridBtn.classList.remove('active');
+            });
+        }
+
+        // Card creation functions - WITH data-id
         function createGridCard(cardData) {
-            const firstImage = cardData.image ? cardData.image.split(',')[0].trim() : 'default.jpg'; // fallback if empty
+            const firstImage = cardData.image ? cardData.image.split(',')[0].trim() : 'default.jpg';
             return `
-            <div class="col-12 col-sm-6 col-md-4 col-lg-6 col-xl-4  mb-4 d-flex justify-content-center">
-              <div class="game-card position-relative">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-6 col-xl-4 mb-4 d-flex justify-content-center">
+              <div class="game-card position-relative" data-id="${cardData.id}">
                 <img src="${firstImage}" alt="${cardData.name}" class="card-img-top" />
                 <div class="position-absolute card-content">
                   <div class="icons d-flex gap-2 mb-3">
@@ -279,8 +377,8 @@
                   <h3 class="mb-0">${cardData.price}</h3>
                 </div>
                 <div class="card-actions d-flex align-items-center gap-3">
-                  <div class="d_main_button w-100" >
-                    <button class="custom-cart-btn w-100" onclick="addToCart(${cardData.id})">ADD TO CART</button>
+                  <div class="d_main_button w-100">
+                    <button class="custom-cart-btn w-100" data-id="${cardData.id}">ADD TO CART</button>
                     <div class="d_border"></div>
                   </div>
                 </div>
@@ -291,8 +389,8 @@
 
         function createListCard(cardData) {
             return `
-        <div class="card mb-3 list-card border-1 border-light " style="background: rgba(34,34,34,0.92) url('../images/inner-background-img-3.jpg'); background-blend-mode: darken, normal; color:#fff; border:none; box-shadow: 0 8px 32px 0 rgba(0,0,0,0.35), 0 1.5px 6px 0 rgba(0,0,0,0.25);">
-          <div class="row g-0 align-items-center">
+        <div class="card mb-3 list-card border-1 border-light" style="background: rgba(34,34,34,0.92) url('../images/inner-background-img-3.jpg'); background-blend-mode: darken, normal; color:#fff; border:none; box-shadow: 0 8px 32px 0 rgba(0,0,0,0.35), 0 1.5px 6px 0 rgba(0,0,0,0.25);">
+          <div class="row g-0 align-items-center game-card" data-id="${cardData.id}">
             <div class="col-sm-4 d-flex align-items-center justify-content-center" style="min-height:180px;">
               <div style="background:rgba(24,24,24,0.95); border-radius:16px; padding:12px; display:flex; align-items:center; justify-content:center; width:130px; height:130px;">
                 <img src="${cardData.image}" alt="${cardData.name}" style="width: 120px; height: 120px; object-fit: cover; border-radius: 12px; box-shadow:0 2px 8px rgba(0,0,0,0.2); background:#181818;" />
@@ -302,13 +400,12 @@
               <div class="card-body d-flex flex-column justify-content-between h-100" style="min-height: 160px;">
                 <div>
                   <h5 class="card-title mb-2" style="color:#ad9d79;">${cardData.name}</h5>
-                  <p class="card-text fw-bold mb-1 text-white" >${cardData.price}</p>
+                  <p class="card-text fw-bold mb-1 text-white">${cardData.price}</p>
                   <p class="card-text mb-2 text-white"><small class="">${cardData.description}</small></p>
                 </div>
                 <div class="d-flex align-items-center gap-3 mt-auto">
-                  <button class="btn btn-sm s_cart_btn text-nowrap" onclick="addToCart(${cardData.id})">ADD TO CART</button>
-                                    <i class="fa-solid fa-eye fs-6" onclick="viewDetails(${cardData.id})"style="cursor:pointer;"></i>
-
+                  <button class="btn btn-sm s_cart_btn custom-cart-btn text-nowrap" data-id="${cardData.id}">ADD TO CART</button>
+                  <i class="fa-solid fa-eye fs-6" onclick="viewDetails(${cardData.id})" style="cursor:pointer;"></i>
                 </div>
               </div>
             </div>
@@ -316,89 +413,31 @@
         </div>`;
         }
 
+        // Legacy functions for compatibility
         function addToCart(id) {
             const card = cardsData.find(c => c.id === id);
             if (!card) return;
-
-            // First, check if the item is already in the cart
-            fetch(`http://localhost:4000/cart?productId=${card.id}`)
-                .then(res => res.json())
-                .then(data => {
-                    if (data.length > 0) {
-                        // Item exists, increment quantity
-                        const cartItem = data[0];
-                        fetch(`http://localhost:4000/cart/${cartItem.id}`, {
-                            method: 'PATCH',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({ quantity: cartItem.quantity + 1 })
-                        })
-                            .then(response => {
-                                if (response.ok) {
-                                    alert(`Increased quantity for "${card.title}" in cart!`);
-                                } else {
-                                    alert('Failed to update cart.');
-                                }
-                            });
-                    } else {
-                        // Item does not exist, add new
-                        const newCartItem = {
-                            productId: card.id,
-                            title: card.title,
-                            price: parseFloat(card.price.replace('$', '')),
-                            quantity: 1,
-                            image: card.image
-                        };
-                        fetch('http://localhost:4000/cart', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(newCartItem)
-                        })
-                            .then(response => {
-                                if (response.ok) {
-                                    alert(`Added "${card.title}" to cart!`);
-                                } else {
-                                    alert('Failed to add to cart.');
-                                }
-                            });
-                    }
-                })
-                .catch(() => alert('Error connecting to cart API.'));
+            alert(`Added "${card.name}" to cart!`);
         }
 
         function toggleWishlist(id) {
             const card = cardsData.find(c => c.id === id);
-            alert(`Added "${card.title}" to wishlist!`);
+            if (!card) return;
+            alert(`Added "${card.name}" to wishlist!`);
         }
 
         function viewDetails(id) {
-            const card = cardsData.find(c => c.id === id);
-            alert(`Viewing details for "${card.title}"`);
+            const baseUrl = window.location.origin;
+            window.location.href = `${baseUrl}/productDetails/${id}`;
         }
 
-        gridBtn.addEventListener('click', () => {
-            gridContainer.classList.remove('d-none');
-            listContainer.classList.add('d-none');
-            gridBtn.classList.add('active');
-            listBtn.classList.remove('active');
-        });
-
-        listBtn.addEventListener('click', () => {
-            gridContainer.classList.add('d-none');
-            listContainer.classList.remove('d-none');
-            listBtn.classList.add('active');
-            gridBtn.classList.remove('active');
-        });
-
-       function sortCards(cards, sortValue) {
+        // Sorting functionality
+        function sortCards(cards, sortValue) {
             return [...cards].sort((a, b) => {
                 const priceA = parseFloat(a.price.replace('$', ''));
                 const priceB = parseFloat(b.price.replace('$', ''));
-                const nameA = (a.name || '').toLowerCase(); // ✅ safe access
-                const nameB = (b.name || '').toLowerCase(); // ✅ safe access
+                const nameA = (a.name || '').toLowerCase();
+                const nameB = (b.name || '').toLowerCase();
 
                 switch (sortValue) {
                     case 'name-asc':
@@ -414,31 +453,12 @@
                 }
             });
         }
-        
-        document.querySelectorAll('.dropdown-item').forEach(item => {
-            item.addEventListener('click', e => {
-                e.preventDefault();
 
-                // Remove active class from all
-                document.querySelectorAll('.dropdown-item').forEach(i => i.classList.remove('active'));
-
-                // Add active to selected
-                item.classList.add('active');
-
-                // Update visible text
-                const label = item.textContent;
-                const value = item.getAttribute('data-value');
-                document.getElementById('selectedSort').textContent = label;
-
-                // Set value manually to trigger sorting
-                filterCards(value);
-            });
-        });
-        function filterCards() {
+        // Filtering functionality
+        function filterCards(sortValue) {
             const selectedPrices = Array.from(document.querySelectorAll('input[name="price"]:checked')).map(i => i.value);
             const selectedCategories = Array.from(document.querySelectorAll('input[name="category"]:checked')).map(i => i.value);
-            const sortValue = document.querySelector('.dropdown-item.active')?.dataset.value || "featured";
-
+            const currentSortValue = sortValue || document.querySelector('.dropdown-item.active')?.dataset.value || "featured";
 
             const filtered = cardsData.filter(card => {
                 const price = parseFloat(card.price.replace('$', ''));
@@ -452,105 +472,92 @@
                 return priceMatch && categoryMatch;
             });
 
-            const sorted = sortCards(filtered, sortValue);
-            gridContainer.innerHTML = sorted.map(createGridCard).join('');
-            listContainer.innerHTML = sorted.map(createListCard).join('');
-            document.getElementById('productCount').innerText = `Showing ${sorted.length} products`;
+            const sorted = sortCards(filtered, currentSortValue);
+            if (gridContainer && listContainer) {
+                gridContainer.innerHTML = sorted.map(createGridCard).join('');
+                listContainer.innerHTML = sorted.map(createListCard).join('');
+            }
+            
+            const productCountEl = document.getElementById('productCount');
+            if (productCountEl) {
+                productCountEl.innerText = `Showing ${sorted.length} products`;
+            }
         }
 
-        // Initialize
-        filterCards();
+        // Sort dropdown handling
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle dropdown sorting
+            document.addEventListener('click', function(e) {
+                if (e.target.matches('.dropdown-item')) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all
+                    document.querySelectorAll('.dropdown-item').forEach(i => i.classList.remove('active'));
+                    
+                    // Add active to selected
+                    e.target.classList.add('active');
+                    
+                    // Update visible text
+                    const label = e.target.textContent;
+                    const value = e.target.getAttribute('data-value');
+                    const selectedSortEl = document.getElementById('selectedSort');
+                    if (selectedSortEl) {
+                        selectedSortEl.textContent = label;
+                    }
+                    
+                    // Trigger filtering with sort
+                    filterCards(value);
+                }
+            });
 
-        // Sort dropdown event
-        document.getElementById('sortSelect').addEventListener('change', filterCards);
-
-        // Checkbox filter event binding
-        const allFilters = document.querySelectorAll('input[name="price"], input[name="category"]');
-        allFilters.forEach(input => {
-            input.addEventListener('change', filterCards);
+            // Filter event binding using delegation
+            document.body.addEventListener('change', function (e) {
+                if (e.target.name === 'category' || e.target.name === 'price') {
+                    filterCards();
+                }
+            });
         });
 
-
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            fetch("categoriesJson")
-                .then(res => res.json())
-                .then(categories => {
-                    console.log("Fetched categories:", categories); // Debug output
-                    const filterListDesktop = document.getElementById("categoryFilterListDesktop");
-                    if (filterListDesktop) {
-                        filterListDesktop.innerHTML = "";
-                        categories.forEach(cat => {
-                            const catId = cat.id ;
-                            console.log(cat);
-                            filterListDesktop.innerHTML += `
-                                <li>
-                                    <input type="checkbox" name="category" value="${catId}"> ${cat.name || "Unnamed"}
-                                </li>
-                            `;
-                        });
-                    }
-                    // Mobile filter
-                    const filterListMobile = document.getElementById("categoryFilterListMobile");
-                    if (filterListMobile) {
-                        filterListMobile.innerHTML = "";
-                        categories.forEach(cat => {
-                            const catId = cat.id !== undefined ? cat.id : (cat._id !== undefined ? cat._id : "");
-                            filterListMobile.innerHTML += `
-                                <li>
-                                    <input type="checkbox" name="category" value="${cat.id}"> ${cat.name || "Unnamed"}
-                                </li>
-                            `;
-                        });
-                        // Add event listener to close offcanvas on selection
-                        filterListMobile.addEventListener('change', function (e) {
-                            const offcanvas = document.getElementById('filterOffcanvas');
-                            if (offcanvas && typeof bootstrap !== 'undefined') {
-                                const bsOffcanvas = bootstrap.Offcanvas.getOrCreateInstance(offcanvas);
-                                bsOffcanvas.hide();
-                            } else if (offcanvas) {
-                                // fallback: remove 'show' class if bootstrap js is not available
-                                offcanvas.classList.remove('show');
-                                offcanvas.style.visibility = 'hidden';
-                            }
-                        });
-                    }
-                });
-        });
-
-        let allProducts = [];
-        let allCategories = [];
-
+        // Render products function - WITH data-id
         function renderProducts(products, categories) {
             const catMap = {};
             categories.forEach(cat => { catMap[cat.id] = cat.name; });
 
             const gridContainer = document.getElementById('gridContainer');
+            if (!gridContainer) return;
+            
             gridContainer.innerHTML = "";
 
             products.forEach(product => {
-            const categoryName = product.category_name || "Unknown";
-            let firstImage = '';
-            if (Array.isArray(product.image)) {
-                firstImage = product.image[0];
-            } else if (typeof product.image === 'string') {
-                firstImage = product.image.split(',')[0].trim(); // comma-separated string
-            }
-            gridContainer.innerHTML += `
+                const categoryName = product.category_name || "Unknown";
+                let firstImage = '';
+                if (Array.isArray(product.image)) {
+                    firstImage = product.image[0];
+                } else if (typeof product.image === 'string') {
+                    firstImage = product.image.split(',')[0].trim();
+                }
+                
+                gridContainer.innerHTML += `
                     <div class="col-lg-4 col-md-6 col-sm-6 col-12 mb-4 d-flex justify-content-center">
-                    <div class="game-card position-relative">
-                        <img src="${firstImage}" alt="${product.name}" class="card-img-top" />
-                        <div class="position-absolute card-content">
-                        <h3>${product.name}</h3>
-                        <h3 class="mb-0">$${product.price.toFixed(2)}</h3>
-                        <span class="badge bg-secondary mt-2">${categoryName}</span>
+                        <div class="game-card position-relative" data-id="${product.id}">
+                            <img src="${firstImage}" alt="${product.name}" class="card-img-top" />
+                            <div class="position-absolute card-content">
+                                <h3>${product.name}</h3>
+                                <h3 class="mb-0">$${product.price.toFixed(2)}</h3>
+                                <span class="badge bg-secondary mt-2">${categoryName}</span>
+                            </div>
+                            <div class="card-actions d-flex align-items-center gap-3">
+                                <div class="d_main_button w-100">
+                                    <button class="custom-cart-btn w-100" data-id="${product.id}">ADD TO CART</button>
+                                    <div class="d_border"></div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
                     </div>
                 `;
             });
         }
+
         function filterAndRenderProducts() {
             const checkedCategories = Array.from(document.querySelectorAll('input[name="category"]:checked'))
                 .map(cb => cb.value)
@@ -559,21 +566,16 @@
                 .map(cb => cb.value);
             
             let filtered = allProducts;
-
-            console.log("Checked categories:", checkedCategories);
-            console.log("Sample product category_id:", allProducts[0]?.category_id);
             
             // Filter by category if any selected
             if (checkedCategories.length > 0) {
                 filtered = filtered.filter(p => {
                     const productCategoryId = String(p.category_id);
-                    const isIncluded = checkedCategories.includes(productCategoryId);
-                    console.log(`Product category_id: "${productCategoryId}", Checked categories:`, checkedCategories, `Includes: ${isIncluded}`);
-                    return isIncluded;
+                    return checkedCategories.includes(productCategoryId);
                 });
             }
             
-            console.log('After category filter:', filtered);
+            // Filter by price if any selected
             if (checkedPrices.length > 0) {
                 filtered = filtered.filter(p => {
                     return checkedPrices.some(range => {
@@ -583,105 +585,22 @@
                 });
             }
             
-            console.log('After price filter:', filtered);
-            
             renderProducts(filtered, allCategories);
         }
 
-        document.addEventListener("DOMContentLoaded", function () {
-            Promise.all([
-                fetch("productsJson").then(res => res.json()),
-                fetch("categoriesJson").then(res => res.json())
-            ]).then(([products, categories]) => {
-                allProducts = products;
-                allCategories = categories;
-                renderCategoryFilters(categories);
-                filterAndRenderProducts();
-            });
-
-            // Attach filter event listeners (delegated for dynamic checkboxes)
-            document.body.addEventListener('change', function (e) {
-                if (e.target.name === 'category' || e.target.name === 'price') {
-                    filterAndRenderProducts();
-                }
-            });
-        });
-    </script>
-    <script>
-        (function () {
-            const toggler = document.querySelector('.d_toggler_btn');
-            const offcanvas = document.getElementById('d_offcanvas_menu');
-            const closeBtn = offcanvas.querySelector('.close_btn');
-
-            toggler.addEventListener('click', () => {
-                offcanvas.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            });
-
-            closeBtn.addEventListener('click', () => {
-                offcanvas.classList.remove('active');
-                document.body.style.overflow = '';
-            });
-
-            document.addEventListener('click', (e) => {
-                if (!offcanvas.contains(e.target) && !toggler.contains(e.target)) {
-                    offcanvas.classList.remove('active');
-                    document.body.style.overflow = '';
-                }
-            });
-
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') {
-                    offcanvas.classList.remove('active');
-                    document.body.style.overflow = '';
-                }
-            });
-
-            // Sticky header scroll effect
-            window.addEventListener('scroll', () => {
-                const header = document.querySelector('.d_header');
-                if (window.scrollY > 20) {
-                    header.classList.add('d_scrolled');
-                } else {
-                    header.classList.remove('d_scrolled');
-                }
-            });
-        })();
-    </script>
- 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Initial fetch and render
-            fetchAndRenderProducts('featured');
-
-            // Handle sort dropdown click
-            document.querySelectorAll('.s_sort-dropdown .dropdown-item').forEach(item => {
-                item.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    // Remove active from all, add to selected
-                    document.querySelectorAll('.s_sort-dropdown .dropdown-item').forEach(i => i.classList.remove('active'));
-                    this.classList.add('active');
-                    // Update label
-                    document.getElementById('selectedSort').textContent = this.textContent;
-                    // Fetch and render with selected sort
-                    fetchAndRenderProducts(this.dataset.value);
-                });
-            });
-        });
-
+        // Fetch and render with sorting - WITH data-id
         function fetchAndRenderProducts(sortType) {
             Promise.all([
                 fetch("productsJson").then(res => res.json()),
                 fetch("categoriesJson").then(res => res.json())
             ]).then(([products, categories]) => {
-                // Sort products based on sortType
                 let sortedProducts = [...products];
                 switch (sortType) {
                     case 'name-asc':
-                        sortedProducts.sort((a, b) => a.title.localeCompare(b.title));
+                        sortedProducts.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
                         break;
                     case 'name-desc':
-                        sortedProducts.sort((a, b) => b.title.localeCompare(a.title));
+                        sortedProducts.sort((a, b) => (b.name || '').localeCompare(a.name || ''));
                         break;
                     case 'price-asc':
                         sortedProducts.sort((a, b) => Number(a.price) - Number(b.price));
@@ -689,9 +608,7 @@
                     case 'price-desc':
                         sortedProducts.sort((a, b) => Number(b.price) - Number(a.price));
                         break;
-                    // 'featured' or default: no sorting or your own logic
                     default:
-                        // Optionally, you can shuffle or keep as is for 'featured'
                         break;
                 }
                 renderProductCards(sortedProducts, categories);
@@ -702,15 +619,19 @@
             const catMap = {};
             categories.forEach(cat => { catMap[cat.id] = cat.name; });
             const gridContainer = document.getElementById('gridContainer');
+            if (!gridContainer) return;
+            
             gridContainer.innerHTML = "";
+            
             products.forEach(product => {
                 const categoryName = product.category_name || "Unknown";
                 let firstImage = '';
                 if (Array.isArray(product.image)) {
                     firstImage = product.image[0];
                 } else if (typeof product.image === 'string') {
-                    firstImage = product.image.split(',')[0].trim(); // comma-separated string
+                    firstImage = product.image.split(',')[0].trim();
                 }
+                
                 gridContainer.innerHTML += `
                     <div class="col-lg-4 col-md-6 col-sm-6 col-12 mb-4 d-flex justify-content-center">
                       <div class="game-card position-relative" data-id="${product.id}">
@@ -721,79 +642,143 @@
                           <span class="badge bg-secondary mt-2">${categoryName}</span>
                         </div>
                         <div class="card-actions d-flex align-items-center gap-3">
-                                <div class="d_main_button w-100">
-                                    <button class="custom-cart-btn w-100" data-id="${product.id}">ADD TO CART</button>
-                                    <div class="d_border"></div>
-                                </div>
+                            <div class="d_main_button w-100">
+                                <button class="custom-cart-btn w-100" data-id="${product.id}">ADD TO CART</button>
+                                <div class="d_border"></div>
                             </div>
+                        </div>
                       </div>
                     </div>
                 `;
             });
-            // Add click event to all .game-card elements for navigation
-            document.querySelectorAll('.game-card').forEach(card => {
-                card.addEventListener('click', function (e) {
-                    // Prevent navigation if the click was on the ADD TO CART button
-                    if (e.target.closest('.custom-cart-btn')) return;
-                    const productId = this.getAttribute('data-id');
-                    window.location.href = `http://127.0.0.1:8000/productDetails/${productId}`;
-                });
-            });
-            // Add click event to all .custom-cart-btn buttons for cart functionality
-            document.querySelectorAll('.custom-cart-btn').forEach(btn => {
-                btn.addEventListener('click', async function (e) {
-                    e.stopPropagation();
-                    const pro_id = Number(this.getAttribute('data-id'));
-                    console.log('Add to cart clicked, product id:', pro_id);
-                    localStorage.setItem('cart_id', pro_id);
-                    // 1. Get user id from localStorage
-                    const user_id = Number(localStorage.getItem('user_id'));
-                    if (!user_id) {
-                        alert('Please log in to add to cart!');
-                        return;
-                    }
-
-                    // 2. Check if user already has a cart
-                    let cartRes = await fetch(`http://localhost:4000/cart?user_id=${user_id}`);
-                    let carts = await cartRes.json();
-                    let cart = carts[0];
-
-                    if (cart) {
-                        // 3. If cart exists, update products array
-                        let products = cart.products || [];
-                        let found = false;
-                        products = products.map(item => {
-                            if (item.pro_id === pro_id) {
-                                found = true;
-                                return { ...item, quantity: item.quantity + 1 };
-                            }
-                            return item;
-                        });
-                        if (!found) {
-                            products.push({ pro_id, quantity: 1 });
-                        }
-
-                        // 4. Update cart in db
-                        await fetch(`http://localhost:4000/cart/${cart.id}`, {
-                            method: 'PATCH',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ products })
-                        });
-                    } else {
-                        // 5. If no cart, create new cart
-                        await fetch('http://localhost:4000/cart', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                user_id,
-                                products: [{ pro_id, quantity: 1 }]
-                            })
-                        });
-                    }
-
-                    alert('Added to cart!');
-                });
-            });
         }
+    </script>
+
+    <!-- Categories filter script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch("categoriesJson")
+                .then(res => res.json())
+                .then(categories => {
+                    // Desktop filter
+                    const filterListDesktop = document.getElementById("categoryFilterListDesktop");
+                    if (filterListDesktop) {
+                        filterListDesktop.innerHTML = "";
+                        categories.forEach(cat => {
+                            const catId = cat.id;
+                            filterListDesktop.innerHTML += `
+                                <li>
+                                    <input type="checkbox" name="category" value="${catId}"> ${cat.name || "Unnamed"}
+                                </li>
+                            `;
+                        });
+                    }
+                    
+                    // Mobile filter
+                    const filterListMobile = document.getElementById("categoryFilterListMobile");
+                    if (filterListMobile) {
+                        filterListMobile.innerHTML = "";
+                        categories.forEach(cat => {
+                            filterListMobile.innerHTML += `
+                                <li>
+                                    <input type="checkbox" name="category" value="${cat.id}"> ${cat.name || "Unnamed"}
+                                </li>
+                            `;
+                        });
+                        
+                        // Close offcanvas on selection
+                        filterListMobile.addEventListener('change', function (e) {
+                            const offcanvas = document.getElementById('filterOffcanvas');
+                            if (offcanvas && typeof bootstrap !== 'undefined') {
+                                const bsOffcanvas = bootstrap.Offcanvas.getOrCreateInstance(offcanvas);
+                                bsOffcanvas.hide();
+                            } else if (offcanvas) {
+                                offcanvas.classList.remove('show');
+                                offcanvas.style.visibility = 'hidden';
+                            }
+                        });
+                    }
+                });
+        });
+    </script>
+
+    <!-- Header and offcanvas script -->
+    <script>
+        (function () {
+            const toggler = document.querySelector('.d_toggler_btn');
+            const offcanvas = document.getElementById('d_offcanvas_menu');
+            
+            if (toggler && offcanvas) {
+                const closeBtn = offcanvas.querySelector('.close_btn');
+
+                toggler.addEventListener('click', () => {
+                    offcanvas.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                });
+
+                if (closeBtn) {
+                    closeBtn.addEventListener('click', () => {
+                        offcanvas.classList.remove('active');
+                        document.body.style.overflow = '';
+                    });
+                }
+
+                document.addEventListener('click', (e) => {
+                    if (!offcanvas.contains(e.target) && !toggler.contains(e.target)) {
+                        offcanvas.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                });
+
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        offcanvas.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                });
+            }
+
+            // Sticky header scroll effect
+            window.addEventListener('scroll', () => {
+                const header = document.querySelector('.d_header');
+                if (header) {
+                    if (window.scrollY > 20) {
+                        header.classList.add('d_scrolled');
+                    } else {
+                        header.classList.remove('d_scrolled');
+                    }
+                }
+            });
+        })();
+    </script>
+
+    <!-- Sort functionality initialization -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Initial fetch and render
+            setTimeout(() => {
+                fetchAndRenderProducts('featured');
+            }, 100);
+
+            // Handle sort dropdown click
+            document.addEventListener('click', function(e) {
+                if (e.target.matches('.s_sort-dropdown .dropdown-item')) {
+                    e.preventDefault();
+                    
+                    // Remove active from all, add to selected
+                    document.querySelectorAll('.s_sort-dropdown .dropdown-item').forEach(i => i.classList.remove('active'));
+                    e.target.classList.add('active');
+                    
+                    // Update label
+                    const selectedSortEl = document.getElementById('selectedSort');
+                    if (selectedSortEl) {
+                        selectedSortEl.textContent = e.target.textContent;
+                    }
+                    
+                    // Fetch and render with selected sort
+                    fetchAndRenderProducts(e.target.dataset.value);
+                }
+            });
+        });
     </script>
 @endpush

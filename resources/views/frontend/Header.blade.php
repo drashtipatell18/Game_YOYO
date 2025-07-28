@@ -62,6 +62,9 @@
             font-weight: bold;
             font-size: 16px;
         }
+        .game-card {
+            cursor: pointer;
+        }
     </style>
 
     <body>
