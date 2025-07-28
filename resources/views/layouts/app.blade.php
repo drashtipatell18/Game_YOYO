@@ -321,6 +321,15 @@
                             </a>
                         </li>
 
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('reviews') }}">
+                                <span class="nav-icon">
+                                    <i class="fa-solid fa-plus"></i>
+                                </span>
+                                <span class="nav-link-text">Reviews</span>
+                            </a>
+                        </li>
+
                         <!--//nav-item-->
                     </ul>
                     <!--//app-menu-->

@@ -14,6 +14,7 @@ use App\Http\Controllers\PrivacyController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\MembersSayController;
+use App\Http\Controllers\ReviewController;
 
 use App\Http\Controllers\frontend\HomeController as FrontendHomeController;
 use App\Http\Controllers\frontend\LoginController as FrontendLoginController;
@@ -127,6 +128,14 @@ Route::post('/articles/store', [TopArticlesController::class, 'store'])->name('a
 Route::get('/articles/edit/{id}', [TopArticlesController::class, 'edit'])->name('edit.articles');
 Route::post('/articles/update/{id}', [TopArticlesController::class, 'update'])->name('update.articles');
 Route::delete('/articles/destroy/{id}',[TopArticlesController::class,'destroy'])->name('destroy.articles');
+
+// Reviews
+Route::get('/reviews', [ReviewController::class, 'reviews'])->name('reviews');
+Route::get('/reviews/create', [ReviewController::class, 'create'])->name(name: 'reviews.create');
+Route::post('/reviews/store', [ReviewController::class, 'store'])->name('reviews.store');
+Route::get('/reviews/edit/{id}', [ReviewController::class, 'edit'])->name('edit.reviews');
+Route::post('/reviews/update/{id}', [ReviewController::class, 'update'])->name('update.reviews');
+Route::delete('/reviews/destroy/{id}',[ReviewController::class,'destroy'])->name('destroy.reviews');
 
 // Members Say
 Route::get('/members-say', [MembersSayController::class, 'ViewMembersSay'])->name('members-say');

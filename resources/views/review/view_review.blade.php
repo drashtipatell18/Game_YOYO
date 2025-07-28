@@ -1,0 +1,162 @@
+@extends('layouts.app')
+@section('title', 'View Review')
+@section('content')
+<style>
+    @media (max-width: 768px) {
+        .custom-btn {
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        table.dataTable {
+            width: 100% !important;
+        }
+
+        div.dataTables_wrapper {
+            overflow-x: auto;
+        }
+
+        .dataTables_filter input {
+            width: 100% !important;
+            margin-top: 10px;
+        }
+    }
+</style>
+    <main role="main" class="main-content">
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <div class="row my-4">
+                        <!-- Small table -->
+                        <div class="col-md-12">
+                            <div class="card shadow">
+                                <div class="card-body">
+                                    <div class="mb-3 d-flex justify-content-between">
+                                        <h2 class="mb-2 page-title">Review List</h2>
+                                        <div class="mb-3">
+                                            <a href="{{ route('reviews.create') }}"
+                                                class="btn btn-primary text-white custom-btn">Create Review</a>
+                                        </div>
+                                    </div>
+                                    <!-- table -->
+                                    <table class="table table-striped table-hover" id="dataTable-1">
+                                        <thead class="custom-thead">
+                                            <tr>
+                                                <th class="text-center">Id</th>
+                                                <th class="text-center">Product</th>
+                                                <th class="text-center">User</th>
+                                                <th class="text-center">Rating</th>
+                                                <th class="text-center">Review</th>
+                                                <th class="text-center">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($reviews as $review)
+                                                <tr>
+                                                    <td class="text-center">{{ $review->id }}</td>
+                                                    <td class="text-center">
+                                                        {{ $review->product->name ?? 'No Product' }}
+                                                    </td>
+                                                    <td class="text-center">
+                                                        {{ $review->user->name ?? 'No User' }}
+                                                    </td>
+                                                    
+                                                    <td class="text-center">{{ $review->review }}</td>
+                                                    <td class="text-center">{{ $review->rating }}</td>
+
+                                                    <td class="text-center">
+                                                        <a href="{{ route('edit.reviews', $review->id) }}"
+                                                            class="btn btn-sm btn-warning text-white"
+                                                            title="Edit">
+                                                            <i class="fas fa-edit"></i>
+                                                        </a>
+                                                        <form action="{{ route('destroy.reviews', $review->id) }}"
+                                                            method="POST" style="display:inline;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-sm btn-danger custom-btn"
+                                                                title="Delete"
+                                                                onclick="return confirm('Are you sure you want to delete this Review?')">
+                                                                <i class="fas fa-trash-alt text-white"></i>
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+
+                                    <!-- View Model Code -->
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+@endsection
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            $('#dataTable-1').DataTable({
+                "pageLength": 10,
+                "language": {
+                    "lengthMenu": "Show _MENU_ entries",
+                    "search": "Search:",
+                    "info": "Showing _START_ to _END_ of _TOTAL_ entries",
+                    "infoEmpty": "Showing 0 to 0 of 0 entries",
+                    "infoFiltered": "(filtered from _MAX_ total entries)",
+                    "infoPostFix": "",
+                    "paginate": {
+                        "previous": "<i class='fa fa-angle-left'></i>",
+                        "next": "<i class='fa fa-angle-right'></i>"
+                    }
+                },
+                "order": [
+                    [0, "desc"]
+                ]
+            });
+
+
+            // Status Active or Inactive
+
+            $('.toggle-status').click(function () {
+                var badge = $(this);
+                var productId = badge.data('id');
+
+                $.ajax({
+                    url: '/product/toggle-status/' + productId,
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function (response) {
+                        if (response.status === 'active') {
+                            badge.removeClass('bg-danger text-dark').addClass('bg-success').text('Active');
+                        } else {
+                            badge.removeClass('bg-success').addClass('bg-danger text-dark').text('Inactive');
+                        }
+                    },
+                    error: function () {
+                        alert('Something went wrong. Please try again.');
+                    }
+                });
+            });
+
+
+            // Check for session messages and display them
+            @if (session('success'))
+                toastr.success("{{ session('success') }}", "Success", {
+                    timeOut: 2000
+                });
+            @endif
+            @if (session('error'))
+                toastr.error("{{ session('error') }}", "Error", {
+                    timeOut: 2000
+                });
+            @endif
+        });
+    </script>
+@endpush
