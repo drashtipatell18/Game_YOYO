@@ -192,11 +192,17 @@
 
                 products.forEach(product => {
                      const categoryName = product.category_name || "Unknown";
+                    let firstImage = '';
+                    if (Array.isArray(product.image)) {
+                        firstImage = product.image[0];
+                    } else if (typeof product.image === 'string') {
+                        firstImage = product.image.split(',')[0].trim(); // comma-separated string
+                    }
                     // Grid Card
                     gridContainer.innerHTML += `
                         <div class="col-xl-4 col-lg-6 col-md-4     col-sm-6 col-12 mb-4 d-flex justify-content-center">
                           <div class="game-card position-relative">
-                            <img src="${product.image}" alt="${product.name}" class="card-img-top" />
+                            <img src="${firstImage}" alt="${product.name}" class="card-img-top" />
                             <div class="position-absolute card-content">
                               <div class="icons d-flex gap-2 mb-3">
                                 <i class="fa-brands fa-apple"></i>
@@ -259,10 +265,11 @@
         const listContainer = document.getElementById('listContainer');
 
         function createGridCard(cardData) {
+            const firstImage = cardData.image ? cardData.image.split(',')[0].trim() : 'default.jpg'; // fallback if empty
             return `
             <div class="col-12 col-sm-6 col-md-4 col-lg-6 col-xl-4  mb-4 d-flex justify-content-center">
               <div class="game-card position-relative">
-                <img src="${cardData.image}" alt="${cardData.name}" class="card-img-top" />
+                <img src="${firstImage}" alt="${cardData.name}" class="card-img-top" />
                 <div class="position-absolute card-content">
                   <div class="icons d-flex gap-2 mb-3">
                     <i class="fa-brands fa-apple"></i>
@@ -524,10 +531,16 @@
 
             products.forEach(product => {
             const categoryName = product.category_name || "Unknown";
+            let firstImage = '';
+            if (Array.isArray(product.image)) {
+                firstImage = product.image[0];
+            } else if (typeof product.image === 'string') {
+                firstImage = product.image.split(',')[0].trim(); // comma-separated string
+            }
             gridContainer.innerHTML += `
                     <div class="col-lg-4 col-md-6 col-sm-6 col-12 mb-4 d-flex justify-content-center">
                     <div class="game-card position-relative">
-                        <img src="${product.image}" alt="${product.name}" class="card-img-top" />
+                        <img src="${firstImage}" alt="${product.name}" class="card-img-top" />
                         <div class="position-absolute card-content">
                         <h3>${product.name}</h3>
                         <h3 class="mb-0">$${product.price.toFixed(2)}</h3>
