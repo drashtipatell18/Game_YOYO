@@ -19,8 +19,9 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
         $images = explode(',', $product->image);
+        $reviewCount = $product->reviews()->count();
 
-        return view('frontend.singleProduct',compact('product','images'));
+        return view('frontend.singleProduct',compact('product','images','reviewCount'));
     }
 
     public function getproductDetailJson($id)

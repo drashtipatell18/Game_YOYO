@@ -90,7 +90,7 @@
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link x_tab-link" id="reviews-tab" data-bs-toggle="tab"
-                                    data-bs-target="#reviews" type="button" role="tab">Reviews (0)</button>
+                                    data-bs-target="#reviews" type="button" role="tab">Reviews ({{ $reviewCount }})</button>
                             </li>
                         </ul>
                         <div class="tab-content x_tab-content p-4 bg-opacity-75" id="x_productTabContent">
