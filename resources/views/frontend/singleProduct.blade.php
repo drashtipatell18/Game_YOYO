@@ -448,6 +448,7 @@
                 'name' => $item->name,
                 'image' => asset('images/products/' . explode(',', $item->image)[0]),
                 'price' => '₹' . $item->price,
+                'category' => optional($item->category)->name,
             ];
         })) !!};
     </script>
@@ -455,6 +456,7 @@
     <script>
     function renderSwiperCards() {
         const swiperCards = document.getElementById('swiperCards');
+        
         swiperCards.innerHTML = cardsData.map(card => `
             <div class="swiper-slide d-flex justify-content-center">
                 <div class="game-card position-relative" data-id="${card.id}" style="cursor: pointer;">
@@ -466,6 +468,7 @@
                         </div>
                         <h3>${card.name}</h3>
                         <h3 class="mb-0">${card.price}</h3>
+                       <span class="badge bg-secondary mt-2">${card.category}</span>
                     </div>
                     <div class="card-actions d-flex align-items-center gap-3">
                         <div class="d_main_button w-100">
