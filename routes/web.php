@@ -165,7 +165,9 @@ Route::get('/frontlogout',[FrontendLoginController::class,'frontlogout'])->name(
 
 Route::get('demo', [FrontendLoginController::class, 'demo'])->name('demo');
 Route::get('/frontend-forget',[FrontendLoginController::class,'Forget'])->name('frontendforget');
-Route::post('/frontend-reset',[FrontendLoginController::class,'frontsendResetLinkEmail'])->name('frontresertlink');
+Route::post('/frontend-forpass',[FrontendLoginController::class,'frontsendResetLinkEmail'])->name('frontresertlink');
+Route::get('/front-reset/{token}', [FrontendLoginController::class, 'frontreset'])->name('frontreset');
+Route::post('/front-reset/{token}', [FrontendLoginController::class, 'frontpostReset'])->name('frontpost_reset');
 Route::get('/index', [FrontendHomeController::class, 'index'])->name('index');
 Route::get('/aboutsus', [AboutUSController::class, 'aboutus'])->name(name: 'aboutus');
 

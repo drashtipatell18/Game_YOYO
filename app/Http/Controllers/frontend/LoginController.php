@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\ForgotPasswordMail;
+use App\Mail\FrontForgotPasswordMail;
 
 class LoginController extends Controller
 {
@@ -61,7 +61,7 @@ class LoginController extends Controller
             $user->remember_token = Str::random(40);
             $user->save();
 
-            Mail::to($user->email)->send(new ForgotPasswordMail($user));
+            Mail::to($user->email)->send(new FrontForgotPasswordMail($user));
             return redirect()->route('frontendforget')->with('success', 'Password reset link sent successfully.');
 
         }
@@ -115,5 +115,39 @@ class LoginController extends Controller
 
         // Redirect or login the user
         return redirect()->route('index')->with('success', 'Account created successfully!');
+    }
+
+    public function frontreset($token)
+    {
+        $user = User::where('remember_token', '=', $token)->first();
+        if (!empty($user)) {
+            $data['user'] = $user;
+            $data['token'] = $user->remember_token;
+            return view('frontend.reset', $data);
+        }
+    }
+
+    public function frontpostReset($token, Request $request)
+    {
+        $request->validate([
+            'newpassword' => 'required|string|min:8',
+            'confirmpassword' => 'required|string|min:8',
+        ]);
+
+        if ($request->newpassword !== $request->confirmpassword) {
+            return redirect()->back()->with('error', 'The new password confirmation does not match.');
+        }
+
+        $user = User::where('remember_token', '=', $token)->first();
+        if (!empty($user)) {
+            if (empty($user->email_verified_at)) {
+                $user->email_verified_at = now();
+            }
+            $user->remember_token = Str::random(40);
+            $user->password = Hash::make($request->newpassword);
+            $user->save();
+            // return redirect('login')->with('success', 'Password successfully reset.');
+            return redirect()->route('index')->with('success', 'Password successfully reset.');
+        }
     }
 }
