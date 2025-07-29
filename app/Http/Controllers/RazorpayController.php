@@ -40,13 +40,18 @@ class RazorpayController extends Controller
 
         $product = Product::find($request->product_id);
 
+        $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
+        $payment = $api->payment->fetch($request->razorpay_payment_id);
+        $paymentType = $payment->method ?? 'unknown';
+
         // Store payment details in DB
         Payment::create([
             'product_id' => $product->id,
-            'user_id' => auth()->id() ?? null, // Optional, if you use login
+            'user_id' => auth()->id() ?? null, 
             'price' => $product->price,
             'razorpay_payment_id' => $request->razorpay_payment_id,
             'payment_status' => 'completed',
+            'payment_type' => $paymentType,
         ]);
 
         return response()->json(['status' => 'success']);

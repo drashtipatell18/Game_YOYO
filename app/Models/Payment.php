@@ -12,6 +12,7 @@ class Payment extends Model
         'price',
         'payment_status',
         'razorpay_payment_id',
+        'payment_type'
     ];
 
     public function user()

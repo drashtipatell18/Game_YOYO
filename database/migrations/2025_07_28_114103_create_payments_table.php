@@ -18,6 +18,7 @@ return new class extends Migration
                 $table->decimal('price', 10, 2);
                 $table->string('payment_status')->default('pending');
                 $table->string('razorpay_payment_id')->nullable();
+                $table->string('payment_type')->nullable();
                 $table->timestamps();
                 $table->softDeletes();
                 

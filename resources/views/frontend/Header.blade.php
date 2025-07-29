@@ -65,6 +65,10 @@
         .game-card {
             cursor: pointer;
         }
+        .swal2-success-toast {
+            background-color: #28a745 !important; /* Bootstrap success green */
+            color: #fff !important;
+        }
     </style>
 
     <body>

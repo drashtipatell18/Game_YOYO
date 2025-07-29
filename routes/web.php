@@ -199,6 +199,6 @@ Route::get('/productDetailJson', [FrontendProductController::class, 'getproductD
 Route::get('/products/{id}', [ProductController::class, 'getProductDetailJson']);
 
 // Razor Pay Routes
-Route::get('/get-payment-details/{productId}', [RazorpayController::class, 'getPaymentDetails']);
-Route::post('/payment/success', [RazorpayController::class, 'paymentSuccess']);
+Route::get('/get-payment-details/{productId}', [RazorpayController::class, 'getPaymentDetails'])->middleware('auth');
+Route::post('/payment/success', [RazorpayController::class, 'paymentSuccess'])->middleware('auth');
 
