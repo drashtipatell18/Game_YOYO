@@ -69,7 +69,7 @@
                             
                             <div class="d-flex align-items-center mb-3">
                                 <button class="btn btn-outline-light x_add-cart-btn px-md-4 px-3 me-3"
-                                        data-bs-toggle="modal" data-bs-target="#paymentModal">
+                                         onclick="payNow({{ $product['id'] ?? 0 }})">
                                     BUY NOW
                                 </button>
 
@@ -318,6 +318,7 @@
 @endsection
 
 @push('script')
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
         const isLoggedIn = @json(Auth::check()); // returns true or false
         const loginUrl = "{{ route('frontend.login') }}";
@@ -830,4 +831,54 @@
             modal1El.addEventListener('show.bs.modal', updatePaymentSummary);
         });
     </script>
+
+
+
+<!-- Razor Pay Code -->
+
+
+    <script>
+        function payNow(productId) {
+            // Fetch product/payment details via Ajax
+            fetch(`/get-payment-details/${productId}`)
+                .then(res => res.json())
+                .then(data => {
+                    const options = {
+                        "key": "{{ env('RAZORPAY_KEY') }}", // Replace with your Razorpay Key ID
+                        "amount": data.amount * 100, // Amount in paise (e.g., ₹500 => 50000)
+                        "currency": "INR",
+                        "name": data.name,
+                        "description": data.description,
+                        "image": data.image || '/default.png',
+                        "order_id": data.razorpay_order_id, // Order ID from backend
+                        "handler": function (response){
+                            // On successful payment
+                            fetch('/payment/success', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                },
+                                body: JSON.stringify({
+                                    razorpay_payment_id: response.razorpay_payment_id,
+                                    razorpay_order_id: response.razorpay_order_id,
+                                    razorpay_signature: response.razorpay_signature,
+                                    product_id: productId
+                                })
+                            }).then(res => res.json())
+                            .then(data => {
+                                alert('Payment Successful!');
+                                // Redirect or show success
+                            });
+                        },
+                        "theme": {
+                            "color": "#3399cc"
+                        }
+                    };
+
+                    const rzp = new Razorpay(options);
+                    rzp.open();
+                });
+        }
+        </script>
     @endpush
