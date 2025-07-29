@@ -22,6 +22,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->text('weight')->nullable();
             $table->text('dimensions')->nullable();
+            $table->string('status')->default('active');
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('category_id')->references('id')->on('category')->onDelete('cascade');

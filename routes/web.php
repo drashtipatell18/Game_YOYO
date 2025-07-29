@@ -198,12 +198,12 @@ Route::get('/productDetailJson', [FrontendProductController::class, 'getproductD
 Route::get('/products/{id}', [ProductController::class, 'getProductDetailJson']);
 
 
-   Route::post('/cart/add', [FrontendCartController::class, 'FrontaddToCart']);
-    Route::get('/cart/items', [FrontendCartController::class, 'FrontgetCartItems']);
-    Route::post('/cart/update', [FrontendCartController::class, 'FrontupdateQuantity']);
-    Route::delete('/cart/remove', [FrontendCartController::class, 'FrontremoveFromCart']);
-     Route::get('/api/cart', [FrontendCartController::class, 'getCartApi']);
-    Route::delete('/api/cart/{id}', [FrontendCartController::class, 'removeFromCart']);
+Route::post('/cart/add', [FrontendCartController::class, 'FrontaddToCart']);
+Route::get('/cart/items', [FrontendCartController::class, 'FrontgetCartItems']);
+Route::delete('/cart/remove', [FrontendCartController::class, 'FrontremoveFromCart']);
+Route::get('/api/cart', [FrontendCartController::class, 'getCartApi']);
+Route::delete('/api/cart/{id}', [FrontendCartController::class, 'removeFromCart']);
+
 // Razor Pay Routes
 Route::get('/get-payment-details/{productId}', [RazorpayController::class, 'getPaymentDetails'])->middleware('auth');
 Route::post('/payment/success', [RazorpayController::class, 'paymentSuccess'])->middleware('auth');

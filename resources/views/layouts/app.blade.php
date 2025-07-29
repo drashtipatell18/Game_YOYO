@@ -10,6 +10,7 @@
     <meta name="description" content="Game Ecommerce">
     <meta name="author" content="Xiaoying Riley at 3rd Wave Media">
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- FontAwesome JS-->
     <script defer src="{{ asset('assets/plugins/fontawesome/js/all.min.js') }}"></script>
     <!-- App CSS -->

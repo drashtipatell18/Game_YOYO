@@ -3,6 +3,60 @@
 @section('title', isset($product) ? 'Edit Product' : 'Create Product')
 
 @section('content')
+    <style>
+        .form-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .form-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .form-switch input:checked+.form-check-label::before {
+            background-color: #4caf50;
+        }
+
+        .form-check-label {
+            position: relative;
+            padding-left: 70px;
+            cursor: pointer;
+        }
+
+        .form-check-label::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 60px;
+            height: 34px;
+            background-color: #ccc;
+            border-radius: 34px;
+            transition: background-color 0.4s;
+        }
+
+        .form-check-label::after {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: 26px;
+            height: 26px;
+            background-color: white;
+            border-radius: 50%;
+            transition: transform 0.4s;
+        }
+
+        .form-switch input:checked+.form-check-label::after {
+            transform: translateX(26px);
+        }
+    </style>
+
+    </style>
     <div class="row">
         <div class="col-md-6 grid-margin stretch-card" style="margin: 0 auto;">
             <div class="card">
@@ -19,7 +73,8 @@
                                     <select name="category_id" id="category_id" class="form-control">
                                         <option value="">Select Category</option>
                                         @foreach ($categories as $key => $category)
-                                            <option value="{{ $key }}" {{ (isset($product) && $product->category_id == $key) ? 'selected' : '' }}>
+                                            <option value="{{ $key }}"
+                                                {{ isset($product) && $product->category_id == $key ? 'selected' : '' }}>
                                                 {{ $category }}
                                             </option>
                                         @endforeach
@@ -56,18 +111,17 @@
                         </div>
 
                         <div class="form-group mb-3">
-                           <label for="image">Product Images (multiple)</label>
+                            <label for="image">Product Images (multiple)</label>
                             <div id="existing-images" class="d-flex flex-wrap" style="gap: 10px;">
                                 @if (isset($product) && $product->image)
                                     @php
                                         $mediaFiles = explode(',', $product->image);
                                     @endphp
                                     @foreach ($mediaFiles as $index => $file)
-
                                         <div class="image-container position-relative" data-image="{{ $file }}">
 
-                                                <img src="{{ asset('images/products/' . $file) }}" alt="Product Media"
-                                                    style="width: 70px; height: 70px; object-fit: cover;">
+                                            <img src="{{ asset('images/products/' . $file) }}" alt="Product Media"
+                                                style="width: 70px; height: 70px; object-fit: cover;">
 
                                             <button type="button"
                                                 class="btn btn-primary btn-sm position-absolute top-0 end-0 remove-btn d-flex justify-content-center text-white align-items-center custom-btn"
@@ -94,38 +148,50 @@
 
                         {{-- Weight and Dimensions --}}
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <div class="form-group mb-3">
                                     <label for="weight">Weight (kg)</label>
                                     <input type="number" name="weight" id="weight" class="form-control" step="0.01"
                                         value="{{ old('weight', $product->weight ?? '') }}">
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="status">Status</label>
+                                    <div class="form-check form-switch d-flex align-items-start gap-2">
+                                        <input class="form-check-input" type="checkbox" id="status" name="status"
+                                            value="active"
+                                            {{ isset($product) && $product->status === 'active' ? 'checked' : '' }}
+                                            onchange="updateStatusLabel(this)">
+                                        <label class="form-check-label" for="status" id="status-label">
+                                            {{ isset($product) && $product->status === 'active' ? 'Active' : 'Inactive' }}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-
-
-                       <div class="form-group mb-3">
+                        <div class="form-group mb-3">
                             <label>Dimensions (cm)</label>
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="length">Length</label>
-                                        <input type="number" name="length" id="length" class="form-control" placeholder="Length"
-                                            value="{{ old('length', $product->length ?? '') }}">
+                                        <input type="number" name="length" id="length" class="form-control"
+                                            placeholder="Length" value="{{ old('length', $product->length ?? '') }}">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="width">Width</label>
-                                        <input type="number" name="width" id="width" class="form-control" placeholder="Width"
-                                            value="{{ old('width', $product->width ?? '') }}">
+                                        <input type="number" name="width" id="width" class="form-control"
+                                            placeholder="Width" value="{{ old('width', $product->width ?? '') }}">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="height">Height</label>
-                                        <input type="number" name="height" id="height" class="form-control" placeholder="Height"
-                                            value="{{ old('height', $product->height ?? '') }}">
+                                        <input type="number" name="height" id="height" class="form-control"
+                                            placeholder="Height" value="{{ old('height', $product->height ?? '') }}">
                                     </div>
                                 </div>
                             </div>
@@ -133,7 +199,8 @@
 
                         {{-- Submit Button --}}
                         <div class="form-group text-center p-3">
-                            <button type="submit" class="btn btn-primary mr-2 text-white custom-btn" style="pointer-events: auto;">
+                            <button type="submit" class="btn btn-primary mr-2 text-white custom-btn"
+                                style="pointer-events: auto;">
                                 {{ isset($product) ? 'Update' : 'Submit' }}
                             </button>
                         </div>
@@ -145,17 +212,17 @@
 @endsection
 
 @push('scripts')
-<script>
-    $(document).ready(function() {
-        $('#image').change(function() {
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                $('#image-preview').attr('src', e.target.result);
-            }
-            reader.readAsDataURL(this.files[0]);
-        });
+    <script>
+        $(document).ready(function() {
+            $('#image').change(function() {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#image-preview').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(this.files[0]);
+            });
 
-        $('#product-form').validate({
+            $('#product-form').validate({
                 rules: {
                     category_id: {
                         required: true
@@ -218,16 +285,16 @@
 
 
                     length: "Enter length",
-                        width: "Enter width",
-                        height: "Enter height"
-                    },
-                    errorClass: 'text-danger',
-                    errorElement: 'small',
-                    highlight: function (element) {
-                        $(element).addClass('is-invalid');
-                    },
-                    unhighlight: function (element) {
-                        $(element).removeClass('is-invalid');
+                    width: "Enter width",
+                    height: "Enter height"
+                },
+                errorClass: 'text-danger',
+                errorElement: 'small',
+                highlight: function(element) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function(element) {
+                    $(element).removeClass('is-invalid');
                 }
             });
         });
@@ -334,5 +401,10 @@
                 $('.alert').fadeOut();
             }, 3000);
         }
-</script>
+
+        function updateStatusLabel(checkbox) {
+            const label = document.getElementById('status-label');
+            label.textContent = checkbox.checked ? 'Active' : 'Inactive';
+        }
+    </script>
 @endpush

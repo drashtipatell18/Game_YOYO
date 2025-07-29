@@ -1,27 +1,27 @@
 @extends('layouts.app')
 @section('title', 'View Product')
 @section('content')
-<style>
-    @media (max-width: 768px) {
-        .custom-btn {
-            width: 100%;
-            margin-top: 5px;
-        }
+    <style>
+        @media (max-width: 768px) {
+            .custom-btn {
+                width: 100%;
+                margin-top: 5px;
+            }
 
-        table.dataTable {
-            width: 100% !important;
-        }
+            table.dataTable {
+                width: 100% !important;
+            }
 
-        div.dataTables_wrapper {
-            overflow-x: auto;
-        }
+            div.dataTables_wrapper {
+                overflow-x: auto;
+            }
 
-        .dataTables_filter input {
-            width: 100% !important;
-            margin-top: 10px;
+            .dataTables_filter input {
+                width: 100% !important;
+                margin-top: 10px;
+            }
         }
-    }
-</style>
+    </style>
     <main role="main" class="main-content">
         <div class="container-fluid">
             <div class="row justify-content-center">
@@ -46,6 +46,7 @@
                                                 <th class="text-center">Category</th>
                                                 <th class="text-center">Image</th>
                                                 <th class="text-center">Name</th>
+                                                <th class="text-center">Status</th>
                                                 <th class="text-center">Action</th>
                                             </tr>
                                         </thead>
@@ -67,16 +68,22 @@
                                                                 alt="Product Image"
                                                                 style="width: 30px; height: 30px; object-fit: cover; border: 2px solid #dee2e6;">
                                                         @else
-                                                           <img src="{{ asset('assets/images/unnamed.jpg') }}" alt="User Image" class="img-fluid"
-                                                            style="width: 60px; height: 60px; object-fit: cover;">
+                                                            <img src="{{ asset('assets/images/unnamed.jpg') }}"
+                                                                alt="User Image" class="img-fluid"
+                                                                style="width: 60px; height: 60px; object-fit: cover;">
                                                         @endif
                                                     </td>
                                                     <td class="text-center">{{ $product->name }}</td>
-
+                                                    <td class="text-center">
+                                                        <span
+                                                            class="badge toggle-status {{ $product->status === 'active' ? 'bg-success' : 'bg-danger text-dark' }}"
+                                                            data-id="{{ $product->id }}">
+                                                            {{ $product->status === 'active' ? 'Active' : 'Inactive' }}
+                                                        </span>
+                                                    </td>
                                                     <td class="text-center">
                                                         <a href="{{ route('product.edit', $product->id) }}"
-                                                            class="btn btn-sm btn-warning text-white"
-                                                            title="Edit">
+                                                            class="btn btn-sm btn-warning text-white" title="Edit">
                                                             <i class="fas fa-edit"></i>
                                                         </a>
                                                         <form action="{{ route('product.delete', $product->id) }}"
@@ -131,7 +138,7 @@
 
             // Status Active or Inactive
 
-            $('.toggle-status').click(function () {
+            $('.toggle-status').click(function() {
                 var badge = $(this);
                 var productId = badge.data('id');
 
@@ -141,14 +148,16 @@
                     data: {
                         _token: '{{ csrf_token() }}'
                     },
-                    success: function (response) {
+                    success: function(response) {
                         if (response.status === 'active') {
-                            badge.removeClass('bg-danger text-dark').addClass('bg-success').text('Active');
+                            badge.removeClass('bg-danger text-dark').addClass('bg-success')
+                                .text('Active');
                         } else {
-                            badge.removeClass('bg-success').addClass('bg-danger text-dark').text('Inactive');
+                            badge.removeClass('bg-success').addClass('bg-danger text-dark')
+                                .text('Inactive');
                         }
                     },
-                    error: function () {
+                    error: function() {
                         alert('Something went wrong. Please try again.');
                     }
                 });

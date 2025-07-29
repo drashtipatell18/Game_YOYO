@@ -62,6 +62,7 @@ class ProductController extends Controller
             'description' => $request->input('description'),
             'weight' => $request->input('weight'),
             'dimensions' => $dimensions,
+            'status' => $request->input('status'),
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -175,14 +176,37 @@ class ProductController extends Controller
             'image' => implode(',', $finalImages),
             'description' => $request->input('description'),
             'weight' => $request->input('weight'),
+            'status' => $request->input('status'),
             'dimensions' => $dimensions,
         ];
-      
+
         $product->update($updateData);
 
         return redirect()->route('product')->with('success', 'Product updated successfully');
     }
 
+    public function toggleStatus($id)
+    {
+        try {
+            $product = Product::findOrFail($id);
+
+            // Toggle status
+            $product->status = $product->status === 'active' ? 'inactive' : 'active';
+            $product->save();
+
+            return response()->json([
+                'success' => true,
+                'status' => $product->status,
+                'message' => 'Status updated successfully'
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error updating status: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 
 
 
