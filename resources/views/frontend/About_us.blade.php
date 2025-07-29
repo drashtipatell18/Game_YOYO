@@ -1,12 +1,6 @@
 @extends('frontend.layouts.main')
 @section('title', 'YOYO Games: About Us')
-<style>
-    .Z_about_card_desc {
-        word-wrap: break-word;      /* Allows long words to wrap */
-        word-break: break-word;     /* Breaks words if necessary */
-        white-space: normal;        /* Ensures text wraps normally */
-    }
-</style>
+
 @section('content')
     <div class="Z_about_hero">
         <div class="Z_about_hero-overlay">

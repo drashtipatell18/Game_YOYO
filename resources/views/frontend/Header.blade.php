@@ -68,6 +68,11 @@
             background-color: #28a745 !important; /* Bootstrap success green */
             color: #fff !important;
         }
+        .Z_about_card_desc {
+                word-wrap: break-word;      /* Allows long words to wrap */
+                word-break: break-word;     /* Breaks words if necessary */
+                white-space: normal;        /* Ensures text wraps normally */
+        }
     </style>
 
     <body>
