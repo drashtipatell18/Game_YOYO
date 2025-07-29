@@ -149,10 +149,10 @@
                                             width="25" />
                                     </a>
                                 </div>
-                                <div class="apple icon">
+                                {{-- <div class="apple icon">
                                     <img src="{{ asset('frontend/images/apple-logo.png') }}" alt="Apple"
                                         width="20" />
-                                </div>
+                                </div> --}}
                                 <div class="facebook icon">
                                     <a href="{{ url('auth/facebook') }}">
                                         <img src="{{ asset('frontend/images/Facebook-logo.png') }}" alt="Facebook"
