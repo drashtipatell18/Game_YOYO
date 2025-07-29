@@ -15,6 +15,7 @@ return new class extends Migration
                 $table->id();
                 $table->unsignedBigInteger('user_id')->nullable();
                 $table->unsignedBigInteger('product_id')->nullable();
+                $table->unsignedBigInteger('cart_id')->nullable();
                 $table->decimal('price', 10, 2);
                 $table->string('payment_status')->default('pending');
                 $table->string('razorpay_payment_id')->nullable();
@@ -24,6 +25,7 @@ return new class extends Migration
                 
                 $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
                 $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+                $table->foreign('cart_id')->references('id')->on('add_to_carts')->onDelete('cascade');
             });
         }
 

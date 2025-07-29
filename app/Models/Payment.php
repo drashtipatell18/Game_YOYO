@@ -9,6 +9,7 @@ class Payment extends Model
     protected $fillable = [
         'user_id',
         'product_id',
+        'cart_id',
         'price',
         'payment_status',
         'razorpay_payment_id',

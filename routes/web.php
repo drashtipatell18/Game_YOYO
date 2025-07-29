@@ -208,3 +208,6 @@ Route::delete('/api/cart/{id}', [FrontendCartController::class, 'removeFromCart'
 Route::get('/get-payment-details/{productId}', [RazorpayController::class, 'getPaymentDetails'])->middleware('auth');
 Route::post('/payment/success', [RazorpayController::class, 'paymentSuccess'])->middleware('auth');
 
+Route::get('/get-payment-details-cart/{cartId}', [RazorpayController::class, 'getCartPaymentDetails'])->middleware('auth');
+Route::post('/cart/success', [RazorpayController::class, 'getCartpaymentSuccess'])->middleware('auth');
+

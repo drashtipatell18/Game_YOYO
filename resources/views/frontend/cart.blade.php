@@ -18,6 +18,10 @@
         .toast-success .toast-progress {
             background-color: rgba(255, 255, 255, 0.7) !important;
         }
+        .swal2-success-toast {
+            background-color: #28a745 !important; /* Bootstrap success green */
+            color: #fff !important;
+        }
     </style>
 
     <body style="padding-right: 0px;">
@@ -99,7 +103,7 @@
 
                                                 </td>
                                                 <td class="Z_cart_td">{{ $cart->product->category->name ?? 'N/A' }}</td>
-                                                <td class="Z_cart_td">£{{ number_format($cart->product->price, 2) }}</td>
+                                                <td class="Z_cart_td">${{ number_format($cart->product->price, 2) }}</td>
                                                 <td class="Z_cart_td text-center">
                                                     <button class="Z_cart_removebtn"
                                                         onclick="deleteItem({{ $cart->id }})">
@@ -131,11 +135,14 @@
                         <div class="Z_cart_totals_title mb-2">Cart totals</div>
                         <div class="d-flex justify-content-between mb-2">
                             <span>Total</span>
-                            <span id="cartTotal">£{{ number_format($cartTotal ?? 0, 2) }}</span>
+                            <span id="cartTotal">${{ number_format($cartTotal ?? 0, 2) }}</span>
                         </div>
                         <div class="text-end mt-3">
-                            <button class="Z_cart_btn Z_cart_btnoutline" data-bs-toggle="modal"
-                                data-bs-target="#paymentModal" {{ $carts->count() == 0 ? 'disabled' : '' }}>
+                            <button class="Z_cart_btn Z_cart_btnoutline"
+                                onclick="payNow(this)"
+                                data-total="{{ $cartTotal ?? 0 }}"
+                                data-cart-id="{{ $cart->id ?? 0 }}"
+                                {{ $carts->count() == 0 ? 'disabled' : '' }}>
                                 BUY NOW
                             </button>
                         </div>
@@ -158,6 +165,8 @@
     @push('script')
         <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         <!-- CSRF Token for AJAX requests -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -314,6 +323,73 @@
                     }
                 });
             })();
+        </script>
+        
+<!-- Razor Pay Code -->
+    <script>
+        function payNow(button) {
+            const cartId = button.getAttribute('data-cart-id');
+            const totalAmount = parseFloat(button.getAttribute('data-total')) || 0;
+
+            fetch(`/get-payment-details-cart/${cartId}`)
+                .then(res => res.json())
+                .then(data => {
+                    const options = {
+                        "key": "{{ env('RAZORPAY_KEY') }}",
+                        "amount": Math.round(totalAmount * 100),
+                        "currency": "INR",
+                        "name": data.name,
+                        "description": data.description,
+                        "image": data.image || '/default.png',
+                        "order_id": data.razorpay_order_id,
+                        "handler": function (response) {
+                            fetch('/cart/success', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                },
+                                body: JSON.stringify({
+                                    razorpay_payment_id: response.razorpay_payment_id,
+                                    razorpay_order_id: response.razorpay_order_id,
+                                    razorpay_signature: response.razorpay_signature,
+                                    amount: totalAmount,
+                                    cart_id: cartId 
+                                })
+                            }).then(res => res.json())
+                            .then(data => {
+                                if (data.status === 'success') {
+                                    Swal.fire({
+                                        toast: true,
+                                        position: 'top-end',
+                                        icon: 'success',
+                                        title: 'Payment Successful!',
+                                        showConfirmButton: false,
+                                        timer: 5000,
+                                        timerProgressBar: true
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        toast: true,
+                                        position: 'top-end',
+                                        icon: 'error',
+                                        title: 'Payment failed to store.',
+                                        showConfirmButton: false,
+                                        timer: 5000,
+                                        timerProgressBar: true
+                                    });
+                                }
+                            });
+                        },
+                        "theme": {
+                            "color": "#3399cc"
+                        }
+                    };
+
+                    const rzp = new Razorpay(options);
+                    rzp.open();
+                });
+        }
         </script>
     </body>
 @endpush
