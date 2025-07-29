@@ -13,7 +13,8 @@ class HomeController extends Controller
     public function index()
     {
         $ourTeams = OutTeam::all();
-        return view('frontend.index',compact('ourTeams'));
+        $products = Product::where('status', 'inactive')->get();
+        return view('frontend.index',compact('ourTeams', 'products'));
     }
 
     public function getCategoriesJson()
@@ -22,12 +23,12 @@ class HomeController extends Controller
 
         foreach ($categories as $category) {
             $category->image = asset('images/category/' . $category->image); // Converts to full URL
-            $category->icon = asset('images/category/' . $category->icon); 
+            $category->icon = asset('images/category/' . $category->icon);
         }
 
         return response()->json($categories);
     }
-    
+
     public function getProductJson()
     {
         $products = Product::with('category:id,name') // eager load category with only id & name
