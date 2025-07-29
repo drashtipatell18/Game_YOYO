@@ -1,6 +1,6 @@
 @extends('frontend.layouts.main')
 @section('content')
-
+ 
     <body style="padding-right: 0px;">
         <section class="d_hero-section">
             <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
@@ -71,19 +71,16 @@
                                 $image = explode(',', $game->image)[0] ?? '';
                             @endphp
                             <div class="swiper-slide d-flex justify-content-center">
-                                <div class="game-card position-relative" data-id="{{ $game->id }}">
-                                    <img src="{{ asset('images/products/' . trim($image)) }}" alt="{{ $game->name }}"
-                                        class="card-img-top" />
-                                    <div class="position-absolute card-content">
-                                        <h3>{{ $game->name }}</h3>
-                                        <h3 class="mb-0">${{ number_format($game->price, 2) }}</h3>
-                                        <span class="badge bg-secondary mt-2">{{ $game->category->name ?? 'No Category' }}</span>
+                                <a href="{{ route('productDetails', $game->id) }}" class="text-decoration-none text-dark">
+                                    <div class="game-card position-relative" data-id="{{ $game->id }}">
+                                        <img src="{{ asset('images/products/' . trim($image)) }}" alt="{{ $game->name }}" class="card-img-top" />
+                                        <div class="position-absolute card-content">
+                                            <h3>{{ $game->name }}</h3>
+                                            <h3 class="mb-0">${{ number_format($game->price, 2) }}</h3>
+                                            <span class="badge bg-secondary mt-2">{{ $game->category->name ?? 'No Category' }}</span>
+                                        </div>
                                     </div>
-                                    
-                                    <div class="card-actions d-flex align-items-center gap-3">
-                                        
-                                    </div>
-                                </div>
+                                </a>
                             </div>
                         @endforeach
                     </div>
@@ -117,6 +114,7 @@
         </section>
         <!-- comming soon start  -->
         <div class="d_coming_wrapper">
+            
             <section class="d_coming_section">
                 <div class="container">
                     <h2><i class="fa-solid fa-bolt me2"></i>Upcoming Premium Games</h2>
@@ -151,6 +149,7 @@
                     </div>
                 </div>
             </section>
+        
         </div>
         <!-- Founder & Team Section -->
         <section class="d_founder_section">
@@ -165,13 +164,13 @@
                                     $image = $team->image ?? '';
                                     $imagePath = public_path('images/ourteam/' . $image);
                                 @endphp
-
+ 
                                 @if (!empty($image) && file_exists($imagePath))
                                     <img src="{{ asset('images/ourteam/' . $image) }}" alt="{{ $team->name }}" class="d_member_img">
                                 @else
                                     <img src="{{ asset('assets/images/user.png') }}" alt="User Image" class="d_member_img">
                                 @endif
-
+ 
                                 <div class="d_member_content">
                                     <h4 class="d_member_name">{{ $team->name }}</h4>
                                     <p class="d_member_role"><i class="fas fa-gamepad"></i> {{ $team->designation }}</p>
@@ -184,7 +183,7 @@
                         </div>
                     @endforeach
                 </div>
-
+ 
             </div>
         </section>
     </body>
@@ -212,5 +211,5 @@
         });
     });
     </script>
-
+ 
 @endsection
