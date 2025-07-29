@@ -45,7 +45,7 @@ class LoginController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/');
+        return redirect()->route('frontend.login')->with('success', 'Logout successful!');
     }
 
     public function forget(){

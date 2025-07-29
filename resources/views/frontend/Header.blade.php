@@ -101,23 +101,26 @@
 
                     <div class="d_user_icon_wrapper position-relative">
                         <div class="d_user_icon" id="db_user_icon" title="User Profile">
-                            @if (Auth::check())
+                            @auth
                                 <div class="user-initial">
                                     {{ strtoupper(Auth::user()->name[0]) }}
                                 </div>
                             @else
                                 <i class="fas fa-user-circle"></i>
-                            @endif
+                            @endauth
                         </div>
 
 
 
                         <div class="d_user_dropdown" id="db_user_dropdown">
                             <ul>
-                                <li><a href="{{ route('frontend.login') }}">Sign in</a></li>
+                                @guest
+                                    <li><a href="{{ route('frontend.login') }}">Sign in</a></li>
+                                @endguest
+                               
                                 @if(Auth::check())
                                     <li><a href="{{ route('profile', Auth::id()) }}">Profile</a></li>
-                                    <li><a href="{{ route('logout') }}">Logout</a></li>
+                                    <li><a href="{{ route('frontlogout') }}">Logout</a></li>
                                 @endif
 
                             </ul>
