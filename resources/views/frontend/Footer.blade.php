@@ -321,8 +321,8 @@
             try {
                 // Fetch products and technology data in parallel
                 const [productsRes, techRes] = await Promise.all([
-                    fetch('/products'),
-                    fetch('/technology')
+                    fetch('/productsJson'),
+                    // fetch('/technology')
                 ]);
                 const [products, technologies] = await Promise.all([
                     productsRes.json(),

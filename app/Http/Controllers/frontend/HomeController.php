@@ -13,9 +13,10 @@ class HomeController extends Controller
     public function index()
     {    
         $ourTeams = OutTeam::all();
-        $products = Product::where('status', 'inactive')->get();
+        $upcomingProduct = Product::where('status', 'inactive')->get();
+        
         $featuteProducts = Product::with('category')->orderBy('created_at', 'desc')->get();
-        return view('frontend.index',compact('ourTeams', 'featuteProducts','products'));
+        return view('frontend.index',compact('ourTeams', 'featuteProducts','upcomingProduct'));
     }
 
     public function getCategoriesJson()

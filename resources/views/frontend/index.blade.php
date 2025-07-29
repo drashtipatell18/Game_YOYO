@@ -105,9 +105,10 @@
                             our new collection delivers next-gen excitement. Get early access, exclusive bonuses, and
                             unmatched discounts now.
                         </p>
-                        <button class="d_feature_btn">
+                       <button onclick="window.location='{{ route('aboutus') }}'" class="d_feature_btn">
                             Explore Now
                         </button>
+                        
                     </div>
                 </div>
             </div>
@@ -119,7 +120,7 @@
                 <div class="container">
                     <h2><i class="fa-solid fa-bolt me2"></i>Upcoming Premium Games</h2>
                     <div id="recentProducts" class="d_coming_slider">
-                        @foreach ($products as $product)
+                        @foreach ($upcomingProduct as $product)
                             @php
                                 $firstImage = explode(',', $product->image)[0] ?? null;
                             @endphp
