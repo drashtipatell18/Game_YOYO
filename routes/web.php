@@ -186,7 +186,7 @@ Route::get('/services', [FrontendServiceController::class, 'service'])->name('fr
 Route::get('/allproducts', [FrontendProductController::class, 'allProducts'])->name('allProducts');
 Route::get('/profile/{id?}', [FrontendLoginController::class, 'profile'])->name('profile');
 Route::get('/cart', [FrontendCartController::class, 'Cart'])->name('cart');
-Route::get('/blog', [FrontendBlogController::class, 'blog'])->name('blog');
+Route::get('/blogfronted', [FrontendBlogController::class, 'blogfronted'])->name('blogfronted');
 Route::post('/profile/update/{id}', [FrontendLoginController::class, 'updateProfile'])->name('profile.update');
 Route::get('/productDetails/{id}', [FrontendProductController::class, 'productDetails'])->name('productDetails');
 Route::post('/submit-review', [FrontendProductController::class, 'storeReviewProduct'])->name('frontReviewStore')->middleware('auth');

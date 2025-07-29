@@ -65,9 +65,11 @@
                                                             <img src="{{ asset('images/blogs/' . $images[0]) }}"
                                                                 alt="Blog Image" class="img-fluid"
                                                                 style="width: 100px; height: 100px;">
+                                                                @else
+                                                                   <img src="{{ asset('assets/images/unnamed.jpg') }}" alt="User Image" class="img-fluid"
+                                                                        style="width: 60px; height: 60px; object-fit: cover;">
                                                         @endif
-                                                        <img src="{{ asset('assets/images/unnamed.jpg') }}" alt="User Image" class="img-fluid"
-    style="width: 60px; height: 60px; object-fit: cover;">
+                                                     
                                                     </td>
                                                     <td class="text-center">
                                                         @if ($blog->video)
@@ -76,9 +78,12 @@
                                                                     type="video/mp4">
                                                                 Your browser does not support the video tag.
                                                             </video>
+
+                                                            @else
+                                                          <img src="{{ asset('assets/images/unnamed.jpg') }}" alt="User Image" class="img-fluid"
+                                                                style="width: 60px; height: 60px; object-fit: cover;">
                                                         @endif
-                                                        <img src="{{ asset('assets/images/unnamed.jpg') }}" alt="User Image" class="img-fluid"
-    style="width: 60px; height: 60px; object-fit: cover;">
+          
                                                     </td>
                                                     <td class="text-center">
                                                         <a href="{{ route('edit.blog', $blog->id) }}"

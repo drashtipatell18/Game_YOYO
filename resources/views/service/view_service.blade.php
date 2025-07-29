@@ -61,11 +61,12 @@
                                                         <img src="{{ asset('images/services/' . $service->icon) }}"
                                                             alt="Service Icon" class="img-fluid"
                                                             style="width: 50px; height: 50px;">
-
-                                                        @endif
-
+                                                        @else
+                                                        
                                                             <img src="{{ asset('assets/images/unnamed.jpg') }}" alt="User Image" class="img-fluid"
     style="width: 60px; height: 60px; object-fit: cover;">
+                                                        @endif
+
                                                     </td>
                                                     <td class="text-center">
                                                         <a href="{{ route('edit.service', $service->id) }}"

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Blog;
 class BlogController extends Controller
 {
-   public function blog()
+   public function blogfronted()
    {
         $blogs = Blog::with('user')->get();
         return view('frontend.blog', compact('blogs'));

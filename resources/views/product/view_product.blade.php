@@ -68,7 +68,7 @@
                                                                 style="width: 30px; height: 30px; object-fit: cover; border: 2px solid #dee2e6;">
                                                         @else
                                                            <img src="{{ asset('assets/images/unnamed.jpg') }}" alt="User Image" class="img-fluid"
-    style="width: 60px; height: 60px; object-fit: cover;">
+                                                            style="width: 60px; height: 60px; object-fit: cover;">
                                                         @endif
                                                     </td>
                                                     <td class="text-center">{{ $product->name }}</td>

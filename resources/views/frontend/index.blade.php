@@ -115,22 +115,33 @@
          <h2 class="d_section_title" data-aos="fade-down">Our Team</h2>
          <p class="d_section_subtitle" data-aos="fade-up">Creative minds behind the game</p>
          <div class="row justify-content-center">
-               @foreach($ourTeams as $team)
-                  <div class="col-12 col-sm-4 col-lg-3" data-aos="zoom-in" data-aos-delay="100">
+            @foreach($ourTeams as $team)
+               <div class="col-12 col-sm-4 col-lg-3" data-aos="zoom-in" data-aos-delay="100">
                      <div class="d_member_card">
-                        <img src="{{ asset('images/ourteam/' . ($team->image ?? 'default.jpg')) }}" alt="{{ $team->name }}" class="d_member_img">
+                        @php
+                           $image = $team->image ?? '';
+                           $imagePath = public_path('images/ourteam/' . $image);
+                        @endphp
+
+                        @if (!empty($image) && file_exists($imagePath))
+                           <img src="{{ asset('images/ourteam/' . $image) }}" alt="{{ $team->name }}" class="d_member_img">
+                        @else
+                           <img src="{{ asset('assets/images/user.png') }}" alt="User Image" class="d_member_img">
+                        @endif
+
                         <div class="d_member_content">
                            <h4 class="d_member_name">{{ $team->name }}</h4>
                            <p class="d_member_role"><i class="fas fa-gamepad"></i> {{ $team->designation }}</p>
                            <div class="d_member_social">
-                              <a href="{{ $team->twitter }}"><i class="fab fa-twitter"></i></a>
-                              <a href="{{ $team->linkedin }}"><i class="fab fa-linkedin"></i></a>
+                                 <a href="{{ $team->twitter }}"><i class="fab fa-twitter"></i></a>
+                                 <a href="{{ $team->linkedin }}"><i class="fab fa-linkedin"></i></a>
                            </div>
                         </div>
                      </div>
-                  </div>
-               @endforeach
-         </div>
+               </div>
+            @endforeach
+</div>
+
       </div>
    </section>
 </body>

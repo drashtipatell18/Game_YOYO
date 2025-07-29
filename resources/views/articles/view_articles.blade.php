@@ -61,10 +61,11 @@
                                                                 file_exists($imagePath) && $article->image
                                                                     ? asset('images/articles/' . $article->image)
                                                                     : asset('images/articles/dummy-profile.jpg'); // Dummy image fallback
+
+                                                                  
                                                         @endphp
 
-                                                    <img src="{{ asset('assets/images/unnamed.jpg') }}" alt="User Image" class="img-fluid"
-    style="width: 60px; height: 60px; object-fit: cover;">
+                                                  
                                                     </td>
                                                     <td class="text-center">{{ $article->created_at->format('F j, Y') }}</td>
                                                     <td class="text-center">

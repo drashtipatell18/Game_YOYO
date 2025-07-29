@@ -98,8 +98,12 @@
                             <div class="swiper-slide">
                                 <div class="Z_about_card">
                                     <div class="Z_about_testimonial-content">
-                                        <img src="{{ asset('images/members_say/' . $member->image) }}"
+                                        @if ($member->image)
+                                             <img src="{{ asset('images/members_say/' . $member->image) }}"
                                             alt="{{ $member->title }}" class="Z_about_card_img">
+                                        @endif
+                                        <img src="{{ asset('assets/images/user.png') }}" alt="User Image" class="img-fluid"
+    style="width: 60px; height: 60px; object-fit: cover;">
                                         <div class="Z_about_card_body">
                                             <h3 class="Z_about_card_title">{{ $member->title }}</h3>
                                             <p class="Z_about_card_desc">{{ $member->description }}</p>
