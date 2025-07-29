@@ -74,10 +74,10 @@
         <div class="d_main">
             <!-- Header -->
             <header class="d_header d-flex align-items-center justify-content-between">
-                <div class="d_logo">
+                 <a href="{{ route('index') }}">
                     <img src="{{ asset('frontend/images/yoyo logo done.png') }}" style="padding: 7px; height: 60px;"
                         alt="logo" class="img-fluid">
-                </div>
+                </a>
 
                 <!-- Desktop Nav -->
                 <nav class="d_navbar navbar navbar-expand-lg d-none d-lg-flex">
