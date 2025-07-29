@@ -66,7 +66,26 @@
                 </div>
                 <div class="swiper mySwiper py-4 mt-3">
                     <div class="swiper-wrapper" id="swiperCards">
-                        <!-- Cards will be injected here by JS -->
+                        @foreach ($featuteProducts as $game)
+                            @php
+                                $image = explode(',', $game->image)[0] ?? '';
+                            @endphp
+                            <div class="swiper-slide d-flex justify-content-center">
+                                <div class="game-card position-relative" data-id="{{ $game->id }}">
+                                    <img src="{{ asset('images/products/' . trim($image)) }}" alt="{{ $game->name }}"
+                                        class="card-img-top" />
+                                    <div class="position-absolute card-content">
+                                        <h3>{{ $game->name }}</h3>
+                                        <h3 class="mb-0">${{ number_format($game->price, 2) }}</h3>
+                                        <span class="badge bg-secondary mt-2">{{ $game->category->name ?? 'No Category' }}</span>
+                                    </div>
+                                    
+                                    <div class="card-actions d-flex align-items-center gap-3">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
@@ -106,13 +125,12 @@
                             @php
                                 $firstImage = explode(',', $product->image)[0] ?? null;
                             @endphp
-                            <div class="d_coming_card" data-date="{{ $product->release_date }}"
-                                data-id="{{ $product->id }}" style="cursor: pointer;">
+                            <div class="d_coming_card" data-date="{{ $product->release_date }}" data-id="{{ $product->id }}"
+                                style="cursor: pointer;">
                                 <div class="d_coming_card_img">
                                     <span
                                         class="d_release_tag">{{ \Carbon\Carbon::parse($product->release_date)->format('M d, Y') }}</span>
-                                    <img src="{{ asset('images/products/' . trim($firstImage)) }}"
-                                        alt="{{ $product->name }}">
+                                    <img src="{{ asset('images/products/' . trim($firstImage)) }}" alt="{{ $product->name }}">
                                 </div>
                                 <div class="d_coming_card_body">
                                     <div class="d_coming_card_title">{{ $product->name }}</div>
@@ -149,11 +167,9 @@
                                 @endphp
 
                                 @if (!empty($image) && file_exists($imagePath))
-                                    <img src="{{ asset('images/ourteam/' . $image) }}" alt="{{ $team->name }}"
-                                        class="d_member_img">
+                                    <img src="{{ asset('images/ourteam/' . $image) }}" alt="{{ $team->name }}" class="d_member_img">
                                 @else
-                                    <img src="{{ asset('assets/images/user.png') }}" alt="User Image"
-                                        class="d_member_img">
+                                    <img src="{{ asset('assets/images/user.png') }}" alt="User Image" class="d_member_img">
                                 @endif
 
                                 <div class="d_member_content">
@@ -172,4 +188,29 @@
             </div>
         </section>
     </body>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        new Swiper(".mySwiper", {
+            slidesPerView: 4,
+            spaceBetween: 20,
+            loop: false,
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            breakpoints: {
+                320: { slidesPerView: 1 },
+                640: { slidesPerView: 2 },
+                768: { slidesPerView: 3 },
+                1024: { slidesPerView: 4 },
+            }
+        });
+    });
+    </script>
+
 @endsection

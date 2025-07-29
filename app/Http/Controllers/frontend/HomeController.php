@@ -11,10 +11,11 @@ use App\Models\Product;
 class HomeController extends Controller
 {
     public function index()
-    {
+    {    
         $ourTeams = OutTeam::all();
         $products = Product::where('status', 'inactive')->get();
-        return view('frontend.index',compact('ourTeams', 'products'));
+        $featuteProducts = Product::with('category')->orderBy('created_at', 'desc')->get();
+        return view('frontend.index',compact('ourTeams', 'featuteProducts','products'));
     }
 
     public function getCategoriesJson()
