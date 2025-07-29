@@ -672,7 +672,7 @@
                         // If user not authenticated, redirect to login
                         if (data.message.includes('login')) {
                             setTimeout(() => {
-                                window.location.href = '/login';
+                                window.location.href = '/frontend-login';
                             }, 2000);
                         }
                     }
