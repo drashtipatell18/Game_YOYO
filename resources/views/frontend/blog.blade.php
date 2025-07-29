@@ -30,6 +30,13 @@
                     <div id="blogPostsContainer">
                         <!-- Blog Post 1 -->
                         @foreach ($blogs as $blog)
+                            @php
+                                $image = $blog->image;
+                                if (is_string($image) && str_starts_with($image, '[')) {
+                                    $imageArray = json_decode($image, true);
+                                    $image = $imageArray[0] ?? null;
+                                }
+                            @endphp
                             <div class="x_blog-post mb-3">
                                 <div class="x_blog-media mb-3">
                                     @if ($blog->video)
@@ -43,8 +50,10 @@
                                             </video>
                                         </div>
                                     @elseif($blog->image)
-                                        <img src="{{ asset('images/blogs/' . $blog->image) }}" class="img-fluid"
-                                            alt="Blog image">
+                                        <div class="video-container" style="position: relative; width: 100%; max-width: 800px;"> 
+                                                <img src="{{ asset('images/blogs/' . $image) }}" class="img-fluid" alt="Blog image">
+                                        </div>
+                                        
                                     @endif
                                 </div>
 
