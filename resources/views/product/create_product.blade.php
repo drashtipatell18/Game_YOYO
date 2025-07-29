@@ -146,6 +146,8 @@
                             <textarea name="description" id="description" class="form-control" rows="4">{{ old('description', $product->description ?? '') }}</textarea>
                         </div>
 
+                       
+
                         {{-- Weight and Dimensions --}}
                         <div class="row">
                             <div class="col-md-6">
@@ -195,6 +197,12 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="release_date">Release Date</label>
+                            <input type="datetime-local" name="release_date" id="release_date" class="form-control"
+                                value="{{ old('release_date', isset($product->release_date) ? \Carbon\Carbon::parse($product->release_date)->format('Y-m-d\TH:i') : '') }}">
                         </div>
 
                         {{-- Submit Button --}}

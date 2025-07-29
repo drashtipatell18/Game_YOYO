@@ -196,7 +196,7 @@ Route::get('/categoriesJson', [FrontendHomeController::class, 'getCategoriesJson
 Route::get('/productsJson', [FrontendHomeController::class, 'getProductJson']);
 Route::get('/productDetailJson', [FrontendProductController::class, 'getproductDetailJson']);
 Route::get('/products/{id}', [ProductController::class, 'getProductDetailJson']);
-Route::get('/products', [ProductController::class, 'inactiveProducts']);
+// Route::get('/products', [ProductController::class, 'inactiveProducts']);
 
 
 Route::post('/cart/add', [FrontendCartController::class, 'FrontaddToCart']);

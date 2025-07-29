@@ -123,7 +123,7 @@
                             @php
                                 $firstImage = explode(',', $product->image)[0] ?? null;
                             @endphp
-                            <div class="d_coming_card" data-date="{{ $product->release_date }}" data-id="{{ $product->id }}"
+                            <div class="d_coming_card" data-date="{{ \Carbon\Carbon::parse($product->release_date)->toIso8601String() }}" data-id="{{ $product->id }}"
                                 style="cursor: pointer;">
                                 <div class="d_coming_card_img">
                                     <span

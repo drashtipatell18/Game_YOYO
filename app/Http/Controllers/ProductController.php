@@ -63,6 +63,7 @@ class ProductController extends Controller
             'weight' => $request->input('weight'),
             'dimensions' => $dimensions,
             'status' => $request->input('status'),
+            'release_date' => $request->input('release_date'),
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -178,6 +179,7 @@ class ProductController extends Controller
             'weight' => $request->input('weight'),
             'status' => $request->input('status'),
             'dimensions' => $dimensions,
+            'release_date' => $request->input('release_date'),
         ];
 
         $product->update($updateData);
