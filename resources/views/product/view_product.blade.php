@@ -135,10 +135,8 @@
                 ]
             });
 
-
-            // Status Active or Inactive
-
-            $('.toggle-status').click(function() {
+            // Status Active or Inactive - FIXED VERSION using event delegation
+            $(document).on('click', '.toggle-status', function() {
                 var badge = $(this);
                 var productId = badge.data('id');
 
@@ -156,13 +154,14 @@
                             badge.removeClass('bg-success').addClass('bg-danger text-dark')
                                 .text('Inactive');
                         }
+                        // Remove this line as it's unnecessary and might cause issues
+                        // $('#dataTable-1').DataTable().draw(false);
                     },
                     error: function() {
                         alert('Something went wrong. Please try again.');
                     }
                 });
             });
-
 
             // Check for session messages and display them
             @if (session('success'))
