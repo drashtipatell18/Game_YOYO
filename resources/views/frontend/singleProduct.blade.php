@@ -1,58 +1,51 @@
 @extends('frontend.layouts.main')
 @section('content')
-<style>
-    .x_review-form .form-control:focus {
-        background: transparent;
-        color: #fff;
-        border-color: #cfcfcf !important;
-        box-shadow: none;
-    }
-    .submitReviewButton:hover{
-        border-radius: 2px;
-        font-weight: 500;
-        letter-spacing: 1px;
-        border: 1px solid transparent;
-        background-color: #928e75 !important;
-        color: #fff !important;
-    }
-    
-</style>
+    <style>
+        .x_review-form .form-control:focus {
+            background: transparent;
+            color: #fff;
+            border-color: #cfcfcf !important;
+            box-shadow: none;
+        }
+
+        .submitReviewButton:hover {
+            border-radius: 2px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            border: 1px solid transparent;
+            background-color: #928e75 !important;
+            color: #fff !important;
+        }
+    </style>
     <!-- x_game-product-section START -->
     <section class="x_game-shop a_header_container">
         <div class=" x_game-product-section py-5">
             <div class="x_space">
 
-                 <div class="row">
+                <div class="row">
                     <!-- Thumbnails -->
                     <div class="col-md-1 d-none d-md-flex flex-column align-items-center x_thumb-list">
                         @if (!empty($images) && count($images) > 0)
                             @foreach ($images as $index => $img)
-                                <img 
-                                    src="{{ asset('images/products/' . trim($img)) }}" 
-                                    class="img-fluid mb-3 x_thumb-img {{ $index === 0 ? 'active' : '' }}" 
-                                    alt="thumb{{ $index + 1 }}" 
-                                    onclick="changeMainImage(this)">
+                                <img src="{{ asset('images/products/' . trim($img)) }}"
+                                    class="img-fluid mb-3 x_thumb-img {{ $index === 0 ? 'active' : '' }}"
+                                    alt="thumb{{ $index + 1 }}" onclick="changeMainImage(this)">
                             @endforeach
                         @else
                             <!-- Optional: dummy thumbnail -->
-                            <img 
-                                src="{{ asset('images/products/dummy_product.png') }}" 
-                                class="img-fluid mb-3 x_thumb-img active" 
-                                alt="default-thumb">
+                            <img src="{{ asset('images/products/dummy_product.png') }}"
+                                class="img-fluid mb-3 x_thumb-img active" alt="default-thumb">
                         @endif
                     </div>
-                
-                    
+
+
                     <!-- Main Image -->
                     <div class="col-md-5 text-center x_main-img-wrap">
-                     <img 
-                        id="mainImage" 
-                        class="img-fluid x_main-img" 
-                        src="{{ isset($images[0]) ? asset('images/products/' . trim($images[0])) : asset('images/products/dummy_product.png') }}" 
-                        alt="main"
-                    >
+                        <img id="mainImage" class="img-fluid x_main-img"
+                            src="{{ isset($images[0]) ? asset('images/products/' . trim($images[0])) : asset('images/products/dummy_product.png') }}"
+                            alt="main">
                     </div>
-                    
+
                     <!-- Product Info -->
                     <div class="col-md-6 x_product-info text-white">
                         <div class="x_shop_info mt-3 mt-sm-0">
@@ -60,33 +53,35 @@
                             <div class="x_product-price mb-3">
                                 ${{ number_format($product['price'] ?? 0, 2) }}
                             </div>
-                            
-                            @if(isset($product['description']))
+
+                            @if (isset($product['description']))
                                 <div class="x_product-description mb-3">
                                     <p>{{ $product['description'] }}</p>
                                 </div>
                             @endif
-                            
+
                             @php
                                 $isLoggedIn = auth()->check();
                             @endphp
                             <div class="d-flex align-items-center mb-3">
                                 <button class="btn btn-outline-light x_add-cart-btn px-md-4 px-3 me-3"
-                                        onclick="payNow({{ $product['id'] ?? 0 }}, {{ $isLoggedIn ? 'true' : 'false' }})">
+                                    onclick="payNow({{ $product['id'] ?? 0 }}, {{ $isLoggedIn ? 'true' : 'false' }})">
                                     BUY NOW
                                 </button>
 
                                 <button class="btn btn-outline-light x_add-cart-btn px-md-4 px-3"
-                                        onclick="addToCart({{ $product['id'] ?? 0 }})">
+                                    onclick="addToCart({{ $product['id'] ?? 0 }})">
                                     ADD TO CART
                                 </button>
                             </div>
-                            
+
                             <div class="x_product-meta x_line_tb mb-2">
-                                <div>SKU: {{ $product['SKU'] ?? $product['id'] ?? '000' }}</div>
+                                <div>SKU: {{ $product['SKU'] ?? ($product['id'] ?? '000') }}</div>
                                 <div>Category: {{ $product->category->name ?? 'Games' }}</div>
-                                @if(isset($product['tags']))
-                                    <div>Tags: {{ is_array($product['tags']) ? implode(', ', $product['tags']) : $product['tags'] }}</div>
+                                @if (isset($product['tags']))
+                                    <div>Tags:
+                                        {{ is_array($product['tags']) ? implode(', ', $product['tags']) : $product['tags'] }}
+                                    </div>
                                 @else
                                     <div>Tags: gaming, entertainment</div>
                                 @endif
@@ -109,7 +104,8 @@
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link x_tab-link" id="reviews-tab" data-bs-toggle="tab"
-                                    data-bs-target="#reviews" type="button" role="tab">Reviews ({{ $reviewCount }})</button>
+                                    data-bs-target="#reviews" type="button" role="tab">Reviews
+                                    ({{ $reviewCount }})</button>
                             </li>
                         </ul>
                         <div class="tab-content x_tab-content p-4 bg-opacity-75" id="x_productTabContent">
@@ -139,7 +135,8 @@
                                         *</p>
                                     <div class="alert alert-success x_review-success" style="display:none;"></div>
                                     <form class="x_review-form">
-                                         <input type="hidden" id="product_id" value="{{ $product->id }}"> <!-- Add this -->
+                                        <input type="hidden" id="product_id" value="{{ $product->id }}">
+                                        <!-- Add this -->
                                         <div class="mb-2">Your rating *</div>
                                         <div class="mb-3 x_rating-stars">
                                             <i class="fa-regular fa-star"></i>
@@ -152,8 +149,7 @@
                                         </div>
                                         <div class="mb-3">
                                             <label for="review" class="form-label">Your review *</label>
-                                            <textarea class="form-control bg-transparent text-white border-secondary"
-                                                id="review" rows="4"></textarea>
+                                            <textarea class="form-control bg-transparent text-white border-secondary" id="review" rows="4"></textarea>
                                             <div class="invalid-feedback d-block x_review-error" style="display:none;">
                                             </div>
                                         </div>
@@ -161,7 +157,8 @@
                                             <label for="name" class="form-label">Name *</label>
                                             <input type="text"
                                                 class="form-control bg-transparent text-white border-secondary"
-                                                id="name" value="{{ auth()->check() ? auth()->user()->name : '' }}"{{ auth()->check() ? 'disabled' : '' }}>
+                                                id="name"
+                                                value="{{ auth()->check() ? auth()->user()->name : '' }}"{{ auth()->check() ? 'disabled' : '' }}>
                                             <div class="invalid-feedback d-block x_name-error" style="display:none;">
                                             </div>
                                         </div>
@@ -169,7 +166,8 @@
                                             <label for="email" class="form-label">Email *</label>
                                             <input type="email"
                                                 class="form-control bg-transparent text-white border-secondary"
-                                                id="email" value="{{ auth()->check() ? auth()->user()->email : '' }}"{{ auth()->check() ? 'disabled' : '' }}>
+                                                id="email"
+                                                value="{{ auth()->check() ? auth()->user()->email : '' }}"{{ auth()->check() ? 'disabled' : '' }}>
                                             <div class="invalid-feedback d-block x_email-error" style="display:none;">
                                             </div>
                                         </div>
@@ -190,10 +188,10 @@
                         <!-- Cards will be injected here by JS -->
                     </div>
                     <!-- Add navigation buttons
-                    <div class="swiper-button-next"></div>
-                    <div class="swiper-button-prev"></div>
-                    Add pagination
-                    <div class="swiper-pagination"></div> -->
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                            Add pagination
+                            <div class="swiper-pagination"></div> -->
                 </div>
             </div>
         </div>
@@ -311,7 +309,8 @@
 
                             <button class="btn confirm-btn w-100 mt-3">Place your order</button>
 
-                            <div class="terms">Review the <a href="#" class="text-white">terms and conditions</a></div>
+                            <div class="terms">Review the <a href="#" class="text-white">terms and conditions</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -321,16 +320,16 @@
 @endsection
 
 @push('script')
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         const isLoggedIn = @json(Auth::check()); // returns true or false
         const loginUrl = "{{ route('frontend.login') }}";
     </script>
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             // Thumbnail image click
-            $('.x_thumb-img').on('click', function () {
+            $('.x_thumb-img').on('click', function() {
                 var newSrc = $(this).attr('src');
                 $('.x_main-img').attr('src', newSrc);
                 $('.x_thumb-img').removeClass('active');
@@ -341,9 +340,9 @@
             $('.x_thumb-img').first().addClass('active');
 
             // Star rating click
-            $('.x_rating-stars i').on('click', function () {
+            $('.x_rating-stars i').on('click', function() {
                 var index = $(this).index();
-                $('.x_rating-stars i').each(function (i) {
+                $('.x_rating-stars i').each(function(i) {
                     if (i <= index) {
                         $(this).removeClass('fa-regular').addClass('fa-solid');
                     } else {
@@ -354,7 +353,7 @@
             });
 
             // Review form submission with validation
-            $('.x_review-form').on('submit', function (e) {
+            $('.x_review-form').on('submit', function(e) {
                 e.preventDefault();
 
                 if (!isLoggedIn) {
@@ -413,7 +412,7 @@
                         name: name,
                         email: email
                     },
-                    success: function (response) {
+                    success: function(response) {
                         // Show success message
                         $('.x_review-success')
                             .text('Review submitted successfully!')
@@ -425,15 +424,17 @@
                         $('.x_review-form').removeData('rating');
 
                         // Hide alert after 4 seconds
-                        setTimeout(function () {
+                        setTimeout(function() {
                             $('.x_review-success').fadeOut();
                         }, 4000);
                     },
-                    error: function (xhr) {
+                    error: function(xhr) {
                         if (xhr.status === 422 && xhr.responseJSON.errors) {
                             const errors = xhr.responseJSON.errors;
-                            if (errors.rating) $('.x_rating-error').text(errors.rating[0]).show();
-                            if (errors.review) $('.x_review-error').text(errors.review[0]).show();
+                            if (errors.rating) $('.x_rating-error').text(errors.rating[0])
+                                .show();
+                            if (errors.review) $('.x_review-error').text(errors.review[0])
+                                .show();
                             if (errors.name) $('.x_name-error').text(errors.name[0]).show();
                             if (errors.email) $('.x_email-error').text(errors.email[0]).show();
                         } else {
@@ -447,22 +448,24 @@
     </script>
 
     <script>
-        const cardsData = {!! json_encode($relatedProducts->map(function ($item) {
-            return [
-                'id' => $item->id,
-                'name' => $item->name,
-                'image' => asset('images/products/' . explode(',', $item->image)[0]),
-                'price' => '$' . number_format($item->price, 2),
-                'category' => optional($item->category)->name,
-            ];
-        })) !!};
+        const cardsData = {!! json_encode(
+            $relatedProducts->map(function ($item) {
+                return [
+                    'id' => $item->id,
+                    'name' => $item->name,
+                    'image' => asset('images/products/' . explode(',', $item->image)[0]),
+                    'price' => '$' . number_format($item->price, 2),
+                    'category' => optional($item->category)->name,
+                ];
+            }),
+        ) !!};
     </script>
 
     <script>
-    function renderSwiperCards() {
-        const swiperCards = document.getElementById('swiperCards');
-        
-        swiperCards.innerHTML = cardsData.map(card => `
+        function renderSwiperCards() {
+            const swiperCards = document.getElementById('swiperCards');
+
+            swiperCards.innerHTML = cardsData.map(card => `
             <div class="swiper-slide d-flex justify-content-center">
                 <div class="game-card position-relative" data-id="${card.id}" style="cursor: pointer;">
                     <img src="${card.image}" alt="${card.name}" class="card-img-top" />
@@ -485,302 +488,294 @@
             </div>
         `).join('');
 
-        // Product card click
-        document.querySelectorAll('.game-card').forEach(card => {
-            card.addEventListener('click', function (e) {
-                if (e.target.closest('.custom-cart-btn')) return;
-                const productId = this.getAttribute('data-id');
-                localStorage.setItem('item_id', productId);
-                window.location.href = '/productDetails/' + productId; // Update route if needed
+            // Product card click
+            document.querySelectorAll('.game-card').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    if (e.target.closest('.custom-cart-btn')) return;
+                    const productId = this.getAttribute('data-id');
+                    localStorage.setItem('item_id', productId);
+                    window.location.href = '/productDetails/' + productId; // Update route if needed
+                });
+            });
+
+            // Add to Cart button
+            document.querySelectorAll('.custom-cart-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const productId = this.getAttribute('data-id');
+                    addToCartFromSlider(productId); // Define this function separately
+                });
+            });
+        }
+
+        // Run Swiper and render cards
+        document.addEventListener('DOMContentLoaded', function() {
+            renderSwiperCards();
+            new Swiper('.mySwiper', {
+                slidesPerView: 3,
+                spaceBetween: 24,
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+                breakpoints: {
+                    0: {
+                        slidesPerView: 1
+                    },
+                    576: {
+                        slidesPerView: 2
+                    },
+                    768: {
+                        slidesPerView: 3
+                    },
+                    1024: {
+                        slidesPerView: 3
+                    },
+                    1200: {
+                        slidesPerView: 4
+                    },
+                    1400: {
+                        slidesPerView: 4
+                    },
+                    1600: {
+                        slidesPerView: 5
+                    },
+                }
             });
         });
-
-        // Add to Cart button
-        document.querySelectorAll('.custom-cart-btn').forEach(btn => {
-            btn.addEventListener('click', function (e) {
-                e.stopPropagation();
-                const productId = this.getAttribute('data-id');
-                addToCartFromSlider(productId); // Define this function separately
-            });
-        });
-    }
-
-    // Run Swiper and render cards
-    document.addEventListener('DOMContentLoaded', function () {
-        renderSwiperCards();
-        new Swiper('.mySwiper', {
-            slidesPerView: 3,
-            spaceBetween: 24,
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-            breakpoints: {
-                0: { slidesPerView: 1 },
-                576: { slidesPerView: 2 },
-                768: { slidesPerView: 3 },
-                1024: { slidesPerView: 3 },
-                1200: { slidesPerView: 4 },
-                1400: { slidesPerView: 4 },
-                1600: { slidesPerView: 5 },
-            }
-        });
-    });
-</script>
+    </script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             const promoCheckbox = document.querySelector(".promo-code");
 
-            promoCheckbox.addEventListener("click", function () {
+            promoCheckbox.addEventListener("click", function() {
                 promoCheckbox.classList.toggle("active");
             });
         });
     </script>
 
- <script>
-    document.addEventListener('DOMContentLoaded', async function () {
-        const itemId = localStorage.getItem('item_id');
-       
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            const itemId = localStorage.getItem('item_id');
 
-        try {
-            const res = await fetch(`products/${id}`);
-            if (!res.ok) throw new Error('Product not found');
 
-            const product = await res.json();
+            try {
+                const res = await fetch(`products/${id}`);
+                if (!res.ok) throw new Error('Product not found');
 
-            // Split comma-separated image string
-            const imageArray = product.image ? product.image.split(',') : [];
+                const product = await res.json();
 
-            if (imageArray.length > 0) {
-                // Set main image
-                document.querySelector('.x_main-img').src = `images/products/${imageArray[0]}`;
+                // Split comma-separated image string
+                const imageArray = product.image ? product.image.split(',') : [];
+
+                if (imageArray.length > 0) {
+                    // Set main image
+                    document.querySelector('.x_main-img').src = `images/products/${imageArray[0]}`;
+                }
+
+                // Render thumbnails dynamically
+                const thumbList = document.querySelector('.x_thumb-list');
+                if (thumbList) {
+                    thumbList.innerHTML = ''; // Clear previous
+
+                    imageArray.forEach((img, index) => {
+                        const imgTag = document.createElement('img');
+                        imgTag.src = `images/products/${img.trim()}`;
+                        imgTag.className = `img-fluid mb-3 x_thumb-img${index === 0 ? ' active' : ''}`;
+                        imgTag.alt = `thumb${index + 1}`;
+                        imgTag.onclick = () => changeMainImage(imgTag);
+
+                        thumbList.appendChild(imgTag);
+                    });
+                }
+
+                // Product details
+                document.querySelector('.x_product-title').textContent = product.title;
+                document.querySelector('.x_product-price').textContent = `£${product.price}`;
+                document.getElementById('desc').textContent = product.description;
+
+            } catch (e) {
+                console.error(e);
+                // alert('Error loading product');
+                // window.location.href = 'allProduct.html';
             }
+        });
 
-            // Render thumbnails dynamically
-            const thumbList = document.querySelector('.x_thumb-list');
-            if (thumbList) {
-                thumbList.innerHTML = ''; // Clear previous
+        function changeMainImage(thumb) {
+            const mainImage = document.querySelector('.x_main-img');
+            if (mainImage) mainImage.src = thumb.src;
 
-                imageArray.forEach((img, index) => {
-                    const imgTag = document.createElement('img');
-                    imgTag.src = `images/products/${img.trim()}`;
-                    imgTag.className = `img-fluid mb-3 x_thumb-img${index === 0 ? ' active' : ''}`;
-                    imgTag.alt = `thumb${index + 1}`;
-                    imgTag.onclick = () => changeMainImage(imgTag);
-
-                    thumbList.appendChild(imgTag);
-                });
-            }
-
-            // Product details
-            document.querySelector('.x_product-title').textContent = product.title;
-            document.querySelector('.x_product-price').textContent = `£${product.price}`;
-            document.getElementById('desc').textContent = product.description;
-
-        } catch (e) {
-            console.error(e);
-            // alert('Error loading product');
-            // window.location.href = 'allProduct.html';
+            // Toggle active class
+            document.querySelectorAll('.x_thumb-img').forEach(img => img.classList.remove('active'));
+            thumb.classList.add('active');
         }
-    });
-
-    function changeMainImage(thumb) {
-        const mainImage = document.querySelector('.x_main-img');
-        if (mainImage) mainImage.src = thumb.src;
-
-        // Toggle active class
-        document.querySelectorAll('.x_thumb-img').forEach(img => img.classList.remove('active'));
-        thumb.classList.add('active');
-    }
-</script>
+    </script>
 
     <script>
-        // Function to add product to cart
-        async function addToCart() {
-            try {
-                // Get user_id from localStorage
-                const userId = localStorage.getItem('user_id');
-                if (!userId) {
-                    alert('Please log in to add items to cart');
-                    window.location.href = './auth/Login.html';
-                    return;
-                }
+        function addToCart(productId, quantity = 1, buttonElement = null) {
+            // Show loading state if button element is provided
+            if (buttonElement) {
+                setButtonLoading(buttonElement, true);
+            }
 
-                // Get product ID from localStorage
-                const productId = localStorage.getItem('item_id');
-                if (!productId) {
-                    alert('No product selected!');
-                    return;
-                }
+            // Prepare form data
+            const formData = new FormData();
+            formData.append('product_id', productId);
+            formData.append('quantity', quantity);
 
-                console.log('Adding product ID:', productId, 'to cart for user ID:', userId);
+            // Get CSRF token (make sure you have this in your HTML head)
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
 
-                // 1. Check if user already has a cart
-                const cartRes = await fetch(`http://localhost:4000/cart?user_id=${userId}`);
-                if (!cartRes.ok) {
-                    throw new Error('Failed to fetch cart');
-                }
-                const carts = await cartRes.json();
-                let cart = carts[0];
+            fetch('/cart/add', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken,
+                        'Accept': 'application/json',
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Show success message
+                        showNotification(data.message, 'success');
 
-                // 2. If no cart exists, create a new one
-                if (!cart) {
-                    const newCartRes = await fetch('http://localhost:4000/cart', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            user_id: Number(userId),
-                            products: [{
-                                pro_id: Number(productId),
-                                quantity: 1
-                            }]
-                        })
-                    });
+                        // Update cart count in UI if you have a cart counter
+                        updateCartCount(data.cart_count);
 
-                    if (!newCartRes.ok) {
-                        throw new Error('Failed to create cart');
-                    }
+                        // Optional: Change button text temporarily
+                        if (buttonElement) {
+                            const originalText = buttonElement.querySelector('.btn-text').textContent;
+                            buttonElement.querySelector('.btn-text').textContent = 'ADDED!';
+                            buttonElement.classList.add('btn-success');
 
-                    cart = await newCartRes.json();
-                    console.log('New cart created:', cart);
-                } else {
-                    // 3. If cart exists, check if product is already in cart
-                    const existingProduct = cart.products.find(item => Number(item.pro_id) === Number(productId));
+                            setTimeout(() => {
+                                buttonElement.querySelector('.btn-text').textContent = originalText;
+                                buttonElement.classList.remove('btn-success');
+                            }, 2000);
+                        }
 
-                    if (existingProduct) {
-                        // Product already exists, increase quantity
-                        existingProduct.quantity += 1;
+                        // Optional: Auto redirect to cart after delay
+                        setTimeout(() => {
+                            window.location.href = '/cart';
+                        }, 1500);
+
                     } else {
-                        // Add new product to cart
-                        cart.products.push({
-                            pro_id: Number(productId),
-                            quantity: 1
-                        });
+                        // Handle error
+                        showNotification(data.message, 'error');
+
+                        // If user not authenticated, redirect to login
+                        if (data.message.includes('login')) {
+                            setTimeout(() => {
+                                window.location.href = '/login';
+                            }, 2000);
+                        }
                     }
-
-                    // 4. Update the existing cart
-                    const updateRes = await fetch(`http://localhost:4000/cart/${cart.id}`, {
-                        method: 'PATCH',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            products: cart.products
-                        })
-                    });
-
-                    if (!updateRes.ok) {
-                        throw new Error('Failed to update cart');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showNotification('Something went wrong. Please try again.', 'error');
+                })
+                .finally(() => {
+                    // Remove loading state
+                    if (buttonElement) {
+                        setButtonLoading(buttonElement, false);
                     }
+                });
+        }
 
-                    console.log('Cart updated successfully');
-                }
+        // Function to show loading state on button
+        function setButtonLoading(button, isLoading) {
+            const btnText = button.querySelector('.btn-text');
+            const spinner = button.querySelector('.spinner-border');
 
-                alert('Product added to cart successfully!');
-
-                // Optionally redirect to cart page
-                // window.location.href = './Cart.html';
-
-            } catch (error) {
-                console.error('Error adding to cart:', error);
-                alert('Error adding product to cart: ' + error.message);
+            if (isLoading) {
+                btnText.style.display = 'none';
+                spinner.classList.remove('d-none');
+                button.disabled = true;
+            } else {
+                btnText.style.display = 'inline';
+                spinner.classList.add('d-none');
+                button.disabled = false;
             }
         }
 
-        // Function to add product to cart from slider
-        async function addToCartFromSlider(productId) {
-            try {
-                // Get user_id from localStorage
-                const userId = localStorage.getItem('user_id');
-                if (!userId) {
-                    alert('Please log in to add items to cart');
-                    window.location.href = './auth/Login.html';
-                    return;
-                }
+        // Function to update cart count in UI
+        function updateCartCount(count) {
+            const cartCountElements = document.querySelectorAll('.cart-count');
+            cartCountElements.forEach(element => {
+                element.textContent = count;
 
-                console.log('Adding product ID:', productId, 'to cart for user ID:', userId);
+                // Add bounce animation
+                element.classList.add('cart-updated');
+                setTimeout(() => {
+                    element.classList.remove('cart-updated');
+                }, 600);
+            });
+        }
 
-                // 1. Check if user already has a cart
-                const cartRes = await fetch(`http://localhost:4000/cart?user_id=${userId}`);
-                if (!cartRes.ok) {
-                    throw new Error('Failed to fetch cart');
-                }
-                const carts = await cartRes.json();
-                let cart = carts[0];
+        // Function to show notifications (you can customize this based on your notification system)
+        function showNotification(message, type = 'info') {
+            // Using simple alert for now - you can replace with toast notifications
+            if (type === 'success') {
+                // Create or use your success notification
+                console.log('Success:', message);
 
-                // 2. If no cart exists, create a new one
-                if (!cart) {
-                    const newCartRes = await fetch('http://localhost:4000/cart', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            user_id: Number(userId),
-                            products: [{
-                                pro_id: Number(productId),
-                                quantity: 1
-                            }]
-                        })
-                    });
-
-                    if (!newCartRes.ok) {
-                        throw new Error('Failed to create cart');
-                    }
-
-                    cart = await newCartRes.json();
-                    console.log('New cart created:', cart);
-                } else {
-                    // 3. If cart exists, check if product is already in cart
-                    const existingProduct = cart.products.find(item => Number(item.pro_id) === Number(productId));
-
-                    if (existingProduct) {
-                        // Product already exists, increase quantity
-                        existingProduct.quantity += 1;
-                    } else {
-                        // Add new product to cart
-                        cart.products.push({
-                            pro_id: Number(productId),
-                            quantity: 1
-                        });
-                    }
-
-                    // 4. Update the existing cart
-                    const updateRes = await fetch(`http://localhost:4000/cart/${cart.id}`, {
-                        method: 'PATCH',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            products: cart.products
-                        })
-                    });
-
-                    if (!updateRes.ok) {
-                        throw new Error('Failed to update cart');
-                    }
-
-                    console.log('Cart updated successfully');
-                }
-
-                alert('Product added to cart successfully!');
-
-            } catch (error) {
-                console.error('Error adding to cart:', error);
-                alert('Error adding product to cart: ' + error.message);
+                // Example with custom notification
+                createNotification(message, 'success');
+            } else if (type === 'error') {
+                console.error('Error:', message);
+                createNotification(message, 'error');
             }
+        }
+
+        // Custom notification function (optional)
+        function createNotification(message, type) {
+            // Remove existing notifications
+            const existingNotifications = document.querySelectorAll('.custom-notification');
+            existingNotifications.forEach(notification => notification.remove());
+
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className =
+                `custom-notification alert alert-${type === 'success' ? 'success' : 'danger'} position-fixed`;
+            notification.style.cssText = `
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+        min-width: 300px;
+        animation: slideIn 0.3s ease-out;
+    `;
+            notification.innerHTML = `
+        <div class="d-flex align-items-center">
+            <span>${message}</span>
+            <button type="button" class="btn-close ms-auto" onclick="this.parentElement.parentElement.remove()"></button>
+        </div>
+    `;
+
+            document.body.appendChild(notification);
+
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.remove();
+                }
+            }, 5000);
+        }
+
+        // Function to redirect to cart page
+        function redirectToCart() {
+            window.location.href = '/cart';
         }
     </script>
     <script>
         // Payment modal functionality
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             const dbContinueBtn = document.getElementById("db_continue_btn");
             const modal1El = document.getElementById("paymentModal");
             const modal2El = document.getElementById("paymentModal2");
@@ -804,7 +799,7 @@
             // Handle promo code checkbox
             const promoCheckbox = document.querySelector(".promo-code");
             if (promoCheckbox) {
-                promoCheckbox.addEventListener("click", function () {
+                promoCheckbox.addEventListener("click", function() {
                     promoCheckbox.classList.toggle("active");
                 });
             }
@@ -838,7 +833,7 @@
 
 
 
-<!-- Razor Pay Code -->
+    <!-- Razor Pay Code -->
     <script>
         function payNow(productId, isLoggedIn) {
             if (!isLoggedIn) {
@@ -857,46 +852,46 @@
                         "description": data.description,
                         "image": data.image || '/default.png',
                         "order_id": data.razorpay_order_id,
-                        "handler": function (response){
+                        "handler": function(response) {
                             fetch('/payment/success', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                                },
-                                body: JSON.stringify({
-                                    razorpay_payment_id: response.razorpay_payment_id,
-                                    razorpay_order_id: response.razorpay_order_id,
-                                    razorpay_signature: response.razorpay_signature,
-                                    product_id: productId,
-                                })
-                            }).then(res => res.json())
-                           .then(data => {
-                                if (data.status === 'success') {
-                                    Swal.fire({
-                                        toast: true,
-                                        position: 'top-end',
-                                        icon: 'success',
-                                        title: 'Payment Successful!',
-                                        showConfirmButton: false,
-                                        timer: 5000, // ⏱ Show for 5 seconds
-                                        timerProgressBar: true,
-                                        customClass: {
-                                            popup: 'swal2-success-toast'
-                                        }
-                                    });
-                                } else {
-                                    Swal.fire({
-                                        toast: true,
-                                        position: 'top-end',
-                                        icon: 'error',
-                                        title: 'Payment failed to store.',
-                                        showConfirmButton: false,
-                                        timer: 5000,
-                                        timerProgressBar: true
-                                    });
-                                }
-                            });
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                    },
+                                    body: JSON.stringify({
+                                        razorpay_payment_id: response.razorpay_payment_id,
+                                        razorpay_order_id: response.razorpay_order_id,
+                                        razorpay_signature: response.razorpay_signature,
+                                        product_id: productId,
+                                    })
+                                }).then(res => res.json())
+                                .then(data => {
+                                    if (data.status === 'success') {
+                                        Swal.fire({
+                                            toast: true,
+                                            position: 'top-end',
+                                            icon: 'success',
+                                            title: 'Payment Successful!',
+                                            showConfirmButton: false,
+                                            timer: 5000, // ⏱ Show for 5 seconds
+                                            timerProgressBar: true,
+                                            customClass: {
+                                                popup: 'swal2-success-toast'
+                                            }
+                                        });
+                                    } else {
+                                        Swal.fire({
+                                            toast: true,
+                                            position: 'top-end',
+                                            icon: 'error',
+                                            title: 'Payment failed to store.',
+                                            showConfirmButton: false,
+                                            timer: 5000,
+                                            timerProgressBar: true
+                                        });
+                                    }
+                                });
                         },
                         "theme": {
                             "color": "#3399cc"
@@ -908,4 +903,4 @@
                 });
         }
     </script>
-    @endpush
+@endpush
