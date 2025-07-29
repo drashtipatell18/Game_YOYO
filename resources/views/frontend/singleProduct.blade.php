@@ -67,9 +67,12 @@
                                 </div>
                             @endif
                             
+                            @php
+                                $isLoggedIn = auth()->check();
+                            @endphp
                             <div class="d-flex align-items-center mb-3">
                                 <button class="btn btn-outline-light x_add-cart-btn px-md-4 px-3 me-3"
-                                        data-bs-toggle="modal" data-bs-target="#paymentModal">
+                                        onclick="payNow({{ $product['id'] ?? 0 }}, {{ $isLoggedIn ? 'true' : 'false' }})">
                                     BUY NOW
                                 </button>
 
@@ -318,6 +321,8 @@
 @endsection
 
 @push('script')
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         const isLoggedIn = @json(Auth::check()); // returns true or false
         const loginUrl = "{{ route('frontend.login') }}";
@@ -447,7 +452,7 @@
                 'id' => $item->id,
                 'name' => $item->name,
                 'image' => asset('images/products/' . explode(',', $item->image)[0]),
-                'price' => '₹' . $item->price,
+                'price' => '$' . number_format($item->price, 2),
                 'category' => optional($item->category)->name,
             ];
         })) !!};
@@ -829,5 +834,78 @@
             // Update payment summary when modal opens
             modal1El.addEventListener('show.bs.modal', updatePaymentSummary);
         });
+    </script>
+
+
+
+<!-- Razor Pay Code -->
+    <script>
+        function payNow(productId, isLoggedIn) {
+            if (!isLoggedIn) {
+                window.location.href = "{{ route('frontend.login') }}";
+                return;
+            }
+
+            fetch(`/get-payment-details/${productId}`)
+                .then(res => res.json())
+                .then(data => {
+                    const options = {
+                        "key": "{{ env('RAZORPAY_KEY') }}",
+                        "amount": data.amount * 100,
+                        "currency": "INR",
+                        "name": data.name,
+                        "description": data.description,
+                        "image": data.image || '/default.png',
+                        "order_id": data.razorpay_order_id,
+                        "handler": function (response){
+                            fetch('/payment/success', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                },
+                                body: JSON.stringify({
+                                    razorpay_payment_id: response.razorpay_payment_id,
+                                    razorpay_order_id: response.razorpay_order_id,
+                                    razorpay_signature: response.razorpay_signature,
+                                    product_id: productId,
+                                })
+                            }).then(res => res.json())
+                           .then(data => {
+                                if (data.status === 'success') {
+                                    Swal.fire({
+                                        toast: true,
+                                        position: 'top-end',
+                                        icon: 'success',
+                                        title: 'Payment Successful!',
+                                        showConfirmButton: false,
+                                        timer: 5000, // ⏱ Show for 5 seconds
+                                        timerProgressBar: true,
+                                        customClass: {
+                                            popup: 'swal2-success-toast'
+                                        }
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        toast: true,
+                                        position: 'top-end',
+                                        icon: 'error',
+                                        title: 'Payment failed to store.',
+                                        showConfirmButton: false,
+                                        timer: 5000,
+                                        timerProgressBar: true
+                                    });
+                                }
+                            });
+                        },
+                        "theme": {
+                            "color": "#3399cc"
+                        }
+                    };
+
+                    const rzp = new Razorpay(options);
+                    rzp.open();
+                });
+        }
     </script>
     @endpush
