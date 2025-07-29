@@ -28,6 +28,8 @@ class User extends Authenticatable
         'gaming_platform',
         'country',
         'image',
+        'google_id',
+        'facebook_id',
     ];
 
     /**
