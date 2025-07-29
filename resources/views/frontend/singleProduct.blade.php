@@ -888,7 +888,9 @@
                                             title: 'Payment failed to store.',
                                             showConfirmButton: false,
                                             timer: 5000,
-                                            timerProgressBar: true
+                                            customClass: {
+                                                popup: 'swal2-danger-toast'
+                                            }
                                         });
                                     }
                                 });

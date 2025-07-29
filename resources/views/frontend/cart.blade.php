@@ -365,8 +365,11 @@
                                         icon: 'success',
                                         title: 'Payment Successful!',
                                         showConfirmButton: false,
-                                        timer: 5000,
-                                        timerProgressBar: true
+                                        timer: 5000, // ⏱ Show for 5 seconds
+                                        timerProgressBar: true,
+                                        customClass: {
+                                            popup: 'swal2-success-toast'
+                                        }
                                     });
                                 } else {
                                     Swal.fire({
@@ -376,7 +379,9 @@
                                         title: 'Payment failed to store.',
                                         showConfirmButton: false,
                                         timer: 5000,
-                                        timerProgressBar: true
+                                        customClass: {
+                                            popup: 'swal2-danger-toast'
+                                        }
                                     });
                                 }
                             });
