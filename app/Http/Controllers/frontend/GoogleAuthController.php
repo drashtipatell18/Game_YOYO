@@ -30,6 +30,7 @@ class GoogleAuthController extends Controller
             $newUser = User::create([
                 'name' => $user->name,
                 'email' => $user->email,
+                'password' => Hash::make('password'), // Default password, can be changed later
                 'google_id' => $user->id,
                 'role_id' => 2,  // default role id for users
             ]);

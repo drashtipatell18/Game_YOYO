@@ -1,5 +1,12 @@
 @extends('frontend.layouts.main')
 @section('title', 'YOYO Games: About Us')
+<style>
+    .Z_about_card_desc {
+        word-wrap: break-word;      /* Allows long words to wrap */
+        word-break: break-word;     /* Breaks words if necessary */
+        white-space: normal;        /* Ensures text wraps normally */
+    }
+</style>
 @section('content')
     <div class="Z_about_hero">
         <div class="Z_about_hero-overlay">
@@ -102,10 +109,8 @@
                                              <img src="{{ asset('images/members_say/' . $member->image) }}"
                                             alt="{{ $member->title }}" class="Z_about_card_img">
                                         @endif
-                                        <img src="{{ asset('assets/images/user.png') }}" alt="User Image" class="img-fluid"
-    style="width: 60px; height: 60px; object-fit: cover;">
                                         <div class="Z_about_card_body">
-                                            <h3 class="Z_about_card_title">{{ $member->title }}</h3>
+                                            <h3 class="Z_about_card_title">{{ $member->name }}</h3>
                                             <p class="Z_about_card_desc">{{ $member->description }}</p>
                                             <button class="Z_about_card_btn">Learn More</button>
                                         </div>
