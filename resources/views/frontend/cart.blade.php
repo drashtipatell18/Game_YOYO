@@ -72,13 +72,31 @@
                                         @if ($cart->product)
                                             <tr id="cart-row-{{ $cart->id }}">
                                                 <td class="Z_cart_td">
-                                                    <div class="d-flex align-items-center gap-3">
+                                                    {{-- <div class="d-flex align-items-center gap-3">
                                                         <img src="{{ asset('images/products/' . ($cart->product->image ?? 'default.png')) }}"
                                                             alt="{{ $cart->product->title ?? 'Product Image' }}"
                                                             class="Z_cart_img">
 
                                                         <span class="Z_cart_name">{{ $cart->product->title }}</span>
+                                                    </div> --}}
+                                                    <div class="d-flex align-items-center gap-3">
+                                                        @php
+                                                            $images = explode(
+                                                                ',',
+                                                                $cart->product->image ?? 'default.png',
+                                                            );
+                                                            $firstImage = trim($images[0]);
+                                                        @endphp
+
+                                                        <img src="{{ asset('images/products/' . $firstImage) }}"
+                                                            alt="{{ $cart->product->title ?? 'Product Image' }}"
+                                                            class="Z_cart_img">
+
+                                                        <span class="Z_cart_name">{{ $cart->product->title }}</span>
+
                                                     </div>
+
+
                                                 </td>
                                                 <td class="Z_cart_td">{{ $cart->product->category->name ?? 'N/A' }}</td>
                                                 <td class="Z_cart_td">£{{ number_format($cart->product->price, 2) }}</td>
