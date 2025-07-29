@@ -86,8 +86,8 @@ class LoginController extends Controller
         $user->update([
             'username' => $request->input('username'),
             'email' => $request->input('email'),
-            'mobile_number' => $request->input('mobile_number'),
-            'favorite_game' => $request->input('favorite_game'),
+            'phone' => $request->input('phone'),
+            'favourite_game' => $request->input('favourite_game'),
             'gaming_platform' => $request->input('gaming_platform'),
             'country' => $request->input('country'),
             'image' => $imageName,
