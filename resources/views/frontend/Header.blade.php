@@ -17,9 +17,8 @@
         <link rel="stylesheet" href="{{ asset('frontend/css/x_style.css') }}">
         <link rel="stylesheet" href="{{ asset('frontend/css/checkout.css') }}" />
         <link rel="stylesheet" href="{{ asset('frontend/css/card.css') }}">
-
-
-
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
     </head>
     <style>
@@ -153,6 +152,7 @@
                 </div>
             </aside>
         </div>
+
     </body>
 
     </html>

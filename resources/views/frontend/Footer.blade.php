@@ -78,6 +78,7 @@
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
         <script>
@@ -296,7 +297,7 @@
                                     <div class="d_category_overlay">
                                         <div class="d_category_text">${cat.name}</div>
                                     </div>
-                                
+
                                     <img src="${cat.icon}" class="d_icon_top" alt="${cat.name} Icon" />
                                 </div>
                             `;
@@ -457,7 +458,7 @@
             document.addEventListener('DOMContentLoaded', fetchAndRenderSwiperCards);
         </script>
 
-       
+
         <script>
             async function renderLastFourProducts() {
                 try {
