@@ -371,6 +371,10 @@
                                             popup: 'swal2-success-toast'
                                         }
                                     });
+                                    $('#cartTableBody').html('<tr><td colspan="4" class="text-center">Your cart is empty.</td></tr>');
+                                    $('#cartTotal').text('₹0.00');
+                                    $('[data-bs-target="#paymentModal"]').prop('disabled', true);
+
                                 } else {
                                     Swal.fire({
                                         toast: true,

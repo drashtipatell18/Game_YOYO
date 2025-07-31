@@ -102,6 +102,7 @@ class RazorpayController extends Controller
             'payment_status' => 'completed',
             'payment_type' => $paymentType,
         ]);
+        AddToCart::where('user_id', auth()->id())->delete();
 
         return response()->json(['status' => 'success']);
     }
