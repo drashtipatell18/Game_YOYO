@@ -69,6 +69,13 @@ class RazorpayController extends Controller
             return $item->product->price * $item->quantity;
         });
 
+        if ($total < 1) {
+            return response()->json([
+                'error' => 'Order amount must be at least ₹1.'
+            ], 400);
+        }
+
+
         $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
 
         $order = $api->order->create([

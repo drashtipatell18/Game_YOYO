@@ -13,7 +13,7 @@
                                 <div class="d_hero-divider"></div>
                                 <div class="d_hero-subtitle">{!! nl2br(e($banner->subtitle)) !!}</div>
                                 @if($banner->link)
-                                    <a href="{{ $banner->link }}" class="d_hero-btn">JOIN THE FIGHT</a>
+                                     <a href="{{ route('allProducts')}}" class="d_hero-btn">JOIN THE FIGHT</a>
                                 @endif
                             </div>
                             <img src="{{ $banner->image }}" class="d-block w-100" alt="Banner Image" style="object-fit: cover; position: absolute; top: 0; left: 0; z-index: -1; height: 100%; width: 100%;">
