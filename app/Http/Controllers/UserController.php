@@ -87,4 +87,12 @@ class UserController extends Controller
         $user->delete();
         return redirect()->route('users')->with('danger', 'User deleted successfully');
     }
+
+    public function backendlogout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route('login');
+    }
 }

@@ -86,13 +86,7 @@ class HomeController extends Controller
         return redirect()->route('dashboard')->with('success', 'Password changed successfully.');
     }
 
-    public function logout(Request $request)
-    {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        return redirect('/login');
-    }
+  
     public function checkCurrentPassword(Request $request)
     {
         $user = Auth::user();

@@ -37,7 +37,7 @@ Route::get('/', function () {
 
 Route::get('/admin/login', [HomeController::class, 'Login'])->name('login');
 Route::post('/login', [HomeController::class, 'LoginStore'])->name('loginstore');
-Route::get('/logout',[HomeController::class,'logout'])->name('logout');
+
 Route::get('/forget-password', [DashboardController::class, 'showForgetPasswordForm'])->name('forget.password');
 Route::post('/forget-password', [DashboardController::class, 'sendResetLinkEmail'])->name('forget.password.email');
 Route::get('/reset/{token}', [DashboardController::class, 'reset'])->name('reset');
@@ -50,6 +50,7 @@ Route::post('/change-password', [HomeController::class, 'changePassword'])->name
 Route::middleware(['auth'])->group(function () {
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::post('/backendlogout',[UserController::class,'backendlogout'])->name('backendlogout');
 
 
 // User Routes

@@ -185,13 +185,13 @@
 
                                 <ul class="dropdown-menu" aria-labelledby="user-dropdown-toggle">
                                     <li><a class="dropdown-item" href="{{ route('change-password') }}">Change Password</a></li>
-                                    <li><a class="dropdown-item" href="{{ route('logout') }}"
+                                    <li><a class="dropdown-item" href="{{ route('backendlogout') }}"
                                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                             Log Out
                                         </a></li>
                                 </ul>
 
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                <form id="logout-form" action="{{ route('backendlogout') }}" method="POST" class="d-none">
                                     @csrf
                                 </form>
                             </div>
