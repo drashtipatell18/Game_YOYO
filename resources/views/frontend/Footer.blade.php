@@ -50,7 +50,7 @@
                     <h5 class="text-white mb-3">Our Policy</h5>
                     <ul class="list-unstyled d_footer-links">
                         <li><a href="{{ route('index') }}" class="active">Home</a></li>
-                        <li><a href="{{ route('blog') }}">Blog</a></li>
+                        <li><a href="{{ route('blogfronted') }}">Blog</a></li>
                         <li><a href="{{ route('frontendprivacy') }}">Privacy</a></li>
                         <li><a href="{{ route('frontendservice') }}">Service</a></li>
                     </ul>
