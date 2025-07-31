@@ -111,13 +111,13 @@
                                             placeholder="Enter Password" id="db_password_input" />
                                         <i class="fa-solid fa-eye-slash" id="db_toggle_password"
                                             style="
-                                    position: absolute;
-                                    top: 35%;
-                                    right: 15px;
-                                    transform: translateY(-50%);
-                                    cursor: pointer;
-                                    color: #888;
-                                    z-index: 5;
+                                                position: absolute;
+                                                top: 35%;
+                                                right: 15px;
+                                                transform: translateY(-50%);
+                                                cursor: pointer;
+                                                color: #888;
+                                                z-index: 5;
                                     "></i>
                                     </div>
                                     <!-- Custom Checkbox + Forgot Password -->
@@ -178,10 +178,12 @@
         $(document).ready(function() {
 
             // Password toggle
-            $("#toggle_password").click(function() {
-                const passwordInput = $("#password");
+           $("#db_toggle_password").click(function () {
+                const passwordInput = $("#db_password_input");
                 const type = passwordInput.attr("type") === "password" ? "text" : "password";
                 passwordInput.attr("type", type);
+                
+                // Toggle icon class
                 $(this).toggleClass("fa-eye fa-eye-slash");
             });
 

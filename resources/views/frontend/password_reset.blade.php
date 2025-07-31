@@ -318,7 +318,7 @@
                 <div class="email-container">
                     <div class="header">
                         <span class="icon">🎮</span>
-                        <h1>Password Reset Request</h1>
+                        <h1 style="color: white !important">Password Reset Request</h1>
                         <p class="subtitle">Yoyo Game - Secure Your Gaming Adventure</p>
                     </div>
 
