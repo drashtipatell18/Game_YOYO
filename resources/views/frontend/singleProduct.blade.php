@@ -16,6 +16,14 @@
             background-color: #928e75 !important;
             color: #fff !important;
         }
+        .toast-success {
+            background-color: #28a745 !important;  /* Bootstrap's green */
+            color: white !important;
+        }
+        .toast-error {
+            background-color: #dc3545 !important;  /* Bootstrap's red */
+            color: white !important;
+        }
     </style>
     <!-- x_game-product-section START -->
     <section class="x_game-shop a_header_container">
@@ -414,9 +422,7 @@
                     },
                     success: function(response) {
                         // Show success message
-                        $('.x_review-success')
-                            .text('Review submitted successfully!')
-                            .fadeIn();
+                        toastr.success('Review submitted successfully!');
 
                         // Reset form
                         $('.x_review-form')[0].reset();
@@ -439,7 +445,7 @@
                             if (errors.email) $('.x_email-error').text(errors.email[0]).show();
                         } else {
                             console.error(xhr);
-                            alert('Something went wrong. Please try again.');
+                            toastr.error('Something went wrong. Please try again.');
                         }
                     }
                 });
