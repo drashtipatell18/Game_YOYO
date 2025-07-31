@@ -5,42 +5,20 @@
         <section class="d_hero-section">
             <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <div class="d_hero-overlay"></div>
-                        <div class="d_hero-content-wrapper">
-                            <h1 class="d_hero-title">THE UNCONQUERED</h1>
-                            <div class="d_hero-divider"></div>
-                            <div class="d_hero-subtitle">It seemed to be a sort of monster, or symbol representing a
-                                monster,<br /> of a
-                                form which only a diseased fancy could conceive.
+                   @foreach($banners as $index => $banner)
+                        <div class="carousel-item @if($index == 0) active @endif">
+                            <div class="d_hero-overlay"></div>
+                            <div class="d_hero-content-wrapper">
+                                <h1 class="d_hero-title">{{ strtoupper($banner->title) }}</h1>
+                                <div class="d_hero-divider"></div>
+                                <div class="d_hero-subtitle">{!! nl2br(e($banner->subtitle)) !!}</div>
+                                @if($banner->link)
+                                    <a href="{{ $banner->link }}" class="d_hero-btn">JOIN THE FIGHT</a>
+                                @endif
                             </div>
-                            <a href="{{ route('aboutus') }}" class="d_hero-btn">BUY THEME</a>
+                            <img src="{{ $banner->image }}" class="d-block w-100" alt="Banner Image" style="object-fit: cover; position: absolute; top: 0; left: 0; z-index: -1; height: 100%; width: 100%;">
                         </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="d_hero-overlay"></div>
-                        <div class="d_hero-content-wrapper">
-                            <h1 class="d_hero-title">YOYO HORROR</h1>
-                            <div class="d_hero-divider"></div>
-                            <div class="d_hero-subtitle">Beyond time and sanity, the void gazes back.<br /> What will you do
-                                when it
-                                calls your name?
-                            </div>
-                            <a href="{{ route('aboutus') }}" class="d_hero-btn">EXPLORE NOW</a>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="d_hero-overlay"></div>
-                        <div class="d_hero-content-wrapper">
-                            <h1 class="d_hero-title">RISE OF THE VOID</h1>
-                            <div class="d_hero-divider"></div>
-                            <div class="d_hero-subtitle">Whispers in the dark, forgotten tomes, and eternal war.<br /> The
-                                rise begins
-                                now.
-                            </div>
-                            <a href="{{ route('aboutus') }}" class="d_hero-btn">JOIN THE FIGHT</a>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
                     <span class="carousel-control-prev-icon"></span>

@@ -27,6 +27,7 @@ use App\Http\Controllers\frontend\CartController as FrontendCartController;
 use App\Http\Controllers\frontend\BlogController as FrontendBlogController;
 use App\Http\Controllers\frontend\GoogleAuthController as FrontGoogleAuthController;
 use App\Http\Controllers\RazorpayController;
+use App\Http\Controllers\BannerController;
 
 Auth::routes();
 
@@ -153,6 +154,9 @@ Route::get('/add-to-cart/{id}/edit', [AddToCartController::class, 'EditAddToCart
 Route::post('/add-to-cart/update/{id}', [AddToCartController::class, 'UpdateAddToCart'])->name('add-to-cart.update');
 Route::delete('/add-to-cart/destroy/{id}', [AddToCartController::class, 'DeleteAddToCart'])->name('add-to-cart.destroy');
 Route::post('/add-to-cart/remove/{id}', [AddToCartController::class, 'removeFromCart'])->name('add-to-cart.remove');
+
+Route::Post('/banner_create', [BannerController::class, 'bannerCreate'])->name('banner_create');
+
 });
 
 

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\OutTeam;
 use App\Models\Product;
+use App\Models\Banner;
 
 class HomeController extends Controller
 {
@@ -14,9 +15,14 @@ class HomeController extends Controller
     {    
         $ourTeams = OutTeam::all();
         $upcomingProduct = Product::where('status', 'inactive')->get();
+        $banners = Banner::select('id', 'title', 'subtitle', 'link', 'image')->get();
+        $banners = $banners->map(function ($banner) {
+            $banner->image = url('images/banners/' . $banner->image);
+            return $banner;
+        });
         
         $featuteProducts = Product::with('category')->orderBy('created_at', 'desc')->get();
-        return view('frontend.index',compact('ourTeams', 'featuteProducts','upcomingProduct'));
+        return view('frontend.index',compact('ourTeams', 'featuteProducts','upcomingProduct','banners'));
     }
 
     public function getCategoriesJson()
