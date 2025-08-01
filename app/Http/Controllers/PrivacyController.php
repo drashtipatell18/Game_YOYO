@@ -49,4 +49,20 @@ class PrivacyController extends Controller
         $privacy->delete();
         return redirect()->route('privacy')->with('success', 'Privacy deleted successfully');
     }
+
+
+    public function shipmentPolicy()
+    {
+        return view('frontend.shippment_policy');
+    }
+
+    public function termsConditions()
+    {
+        return view('frontend.terms_conditions');
+    }
+
+    public function cancelRefunds()
+    {
+        return view('frontend.cancel_refund');
+    }
 }

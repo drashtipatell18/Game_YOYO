@@ -28,6 +28,7 @@ use App\Http\Controllers\frontend\BlogController as FrontendBlogController;
 use App\Http\Controllers\frontend\GoogleAuthController as FrontGoogleAuthController;
 use App\Http\Controllers\RazorpayController;
 use App\Http\Controllers\BannerController;
+use App\Http\Controllers\InvoiceController;
 
 Auth::routes();
 
@@ -196,12 +197,18 @@ Route::post('/profile/update/{id}', [FrontendLoginController::class, 'updateProf
 Route::get('/productDetails/{id}', [FrontendProductController::class, 'productDetails'])->name('productDetails');
 Route::post('/submit-review', [FrontendProductController::class, 'storeReviewProduct'])->name('frontReviewStore')->middleware('auth');
 
+Route::get('/invoice/{payment_id}', [InvoiceController::class, 'invoice'])->name('invoice.show');
+
+Route::get('/shipmentPolicy', [PrivacyController::class, 'shipmentPolicy'])->name('shipmentPolicy');
+Route::get('/terms_conditions', [PrivacyController::class, 'termsConditions'])->name('terms_conditions');
+Route::get('/cancel_refund', [PrivacyController::class, 'cancelRefunds'])->name('cancel_refund');
+
 // Json Data
 Route::get('/categoriesJson', [FrontendHomeController::class, 'getCategoriesJson']);
 Route::get('/productsJson', [FrontendHomeController::class, 'getProductJson']);
 Route::get('/productDetailJson', [FrontendProductController::class, 'getproductDetailJson']);
 Route::get('/products/{id}', [ProductController::class, 'getProductDetailJson']);
-// Route::get('/products', [ProductController::class, 'inactiveProducts']);
+
 
 
 Route::post('/cart/add', [FrontendCartController::class, 'FrontaddToCart']);
