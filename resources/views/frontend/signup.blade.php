@@ -121,10 +121,12 @@
     <script>
         $(document).ready(function() {
             // Password toggle functionality
-            $("#toggle_password").click(function() {
-                const passwordInput = $("#password");
+            $("#db_toggle_password").click(function () {
+                const passwordInput = $("#db_password_input");
                 const type = passwordInput.attr("type") === "password" ? "text" : "password";
                 passwordInput.attr("type", type);
+                
+                // Toggle icon class
                 $(this).toggleClass("fa-eye fa-eye-slash");
             });
 
