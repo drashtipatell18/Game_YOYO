@@ -13,7 +13,8 @@ class Payment extends Model
         'price',
         'payment_status',
         'razorpay_payment_id',
-        'payment_type'
+        'payment_type',
+        'exe_url', // Added exe_url to store the path to the .exe file
     ];
 
     public function user()

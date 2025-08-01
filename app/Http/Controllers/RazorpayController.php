@@ -8,6 +8,8 @@ use App\Models\Payment;
 use Razorpay\Api\Api;
 use App\Models\AddToCart;
 use Illuminate\Support\Str;
+use App\Mail\GameLinkMail;
+use Illuminate\Support\Facades\Mail;
 
 class RazorpayController extends Controller
 {
@@ -99,7 +101,9 @@ class RazorpayController extends Controller
         $payment = $api->payment->fetch($request->razorpay_payment_id);
         $paymentType = $payment->method ?? 'unknown';
 
-
+        $exeUrl = asset('storage/games/mygame.exe'); // ✅ Correct URL
+      
+        
         Payment::create([
             'user_id' => auth()->id(),
             'cart_id' => $request->cart_id,
@@ -108,10 +112,20 @@ class RazorpayController extends Controller
             'razorpay_order_id' => $request->razorpay_order_id,
             'payment_status' => 'completed',
             'payment_type' => $paymentType,
+             'exe_url' => $exeUrl, // Optional: save for later reference
         ]);
         AddToCart::where('user_id', auth()->id())->delete();
+        
+        $user = auth()->user();
+        if ($user && $user->email) {
+            Mail::to($user->email)->send(new GameLinkMail($exeUrl));
+        }
 
-        return response()->json(['status' => 'success']);
+
+        return response()->json([
+            'status' => 'success',
+            'game_url' => $exeUrl,
+        ]);
     }
 
 
