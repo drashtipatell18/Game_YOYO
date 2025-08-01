@@ -51,27 +51,35 @@ class GoogleAuthController extends Controller
         try {
             $facebookUser = Socialite::driver('facebook')->user();
 
-            // Check if user already exists
-            $user = User::where('facebook_id', $facebookUser->getId())->first();
+            $facebookId = $facebookUser->getId();
+            $email = $facebookUser->getEmail();
+            $name = $facebookUser->getName();
+
+            // Find existing user by facebook_id
+            $user = User::where('facebook_id', $facebookId)->first();
+
+            // If not found by facebook_id, try to find by email (optional)
+            if (!$user && $email) {
+                $user = User::where('email', $email)->first();
+            }
 
             if (!$user) {
-                // Create new user
                 $user = User::create([
-                    'name' => $facebookUser->getName(),
-                    'email' => $facebookUser->getEmail(),
-                    'facebook_id' => $facebookUser->getId(),
-                     'role_id' => 2,
+                    'name' => $name ?? 'Facebook User',
+                    'email' => $email ?? ('fb_user_' . $facebookId . '@example.com'), // fallback email
+                    'facebook_id' => $facebookId,
+                    'role_id' => 2,
                 ]);
             }
 
-            // Log in the user
             Auth::login($user);
 
             return redirect()->route('index')->with('success', 'Successfully logged in with Facebook!');
-
         } catch (\Exception $e) {
+            \Log::error('Facebook login error: ' . $e->getMessage());
             return redirect()->route('index')->with('error', 'Something went wrong!');
         }
     }
+    
 
 }
