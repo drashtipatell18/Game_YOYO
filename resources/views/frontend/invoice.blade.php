@@ -41,15 +41,16 @@
                         @foreach($cartItems as $item)
                             @php
                                 $unitPrice = $item->price > 0 ? $item->price : ($item->product->price ?? 0);
-                $total = $item->quantity * $unitPrice;
-                $subtotal += $total;
+            $total = $item->quantity * $unitPrice;
+            $subtotal += $total;
                             @endphp
+                        
                             <tr style="border-bottom: 1px solid #444;">
                                 <td style="padding: 10px 8px; color: #fff;">
                                     {{ $item->product->name ?? 'Unknown Product' }}
                                 </td>
                                 <td style="padding: 10px 8px; text-align: right; color: #cfcfcf;">
-                                    {{ $item->quantity }}
+                                  {{ $item->quantity }}
                                 </td>
                                 <td style="padding: 10px 8px; text-align: right; color: #cfcfcf;">
                                     ${{ number_format($item->product->price, 2) }}
