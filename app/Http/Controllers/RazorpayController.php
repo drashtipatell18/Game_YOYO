@@ -101,12 +101,16 @@ class RazorpayController extends Controller
         $payment = $api->payment->fetch($request->razorpay_payment_id);
         $paymentType = $payment->method ?? 'unknown';
 
+        $cartItems = AddToCart::where('user_id', auth()->id())->get();
+        $cartIds = $cartItems->pluck('id')->toArray(); // [1,2,3]
+        $cartIdsString = implode(',', $cartIds);
+
         $exeUrl = asset('storage/games/mygame.exe'); // ✅ Correct URL
       
         
-        Payment::create([
+        $newPayment = Payment::create([
             'user_id' => auth()->id(),
-            'cart_id' => $request->cart_id,
+            'cart_id' => $cartIdsString,
             'price' => $request->amount,
             'razorpay_payment_id' => $request->razorpay_payment_id,
             'razorpay_order_id' => $request->razorpay_order_id,
@@ -114,7 +118,7 @@ class RazorpayController extends Controller
             'payment_type' => $paymentType,
              'exe_url' => $exeUrl, // Optional: save for later reference
         ]);
-        AddToCart::where('user_id', auth()->id())->delete();
+        AddToCart::where('user_id', auth()->id());
         
         $user = auth()->user();
         if ($user && $user->email) {
@@ -125,6 +129,7 @@ class RazorpayController extends Controller
         return response()->json([
             'status' => 'success',
             'game_url' => $exeUrl,
+            'invoice_url' => route('invoice.show', ['payment_id' => $newPayment->id]),
         ]);
     }
 

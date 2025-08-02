@@ -370,7 +370,10 @@
                                         customClass: {
                                             popup: 'swal2-success-toast'
                                         }
-                                    }); 
+                                    }).then(() => {
+                                        // Redirect to invoice page
+                                        window.location.href = data.invoice_url;
+                                    });
                                    
 
                                     $('#cartTableBody').html('<tr><td colspan="4" class="text-center">Your cart is empty.</td></tr>');

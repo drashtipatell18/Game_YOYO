@@ -27,4 +27,10 @@ class Payment extends Model
         return $this->belongsTo(Product::class);
     }
 
+    public function cartItems()
+    {
+        $cartIds = explode(',', $this->cart_id);
+        return AddToCart::whereIn('id', $cartIds)->get();
+    }
+
 }
