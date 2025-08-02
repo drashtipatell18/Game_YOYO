@@ -24,31 +24,6 @@
         }
     </style>
 
-    <body style="padding-right: 0px;">
-        <!-- Hero Section Start -->
-        <div class="d_main">
-            <!-- Offcanvas Mobile Menu -->
-            <aside class="d_offcanvas_menu" id="d_offcanvas_menu">
-                <button class="close_btn" aria-label="Close Menu">&times;</button>
-                <nav>
-                    <ul class="navbar-nav me-auto">
-                        <li class="nav-item"><a class="nav-link " href="{{ route('index') }}">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ route('allProducts') }}">Games</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ route('blog') }}">Blog</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ route('aboutus') }}">About</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ route('frontendcontactus') }}">Contact</a></li>
-                    </ul>
-                </nav>
-                <form class="d_search_form_offcanvas">
-                    <input type="search" placeholder="Search games..." />
-                    <button type="submit"><i class="fas fa-search"></i></button>
-                </form>
-                <div class="d_social_icons_offcanvas">
-                    <a href="{{ route('cart') }}" class="active"><i class="fa fa-cart-plus"></i></a>
-                    <a href="{{ route('profile', Auth::id()) }}"><i class="fas fa-user-circle"></i></a>
-                </div>
-            </aside>
-        </div>
 
         <div class="Z_cart_darkbg">
             <div class="Z_cart_hero">
@@ -96,7 +71,7 @@
                                                             alt="{{ $cart->product->title ?? 'Product Image' }}"
                                                             class="Z_cart_img">
 
-                                                        <span class="Z_cart_name">{{ $cart->product->title }}</span>
+                                                        <span class="Z_cart_name">{{ $cart->product->name }}</span>
 
                                                     </div>
 

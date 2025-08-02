@@ -28,6 +28,8 @@ class InvoiceController extends Controller
         // Step 5: Retrieve the product details
         $products = Product::whereIn('id', $productIds)->get();
 
+        AddToCart::where('user_id', auth()->id())->delete();
+
        
 
         // Step 6: Pass data to the view

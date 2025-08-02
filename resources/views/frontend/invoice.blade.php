@@ -41,8 +41,8 @@
                         @foreach($cartItems as $item)
                             @php
                                 $unitPrice = $item->price > 0 ? $item->price : ($item->product->price ?? 0);
-            $total = $item->quantity * $unitPrice;
-            $subtotal += $total;
+                                $total = $item->quantity * $unitPrice;
+                                $subtotal += $total;
                             @endphp
                         
                             <tr style="border-bottom: 1px solid #444;">
