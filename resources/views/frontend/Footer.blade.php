@@ -49,9 +49,10 @@
                 <div class="col-md-2 col-6">
                     <h5 class="text-white mb-3">Our Policy</h5>
                     <ul class="list-unstyled d_footer-links">
-                        <li><a href="{{ route('index') }}" class="active">Home</a></li>
-                        <li><a href="{{ route('blogfronted') }}">Blog</a></li>
-                        <li><a href="{{ route('frontendprivacy') }}">Privacy</a></li>
+                        <li><a href="{{ route('shipmentPolicy') }}" class="active">Shiiping Policy</a></li>
+                        <li><a href="{{ route('terms_conditions') }}">Terms Conditions</a></li>
+                        <li><a href="{{ route('frontendprivacy') }}">Privacy Policy</a></li>
+                         <li><a href="{{ route('cancel_refund') }}">Cancel Refund</a></li>
                         <li><a href="{{ route('frontendservice') }}">Service</a></li>
                     </ul>
                 </div>
