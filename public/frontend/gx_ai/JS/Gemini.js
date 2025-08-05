@@ -770,6 +770,8 @@ async function sendMessage() {
     const message = userInput.value.trim();
     const imageUrl = hasImage && previewImg.src ? previewImg.src : null;
 
+    userInput.value = '';
+
     if (!message && !imageUrl) {
         return;
     }
@@ -817,7 +819,7 @@ async function sendMessage() {
     setChatData(data);
     renderRecentChats();
 
-    userInput.value = '';
+    
     updateSendButtonState();
     userInput.style.height = 'auto';
 }
