@@ -567,7 +567,7 @@
                     if (typeof Storage !== "undefined") {
                         localStorage.setItem('item_id', id);
                     }
-                    window.location.href = '/allProductDetails/' + id;
+                    window.location.href = '/productDetails/' + id;
                 });
             });
 
