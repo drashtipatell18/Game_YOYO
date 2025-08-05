@@ -106,7 +106,7 @@
                     <li class="nav-item"><a class="nav-link" href="{{ route('frontendcontactus') }}">Contact</a>
                         <!-- <li class="nav-item"><a class="nav-link" href="./Contact_us.html">Contact</a></li> -->
                     <li class="nav-item px-2">
-                        <a href="/gx_ai/index.html">
+                        <a href="{{ route('yin.index') }}">
                             <button class="d_search_form btn_gem">
                                 Yin
                             </button>
