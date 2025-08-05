@@ -109,9 +109,8 @@
                 <a href="Signin.html" class="text-[--add-btn] hover:underline">Sign up</a>
             </p>
             <div class="flex gap-5 items-center mt-4 justify-center">
-                <a href=""><i class="fa-brands fa-apple text-3xl text-[#666666] "></i></a>
-                <a href=""><i class="fa-brands fa-facebook text-2xl text-[#0866FF] "></i></a>
-                <a href="#" class="inline-block">
+                <a href="{{ url('auth/facebook') }}"><i class="fa-brands fa-facebook text-2xl text-[#0866FF] "></i></a>
+                <a href="{{ url('auth/google') }}" class="inline-block">
                     <svg class="w-[23px] h-[23px]" viewBox="-3 0 262 262" xmlns="http://www.w3.org/2000/svg"
                         preserveAspectRatio="xMidYMid" fill="#000000">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -156,7 +155,7 @@ if (savedAccounts.length > 0) {
     const container = document.getElementById('accountList');
 
     container.innerHTML = savedAccounts.map(acc => `
-        <div onclick="switchAccount('${acc.email}')" 
+        <div onclick="switchAccount('${acc.email}')"
             class="p-3 truncate cursor-pointer hover:bg-gray-100 rounded flex items-center gap-2 border">
             <div class="w-[36px] h-[36px] bg-blue-400 rounded-full text-white flex items-center justify-center font-bold">
                 ${acc.name.charAt(0).toUpperCase()}
