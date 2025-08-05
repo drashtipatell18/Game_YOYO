@@ -28,8 +28,8 @@
 </style>
 
 <body>
-    <footer class="d_footer text-white">
-        <div class="container py-md-3 ">
+    <div class="container py-md-3 ">
+            <footer class="d_footer text-white">
             <div class="row gy-4">
                 <div class="col-md-4">
                     <h4 class="d_footer-logo mb-3">YOYO</h4>
@@ -59,15 +59,15 @@
                 <div class="col-md-4">
                     <h5 class="text-white mb-3">Contact</h5>
                     <ul class="list-unstyled d_footer-links d_footer_text">
-                        <li><i class="fas fa-envelope me-2"></i> support@yoyo.com</li>
-                        <li><i class="fas fa-phone me-2"></i> +91 98765 43210</li>
-                        <li><i class="fas fa-location-dot me-2"></i> Yoyo HQ, Darkrealm</li>
+                        <li><i class="fas fa-envelope me-2"></i> info@yoyokhel.com</li>
+                        <li><i class="fas fa-phone me-2"></i>1800-9797-6361</li>
+                        <li><i class="fas fa-location-dot me-2"></i>264 Weber St W, Kitchener, ON N2H 4A6</li>
                     </ul>
                     <div class="d_footer-social mt-3">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
                         <a href="#"><i class="fab fa-x-twitter"></i></a>
                         <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-discord"></i></a>
+                        {{-- <a href="#"><i class="fab fa-discord"></i></a> --}}
                     </div>
                 </div>
             </div>

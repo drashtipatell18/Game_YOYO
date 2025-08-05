@@ -438,10 +438,12 @@
                         <div class="game-card position-relative" data-id="${product.id}">
                             <img src="${firstImage}" alt="${product.name}" class="card-img-top" />
                             <div class="position-absolute card-content">
+                                <!--
                                 <div class="icons d-flex gap-2 mb-3">
                                     <i class="fa-brands fa-apple"></i>
                                     <i class="fa-brands fa-windows"></i>
                                 </div>
+                                -->
                                 <h3>${product.name}</h3>
                                 <h3 class="mb-0">${Number(product.price).toFixed(2)}</h3>
                                 <span class="badge bg-secondary mt-2">${categoryName}</span>
@@ -723,10 +725,12 @@
             <div class="game-card position-relative" data-id="${cardData.id}">
                 <img src="${firstImage}" alt="${cardData.name}" class="card-img-top" />
                 <div class="position-absolute card-content">
+                    <!--
                     <div class="icons d-flex gap-2 mb-3">
                         <i class="fa-brands fa-apple"></i>
                         <i class="fa-brands fa-windows"></i>
                     </div>
+                    -->
                     <h3>${cardData.name}</h3>
                     <h3 class="mb-0">${cardData.price}</h3>
                 </div>

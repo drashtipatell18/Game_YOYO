@@ -131,7 +131,7 @@
         
         </div>
         <!-- Founder & Team Section -->
-        <section class="d_founder_section">
+        {{-- <section class="d_founder_section">
             <div class="container">
                 <h2 class="d_section_title" data-aos="fade-down">Our Team</h2>
                 <p class="d_section_subtitle" data-aos="fade-up">Creative minds behind the game</p>
@@ -164,7 +164,7 @@
                 </div>
  
             </div>
-        </section>
+        </section> --}}
     </body>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script>

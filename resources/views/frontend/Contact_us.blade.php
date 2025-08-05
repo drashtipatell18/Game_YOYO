@@ -56,19 +56,19 @@
                   <div class="mb-4">
                      <h5 class="contact-info-title mb-2"><i class="fas fa-map-marker-alt me-2"></i>OUR HQ
                      </h5>
-                     <p class="contact-info-text mb-0">123 Game Street, Cyber City, USA</p>
+                     <p class="contact-info-text mb-0">264 Weber St W, Kitchener, ON N2H 4A6</p>
                   </div>
                   <div class="mb-4">
                      <h5 class="contact-info-title mb-2"><i class="fas fa-phone me-2"></i>CONTACT</h5>
-                     <p class="contact-info-text mb-0">+1 800-GAME-123<br>support@gameverse.com</p>
+                     <p class="contact-info-text mb-0">1800-9797-6361<br> info@yoyokhel.com</p>
                   </div>
                   <div>
                      <h5 class="contact-info-title mb-2"><i class="fas fa-share-alt me-2"></i>JOIN OUR
                         COMMUNITY
                      </h5>
                      <div class="contact-social-icons mb-3">
-                        <a href="#"><i class="fab fa-discord"></i></a>
-                        <a href="#"><i class="fab fa-twitch"></i></a>
+                        {{-- <a href="#"><i class="fab fa-discord"></i></a> --}}
+                        {{-- <a href="#"><i class="fab fa-twitch"></i></a> --}}
                         <a href="#"><i class="fab fa-twitter"></i></a>
                         <a href="#"><i class="fab fa-youtube"></i></a>
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
