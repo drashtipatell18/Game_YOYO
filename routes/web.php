@@ -239,3 +239,5 @@ Route::get('yin/new_gem', [YinIndexController::class, 'yinNewGem'])->name('yin.n
 Route::get('yin/search', [YinIndexController::class, 'yinSearch'])->name('yin.search');
 Route::get('yin/careerguide', [YinIndexController::class, 'CareerGuide'])->name('yin.careerguide');
 Route::get('yin/upgrade', [YinIndexController::class, 'yinUpgrade'])->name('yin.upgrade');
+Route::get('yin/chesschamp', [YinIndexController::class, 'ChessChamp'])->name('yin.chesschamp');
+

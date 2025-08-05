@@ -270,7 +270,7 @@
                                 </div>
                             </a>
 
-                            <a href="../Chess_champ.html"
+                            <a href="{{ route('yin.chesschamp') }}"
                                 class="p-4 rounded-xl transition cursor-pointer bg-[var(--card-bg)] hover:bg-[var(--card-hover-bg)]">
                                 <div class="flex justify-start items-center gap-2 pb-3">
                                     <div class="w-7 h-7 rounded-full justify-center items-center flex bg-[#ffd289]">
