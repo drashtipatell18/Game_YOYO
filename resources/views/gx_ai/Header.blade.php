@@ -36,7 +36,7 @@
                         </div>
 
                         <div class="main-inner-right">
-                            <a href="Search.html" class="flex items-center justify-center" id="search-icon"> <span
+                            <a href="{{ route('yin.search') }}" class="flex items-center justify-center" id="search-icon"> <span
                                     class="material-icons">search</span> </a>
                             <span class="search-span">Search</span>
                         </div>

@@ -31,4 +31,8 @@ class YinIndexController extends Controller
     {
         return view('gx_ai.NewGem');
     }
+    public function yinSearch()
+    {
+        return view('gx_ai.Search');
+    }
 }

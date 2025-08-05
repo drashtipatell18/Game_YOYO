@@ -236,3 +236,4 @@ Route::get('yin/savedInfo', [YinIndexController::class, 'yinSavedInfo'])->name('
 Route::get('yin/public_link', [YinIndexController::class, 'yinPublicLink'])->name('yin.public_link');
 Route::get('yin/explore_gem', [YinIndexController::class, 'yinExploreGem'])->name('yin.explore_gem');
 Route::get('yin/new_gem', [YinIndexController::class, 'yinNewGem'])->name('yin.new_gem');
+Route::get('yin/search', [YinIndexController::class, 'yinSearch'])->name('yin.search');
