@@ -60,7 +60,7 @@
                   </div>
                   <div class="mb-4">
                      <h5 class="contact-info-title mb-2"><i class="fas fa-phone me-2"></i>CONTACT</h5>
-                     <p class="contact-info-text mb-0">1800-9797-6361<br> info@yoyokhel.com</p>
+                    <p class="contact-info-text mb-0">1800-9797-6361<br>info@yoyokhel.com</p>
                   </div>
                   <div>
                      <h5 class="contact-info-title mb-2"><i class="fas fa-share-alt me-2"></i>JOIN OUR
@@ -70,8 +70,6 @@
                         {{-- <a href="#"><i class="fab fa-discord"></i></a> --}}
                         {{-- <a href="#"><i class="fab fa-twitch"></i></a> --}}
                         <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-youtube"></i></a>
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
                      </div>
                      <div class="map-embed-wrapper rounded-4 overflow-hidden">
                         <iframe
