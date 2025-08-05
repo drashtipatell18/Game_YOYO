@@ -19,4 +19,8 @@ class YinIndexController extends Controller
     {
         return view('gx_ai.SavedInfo');
     }
+    public function yinPublicLink()
+    {
+        return view('gx_ai.Public_Links');
+    }
 }

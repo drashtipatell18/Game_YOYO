@@ -85,7 +85,7 @@
                                    
                                 </li>
                                 <li>
-                                    <a href="Public_Links.html" class="w-[100%] items-center flex gap-5">
+                                    <a href="{{ route('yin.public_link') }}" class="w-[100%] items-center flex gap-5">
                                         <span class="material-symbols-outlined"> link </span>
                                         Your public links
                                     </a>
