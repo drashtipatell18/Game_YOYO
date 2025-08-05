@@ -95,7 +95,6 @@
         }
     </style>
 </head>
-
     <div class="w-[100%]">
         <div class="backdrop" id="backdrop"></div>
 

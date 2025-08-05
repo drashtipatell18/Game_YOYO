@@ -47,4 +47,9 @@ class YinIndexController extends Controller
     {
         return view('gx_ai.Chess_Champ');
     }
+
+    public function Brainstormer()
+    {
+        return view('gx_ai.Brainstormer');
+    }
 }

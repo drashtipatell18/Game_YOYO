@@ -240,4 +240,4 @@ Route::get('yin/search', [YinIndexController::class, 'yinSearch'])->name('yin.se
 Route::get('yin/careerguide', [YinIndexController::class, 'CareerGuide'])->name('yin.careerguide');
 Route::get('yin/upgrade', [YinIndexController::class, 'yinUpgrade'])->name('yin.upgrade');
 Route::get('yin/chesschamp', [YinIndexController::class, 'ChessChamp'])->name('yin.chesschamp');
-
+Route::get('yin/brainstormer', [YinIndexController::class, 'Brainstormer'])->name('yin.brainstormer');
