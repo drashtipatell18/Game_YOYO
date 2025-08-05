@@ -35,4 +35,8 @@ class YinIndexController extends Controller
     {
         return view('gx_ai.Search');
     }
+    public function CareerGuide()
+    {
+        return view('gx_ai.Career_guide');
+    }
 }

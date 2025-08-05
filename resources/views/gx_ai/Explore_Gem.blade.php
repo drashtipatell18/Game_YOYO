@@ -241,7 +241,7 @@
 
                         <div id="cardContainer"
                             class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2 mb-5">
-                            <a href="../Career_guide.html"
+                            <a href="{{ route('yin.careerguide') }}"
                                 class="p-4 rounded-xl transition cursor-pointer bg-[var(--card-bg)] hover:bg-[var(--card-hover-bg)]">
                                 <div class="flex justify-between items-center gap-2 pb-3">
                                     <div

@@ -1,19 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Career Guide</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="./Gemini.css">
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+@extends('gx_ai.layouts.main')
+    @section('content')
     <style>
         /* Base light theme variables */
         :root {
@@ -138,8 +124,6 @@
     </style>
 </head>
 
-<body class="min-h-screen">
-
     <div class="w-[100%]">
         <div class="backdrop" id="backdrop"></div>
 
@@ -195,7 +179,7 @@
                         </li>
                         <div class="dropdown-menu" id="dropdownMenu">
                             <ul class="pb-2">
-                                
+
                                 <li>
                                     <a href="SavedInfo.html " class="w-[100%] items-center flex gap-5">
                                         <span class="material-symbols-outlined"> person </span>
@@ -203,7 +187,7 @@
                                     </a>
                                     <!-- <span class="dot"></span> -->
                                 </li>
-                                
+
                                 <li>
                                     <a href="Public_Links.html" class="w-[100%] items-center flex gap-5">
                                         <span class="material-symbols-outlined"> link </span>
@@ -323,10 +307,12 @@
                     <a href="Upgrad.html"
                         class="h-9 block cursor-pointer rounded-md flex items-center justify-center text-xs font-semibold px-6 mr-3"
                         style="background-color: var(--sidebar-hover);">
-                       
+
                         Upgrade
                     </a>
-                    <div id="account"></div>
+                    <div id="account">
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -384,7 +370,7 @@
                             </div>
 
                             <!-- Grid layout for medium and up -->
-                            <div class="hidden md:grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                            <div class=" md:grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                                 <div class="h-[160px] p-3 rounded-xl cursor-pointer text-sm flex items-start"
                                     style="background-color: var(--card-bg); color: var(--text-main);"
                                     onmouseover="this.style.backgroundColor='var(--card-hover-bg)'"
@@ -416,207 +402,9 @@
             </div>
         </div>
     </div>
-
-
-    <!------------------------------------------------->
-    <!-- Help Center -->
-    <div id="help_Data"
-        class="flex flex-col hidden  justify-start fixed top-[100px] rounded-2xl right-[10px] bg-[--bg-main] shadow-[0_1px_3px_0_rgba(60,64,67,0.3),_0_4px_8px_3px_rgba(60,64,67,0.15)]  lg:w-[23%] md:w-[40%] sm:w-[50%] w-[90%] h-[70vh] overflow-y-auto">
-
-        <!-- Sticky Header -->
-        <div class="sticky top-0 left-0 py-3 pb-8 w-full flex items-center justify-between bg-[--bg-main] z-10">
-            <p class="text-2xl text-[--text-main] text-center w-full">Help</p>
-            <button id="help_close" class="absolute right-4 top-3">
-                <i class="fa-solid fa-xmark text-2xl text-[--text-main]"></i>
-            </button>
-        </div>
-
-        <!-- Scrollable Content -->
-        <div class="text-[--text-main] space-y-3 pb-4 text-left">
-            <h6 class="text-[16px] text-[--text-main] ps-4">Popular help resources</h6>
-
-
-            <div class="flex items-center gap-3 hover:bg-[--dropdown-hover] py-2 px-4 cursor-pointer">
-                <div
-                    class="w-[40px] h-[40px] min-h-[40px] min-w-[40px] rounded-full bg-[--examples-btn-hover]  flex justify-center items-center ">
-                    <i class="fa-regular fa-file-lines text-[--add-btn]"></i>
-                </div>
-                <span class="text-[16px] text-[--text-main]">Manage & delete your YOYO Apps activity</span>
-            </div>
-            <div class="flex items-center gap-3 hover:bg-[--dropdown-hover] py-2 px-4 cursor-pointer">
-                <div
-                    class="w-[40px] h-[40px] min-h-[40px] min-w-[40px] rounded-full bg-[--examples-btn-hover] flex justify-center items-center">
-                    <i class="fa-regular fa-file-lines text-[--add-btn]"></i>
-                </div>
-                <span class="text-[16px] text-[--text-main]">Use YOYO Apps</span>
-            </div>
-            <div class="flex items-center gap-3 hover:bg-[--dropdown-hover] py-2 px-4 cursor-pointer">
-                <div
-                    class="w-[40px] h-[40px] min-h-[40px] min-w-[40px] rounded-full bg-[--examples-btn-hover] flex justify-center items-center">
-                    <i class="fa-regular fa-file-lines text-[--add-btn]"></i>
-                </div>
-                <span class="text-[16px] text-[--text-main]">Use & manage apps in YOYO</span>
-            </div>
-            <div class="flex items-center gap-3 hover:bg-[--dropdown-hover] py-2 px-4 cursor-pointer">
-                <div
-                    class="w-[40px] h-[40px] min-h-[40px] min-w-[40px] rounded-full bg-[--examples-btn-hover] flex justify-center items-center">
-                    <i class="fa-regular fa-file-lines text-[--add-btn]"></i>
-                </div>
-                <span class="text-[16px] text-[--text-main]">Find & manage your recent chats in YOYO Apps</span>
-            </div>
-            <div class="flex items-center gap-3 hover:bg-[--dropdown-hover] py-2 px-4 cursor-pointer">
-                <div
-                    class="w-[40px] h-[40px] min-h-[40px] min-w-[40px] rounded-full bg-[--examples-btn-hover] flex justify-center items-center">
-                    <i class="fa-regular fa-file-lines text-[--add-btn]"></i>
-                </div>
-                <span class="text-[16px] text-[--text-main]">Where you can use the YOYO web app</span>
-            </div>
-
-
-            <a href="" class="text-[14px] text-[--add-btn] w-full block hover:bg-[--bg-hover] py-4 px-10">Visit help
-                forum <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-
-            <div class="bg-[--dropdown-hover] py-3 mx-5 rounded-full flex items-center px-5 cursor-pointer">
-                <i class="fa-solid fa-magnifying-glass me-3"></i>
-                <input type="search" class="w-full bg-transparent outline-none border-0 cursor-pointer">
-            </div>
-
-            <div class="py-4 border-t-[8px] border-b-[8px] border-[--border-color]-500">
-                <p class="text-[--text-main] ps-4">Need more help?</p>
-                <div class="flex items-center gap-3 hover:bg-[--dropdown-hover] py-2 px-4 mt-3  cursor-pointer">
-                    <div
-                        class="w-[40px] h-[40px] min-h-[40px] min-w-[40px] rounded-full bg-[--examples-btn-hover] flex justify-center items-center">
-                        <i class="fa-solid fa-message text-[--add-btn]"></i>
-                    </div>
-                    <div>
-                        <p class="text-[--text-main] text-[16px]">Ask the Help Community</p>
-                        <span class="text-[--text-muted] text-[16px]">Get answers from community experts</span>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="flex items-center gap-3 hover:bg-[--dropdown-hover] py-2 px-4 mt-3  cursor-pointer">
-                <div
-                    class="w-[40px] h-[40px] min-h-[40px] min-w-[40px] rounded-full bg-[--examples-btn-hover] flex justify-center items-center">
-                    <i class="fa-solid fa-circle-exclamation text-[--add-btn]"></i>
-                </div>
-                <p class="text-[16px] text-[--add-btn] font-medium">Report a problem</p>
-            </div>
-        </div>
-    </div>
-    <!-- *****help js***** -->
-    <script>
-        const help_Data = document.getElementById('help_Data');
-        const help_close = document.getElementById('help_close');
-        const open_help_center = document.getElementById('open_help_center');
-
-
-
-        open_help_center.addEventListener('click', () =>
-            help_Data.classList.remove('hidden')
-        );
-        help_close.addEventListener('click', () =>
-            help_Data.classList.add('hidden')
-        );
-    </script>
-    <!---------------------------------------------->
-    <!---------------------------------------------->
-    <!-- ************Feedback********* -->
-
-    <div id="feedback-data"
-        class="flex z-50 flex-col hidden justify-between fixed top-0 right-0 rounded-l-2xl bg-[#1F1F1F] shadow-[0_1px_3px_0_rgba(60,64,67,0.3),_0_4px_8px_3px_rgba(60,64,67,0.15)] lg:w-[28%] md:w-[40%] sm:w-[50%] w-[90%] h-[100vh] overflow-hidden">
-
-        <!-- Sticky Header -->
-        <div
-            class="sticky top-0 left-0 py-5 px-4 w-full flex items-center justify-between bg-[#1F1F1F] shadow-[0_1px_4px_rgba(0,0,0,0.6)] z-10">
-            <p class="text-lg text-white w-full">Send feedback to Google</p>
-            <button id="feedback_close"
-                class="absolute right-4 w-[50px] h-[50px] rounded-full top-3 hover:bg-[#303134]">
-                <i class="fa-solid fa-xmark text-2xl text-white"></i>
-            </button>
-        </div>
-
-        <!-- Scrollable Content + Bottom -->
-        <div class="flex flex-col justify-between h-full overflow-y-auto">
-            <div class="space-y-3 text-white p-4 text-left">
-                <h6 class="text-[14px]">Describe your feedback (required)</h6>
-
-                <textarea name="feedback_message" id="feedback_message"
-                    placeholder="Tell us what prompted this feedback..." rows="4"
-                    class="w-full bg-transparent border rounded p-2 outline-none focus:ring-2 focus:ring-[#8AB4F8] focus:border-0 text-[16px] text-white"></textarea>
-
-
-                <span class="text-[12px]">Please don’t include any sensitive information <i
-                        class="fa-regular fa-circle-question"></i></span>
-
-                <p class="text-[16px]">A screenshot will help us better understand your feedback.</p>
-
-                <div
-                    class="w-full border text-center text-[#7cacf8] rounded-md py-2 hover:border-[#7cacf8] hover:bg-[#2A3039] cursor-pointer">
-                    <p class="text-[15px]"><i class="fa-solid fa-desktop"></i> Capture screenshot</p>
-                </div>
-            </div>
-
-            <!-- Fixed Bottom Section -->
-            <div class="mt-auto  bg-[#1F1F1F] ">
-                <div class="flex items-center gap-2 mb-4 px-4">
-                    <input type="checkbox" name="checkbox" id="checkbox"
-                        class="w-5 h-5 bg-[#1F1F1F] accent-[#7CACF8] cursor-pointer border rounded" />
-                    <label for="checkbox" class="text-white cursor-pointer">
-                        We may email you for more information or updates
-                    </label>
-                </div>
-
-                <p class="text-[14px] text-white mb-4 px-4">
-                    Some account and system information may be sent to Google. We will use it to fix problems and
-                    improve
-                    our services, subject to our Privacy Policy and Terms of Service. We may email you for more
-                    information
-                    or updates. Go to Legal Help to ask for content changes for legal reasons.
-                </p>
-
-                <div class="text-end shadow-[0_-4px_6px_rgba(0,0,0,0.15)] mt-2 p-4">
-                    <button id="sendBtn" disabled class="bg-[#373737] py-2 px-6 rounded-lg text-white text-[16px]">
-                        Send
-                    </button>
-
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- feedback js -->
-    <script>
-        const feedback_message = document.getElementById("feedback_message");
-        const sendBtn = document.getElementById("sendBtn");
-        const feedback_close = document.getElementById("feedback_close");
-        const feedback_open = document.getElementById("feedback_open");
-        const feedback_data = document.getElementById("feedback-data");
-
-        feedback_open.addEventListener('click', () =>
-            feedback_data.classList.remove('hidden')
-        );
-        feedback_close.addEventListener('click', () =>
-            feedback_data.classList.add('hidden')
-        );
-
-        feedback_message.addEventListener("input", function () {
-            if (feedback_message.value.trim().length > 0) {
-                sendBtn.disabled = false;
-                sendBtn.classList.remove("bg-[#373737]", "text-white");
-                sendBtn.classList.add("bg-[#7CACF8]", "text-[#062E6F]");
-            } else {
-                sendBtn.disabled = true;
-                sendBtn.classList.remove("bg-[#7CACF8]", "text-[#062E6F]");
-                sendBtn.classList.add("bg-[#373737]", "text-white");
-            }
-        });
-    </script>
-    <!---------------------------------------------->
-
-  
-    <script>
+@endsection
+@push('script')
+ <script>
         const accountData = JSON.parse(localStorage.getItem('login'))
 
         console.log(accountData);
@@ -665,7 +453,7 @@
                     <div id="profile-dropdown"
                         class="absolute right-4 top-14 w-[400px] max-w-[90vw] sm:max-w-md rounded-3xl shadow-xl z-50 overflow-hidden"
                         style="background-color: var(--dropdown-bg); color: var(--dropdown-text);">
-                        
+
                         <!-- Header -->
                         <div class="px-4 pt-5 pb-2 text-center text-sm font-medium" style="color: var(--dropdown-text);">
                         ${accountData.email}
@@ -696,7 +484,7 @@
                         </div>
                         </div>
 
-                        
+
                         <!-- Add & Sign Out -->
 
                         ${accountsList ? `
@@ -764,8 +552,8 @@
         } else {
 
             document.getElementById('account').innerHTML = `
-        <button 
-            class="bg-[--add-btn] text-[--add-btn-text] font-bold py-2 px-4 rounded-lg" 
+        <button
+            class="bg-[--add-btn] text-[--add-btn-text] font-bold py-2 px-4 rounded-lg"
             onclick="handleRedirectLogin()">
             Login
         </button>`;
@@ -833,7 +621,7 @@
         }
 
 
-  
+
 
     </script>
     <script>
@@ -859,7 +647,4 @@
         });
 
     </script>
-    <script src="./JS/index.js"></script>
-</body>
-
-</html>
+@endpush
