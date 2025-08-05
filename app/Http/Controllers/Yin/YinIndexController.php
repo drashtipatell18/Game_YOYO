@@ -1,0 +1,11 @@
+<?php
+
+namespace App\Http\Controllers\Yin;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+
+class YinIndexController extends Controller
+{
+    public function 
+}

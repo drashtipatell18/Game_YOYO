@@ -224,3 +224,9 @@ Route::post('/payment/success', [RazorpayController::class, 'paymentSuccess'])->
 Route::get('/get-payment-details-cart/{cartId}', [RazorpayController::class, 'getCartPaymentDetails'])->middleware('auth');
 Route::post('/cart/success', [RazorpayController::class, 'getCartpaymentSuccess'])->middleware('auth');
 
+
+
+// ai route
+
+Route::get('yin/index', [YinIndexController::class, 'yinIndex']);
+
