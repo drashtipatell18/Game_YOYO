@@ -214,16 +214,17 @@
             document.getElementById('greeting-div').classList.add('hidden')
 
 
-        } else {
-
-            document.getElementById('account').innerHTML = `
-        <button 
-            class="bg-[--add-btn] text-[--add-btn-text] font-bold py-2 px-4 rounded-lg" 
-            onclick="handleRedirectLogin()">
-            Login
-        </button>`;
-
         }
+        //  else {
+
+        //     document.getElementById('account').innerHTML = `
+        // <button 
+        //     class="bg-[--add-btn] text-[--add-btn-text] font-bold py-2 px-4 rounded-lg" 
+        //     onclick="handleRedirectLogin()">
+        //     Login
+        // </button>`;
+
+        // }
 
      function handleRedirectLogin() {
     window.location.href = '/yin/login?add=true';  // matches the Laravel route
