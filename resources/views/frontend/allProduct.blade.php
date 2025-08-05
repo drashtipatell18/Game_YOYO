@@ -1,5 +1,78 @@
 @extends('frontend.layouts.main')
 @section('content')
+    <style>
+        /* Custom Pagination Styles */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin: 32px 0 16px 0;
+            list-style: none;
+            padding: 0;
+        }
+
+        .pagination li {
+            display: inline-block;
+        }
+
+        .pagination a,
+        .pagination span {
+            display: inline-block;
+            min-width: 36px;
+            height: 36px;
+            line-height: 36px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 500;
+            color: #8a775a;
+            background: #fff;
+            border: 1px solid #8a775a;
+            border-radius: 8px;
+            margin: 0 2px;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .pagination a:hover,
+        .pagination .active a,
+        .pagination .active span {
+            background: linear-gradient(135deg, #8a775a, #5e4d3a);
+            color: #fff;
+            border-color: #5e4d3a;
+            transform: scale(1.08);
+        }
+
+        .pagination .disabled a,
+        .pagination .disabled span {
+            color: #ccc;
+            border-color: #eee;
+            background: #f8f8f8;
+            cursor: not-allowed;
+        }
+
+        .pagination .page-link i {
+            font-size: 18px;
+            vertical-align: middle;
+        }
+
+        @media (max-width: 576px) {
+
+            .pagination a,
+            .pagination span {
+                min-width: 28px;
+                height: 28px;
+                line-height: 28px;
+                font-size: 13px;
+                border-radius: 6px;
+            }
+
+            .pagination .page-link i {
+                font-size: 15px;
+            }
+        }
+    </style>
     <!-- Hero Section Start -->
     <div class="Z_cards_hero">
         <div class="Z_cart_hero-overlay">
@@ -114,8 +187,8 @@
                             <i id="listView" class="fa-solid fa-list me-2 text-white d-md-block d-none"></i>
                         </div>
                         <!-- <div class="mb-3">
-                                    <span id="productCount" >Showing 6 products</span>
-                                </div> -->
+                                                                    <span id="productCount" >Showing 6 products</span>
+                                                                </div> -->
                         <div class="d-block d-lg-none">
                             <button class="btn border text-white" type="button" data-bs-toggle="offcanvas"
                                 data-bs-target="#filterOffcanvas" aria-controls="filterOffcanvas">Filters
@@ -146,13 +219,19 @@
                     </div>
 
                     <!-- Products Count -->
-
+                    <div class="mb-3 px-md-4">
+                        <span id="productCount" class="text-white">Loading...</span>
+                    </div>
 
                     <!-- Grid View -->
                     <div id="gridContainer" class="row"></div>
 
-                    <!-- List View -->
-                    <div id="listContainer" class="d-none"></div>
+                    <!-- Pagination Bar -->
+                    <nav aria-label="Product pagination" class="mt-4">
+                        <ul class="pagination justify-content-center" id="paginationBar">
+                            <!-- Pagination items will be injected here by JS -->
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>
@@ -167,12 +246,16 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        let currentPage = 1;
+        const PRODUCTS_PER_PAGE = 6;
+        let currentSort = 'featured';
+
+        // Existing variables
         let cardsData = [];
         let allProducts = [];
         let allCategories = [];
 
         document.addEventListener("DOMContentLoaded", function() {
-
             // Universal event delegation for card clicks
             document.body.addEventListener('click', function(e) {
                 const gameCard = e.target.closest('.game-card');
@@ -188,81 +271,6 @@
                     }
                 }
             });
-
-            // // Universal event delegation for cart buttons
-            // document.body.addEventListener('click', async function(e) {
-            //     const cartBtn = e.target.closest('.custom-cart-btn');
-
-            //     if (cartBtn) {
-            //         e.stopPropagation();
-            //         const pro_id = Number(cartBtn.getAttribute('data-id'));
-            //         console.log('Add to cart clicked, product id:', pro_id);
-
-            //         localStorage.setItem('cart_id', pro_id);
-            //         const user_id = Number(localStorage.getItem('user_id'));
-
-            //         // if (!user_id) {
-            //         //     alert('Please log in to add to cart!');
-            //         //     return;
-            //         // }
-
-            //         try {
-            //             let cartRes = await fetch(`http://localhost:4000/cart?user_id=${user_id}`);
-            //             let carts = await cartRes.json();
-            //             let cart = carts[0];
-
-            //             if (cart) {
-            //                 let products = cart.products || [];
-            //                 let found = false;
-            //                 products = products.map(item => {
-            //                     if (item.pro_id === pro_id) {
-            //                         found = true;
-            //                         return {
-            //                             ...item,
-            //                             quantity: item.quantity + 1
-            //                         };
-            //                     }
-            //                     return item;
-            //                 });
-            //                 if (!found) {
-            //                     products.push({
-            //                         pro_id,
-            //                         quantity: 1
-            //                     });
-            //                 }
-
-            //                 await fetch(`http://localhost:4000/cart/${cart.id}`, {
-            //                     method: 'PATCH',
-            //                     headers: {
-            //                         'Content-Type': 'application/json'
-            //                     },
-            //                     body: JSON.stringify({
-            //                         products
-            //                     })
-            //                 });
-            //             } else {
-            //                 await fetch('http://localhost:4000/cart', {
-            //                     method: 'POST',
-            //                     headers: {
-            //                         'Content-Type': 'application/json'
-            //                     },
-            //                     body: JSON.stringify({
-            //                         user_id,
-            //                         products: [{
-            //                             pro_id,
-            //                             quantity: 1
-            //                         }]
-            //                     })
-            //                 });
-            //             }
-
-            //             alert('Added to cart!');
-            //         } catch (error) {
-            //             console.error('Error adding to cart:', error);
-            //             alert('Failed to add to cart. Please try again.');
-            //         }
-            //     }
-            // });
 
             // Main data fetching and initialization
             Promise.all([
@@ -289,79 +297,420 @@
                     category_name: catMap[product.category_id] || "Unknown"
                 }));
 
-                filterCards();
+                // Initialize with all data
+                filteredData = [...cardsData];
+                totalItems = filteredData.length;
+                currentPage = 1;
 
-                // Render product cards
-                const gridContainer = document.getElementById('gridContainer');
-                const listContainer = document.getElementById('listContainer');
-                gridContainer.innerHTML = "";
-                listContainer.innerHTML = "";
-
-                products.forEach(product => {
-                    const categoryName = product.category_name || "Unknown";
-                    let firstImage = '';
-                    if (Array.isArray(product.image)) {
-                        firstImage = product.image[0];
-                    } else if (typeof product.image === 'string') {
-                        firstImage = product.image.split(',')[0].trim();
-                    }
-
-                    // Grid Card - WITH data-id
-                    gridContainer.innerHTML += `
-                        <div class="col-xl-4 col-lg-6 col-md-4 col-sm-6 col-12 mb-4 d-flex justify-content-center">
-                          <div class="game-card position-relative" data-id="${product.id}">
-                            <img src="${firstImage}" alt="${product.name}" class="card-img-top" />
-                            <div class="position-absolute card-content">
-                              <div class="icons d-flex gap-2 mb-3">
-                                <i class="fa-brands fa-apple"></i>
-                                <i class="fa-brands fa-windows"></i>
-                              </div>
-                              <h3>${product.name}</h3>
-                              <h3 class="mb-0">$${product.price.toFixed(2)}</h3>
-                              <span class="badge bg-secondary mt-2">${categoryName}</span>
-                            </div>
-                            <div class="card-actions d-flex align-items-center gap-3">
-                              <div class="d_main_button w-100">
-                                <button class="custom-cart-btn w-100" data-id="${product.id}">ADD TO CART</button>
-                                <div class="d_border"></div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                    `;
-
-                    // List Card - WITH data-id
-                    listContainer.innerHTML += `
-                        <div class="card mb-3 list-card border-1 border-light" style="background: rgba(34,34,34,0.92); color:#fff; border:none;">
-                          <div class="row g-0 align-items-center game-card" data-id="${product.id}">
-                            <div class="col-sm-4 d-flex align-items-center justify-content-center" style="min-height:180px;">
-                              <div style="background:rgba(24,24,24,0.95); border-radius:16px; padding:12px; display:flex; align-items:center; justify-content:center; width:130px; height:130px;">
-                                <img src="${product.image}" alt="${product.name}" style="width: 120px; height: 120px; object-fit: cover; border-radius: 12px; box-shadow:0 2px 8px rgba(0,0,0,0.2); background:#181818;" />
-                              </div>
-                            </div>
-                            <div class="col-sm-8">
-                              <div class="card-body d-flex flex-column justify-content-between h-100" style="min-height: 160px;">
-                                <div>
-                                  <h5 class="card-title mb-2" style="color:#ad9d79;">${product.name}</h5>
-                                  <p class="card-text fw-bold mb-1 text-white">$${product.price.toFixed(2)}</p>
-                                  <p class="card-text mb-2 text-white"><small>${product.description}</small></p>
-                                  <span class="badge bg-secondary">${categoryName}</span>
-                                </div>
-                                <div class="d-flex align-items-center gap-3 mt-auto">
-                                  <button class="btn btn-sm s_cart_btn custom-cart-btn" data-id="${product.id}">ADD TO CART</button>
-                                  <i class="fa-regular fa-heart fs-5" onclick="toggleWishlist(${product.id})" style="cursor:pointer;"></i>
-                                  <i class="fa-solid fa-eye fs-6" onclick="viewDetails(${product.id})" style="cursor:pointer;"></i>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                    `;
-                });
+                // Render first page
+                renderCurrentPage();
+                renderPagination();
+                updatePaginationInfo(); // Add this to show pagination info
             });
         });
 
-        // Grid/List view toggle
+        // Enhanced Pagination Functions
+        function renderCurrentPage() {
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const currentData = filteredData.slice(startIndex, endIndex);
+
+            // Render grid and list containers
+            const gridContainer = document.getElementById('gridContainer');
+            const listContainer = document.getElementById('listContainer');
+
+            if (gridContainer) {
+                gridContainer.innerHTML = currentData.map(createGridCard).join('');
+            }
+
+            if (listContainer) {
+                listContainer.innerHTML = currentData.map(createListCard).join('');
+            }
+
+            // Update product count
+            const productCountEl = document.getElementById('productCount');
+            if (productCountEl) {
+                const showing = Math.min(endIndex, totalItems);
+                productCountEl.innerText = `Showing ${startIndex + 1}-${showing} of ${totalItems} products`;
+            }
+
+            // Update pagination info
+            updatePaginationInfo();
+
+            // Attach cart event listeners
+            attachCartEventListeners();
+        }
+        document.addEventListener("DOMContentLoaded", function() {
+            initializeApp();
+        });
+
+        async function initializeApp() {
+            try {
+                // Fetch data
+                const [products, categories] = await Promise.all([
+                    fetch("productsJson").then(res => res.json()),
+                    fetch("categoriesJson").then(res => res.json())
+                ]);
+
+                allProducts = products;
+                allCategories = categories;
+                filteredProducts = [...allProducts];
+
+                // Initialize UI
+                renderCategoryFilters();
+                renderProducts();
+                setupEventListeners();
+
+                // Initialize user info
+                initializeUserInfo();
+            } catch (error) {
+                console.error('Failed to initialize app:', error);
+                document.getElementById('productCount').textContent = 'Failed to load products';
+            }
+        }
+
+        function setupEventListeners() {
+            // Filter change listeners
+            document.body.addEventListener('change', function(e) {
+                if (e.target.name === 'category' || e.target.name === 'price') {
+                    applyFilters();
+                }
+            });
+
+            // Sort dropdown listeners
+            document.querySelectorAll('.dropdown-item').forEach(item => {
+                item.addEventListener('click', e => {
+                    e.preventDefault();
+
+                    // Remove active class from all
+                    document.querySelectorAll('.dropdown-item').forEach(i => i.classList.remove('active'));
+
+                    // Add active to selected
+                    item.classList.add('active');
+
+                    // Update visible text and sort value
+                    const label = item.textContent;
+                    currentSort = item.getAttribute('data-value');
+                    document.getElementById('selectedSort').textContent = label;
+
+                    // Apply new sorting
+                    applyFilters();
+                });
+            });
+
+            // Mobile menu functionality
+            setupMobileMenu();
+
+            // User dropdown functionality
+            setupUserDropdown();
+        }
+
+        function setupMobileMenu() {
+            const toggler = document.querySelector('.d_toggler_btn');
+            const offcanvas = document.getElementById('d_offcanvas_menu');
+            const closeBtn = offcanvas?.querySelector('.close_btn');
+
+            if (toggler && offcanvas && closeBtn) {
+                toggler.addEventListener('click', () => {
+                    offcanvas.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                });
+
+                closeBtn.addEventListener('click', () => {
+                    offcanvas.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (!offcanvas.contains(e.target) && !toggler.contains(e.target)) {
+                        offcanvas.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                });
+
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        offcanvas.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                });
+            }
+        }
+
+        function setupUserDropdown() {
+            const dbUserIcon = document.getElementById('db_user_icon');
+            const dbUserDropdown = document.getElementById('db_user_dropdown');
+
+            if (dbUserIcon && dbUserDropdown) {
+                dbUserIcon.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    dbUserDropdown.style.display = dbUserDropdown.style.display === 'block' ? 'none' : 'block';
+                });
+
+                // Close dropdown when clicking outside
+                document.addEventListener('click', () => {
+                    dbUserDropdown.style.display = 'none';
+                });
+            }
+        }
+
+        function renderCategoryFilters() {
+            const desktopList = document.getElementById("categoryFilterListDesktop");
+            const mobileList = document.getElementById("categoryFilterListMobile");
+
+            const categoryHTML = allCategories.map(cat =>
+                `<li><input type="checkbox" name="category" value="${cat.id}"> ${cat.name}</li>`
+            ).join('');
+
+            if (desktopList) desktopList.innerHTML = categoryHTML;
+            if (mobileList) mobileList.innerHTML = categoryHTML;
+        }
+
+        function applyFilters() {
+            // Get selected filters
+            const selectedPrices = Array.from(document.querySelectorAll('input[name="price"]:checked')).map(i => i.value);
+            const selectedCategories = Array.from(document.querySelectorAll('input[name="category"]:checked')).map(i =>
+                Number(i.value));
+
+            // Filter products
+            filteredProducts = allProducts.filter(product => {
+                // Price filter
+                const priceMatch = selectedPrices.length === 0 || selectedPrices.some(range => {
+                    const [min, max] = range.split('-').map(Number);
+                    return product.price >= min && product.price <= max;
+                });
+
+                // Category filter
+                const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(product
+                    .cat_id);
+
+                return priceMatch && categoryMatch;
+            });
+
+            // Apply sorting
+            applySorting();
+
+            // Reset to first page when filters change
+            currentPage = 1;
+            renderProducts();
+        }
+
+        function applySorting() {
+            switch (currentSort) {
+                case 'name-asc':
+                    filteredProducts.sort((a, b) => a.title.localeCompare(b.title));
+                    break;
+                case 'name-desc':
+                    filteredProducts.sort((a, b) => b.title.localeCompare(a.title));
+                    break;
+                case 'price-asc':
+                    filteredProducts.sort((a, b) => Number(a.price) - Number(b.price));
+                    break;
+                case 'price-desc':
+                    filteredProducts.sort((a, b) => Number(b.price) - Number(a.price));
+                    break;
+                default:
+                    // Featured or default - keep original order
+                    break;
+            }
+        }
+
+        function renderProducts() {
+            const gridContainer = document.getElementById('gridContainer');
+            const paginationBar = document.getElementById('paginationBar');
+            const productCount = document.getElementById('productCount');
+
+            // Clear containers
+            gridContainer.innerHTML = "";
+            paginationBar.innerHTML = "";
+
+            // Calculate pagination
+            const totalProducts = filteredProducts.length;
+
+            const totalPages = Math.ceil(totalProducts / PRODUCTS_PER_PAGE);
+
+            // Ensure current page is valid
+            if (currentPage > totalPages) currentPage = totalPages;
+            if (currentPage < 1) currentPage = 1;
+
+            const startIdx = (currentPage - 1) * PRODUCTS_PER_PAGE;
+            const endIdx = startIdx + PRODUCTS_PER_PAGE;
+            const productsToShow = filteredProducts.slice(startIdx, endIdx);
+            console.log(productsToShow);
+
+            // Update product count
+            productCount.textContent = `Showing ${productsToShow.length} of ${totalProducts} products`;
+
+            // Create category map
+            const catMap = {};
+            allCategories.forEach(cat => {
+                catMap[cat.id] = cat.name;
+            });
+
+            // Render products
+            productsToShow.forEach(product => {
+
+                const categoryName = product.category_name || "Unknown";
+                const firstImage = (product.image && typeof product.image === 'string') ?
+                    product.image.split(',')[0].trim() :
+                    'default.jpg';
+                console.log(categoryName);
+                gridContainer.innerHTML += `
+                    <div class="col-xl-4 col-lg-6 col-md-4 col-sm-6 col-12 mb-4 d-flex justify-content-center">
+                        <div class="game-card position-relative" data-id="${product.id}">
+                            <img src="${firstImage}" alt="${product.name}" class="card-img-top" />
+                            <div class="position-absolute card-content">
+                                <div class="icons d-flex gap-2 mb-3">
+                                    <i class="fa-brands fa-apple"></i>
+                                    <i class="fa-brands fa-windows"></i>
+                                </div>
+                                <h3>${product.name}</h3>
+                                <h3 class="mb-0">${Number(product.price).toFixed(2)}</h3>
+                                <span class="badge bg-secondary mt-2">${categoryName}</span>
+                            </div>
+                            <div class="card-actions d-flex align-items-center gap-3">
+                                <div class="d_main_button w-100">
+                                    <button class="custom-cart-btn w-100" data-id="${product.id}">ADD TO CART</button>
+                                    <div class="d_border"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Render pagination
+            renderPagination(totalPages);
+
+            // Add event listeners to product cards and buttons
+            addProductEventListeners();
+        }
+
+        // Enhanced pagination rendering with better styling and navigation
+        function renderPagination(totalPages) {
+            const paginationBar = document.getElementById('paginationBar');
+
+            if (totalPages <= 1) {
+                paginationBar.innerHTML = '';
+                return;
+            }
+
+            let pagHtml = '';
+
+            // Previous button
+            pagHtml += `<li class="page-item${currentPage === 1 ? ' disabled' : ''}">
+                <a class="page-link" href="#" data-page="prev"><i class='fa-solid fa-angle-left'></i></a>
+            </li>`;
+
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                pagHtml += `<li class="page-item${i === currentPage ? ' active' : ''}">
+                    <a class="page-link" href="#" data-page="${i}">${i}</a>
+                </li>`;
+            }
+
+            // Next button
+            pagHtml += `<li class="page-item${currentPage === totalPages ? ' disabled' : ''}">
+                <a class="page-link" href="#" data-page="next"><i class='fa-solid fa-angle-right'></i></a>
+            </li>`;
+
+            paginationBar.innerHTML = pagHtml;
+
+            // Add pagination event listeners
+            paginationBar.querySelectorAll('a.page-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const page = this.getAttribute('data-page');
+
+                    if (page === 'prev' && currentPage > 1) {
+                        currentPage--;
+                    } else if (page === 'next' && currentPage < totalPages) {
+                        currentPage++;
+                    } else if (!isNaN(Number(page))) {
+                        currentPage = Number(page);
+                    }
+
+                    renderProducts();
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        }
+
+        function addProductEventListeners() {
+            // Add click event to product cards for navigation
+            document.querySelectorAll('.game-card').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    // Prevent navigation if the click was on the ADD TO CART button
+                    if (e.target.closest('.custom-cart-btn')) return;
+
+                    const id = this.getAttribute('data-id');
+                    // Store item id for single product page
+                    if (typeof Storage !== "undefined") {
+                        localStorage.setItem('item_id', id);
+                    }
+                    window.location.href = '/allProductDetails/' + id;
+                });
+            });
+
+            // Add click event to cart buttons
+            document.querySelectorAll('.custom-cart-btn').forEach(btn => {
+                btn.addEventListener('click', async function(e) {
+                    e.stopPropagation();
+                    const pro_id = Number(this.getAttribute('data-id'));
+                    await addToCart(pro_id);
+                });
+            });
+        }
+
+        // Enhanced pagination info with items per page selector
+        function updatePaginationInfo() {
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
+
+            const paginationInfo = document.getElementById('paginationInfo');
+            if (paginationInfo) {
+                paginationInfo.innerHTML = `
+            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                <div class="text-muted">
+                    Showing ${startIndex + 1}-${endIndex} of ${totalItems} products
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <label for="itemsPerPageSelect" class="form-label mb-0 text-nowrap">Items per page:</label>
+                    <select id="itemsPerPageSelect" class="form-select form-select-sm" style="width: auto;" onchange="changeItemsPerPage(this.value)">
+                        <option value="9" ${itemsPerPage === 9 ? 'selected' : ''}>9</option>
+                        <option value="12" ${itemsPerPage === 12 ? 'selected' : ''}>12</option>
+                        <option value="18" ${itemsPerPage === 18 ? 'selected' : ''}>18</option>
+                        <option value="24" ${itemsPerPage === 24 ? 'selected' : ''}>24</option>
+                        <option value="36" ${itemsPerPage === 36 ? 'selected' : ''}>36</option>
+                    </select>
+                </div>
+            </div>
+        `;
+            }
+        }
+
+        // Enhanced items per page functionality
+        function changeItemsPerPage(newItemsPerPage) {
+            const oldItemsPerPage = itemsPerPage;
+            itemsPerPage = parseInt(newItemsPerPage);
+
+            // Calculate new page to maintain roughly the same position
+            const firstItemIndex = (currentPage - 1) * oldItemsPerPage;
+            currentPage = Math.floor(firstItemIndex / itemsPerPage) + 1;
+
+            // Ensure we don't exceed max pages
+            const maxPages = Math.ceil(totalItems / itemsPerPage);
+            if (currentPage > maxPages) currentPage = maxPages;
+            if (currentPage < 1) currentPage = 1;
+
+            renderCurrentPage();
+            renderPagination();
+        }
+
+        // Grid/List view toggle (enhanced)
         const gridBtn = document.getElementById('gridView');
         const listBtn = document.getElementById('listView');
         const gridContainer = document.getElementById('gridContainer');
@@ -373,6 +722,9 @@
                 listContainer.classList.add('d-none');
                 gridBtn.classList.add('active');
                 listBtn.classList.remove('active');
+
+                // Re-attach event listeners after view change
+                setTimeout(attachCartEventListeners, 100);
             });
 
             listBtn.addEventListener('click', () => {
@@ -380,80 +732,108 @@
                 listContainer.classList.remove('d-none');
                 listBtn.classList.add('active');
                 gridBtn.classList.remove('active');
+
+                // Re-attach event listeners after view change
+                setTimeout(attachCartEventListeners, 100);
             });
         }
 
-        // Card creation functions - WITH data-id
+        // Card creation functions (unchanged)
         function createGridCard(cardData) {
             const firstImage = cardData.image ? cardData.image.split(',')[0].trim() : 'default.jpg';
             return `
-            <div class="col-12 col-sm-6 col-md-4 col-lg-6 col-xl-4 mb-4 d-flex justify-content-center">
-              <div class="game-card position-relative" data-id="${cardData.id}">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-6 col-xl-4 mb-4 d-flex justify-content-center">
+            <div class="game-card position-relative" data-id="${cardData.id}">
                 <img src="${firstImage}" alt="${cardData.name}" class="card-img-top" />
                 <div class="position-absolute card-content">
-                  <div class="icons d-flex gap-2 mb-3">
-                    <i class="fa-brands fa-apple"></i>
-                    <i class="fa-brands fa-windows"></i>
-                  </div>
-                  <h3>${cardData.name}</h3>
-                  <h3 class="mb-0">${cardData.price}</h3>
+                    <div class="icons d-flex gap-2 mb-3">
+                        <i class="fa-brands fa-apple"></i>
+                        <i class="fa-brands fa-windows"></i>
+                    </div>
+                    <h3>${cardData.name}</h3>
+                    <h3 class="mb-0">${cardData.price}</h3>
                 </div>
                 <div class="card-actions d-flex align-items-center gap-3">
-                  <div class="d_main_button w-100">
-                    <button class="custom-cart-btn w-100" data-id="${cardData.id}">ADD TO CART</button>
-                    <div class="d_border"></div>
-                  </div>
+                    <div class="d_main_button w-100">
+                        <button class="custom-cart-btn w-100" data-id="${cardData.id}">
+                            <span class="btn-text">ADD TO CART</span>
+                            <div class="spinner-border spinner-border-sm d-none" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </button>
+                        <div class="d_border"></div>
+                    </div>
                 </div>
-              </div>
             </div>
-          `;
+        </div>
+    `;
         }
 
         function createListCard(cardData) {
             return `
         <div class="card mb-3 list-card border-1 border-light" style="background: rgba(34,34,34,0.92) url('../images/inner-background-img-3.jpg'); background-blend-mode: darken, normal; color:#fff; border:none; box-shadow: 0 8px 32px 0 rgba(0,0,0,0.35), 0 1.5px 6px 0 rgba(0,0,0,0.25);">
-          <div class="row g-0 align-items-center game-card" data-id="${cardData.id}">
-            <div class="col-sm-4 d-flex align-items-center justify-content-center" style="min-height:180px;">
-              <div style="background:rgba(24,24,24,0.95); border-radius:16px; padding:12px; display:flex; align-items:center; justify-content:center; width:130px; height:130px;">
-                <img src="${cardData.image}" alt="${cardData.name}" style="width: 120px; height: 120px; object-fit: cover; border-radius: 12px; box-shadow:0 2px 8px rgba(0,0,0,0.2); background:#181818;" />
-              </div>
-            </div>
-            <div class="col-sm-8">
-              <div class="card-body d-flex flex-column justify-content-between h-100" style="min-height: 160px;">
-                <div>
-                  <h5 class="card-title mb-2" style="color:#ad9d79;">${cardData.name}</h5>
-                  <p class="card-text fw-bold mb-1 text-white">${cardData.price}</p>
-                  <p class="card-text mb-2 text-white"><small class="">${cardData.description}</small></p>
+            <div class="row g-0 align-items-center game-card" data-id="${cardData.id}">
+                <div class="col-sm-4 d-flex align-items-center justify-content-center" style="min-height:180px;">
+                    <div style="background:rgba(24,24,24,0.95); border-radius:16px; padding:12px; display:flex; align-items:center; justify-content:center; width:130px; height:130px;">
+                        <img src="${cardData.image}" alt="${cardData.name}" style="width: 120px; height: 120px; object-fit: cover; border-radius: 12px; box-shadow:0 2px 8px rgba(0,0,0,0.2); background:#181818;" />
+                    </div>
                 </div>
-                <div class="d-flex align-items-center gap-3 mt-auto">
-                  <button class="btn btn-sm s_cart_btn custom-cart-btn text-nowrap" data-id="${cardData.id}">ADD TO CART</button>
-                  <i class="fa-solid fa-eye fs-6" onclick="viewDetails(${cardData.id})" style="cursor:pointer;"></i>
+                <div class="col-sm-8">
+                    <div class="card-body d-flex flex-column justify-content-between h-100" style="min-height: 160px;">
+                        <div>
+                            <h5 class="card-title mb-2" style="color:#ad9d79;">${cardData.name}</h5>
+                            <p class="card-text fw-bold mb-1 text-white">${cardData.price}</p>
+                            <p class="card-text mb-2 text-white"><small class="">${cardData.description}</small></p>
+                        </div>
+                        <div class="d-flex align-items-center gap-3 mt-auto">
+                            <button class="btn btn-sm s_cart_btn custom-cart-btn text-nowrap" data-id="${cardData.id}">
+                                <span class="btn-text">ADD TO CART</span>
+                                <div class="spinner-border spinner-border-sm d-none" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </button>
+                            <i class="fa-solid fa-eye fs-6" onclick="viewDetails(${cardData.id})" style="cursor:pointer;"></i>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
-        </div>`;
+        </div>
+    `;
         }
 
-        // Legacy functions for compatibility
-        function addToCart(id) {
-            const card = cardsData.find(c => c.id === id);
-            if (!card) return;
-            alert(`Added "${card.name}" to cart!`);
+        // Enhanced filtering functionality
+        function filterCards(sortValue) {
+            const selectedPrices = Array.from(document.querySelectorAll('input[name="price"]:checked')).map(i => i.value);
+            const selectedCategories = Array.from(document.querySelectorAll('input[name="category"]:checked')).map(i => i
+                .value);
+            const currentSortValue = sortValue || document.querySelector('.dropdown-item.active')?.dataset.value ||
+                "featured";
+
+            const filtered = cardsData.filter(card => {
+                const price = parseFloat(card.price.replace('$', ''));
+                const priceMatch = selectedPrices.length === 0 || selectedPrices.some(range => {
+                    const [min, max] = range.split('-').map(Number);
+                    return price >= min && price <= max;
+                });
+
+                const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(card.category);
+
+                return priceMatch && categoryMatch;
+            });
+
+            const sorted = sortCards(filtered, currentSortValue);
+
+            // Update pagination data
+            filteredData = sorted;
+            totalItems = filteredData.length;
+            currentPage = 1; // Reset to first page when filtering
+
+            // Render first page and pagination
+            renderCurrentPage();
+            renderPagination();
         }
 
-        function toggleWishlist(id) {
-            const card = cardsData.find(c => c.id === id);
-            if (!card) return;
-            alert(`Added "${card.name}" to wishlist!`);
-        }
-
-        function viewDetails(id) {
-            const baseUrl = window.location.origin;
-            window.location.href = `${baseUrl}/productDetails/${id}`;
-        }
-
-        // Sorting functionality
+        // Sorting functionality (unchanged)
         function sortCards(cards, sortValue) {
             return [...cards].sort((a, b) => {
                 const priceA = parseFloat(a.price.replace('$', ''));
@@ -476,41 +856,9 @@
             });
         }
 
-        // Filtering functionality
-        function filterCards(sortValue) {
-            const selectedPrices = Array.from(document.querySelectorAll('input[name="price"]:checked')).map(i => i.value);
-            const selectedCategories = Array.from(document.querySelectorAll('input[name="category"]:checked')).map(i => i
-                .value);
-            const currentSortValue = sortValue || document.querySelector('.dropdown-item.active')?.dataset.value ||
-                "featured";
-
-            const filtered = cardsData.filter(card => {
-                const price = parseFloat(card.price.replace('$', ''));
-                const priceMatch = selectedPrices.length === 0 || selectedPrices.some(range => {
-                    const [min, max] = range.split('-').map(Number);
-                    return price >= min && price <= max;
-                });
-
-                const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(card.category);
-
-                return priceMatch && categoryMatch;
-            });
-
-            const sorted = sortCards(filtered, currentSortValue);
-            if (gridContainer && listContainer) {
-                gridContainer.innerHTML = sorted.map(createGridCard).join('');
-                listContainer.innerHTML = sorted.map(createListCard).join('');
-            }
-
-            const productCountEl = document.getElementById('productCount');
-            if (productCountEl) {
-                productCountEl.innerText = `Showing ${sorted.length} products`;
-            }
-        }
-
-        // Sort dropdown handling
+        // Enhanced event handling
         document.addEventListener('DOMContentLoaded', function() {
-            // Handle dropdown sorting
+            // Handle dropdown sorting with event delegation
             document.addEventListener('click', function(e) {
                 if (e.target.matches('.dropdown-item')) {
                     e.preventDefault();
@@ -542,182 +890,16 @@
             });
         });
 
-        // Render products function - WITH data-id
-        function renderProducts(products, categories) {
-            const catMap = {};
-            categories.forEach(cat => {
-                catMap[cat.id] = cat.name;
-            });
-
-            const gridContainer = document.getElementById('gridContainer');
-            if (!gridContainer) return;
-
-            gridContainer.innerHTML = "";
-
-            products.forEach(product => {
-                const categoryName = product.category_name || "Unknown";
-                let firstImage = '';
-                if (Array.isArray(product.image)) {
-                    firstImage = product.image[0];
-                } else if (typeof product.image === 'string') {
-                    firstImage = product.image.split(',')[0].trim();
-                }
-
-                gridContainer.innerHTML += `
-                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 mb-4 d-flex justify-content-center">
-                        <div class="game-card position-relative" data-id="${product.id}">
-                            <img src="${firstImage}" alt="${product.name}" class="card-img-top" />
-                            <div class="position-absolute card-content">
-                                <h3>${product.name}</h3>
-                                <h3 class="mb-0">$${product.price.toFixed(2)}</h3>
-                                <span class="badge bg-secondary mt-2">${categoryName}</span>
-                            </div>
-                            <div class="card-actions d-flex align-items-center gap-3">
-                                <div class="d_main_button w-100">
-                                    <button class="custom-cart-btn w-100" data-id="${product.id}">ADD TO CART</button>
-                                    <div class="d_border"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        function filterAndRenderProducts() {
-            const checkedCategories = Array.from(document.querySelectorAll('input[name="category"]:checked'))
-                .map(cb => cb.value)
-                .filter(id => id);
-            const checkedPrices = Array.from(document.querySelectorAll('input[name="price"]:checked'))
-                .map(cb => cb.value);
-
-            let filtered = allProducts;
-
-            // Filter by category if any selected
-            if (checkedCategories.length > 0) {
-                filtered = filtered.filter(p => {
-                    const productCategoryId = String(p.category_id);
-                    return checkedCategories.includes(productCategoryId);
-                });
-            }
-
-            // Filter by price if any selected
-            if (checkedPrices.length > 0) {
-                filtered = filtered.filter(p => {
-                    return checkedPrices.some(range => {
-                        const [min, max] = range.split('-').map(Number);
-                        return p.price >= min && p.price <= max;
-                    });
-                });
-            }
-
-            renderProducts(filtered, allCategories);
-        }
-
-        // Fetch and render with sorting - WITH data-id
-        function fetchAndRenderProducts(sortType) {
-            Promise.all([
-                fetch("productsJson").then(res => res.json()),
-                fetch("categoriesJson").then(res => res.json())
-            ]).then(([products, categories]) => {
-                let sortedProducts = [...products];
-                switch (sortType) {
-                    case 'name-asc':
-                        sortedProducts.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
-                        break;
-                    case 'name-desc':
-                        sortedProducts.sort((a, b) => (b.name || '').localeCompare(a.name || ''));
-                        break;
-                    case 'price-asc':
-                        sortedProducts.sort((a, b) => Number(a.price) - Number(b.price));
-                        break;
-                    case 'price-desc':
-                        sortedProducts.sort((a, b) => Number(b.price) - Number(a.price));
-                        break;
-                    default:
-                        break;
-                }
-                renderProductCards(sortedProducts, categories);
-            });
-        }
-
-        function renderProductCards(products, categories) {
-            const catMap = {};
-            categories.forEach(cat => {
-                catMap[cat.id] = cat.name;
-            });
-            const gridContainer = document.getElementById('gridContainer');
-            if (!gridContainer) return;
-
-            gridContainer.innerHTML = "";
-
-            products.forEach(product => {
-                const categoryName = product.category_name || "Unknown";
-                let firstImage = '';
-                if (Array.isArray(product.image)) {
-                    firstImage = product.image[0];
-                } else if (typeof product.image === 'string') {
-                    firstImage = product.image.split(',')[0].trim();
-                }
-
-                gridContainer.innerHTML += `
-            <div class="col-lg-4 col-md-6 col-sm-6 col-12 mb-4 d-flex justify-content-center">
-              <div class="game-card position-relative" data-id="${product.id}">
-                 <img src="${firstImage}" alt="${product.name}" class="card-img-top" />
-                <div class="position-absolute card-content">
-                  <h3>${product.name}</h3>
-                  <h3 class="mb-0">$${Number(product.price).toFixed(2)}</h3>
-                  <span class="badge bg-secondary mt-2">${categoryName}</span>
-                </div>
-                <div class="card-actions d-flex align-items-center gap-3">
-                    <div class="d_main_button w-100">
-                        <button class="custom-cart-btn w-100" data-id="${product.id}" data-price="${product.price}">
-                            <span class="btn-text">ADD TO CART</span>
-                            <div class="spinner-border spinner-border-sm d-none" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                        </button>
-                        <div class="d_border"></div>
-                    </div>
-                </div>
-              </div>
-            </div>
-        `;
-            });
-
-            // Add event listeners to all cart buttons
-            attachCartEventListeners();
-        }
-
-        // Function to attach event listeners to cart buttons
-        function attachCartEventListeners() {
-            const cartButtons = document.querySelectorAll('.custom-cart-btn');
-
-            cartButtons.forEach(button => {
-                button.addEventListener('click', function(e) {
-                    e.preventDefault();
-
-                    const productId = this.getAttribute('data-id');
-                    const productPrice = this.getAttribute('data-price');
-
-                    addToCart(productId, 1, this);
-                });
-            });
-        }
-
-        // Add to cart function
+        // Rest of the functions remain the same (addToCart, toggleWishlist, etc.)
         function addToCart(productId, quantity = 1, buttonElement = null) {
-            // Show loading state if button element is provided
             if (buttonElement) {
                 setButtonLoading(buttonElement, true);
             }
 
-            // Prepare form data
             const formData = new FormData();
             formData.append('product_id', productId);
             formData.append('quantity', quantity);
 
-            // Get CSRF token (make sure you have this in your HTML head)
             const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
 
             fetch('/cart/add', {
@@ -731,13 +913,9 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        // Show success message
                         showNotification(data.message, 'success');
-
-                        // Update cart count in UI if you have a cart counter
                         updateCartCount(data.cart_count);
 
-                        // Optional: Change button text temporarily
                         if (buttonElement) {
                             const originalText = buttonElement.querySelector('.btn-text').textContent;
                             buttonElement.querySelector('.btn-text').textContent = 'ADDED!';
@@ -749,16 +927,13 @@
                             }, 2000);
                         }
 
-                        // Optional: Auto redirect to cart after delay
                         setTimeout(() => {
                             window.location.href = '/cart';
                         }, 1500);
 
                     } else {
-                        // Handle error
                         showNotification(data.message, 'error');
 
-                        // If user not authenticated, redirect to login
                         if (data.message.includes('login')) {
                             setTimeout(() => {
                                 window.location.href = '/frontend-login';
@@ -771,14 +946,42 @@
                     showNotification('Something went wrong. Please try again.', 'error');
                 })
                 .finally(() => {
-                    // Remove loading state
                     if (buttonElement) {
                         setButtonLoading(buttonElement, false);
                     }
                 });
         }
 
-        // Function to show loading state on button
+        function toggleWishlist(id) {
+            const card = cardsData.find(c => c.id === id);
+            if (!card) return;
+            alert(`Added "${card.name}" to wishlist!`);
+        }
+
+        function viewDetails(id) {
+            const baseUrl = window.location.origin;
+            window.location.href = `${baseUrl}/productDetails/${id}`;
+        }
+
+        function attachCartEventListeners() {
+            const cartButtons = document.querySelectorAll('.custom-cart-btn');
+
+            cartButtons.forEach(button => {
+                // Remove existing listeners to prevent duplicates
+                button.removeEventListener('click', handleCartClick);
+                button.addEventListener('click', handleCartClick);
+            });
+        }
+
+        function handleCartClick(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const productId = this.getAttribute('data-id');
+            addToCart(productId, 1, this);
+        }
+
+        // Utility functions (unchanged)
         function setButtonLoading(button, isLoading) {
             const btnText = button.querySelector('.btn-text');
             const spinner = button.querySelector('.spinner-border');
@@ -794,13 +997,10 @@
             }
         }
 
-        // Function to update cart count in UI
         function updateCartCount(count) {
             const cartCountElements = document.querySelectorAll('.cart-count');
             cartCountElements.forEach(element => {
                 element.textContent = count;
-
-                // Add bounce animation
                 element.classList.add('cart-updated');
                 setTimeout(() => {
                     element.classList.remove('cart-updated');
@@ -808,14 +1008,9 @@
             });
         }
 
-        // Function to show notifications (you can customize this based on your notification system)
         function showNotification(message, type = 'info') {
-            // Using simple alert for now - you can replace with toast notifications
             if (type === 'success') {
-                // Create or use your success notification
                 console.log('Success:', message);
-
-                // Example with custom notification
                 createNotification(message, 'success');
             } else if (type === 'error') {
                 console.error('Error:', message);
@@ -823,13 +1018,10 @@
             }
         }
 
-        // Custom notification function (optional)
         function createNotification(message, type) {
-            // Remove existing notifications
             const existingNotifications = document.querySelectorAll('.custom-notification');
             existingNotifications.forEach(notification => notification.remove());
 
-            // Create notification element
             const notification = document.createElement('div');
             notification.className =
                 `custom-notification alert alert-${type === 'success' ? 'success' : 'danger'} position-fixed`;
@@ -849,7 +1041,6 @@
 
             document.body.appendChild(notification);
 
-            // Auto remove after 5 seconds
             setTimeout(() => {
                 if (notification.parentElement) {
                     notification.remove();
