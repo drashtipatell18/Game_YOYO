@@ -189,7 +189,7 @@
                     localStorage.setItem('animateHistory', 'true'); // New flag for history animation
 
                     // Navigate to chat page
-                    window.location.href = 'Gemini.html';
+                    window.location.href = '/yin/index';
                 });
 
                 chatList.appendChild(li);
@@ -242,7 +242,7 @@
                     localStorage.setItem('animateHistory', 'true'); // New flag for history animation
 
                     // Navigate to chat page
-                    window.location.href = 'Gemini.html';
+                     window.location.href = '/yin/index';
                 });
 
                 chatList.appendChild(li);
