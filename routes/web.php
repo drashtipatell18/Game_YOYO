@@ -30,6 +30,8 @@ use App\Http\Controllers\RazorpayController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\InvoiceController;
 
+use App\Http\Controllers\Yin\YinIndexController;
+
 Auth::routes();
 
 Route::get('/', function () {
@@ -228,5 +230,5 @@ Route::post('/cart/success', [RazorpayController::class, 'getCartpaymentSuccess'
 
 // ai route
 
-Route::get('yin/index', [YinIndexController::class, 'yinIndex']);
+Route::get('yin/index', [YinIndexController::class, 'yinIndex'])->name('yin.index');
 

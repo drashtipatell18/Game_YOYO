@@ -7,5 +7,8 @@ use Illuminate\Http\Request;
 
 class YinIndexController extends Controller
 {
-    public function 
+    public function yinIndex()
+    {
+        return view('gx_ai.index');
+    }
 }
