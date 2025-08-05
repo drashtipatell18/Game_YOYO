@@ -319,7 +319,7 @@
                                 </div>
                             </a>
 
-                            <a href="../Coding_partner.html"
+                            <a href="{{ route('yin.codingpartner') }}"
                                 class="p-4 rounded-xl transition cursor-pointer bg-[var(--card-bg)] hover:bg-[var(--card-hover-bg)]">
                                 <div class="flex justify-between items-center gap-2 pb-3">
                                     <div class="w-7 h-7 rounded-full justify-center items-center flex bg-[#92e5ff]">
@@ -377,7 +377,7 @@
                                 </div>
                             </a>
 
-                            <a href="../Writing_editor.html"
+                            <a href="{{ route('yin.writingEditor') }}"
                                 class="extra-card transition-all duration-300 ease-in-out overflow-hidden max-h-0 opacity-0 scale-y-90 transform origin-top bg-[var(--card-bg)] hover:bg-[var(--card-hover-bg)] cursor-pointer p-4 mb-3 rounded-xl">
 
                                 <div class="flex justify-between items-center gap-2 pb-3">
