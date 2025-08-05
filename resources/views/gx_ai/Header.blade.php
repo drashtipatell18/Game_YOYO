@@ -18,6 +18,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="{{ asset('frontend/gx_ai/Gemini.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/gx_ai/SavedInfo.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/gx_ai/Upgrade.css') }}">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
 
@@ -187,7 +188,7 @@
                                             features</div>
                                     </div>
                                     <div class="pl-5">
-                                        <a href="Upgrad.html"
+                                        <a href="{{ route('yin.upgrade') }}"
                                             class="h-9 rounded-full justify-center flex items-center text-sm  w-[100px]"
                                             style="background-color: var(--sidebar-hover); color: var(--accent-blue);">
                                             Upgrade
@@ -200,7 +201,7 @@
                 </div>
 
                 <div class="flex space-x-2 items-center">
-                    <a href="Upgrad.html"
+                    <a href="{{ route('yin.upgrade') }}"
                         class="h-9 block cursor-pointer rounded-md flex items-center justify-center text-xs font-semibold px-6 mr-3"
                         style="background-color: var(--sidebar-hover);">
                         

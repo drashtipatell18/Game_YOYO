@@ -39,4 +39,8 @@ class YinIndexController extends Controller
     {
         return view('gx_ai.Career_guide');
     }
+    public function yinUpgrade()
+    {
+        return view('gx_ai.Upgrad');
+    }
 }

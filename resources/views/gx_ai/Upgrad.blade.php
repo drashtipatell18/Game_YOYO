@@ -1,17 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="Upgrade.css">
-    <title>Upgrade</title>
-
-    <style>
+@extends('gx_ai.layouts.main')
+@section('content')
+<style>
         :root {
             --bg-main: #FFFFFF;
             --bg-hover: #E2E7EB;
@@ -92,13 +81,6 @@
 
         }
     </style>
-</head>
-
-<body class="">
-
-
-    <!-- *******Upgrade********* -->
-
     <div
         class="lg:w-[30%] xl:w-[26%]  md:w-[50%] w-[100%] m-auto items-center text-center pt-[80px] pb-[200px] sm:pb-[150px] md:pb-[140px] lg:pb-[130px] ">
        
@@ -175,56 +157,6 @@
             apply. See how Google handles data.</p>
     </div>
 
-
-    <!-- <div id="get_offer_modal"
-        class="bg-[--form-theme] lg:w-[34%] z-[999]   md:w-[60%] sm:w-[80%] w-[90%] p-5 rounded-2xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 absolute hidden rounded-2xl shadow-lg hidden">
-        <div class="flex justify-between items-center mb-5 border-b-2 pb-2">
-            <p class="text-xl text-[--text-muted]">Google Play</p>
-            <button id="get_offer_close">
-                <i class="fa-solid fa-xmark text-2xl text-[--text-muted]"></i>
-            </button>
-        </div>
-
-        <h5 class="text-2xl font-medium mb-1 text-[--text-main]">Add payment method to your Google Account</h5>
-        <p id="get_offer_user" class="text-lg text-[--text-muted] font-medium"></p>
-
-        <p class="text-[14px] text-[--text-muted] my-4 font-medium">Add a payment method to your Google Account to
-            start
-            your free trial. You won't be charged if you cancel before Jul 26, 2025.</p>
-
-        <div>
-            <a href=""
-                class="flex gap-5 items-center text-lg font-medium text-[--text-main] hover:bg-[--bg-hover] py-4 px-2"><i
-                    class="fa-solid fa-credit-card"></i>Add Card</a>
-            <a href=""
-                class="flex gap-5 items-center text-lg font-medium text-[--text-main] hover:bg-[--bg-hover] py-4 px-2">
-                <img src="https://www.gstatic.com/android/market_images/phone/ic_upi_bw.png" width="40px" alt="">
-                Pay with UPI</a>
-            <a href=""
-                class="flex gap-5 items-center text-lg font-medium text-[--text-main] hover:bg-[--bg-hover] py-4 px-2">
-                <img src="https://play-lh.googleusercontent.com/cLoY1LUlKHXk6U2Rrko1-ICqFRkpW8fv45wSuPEH5-D9qQhJfF5KXo2mL8-zy6PplCyZ"
-                    width="35px" alt="">
-                Redeem Code</a>
-
-            <a href="" class="flex gap-5 items-center  font-medium text-[--text-main] hover:bg-[--bg-hover] py-4 px-2">
-                <i class="fa-solid fa-mobile"></i>
-                <p class="flex flex-col">
-                    <span class="text-lg">Pay on your phone</span>
-                    <span class="text-md text-[--text-muted] font-normal">More payment options available. A
-                        notification
-                        will be sent to all your devices.</span>
-                </p>
-            </a>
-
-        </div>
-
-    </div> -->
-
-
-    <!-- ************************************************* -->
-
-
-    <!-- Upgrade js -->
     <script>
         const getOfferModal = document.getElementById('get_offer_modal');
         const getOfferBtn = document.getElementById('get_offer');
@@ -242,13 +174,5 @@
         getOfferClose.addEventListener('click', () =>
             getOfferModal.classList.add('hidden')
         );
-
-
-
-
     </script>
-
-
-</body>
-
-</html>
+@endsection
