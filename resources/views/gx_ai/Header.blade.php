@@ -17,6 +17,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="{{ asset('frontend/gx_ai/Gemini.css') }}">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
 
 <body>

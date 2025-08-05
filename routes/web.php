@@ -231,4 +231,5 @@ Route::post('/cart/success', [RazorpayController::class, 'getCartpaymentSuccess'
 // ai route
 
 Route::get('yin/index', [YinIndexController::class, 'yinIndex'])->name('yin.index');
+Route::get('yin/learningCoatch', [YinIndexController::class, 'yinLearningCoatch'])->name('yin.learningCoatch');
 

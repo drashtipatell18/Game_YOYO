@@ -11,4 +11,8 @@ class YinIndexController extends Controller
     {
         return view('gx_ai.index');
     }
+    public function yinLearningCoatch()
+    {
+        return view('gx_ai.Learning_coach');
+    }
 }
