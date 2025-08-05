@@ -242,7 +242,7 @@ body.dark {
 
 .slider::after {
   font-family: "Material Symbols Outlined";
-  content: "remove";
+  /* content: "remove"; */
 
   position: absolute;
   font-size: 20px;
@@ -264,7 +264,7 @@ body.dark {
 }
 
 .switch input:checked+.slider::after {
-  content: "check";
+  /* content: "check"; */
 
   left: 34px;
   color: white;

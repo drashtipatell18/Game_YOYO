@@ -25,6 +25,8 @@
 </body>
     <script src="{{ asset('frontend/gx_ai/JS/Gemini.js') }}"></script>
     <script src="{{ asset('frontend/gx_ai/JS/index.js') }}"></script>
+    <script src="{{ asset('frontend/gx_ai/JS/SavedInfo.js') }}"></script>
+   
     
     <script>
         const feedback_message = document.getElementById("feedback_message");

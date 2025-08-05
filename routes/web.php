@@ -232,4 +232,4 @@ Route::post('/cart/success', [RazorpayController::class, 'getCartpaymentSuccess'
 
 Route::get('yin/index', [YinIndexController::class, 'yinIndex'])->name('yin.index');
 Route::get('yin/learningCoatch', [YinIndexController::class, 'yinLearningCoatch'])->name('yin.learningCoatch');
-
+Route::get('yin/savedInfo', [YinIndexController::class, 'yinSavedInfo'])->name('yin.savedInfo');

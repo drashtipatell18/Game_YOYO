@@ -17,6 +17,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="{{ asset('frontend/gx_ai/Gemini.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/gx_ai/SavedInfo.css') }}">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
 
@@ -77,7 +78,7 @@
                         <div class="dropdown-menu" id="dropdownMenu">
                             <ul class="pb-2">
                                 <li>
-                                    <a href="SavedInfo.html " class="w-[100%] items-center flex gap-5">
+                                    <a href="{{ route('yin.savedInfo') }}" class="w-[100%] items-center flex gap-5">
                                         <span class="material-symbols-outlined"> person </span>
                                         Saved info
                                     </a>

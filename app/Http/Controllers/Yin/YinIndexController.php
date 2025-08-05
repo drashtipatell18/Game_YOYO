@@ -15,4 +15,8 @@ class YinIndexController extends Controller
     {
         return view('gx_ai.Learning_coach');
     }
+    public function yinSavedInfo()
+    {
+        return view('gx_ai.SavedInfo');
+    }
 }
