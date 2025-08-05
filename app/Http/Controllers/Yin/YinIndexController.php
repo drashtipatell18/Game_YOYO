@@ -52,4 +52,12 @@ class YinIndexController extends Controller
     {
         return view('gx_ai.Brainstormer');
     }
+    public function yinLogin()
+    {
+        return view('gx_ai.Login');
+    }
+    public function yinSignUp()
+    {
+        return view('gx_ai.SignUp');
+    }
 }

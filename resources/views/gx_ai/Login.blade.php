@@ -64,7 +64,7 @@
     <div class="bg-[--sidebar-bg] rounded-2xl shadow-2xl sm:p-8 p-3 w-full max-w-md w-full">
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-xl sm:text-3xl font-bold text-center text-[--text-main] ">Login to YOYO</h2>
-            <a href="Gemini.html">
+            <a href="{{ route('yin.index') }}">
                 <span
                     class="material-symbols-outlined text-xl sm:text-3xl font-bold text-center text-[--text-main] cursor-pointer">
                     home
@@ -106,7 +106,7 @@
 
             <p class="text-sm text-center text-[--textarea-text] mt-4">
                 Don’t have an account?
-                <a href="Signin.html" class="text-[--add-btn] hover:underline">Sign up</a>
+                <a href="{{ route('yin.signup') }}" class="text-[--add-btn] hover:underline">Sign up</a>
             </p>
             <div class="flex gap-5 items-center mt-4 justify-center">
                 <a href="{{ url('auth/facebook') }}"><i class="fa-brands fa-facebook text-2xl text-[#0866FF] "></i></a>

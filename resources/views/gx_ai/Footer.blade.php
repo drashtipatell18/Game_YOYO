@@ -23,8 +23,8 @@
     
     
 </body>
-    <script src="{{ asset('frontend/gx_ai/JS/Gemini.js') }}"></script>
     <script src="{{ asset('frontend/gx_ai/JS/index.js') }}"></script>
+    <script src="{{ asset('frontend/gx_ai/JS/Gemini.js') }}"></script>
     <script src="{{ asset('frontend/gx_ai/JS/SavedInfo.js') }}"></script>
     <script src="{{ asset('frontend/gx_ai/JS/NewGem.js') }}"></script>
    
@@ -225,9 +225,9 @@
 
         }
 
-        function handleRedirectLogin() {
-            window.location.href = 'login.html?add=true';  // set flag
-        }
+     function handleRedirectLogin() {
+    window.location.href = '/yin/login?add=true';  // matches the Laravel route
+}
 
 
         function signOutAllAccounts() {
