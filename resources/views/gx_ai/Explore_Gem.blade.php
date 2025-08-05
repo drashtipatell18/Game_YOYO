@@ -377,7 +377,7 @@
                                 </div>
                             </a>
 
-                            <a href="../Writing_editor.html"
+                            <a href="{{ route('yin.writingEditor') }}"
                                 class="extra-card transition-all duration-300 ease-in-out overflow-hidden max-h-0 opacity-0 scale-y-90 transform origin-top bg-[var(--card-bg)] hover:bg-[var(--card-hover-bg)] cursor-pointer p-4 mb-3 rounded-xl">
 
                                 <div class="flex justify-between items-center gap-2 pb-3">

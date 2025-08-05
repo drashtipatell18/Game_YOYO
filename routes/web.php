@@ -244,3 +244,4 @@ Route::get('yin/brainstormer', [YinIndexController::class, 'Brainstormer'])->nam
 Route::get('yin/login', [YinIndexController::class, 'yinLogin'])->name('yin.login');
 Route::get('yin/signup',[ YinIndexController::class, 'yinSignUp'])->name('yin.signup'); // Assuming signup redirects to login view
 Route::get('yin/codingpartner', [YinIndexController::class, 'CodingPartner'])->name('yin.codingpartner');
+Route::get('yin/writingeditor', [YinIndexController::class, 'writingEditor'])->name('yin.writingEditor');
