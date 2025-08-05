@@ -187,8 +187,8 @@
                             <i id="listView" class="fa-solid fa-list me-2 text-white d-md-block d-none"></i>
                         </div>
                         <!-- <div class="mb-3">
-                                                                    <span id="productCount" >Showing 6 products</span>
-                                                                </div> -->
+                                                                                                <span id="productCount" >Showing 6 products</span>
+                                                                                            </div> -->
                         <div class="d-block d-lg-none">
                             <button class="btn border text-white" type="button" data-bs-toggle="offcanvas"
                                 data-bs-target="#filterOffcanvas" aria-controls="filterOffcanvas">Filters
@@ -224,122 +224,79 @@
                     </div>
 
                     <!-- Grid View -->
-                    <div id="gridContainer" class="row"></div>
+                    <div id="gridContainer" class="row product-list"></div>
 
-                    <!-- Pagination Bar -->
-                    <nav aria-label="Product pagination" class="mt-4">
-                        <ul class="pagination justify-content-center" id="paginationBar">
-                            <!-- Pagination items will be injected here by JS -->
-                        </ul>
-                    </nav>
+                    <ul class="pagination" id="pagination"></ul>
                 </div>
             </div>
         </div>
     </div>
 @endsection
-
-
-
-
-
 @push('script')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        let currentPage = 1;
-        const PRODUCTS_PER_PAGE = 6;
-        let currentSort = 'featured';
-
         // Existing variables
         let cardsData = [];
         let allProducts = [];
         let allCategories = [];
+        let filteredProducts = [];
+        let currentSort = 'featured';
 
-        document.addEventListener("DOMContentLoaded", function() {
-            // Universal event delegation for card clicks
-            document.body.addEventListener('click', function(e) {
-                const gameCard = e.target.closest('.game-card');
+        // document.addEventListener("DOMContentLoaded", function() {
+        //     // Universal event delegation for card clicks
+        //     document.body.addEventListener('click', function(e) {
+        //         const gameCard = e.target.closest('.game-card');
 
-                if (gameCard) {
-                    // Prevent navigation if the click was on the ADD TO CART button
-                    if (e.target.closest('.custom-cart-btn')) return;
+        //         if (gameCard) {
+        //             // Prevent navigation if the click was on the ADD TO CART button
+        //             if (e.target.closest('.custom-cart-btn')) return;
 
-                    const productId = gameCard.getAttribute('data-id');
-                    if (productId) {
-                        const baseUrl = window.location.origin;
-                        window.location.href = `${baseUrl}/productDetails/${productId}`;
-                    }
-                }
-            });
+        //             const productId = gameCard.getAttribute('data-id');
+        //             if (productId) {
+        //                 const baseUrl = window.location.origin;
+        //                 window.location.href = `${baseUrl}/productDetails/${productId}`;
+        //             }
+        //         }
+        //     });
 
-            // Main data fetching and initialization
-            Promise.all([
-                fetch("productsJson").then(res => res.json()),
-                fetch("categoriesJson").then(res => res.json())
-            ]).then(([products, categories]) => {
-                // Store globally for other functions
-                allProducts = products;
-                allCategories = categories;
+        //     // Main data fetching and initialization
+        //     Promise.all([
+        //         fetch("productsJson").then(res => res.json()),
+        //         fetch("categoriesJson").then(res => res.json())
+        //     ]).then(([products, categories]) => {
+        //         // Store globally for other functions
+        //         allProducts = products;
+        //         allCategories = categories;
 
-                // Map category id to name for quick lookup
-                const catMap = {};
-                categories.forEach(cat => {
-                    catMap[cat.id] = cat.name;
-                });
+        //         // Map category id to name for quick lookup
+        //         const catMap = {};
+        //         categories.forEach(cat => {
+        //             catMap[cat.id] = cat.name;
+        //         });
 
-                cardsData = products.map(product => ({
-                    id: product.id,
-                    name: product.name,
-                    price: `$${parseFloat(product.price).toFixed(2)}`,
-                    image: product.image,
-                    description: product.description || '',
-                    category: product.category_id ? product.category_id.toString() : '',
-                    category_name: catMap[product.category_id] || "Unknown"
-                }));
+        //         cardsData = products.map(product => ({
+        //             id: product.id,
+        //             name: product.name,
+        //             price: `$${parseFloat(product.price).toFixed(2)}`,
+        //             image: product.image,
+        //             description: product.description || '',
+        //             category: product.category_id ? product.category_id.toString() : '',
+        //             category_name: catMap[product.category_id] || "Unknown"
+        //         }));
 
-                // Initialize with all data
-                filteredData = [...cardsData];
-                totalItems = filteredData.length;
-                currentPage = 1;
+        //         // Initialize with all data
+        //         filteredData = [...cardsData];
+        //         totalItems = filteredData.length;
+        //         currentPage = 1;
 
-                // Render first page
-                renderCurrentPage();
-                renderPagination();
-                updatePaginationInfo(); // Add this to show pagination info
-            });
-        });
+        //         // Render first page
+        //         renderCurrentPage();
+        //         renderPagination();
+        //         updatePaginationInfo(); // Add this to show pagination info
+        //     });
+        // });
 
-        // Enhanced Pagination Functions
-        function renderCurrentPage() {
-            const startIndex = (currentPage - 1) * itemsPerPage;
-            const endIndex = startIndex + itemsPerPage;
-            const currentData = filteredData.slice(startIndex, endIndex);
-
-            // Render grid and list containers
-            const gridContainer = document.getElementById('gridContainer');
-            const listContainer = document.getElementById('listContainer');
-
-            if (gridContainer) {
-                gridContainer.innerHTML = currentData.map(createGridCard).join('');
-            }
-
-            if (listContainer) {
-                listContainer.innerHTML = currentData.map(createListCard).join('');
-            }
-
-            // Update product count
-            const productCountEl = document.getElementById('productCount');
-            if (productCountEl) {
-                const showing = Math.min(endIndex, totalItems);
-                productCountEl.innerText = `Showing ${startIndex + 1}-${showing} of ${totalItems} products`;
-            }
-
-            // Update pagination info
-            updatePaginationInfo();
-
-            // Attach cart event listeners
-            attachCartEventListeners();
-        }
         document.addEventListener("DOMContentLoaded", function() {
             initializeApp();
         });
@@ -353,8 +310,10 @@
                 ]);
 
                 allProducts = products;
+
                 allCategories = categories;
                 filteredProducts = [...allProducts];
+                console.log('filteredProducts:', filteredProducts);
 
                 // Initialize UI
                 renderCategoryFilters();
@@ -367,6 +326,257 @@
                 console.error('Failed to initialize app:', error);
                 document.getElementById('productCount').textContent = 'Failed to load products';
             }
+        }
+
+        function renderCategoryFilters() {
+            const desktopList = document.getElementById("categoryFilterListDesktop");
+            const mobileList = document.getElementById("categoryFilterListMobile");
+
+            const categoryHTML = allCategories.map(cat =>
+                `<li><input type="checkbox" name="category" value="${cat.id}"> ${cat.name}</li>`
+            ).join('');
+
+            if (desktopList) desktopList.innerHTML = categoryHTML;
+            if (mobileList) mobileList.innerHTML = categoryHTML;
+        }
+
+        function applyFilters() {
+            // Get selected filters
+            const selectedPrices = Array.from(document.querySelectorAll('input[name="price"]:checked')).map(i => i.value);
+            const selectedCategories = Array.from(document.querySelectorAll('input[name="category"]:checked')).map(i =>
+                Number(i.value));
+
+            // Filter products
+            filteredProducts = allProducts.filter(product => {
+                // Price filter
+                const priceMatch = selectedPrices.length === 0 || selectedPrices.some(range => {
+                    const [min, max] = range.split('-').map(Number);
+                    return product.price >= min && product.price <= max;
+                });
+
+                // Category filter
+                const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(product
+                    .cat_id);
+
+                return priceMatch && categoryMatch;
+            });
+
+            // Apply sorting
+            applySorting();
+
+            // Reset to first page when filters change
+            currentPage = 1;
+            renderProducts();
+        }
+
+        function applySorting() {
+            switch (currentSort) {
+                case 'name-asc':
+                    filteredProducts.sort((a, b) => a.title.localeCompare(b.title));
+                    break;
+                case 'name-desc':
+                    filteredProducts.sort((a, b) => b.title.localeCompare(a.title));
+                    break;
+                case 'price-asc':
+                    filteredProducts.sort((a, b) => Number(a.price) - Number(b.price));
+                    break;
+                case 'price-desc':
+                    filteredProducts.sort((a, b) => Number(b.price) - Number(a.price));
+                    break;
+                default:
+                    // Featured or default - keep original order
+                    break;
+            }
+        }
+
+        function renderProducts() {
+            const gridContainer = document.getElementById('gridContainer');
+            const productCount = document.getElementById('productCount');
+            const pagination = document.getElementById('pagination');
+
+            // Clear containers
+            gridContainer.innerHTML = "";
+            pagination.innerHTML = "";
+
+            // Calculate pagination
+            const productsPerPage = 12;
+            const totalProducts = filteredProducts.length;
+            const totalPages = Math.ceil(totalProducts / productsPerPage);
+
+            const urlParams = new URLSearchParams(window.location.search);
+            let currentPage = parseInt(urlParams.get('page')) || 1;
+            if (currentPage < 1) currentPage = 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+
+            // Calculate start and end indices
+            const startIndex = (currentPage - 1) * productsPerPage;
+            const endIndex = Math.min(startIndex + productsPerPage, totalProducts);
+
+            // Get products for current page
+            const currentPageProducts = filteredProducts.slice(startIndex, endIndex);
+
+            // Update product count
+            productCount.textContent = `Showing ${startIndex + 1}-${endIndex} of ${totalProducts} products`;
+
+
+            // Create category map
+            const catMap = {};
+            allCategories.forEach(cat => {
+                catMap[cat.id] = cat.name;
+            });
+
+            // Render products
+            currentPageProducts.forEach(product => {
+
+                const categoryName = product.category_name || "Unknown";
+                const firstImage = (product.image && typeof product.image === 'string') ?
+                    product.image.split(',')[0].trim() :
+                    'default.jpg';
+                console.log(categoryName);
+                gridContainer.innerHTML += `
+                    <div class="col-xl-4 col-lg-6 col-md-4 col-sm-6 col-12 mb-4 d-flex justify-content-center">
+                        <div class="game-card position-relative" data-id="${product.id}">
+                            <img src="${firstImage}" alt="${product.name}" class="card-img-top" />
+                            <div class="position-absolute card-content">
+                                <div class="icons d-flex gap-2 mb-3">
+                                    <i class="fa-brands fa-apple"></i>
+                                    <i class="fa-brands fa-windows"></i>
+                                </div>
+                                <h3>${product.name}</h3>
+                                <h3 class="mb-0">${Number(product.price).toFixed(2)}</h3>
+                                <span class="badge bg-secondary mt-2">${categoryName}</span>
+                            </div>
+                            <div class="card-actions d-flex align-items-center gap-3">
+                                <div class="d_main_button w-100">
+                                    <button class="custom-cart-btn w-100" data-id="${product.id}">ADD TO CART</button>
+                                    <div class="d_border"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Generate pagination
+            if (totalPages > 1) {
+                generatePagination(currentPage, totalPages);
+            }
+
+            // Add event listeners to product cards and buttons
+            addProductEventListeners();
+        }
+
+        function generatePagination(currentPage, totalPages) {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+
+            function addPage(page, text = page, active = false, disabled = false) {
+                const li = document.createElement('li');
+                li.className = `page-item ${active ? 'active' : ''} ${disabled ? 'disabled' : ''}`;
+
+                const element = document.createElement(active || disabled ? 'span' : 'a');
+                element.className = 'page-link';
+                element.innerHTML = text;
+
+
+                if (!disabled && !active) {
+                    element.href = '#';
+                    element.onclick = (e) => {
+                        e.preventDefault();
+                        const url = new URL(window.location);
+                        url.searchParams.set('page', page);
+                        window.history.pushState({}, '', url);
+                        renderProducts();
+                    };
+                }
+
+                li.appendChild(element);
+                pagination.appendChild(li);
+            }
+
+            // Previous button
+            addPage(currentPage - 1, '<i class="fa fa-angle-left"></i>', false, currentPage === 1);
+
+
+            // Mobile-friendly pagination logic
+            if (totalPages <= 5) {
+                // Show all pages if 5 or fewer
+                for (let i = 1; i <= totalPages; i++) {
+                    addPage(i, i, i === currentPage);
+                }
+            } else {
+                // Mobile pagination: Show first, current, and last page with dots
+                if (currentPage === 1) {
+                    // First page: show 1, 2, ..., last
+                    addPage(1, '1', true);
+                    addPage(2, '2', false);
+
+                    const dots = document.createElement('li');
+                    dots.className = 'page-item disabled';
+                    dots.innerHTML = '<span class="page-link">...</span>';
+                    pagination.appendChild(dots);
+
+                    addPage(totalPages, totalPages, false);
+                } else if (currentPage === totalPages) {
+                    // Last page: show 1, ..., last-1, last
+                    addPage(1, '1', false);
+
+                    const dots = document.createElement('li');
+                    dots.className = 'page-item disabled';
+                    dots.innerHTML = '<span class="page-link">...</span>';
+                    pagination.appendChild(dots);
+
+                    addPage(totalPages - 1, totalPages - 1, false);
+                    addPage(totalPages, totalPages, true);
+                } else {
+                    // Middle pages: show 1, ..., current, ..., last
+                    addPage(1, '1', false);
+
+                    const dots1 = document.createElement('li');
+                    dots1.className = 'page-item disabled';
+                    dots1.innerHTML = '<span class="page-link">...</span>';
+                    pagination.appendChild(dots1);
+
+                    addPage(currentPage, currentPage, true);
+
+                    const dots2 = document.createElement('li');
+                    dots2.className = 'page-item disabled';
+                    dots2.innerHTML = '<span class="page-link">...</span>';
+                    pagination.appendChild(dots2);
+
+                    addPage(totalPages, totalPages, false);
+                }
+            }
+
+            // Next button
+            addPage(currentPage + 1, '<i class="fa fa-angle-right"></i>', false, currentPage === totalPages);
+
+        }
+
+        function addProductEventListeners() {
+            // Add click event to product cards for navigation
+            document.querySelectorAll('.game-card').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    // Prevent navigation if the click was on the ADD TO CART button
+                    if (e.target.closest('.custom-cart-btn')) return;
+
+                    const id = this.getAttribute('data-id');
+                    // Store item id for single product page
+                    if (typeof Storage !== "undefined") {
+                        localStorage.setItem('item_id', id);
+                    }
+                    window.location.href = '/allProductDetails/' + id;
+                });
+            });
+
+            // Add click event to cart buttons
+            document.querySelectorAll('.custom-cart-btn').forEach(btn => {
+                btn.addEventListener('click', async function(e) {
+                    e.stopPropagation();
+                    const pro_id = Number(this.getAttribute('data-id'));
+                    await addToCart(pro_id);
+                });
+            });
         }
 
         function setupEventListeners() {
@@ -454,243 +664,10 @@
             }
         }
 
-        function renderCategoryFilters() {
-            const desktopList = document.getElementById("categoryFilterListDesktop");
-            const mobileList = document.getElementById("categoryFilterListMobile");
 
-            const categoryHTML = allCategories.map(cat =>
-                `<li><input type="checkbox" name="category" value="${cat.id}"> ${cat.name}</li>`
-            ).join('');
 
-            if (desktopList) desktopList.innerHTML = categoryHTML;
-            if (mobileList) mobileList.innerHTML = categoryHTML;
-        }
 
-        function applyFilters() {
-            // Get selected filters
-            const selectedPrices = Array.from(document.querySelectorAll('input[name="price"]:checked')).map(i => i.value);
-            const selectedCategories = Array.from(document.querySelectorAll('input[name="category"]:checked')).map(i =>
-                Number(i.value));
 
-            // Filter products
-            filteredProducts = allProducts.filter(product => {
-                // Price filter
-                const priceMatch = selectedPrices.length === 0 || selectedPrices.some(range => {
-                    const [min, max] = range.split('-').map(Number);
-                    return product.price >= min && product.price <= max;
-                });
-
-                // Category filter
-                const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(product
-                    .cat_id);
-
-                return priceMatch && categoryMatch;
-            });
-
-            // Apply sorting
-            applySorting();
-
-            // Reset to first page when filters change
-            currentPage = 1;
-            renderProducts();
-        }
-
-        function applySorting() {
-            switch (currentSort) {
-                case 'name-asc':
-                    filteredProducts.sort((a, b) => a.title.localeCompare(b.title));
-                    break;
-                case 'name-desc':
-                    filteredProducts.sort((a, b) => b.title.localeCompare(a.title));
-                    break;
-                case 'price-asc':
-                    filteredProducts.sort((a, b) => Number(a.price) - Number(b.price));
-                    break;
-                case 'price-desc':
-                    filteredProducts.sort((a, b) => Number(b.price) - Number(a.price));
-                    break;
-                default:
-                    // Featured or default - keep original order
-                    break;
-            }
-        }
-
-        function renderProducts() {
-            const gridContainer = document.getElementById('gridContainer');
-            const paginationBar = document.getElementById('paginationBar');
-            const productCount = document.getElementById('productCount');
-
-            // Clear containers
-            gridContainer.innerHTML = "";
-            paginationBar.innerHTML = "";
-
-            // Calculate pagination
-            const totalProducts = filteredProducts.length;
-
-            const totalPages = Math.ceil(totalProducts / PRODUCTS_PER_PAGE);
-
-            // Ensure current page is valid
-            if (currentPage > totalPages) currentPage = totalPages;
-            if (currentPage < 1) currentPage = 1;
-
-            const startIdx = (currentPage - 1) * PRODUCTS_PER_PAGE;
-            const endIdx = startIdx + PRODUCTS_PER_PAGE;
-            const productsToShow = filteredProducts.slice(startIdx, endIdx);
-            console.log(productsToShow);
-
-            // Update product count
-            productCount.textContent = `Showing ${productsToShow.length} of ${totalProducts} products`;
-
-            // Create category map
-            const catMap = {};
-            allCategories.forEach(cat => {
-                catMap[cat.id] = cat.name;
-            });
-
-            // Render products
-            productsToShow.forEach(product => {
-
-                const categoryName = product.category_name || "Unknown";
-                const firstImage = (product.image && typeof product.image === 'string') ?
-                    product.image.split(',')[0].trim() :
-                    'default.jpg';
-                console.log(categoryName);
-                gridContainer.innerHTML += `
-                    <div class="col-xl-4 col-lg-6 col-md-4 col-sm-6 col-12 mb-4 d-flex justify-content-center">
-                        <div class="game-card position-relative" data-id="${product.id}">
-                            <img src="${firstImage}" alt="${product.name}" class="card-img-top" />
-                            <div class="position-absolute card-content">
-                                <div class="icons d-flex gap-2 mb-3">
-                                    <i class="fa-brands fa-apple"></i>
-                                    <i class="fa-brands fa-windows"></i>
-                                </div>
-                                <h3>${product.name}</h3>
-                                <h3 class="mb-0">${Number(product.price).toFixed(2)}</h3>
-                                <span class="badge bg-secondary mt-2">${categoryName}</span>
-                            </div>
-                            <div class="card-actions d-flex align-items-center gap-3">
-                                <div class="d_main_button w-100">
-                                    <button class="custom-cart-btn w-100" data-id="${product.id}">ADD TO CART</button>
-                                    <div class="d_border"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-
-            // Render pagination
-            renderPagination(totalPages);
-
-            // Add event listeners to product cards and buttons
-            addProductEventListeners();
-        }
-
-        // Enhanced pagination rendering with better styling and navigation
-        function renderPagination(totalPages) {
-            const paginationBar = document.getElementById('paginationBar');
-
-            if (totalPages <= 1) {
-                paginationBar.innerHTML = '';
-                return;
-            }
-
-            let pagHtml = '';
-
-            // Previous button
-            pagHtml += `<li class="page-item${currentPage === 1 ? ' disabled' : ''}">
-                <a class="page-link" href="#" data-page="prev"><i class='fa-solid fa-angle-left'></i></a>
-            </li>`;
-
-            // Page numbers
-            for (let i = 1; i <= totalPages; i++) {
-                pagHtml += `<li class="page-item${i === currentPage ? ' active' : ''}">
-                    <a class="page-link" href="#" data-page="${i}">${i}</a>
-                </li>`;
-            }
-
-            // Next button
-            pagHtml += `<li class="page-item${currentPage === totalPages ? ' disabled' : ''}">
-                <a class="page-link" href="#" data-page="next"><i class='fa-solid fa-angle-right'></i></a>
-            </li>`;
-
-            paginationBar.innerHTML = pagHtml;
-
-            // Add pagination event listeners
-            paginationBar.querySelectorAll('a.page-link').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const page = this.getAttribute('data-page');
-
-                    if (page === 'prev' && currentPage > 1) {
-                        currentPage--;
-                    } else if (page === 'next' && currentPage < totalPages) {
-                        currentPage++;
-                    } else if (!isNaN(Number(page))) {
-                        currentPage = Number(page);
-                    }
-
-                    renderProducts();
-                    window.scrollTo({
-                        top: 0,
-                        behavior: 'smooth'
-                    });
-                });
-            });
-        }
-
-        function addProductEventListeners() {
-            // Add click event to product cards for navigation
-            document.querySelectorAll('.game-card').forEach(card => {
-                card.addEventListener('click', function(e) {
-                    // Prevent navigation if the click was on the ADD TO CART button
-                    if (e.target.closest('.custom-cart-btn')) return;
-
-                    const id = this.getAttribute('data-id');
-                    // Store item id for single product page
-                    if (typeof Storage !== "undefined") {
-                        localStorage.setItem('item_id', id);
-                    }
-                    window.location.href = '/allProductDetails/' + id;
-                });
-            });
-
-            // Add click event to cart buttons
-            document.querySelectorAll('.custom-cart-btn').forEach(btn => {
-                btn.addEventListener('click', async function(e) {
-                    e.stopPropagation();
-                    const pro_id = Number(this.getAttribute('data-id'));
-                    await addToCart(pro_id);
-                });
-            });
-        }
-
-        // Enhanced pagination info with items per page selector
-        function updatePaginationInfo() {
-            const startIndex = (currentPage - 1) * itemsPerPage;
-            const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
-
-            const paginationInfo = document.getElementById('paginationInfo');
-            if (paginationInfo) {
-                paginationInfo.innerHTML = `
-            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
-                <div class="text-muted">
-                    Showing ${startIndex + 1}-${endIndex} of ${totalItems} products
-                </div>
-                <div class="d-flex align-items-center gap-2">
-                    <label for="itemsPerPageSelect" class="form-label mb-0 text-nowrap">Items per page:</label>
-                    <select id="itemsPerPageSelect" class="form-select form-select-sm" style="width: auto;" onchange="changeItemsPerPage(this.value)">
-                        <option value="9" ${itemsPerPage === 9 ? 'selected' : ''}>9</option>
-                        <option value="12" ${itemsPerPage === 12 ? 'selected' : ''}>12</option>
-                        <option value="18" ${itemsPerPage === 18 ? 'selected' : ''}>18</option>
-                        <option value="24" ${itemsPerPage === 24 ? 'selected' : ''}>24</option>
-                        <option value="36" ${itemsPerPage === 36 ? 'selected' : ''}>36</option>
-                    </select>
-                </div>
-            </div>
-        `;
-            }
-        }
 
         // Enhanced items per page functionality
         function changeItemsPerPage(newItemsPerPage) {
