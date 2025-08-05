@@ -60,4 +60,9 @@ class YinIndexController extends Controller
     {
         return view('gx_ai.SignUp');
     }
+
+    public function CodingPartner()
+    {
+        return view('gx_ai.Coding_partner');
+    }
 }
