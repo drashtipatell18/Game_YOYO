@@ -23,4 +23,12 @@ class YinIndexController extends Controller
     {
         return view('gx_ai.Public_Links');
     }
+    public function yinExploreGem()
+    {
+        return view('gx_ai.Explore_Gem');
+    }
+    public function yinNewGem()
+    {
+        return view('gx_ai.NewGem');
+    }
 }
