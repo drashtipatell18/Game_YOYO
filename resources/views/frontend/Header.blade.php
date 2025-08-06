@@ -198,14 +198,14 @@
                         <a class="nav-link {{ request()->routeIs('frontendcontactus') ? 'active' : '' }}"
                             href="{{ route('frontendcontactus') }}">Contact</a>
                     </li>
-                    <li class="nav-item px-2">
+                    {{-- <li class="nav-item px-2">
                         <a href="{{ route('yin.index') }}">
                             <button
                                 class="d_search_form btn_gem {{ request()->routeIs('yin.index') ? 'active' : '' }}">
                                 Yin
                             </button>
                         </a>
-                    </li>
+                    </li> --}}
                 </ul>
 
 
@@ -281,14 +281,14 @@
                         <a class="nav-link {{ request()->routeIs('frontendcontactus') ? 'active' : '' }}"
                             href="{{ route('frontendcontactus') }}">Contact</a>
                     </li>
-                    <li class="nav-item px-2">
+                    {{-- <li class="nav-item px-2">
                         <a href="{{ route('yin.index') }}">
                             <button
                                 class="d_search_form btn_gem {{ request()->routeIs('yin.index') ? 'active' : '' }}">
                                 Yin
                             </button>
                         </a>
-                    </li>
+                    </li> --}}
                 </ul>
             </nav>
             <form class="d_search_form" method="POST">
