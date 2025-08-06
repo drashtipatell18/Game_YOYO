@@ -8,13 +8,17 @@ use App\Models\Category;
 use App\Models\OutTeam;
 use App\Models\Product;
 use App\Models\Banner;
+use Carbon\Carbon;
 
 class HomeController extends Controller
 {
     public function index()
     {    
         $ourTeams = OutTeam::all();
-        $upcomingProduct = Product::where('status', 'inactive')->get();
+        // $upcomingProduct = Product::where('status', 'inactive')->get();
+        $upcomingProduct = Product::where('status', 'inactive')
+        ->where('release_date', '>', Carbon::now())
+        ->get();
         $banners = Banner::select('id', 'title', 'subtitle', 'link', 'image')->get();
         $banners = $banners->map(function ($banner) {
             $banner->image = url('images/banners/' . $banner->image);
