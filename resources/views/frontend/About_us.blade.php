@@ -19,11 +19,7 @@
         <div class="container">
             <div class="Z_about_intro">
                 <h2 class="Z_about_heading">A Clan That Slays Together<br>Stays Together</h2>
-                <p class="Z_about_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce malesuada ex eu
-                    facilisis cursus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia
-                    curae; Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
-                    Nullam ac urna eu felis dapibus condimentum sit amet a augue. Sed non neque elit. Sed ut imperdiet
-                    nisi. Proin condimentum fermentum nunc.
+                <p class="Z_about_text">Our mission is to unite gamers from around the world under a single community, promoting teamwork, collaboration, and camaraderie while excelling in every gaming battle. Whether you’re into competitive esports, casual gaming, or online gaming events, we believe that strong player connections, strategy, and teamwork are the ultimate keys to gaming success and victory..
                 </p>
             </div>
             <div class="Z_about_container">
@@ -35,9 +31,7 @@
                         </div>
                         <div class="Z_about_feature-content">
                             <h3 class="Z_about_feature-title">Fortitude & Honor</h3>
-                            <p class="Z_about_feature-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                Maecenas tempus, tellus eget.
-                            </p>
+                            <p class="Z_about_feature-text">Fortitude & Honor guide every battle, forging champions through courage and loyalty.
                         </div>
                     </div>
                     <div class="Z_about_feature">
@@ -47,9 +41,7 @@
                         </div>
                         <div class="Z_about_feature-content">
                             <h3 class="Z_about_feature-title">Vigilance & Justice</h3>
-                            <p class="Z_about_feature-text">Suspendisse potenti. Morbi mattis ullamcorper velit.
-                                Phasellus
-                                gravida semper nisi.
+                            <p class="Z_about_feature-text">Vigilance & Justice guide every quest, defining heroes through watchfulness and fairness.
                             </p>
                         </div>
                     </div>
@@ -64,22 +56,18 @@
                 </div>
                 <div class="Z_about_split-right">
                     <h2 class="Z_about_split-title">Going For The High Roll</h2>
-                    <p class="Z_about_split-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-                        aliquam
-                        nisl sem, nec gravida nunc aliquet non.
+                     <p class="Z_about_split-desc">In the world of epic battles and legendary beasts, going for the high roll means daring to face the impossible. Every hero who rises against mighty foes, like dragons or colossal armies, knows that true glory comes to those willing to take risks.
                     </p>
                     <div class="Z_about_split-features">
                         <div class="Z_about_split-feature">
                             <img src="{{ asset('frontend/images/inner-icon-img-3.png') }}" alt="Feature 1"
                                 class="Z_about_split-icon" />
-                            <span class="Z_about_split-feature-text">Lorem ipsum dolor sit amet, consectetur adipiscing
-                                elit. Maecenas tempus, mauris eget sagittis.</span>
+                             <span class="Z_about_split-feature-text">Master every challenge by facing towering enemies and complex quests with strategy, skill, and courage.Seize your victory, as every bold move can tip the scales of battle and lead to legendary rewards.</span>
                         </div>
                         <div class="Z_about_split-feature">
                             <img src="{{ asset('frontend/images/inner-icon-img-4.png') }}" alt="Feature 2"
                                 class="Z_about_split-icon" />
-                            <span class="Z_about_split-feature-text">Lorem ipsum dolor sit amet, consectetur adipiscing
-                                elit. Maecenas tempus, mauris eget sagittis.</span>
+                            <span class="Z_about_split-feature-text">Forge your legacy in a realm of fire and steel, where only those who dare the High Roll will be remembered.</span>
                         </div>
                     </div>
                 </div>
