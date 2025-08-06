@@ -29,7 +29,7 @@
 
 <body>
     <div class="container py-md-3 ">
-            <footer class="d_footer text-white">
+        <footer class="d_footer text-white">
             <div class="row gy-4">
                 <div class="col-md-4">
                     <h4 class="d_footer-logo mb-3">YOYO</h4>
@@ -40,21 +40,67 @@
                 <div class="col-md-2 col-6">
                     <h5 class="text-white mb-3">Quick Links</h5>
                     <ul class="list-unstyled d_footer-links">
-                        <li><a href="{{ route('index') }}" class="active">Home</a></li>
-                        <li><a href="{{ route('allProducts') }}">Games</a></li>
-                        <li><a href="{{ route('aboutus') }}">About</a></li>
-                        <li><a href="{{ route('frontendcontactus') }}">Contact</a></li>
+                        <li>
+                            <a href="{{ route('index') }}" class="{{ request()->routeIs('index') ? 'active' : '' }}">
+                                Home
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('allProducts') }}"
+                                class="{{ request()->routeIs('allProducts') ? 'active' : '' }}">
+                                Games
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('aboutus') }}"
+                                class="{{ request()->routeIs('aboutus') ? 'active' : '' }}">
+                                About
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('frontendcontactus') }}"
+                                class="{{ request()->routeIs('frontendcontactus') ? 'active' : '' }}">
+                                Contact
+                            </a>
+                        </li>
                     </ul>
+
                 </div>
                 <div class="col-md-2 col-6">
                     <h5 class="text-white mb-3">Our Policy</h5>
                     <ul class="list-unstyled d_footer-links">
-                        <li><a href="{{ route('shipmentPolicy') }}" class="active">Shiiping Policy</a></li>
-                        <li><a href="{{ route('terms_conditions') }}">Terms Conditions</a></li>
-                        <li><a href="{{ route('frontendprivacy') }}">Privacy Policy</a></li>
-                         <li><a href="{{ route('cancel_refund') }}">Cancel Refund</a></li>
-                        <li><a href="{{ route('frontendservice') }}">Service</a></li>
+                        <li>
+                            <a href="{{ route('shipmentPolicy') }}"
+                                class="{{ request()->routeIs('shipmentPolicy') ? 'active' : '' }}">
+                                Shipping Policy
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('terms_conditions') }}"
+                                class="{{ request()->routeIs('terms_conditions') ? 'active' : '' }}">
+                                Terms Conditions
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('frontendprivacy') }}"
+                                class="{{ request()->routeIs('frontendprivacy') ? 'active' : '' }}">
+                                Privacy Policy
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('cancel_refund') }}"
+                                class="{{ request()->routeIs('cancel_refund') ? 'active' : '' }}">
+                                Cancel Refund
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('frontendservice') }}"
+                                class="{{ request()->routeIs('frontendservice') ? 'active' : '' }}">
+                                Service
+                            </a>
+                        </li>
                     </ul>
+
                 </div>
                 <div class="col-md-4">
                     <h5 class="text-white mb-3">Contact</h5>
@@ -75,7 +121,7 @@
             <div class="text-center d_footer_text small">
                 &copy; 2025 YOYO. All rights reserved.
             </div>
-        </div>
+    </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

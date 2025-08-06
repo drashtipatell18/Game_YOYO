@@ -85,13 +85,14 @@
         white-space: normal;
         /* Ensures text wraps normally */
     }
-        .btn_gem{
-      background-color: #8a775a;
-      border: 1px solid #8a775a;
-      border-radius: 20px;
-      color: #fff;
-      padding: 5px 20px;
-      text-decoration: none
+
+    .btn_gem {
+        background-color: #8a775a;
+        border: 1px solid #8a775a;
+        border-radius: 20px;
+        color: #fff;
+        padding: 5px 20px;
+        text-decoration: none
     }
 </style>
 
@@ -107,21 +108,36 @@
             <!-- Desktop Nav -->
             <nav class="d_navbar navbar navbar-expand-lg d-none d-lg-flex">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link active" href="{{ route('index') }}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('allProducts') }}">Games</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('blogfronted') }}">Blog</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('aboutus') }}">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('frontendcontactus') }}">Contact</a></li>
-                        <!-- <li class="nav-item"><a class="nav-link" href="./Contact_us.html">Contact</a></li> -->
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('index') ? 'active' : '' }}"
+                            href="{{ route('index') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('allProducts') ? 'active' : '' }}"
+                            href="{{ route('allProducts') }}">Games</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('blogfronted') ? 'active' : '' }}"
+                            href="{{ route('blogfronted') }}">Blog</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('aboutus') ? 'active' : '' }}"
+                            href="{{ route('aboutus') }}">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('frontendcontactus') ? 'active' : '' }}"
+                            href="{{ route('frontendcontactus') }}">Contact</a>
+                    </li>
                     <li class="nav-item px-2">
                         <a href="{{ route('yin.index') }}">
-                            <button class="d_search_form btn_gem">
+                            <button
+                                class="d_search_form btn_gem {{ request()->routeIs('yin.index') ? 'active' : '' }}">
                                 Yin
                             </button>
                         </a>
                     </li>
-                    
                 </ul>
+
 
                 <form class="d_search_form ">
                     <input type="search" placeholder="Search games..." />
@@ -151,7 +167,7 @@
                                 <li><a href="{{ route('frontend.login') }}">Sign in</a></li>
                             @endguest
 
-                            @if(Auth::check())
+                            @if (Auth::check())
                                 <li><a href="{{ route('profile', Auth::id()) }}">Profile</a></li>
                                 <li><a href="{{ route('frontlogout') }}">Logout</a></li>
                             @endif
