@@ -4,7 +4,15 @@
 @section('content')
     <div class="Z_about_hero">
         <div class="Z_about_hero-overlay">
-            <h1 class="Z_about_title">ABOUT US</h1>
+            <div class="container text-center py-5">
+
+                <h1 class="Z_about_title">ABOUT US</h1>
+                <nav class="breadcrumb-nav">
+                    <a href="{{ route('index') }}" class="text-decoration-none text-white">
+                        <span>Home</span>
+                    </a> <span class="mx-2">/</span> <span class="active">About US</span>
+                </nav>
+            </div>
         </div>
     </div>
     <section class="Z_about_content">
@@ -100,8 +108,8 @@
                                 <div class="Z_about_card">
                                     <div class="Z_about_testimonial-content">
                                         @if ($member->image)
-                                             <img src="{{ asset('images/members_say/' . $member->image) }}"
-                                            alt="{{ $member->title }}" class="Z_about_card_img">
+                                            <img src="{{ asset('images/members_say/' . $member->image) }}"
+                                                alt="{{ $member->title }}" class="Z_about_card_img">
                                         @endif
                                         <div class="Z_about_card_body">
                                             <h3 class="Z_about_card_title">{{ $member->name }}</h3>

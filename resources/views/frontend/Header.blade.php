@@ -141,6 +141,29 @@
     #suggestions li:hover {
         background-color: #000000;
     }
+    #suggestionsmoblie {
+        display: none;
+        cursor: default;
+        width: 99%;
+        max-height: 300px;
+        overflow-y: auto;
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        border: 1px solid #ccc;
+        position: absolute;
+        background: #8a775a;
+        z-index: 1000;
+    }
+
+    #suggestionsmoblie li {
+        padding: 8px;
+        cursor: pointer;
+    }
+
+    #suggestionsmoblie li:hover {
+        background-color: #000000;
+    }
 </style>
 
 <body>
@@ -268,9 +291,11 @@
                     </li>
                 </ul>
             </nav>
-            <form class="d_search_form_offcanvas">
-                <input type="search" placeholder="Search games..." />
+            <form class="d_search_form" method="POST">
+                <!-- @csrf would go here in Laravel -->
+                <input type="search" placeholder="Search games..." id="searchmoblie" name="searchmoblie" />
                 <button type="submit"><i class="fas fa-search"></i></button>
+                <ul id="suggestionsmoblie"></ul>
             </form>
             <div class="d_social_icons_offcanvas">
                 <a href="{{ route('cart') }}"><i class="fa fa-cart-plus"></i></a>
@@ -284,6 +309,12 @@
 <script>
     $(document).ready(function() {
         $('#search').on('keypress', function(event) {
+            if (event.which === 13) { // Enter key
+                event.preventDefault();
+            }
+        });
+
+         $('#searchmoblie').on('keypress', function(event) {
             if (event.which === 13) { // Enter key
                 event.preventDefault();
             }
@@ -322,6 +353,40 @@
             }
         });
 
+         $('#searchmoblie').on('keyup', function() {
+            let query = $(this).val().trim();
+
+            if (query.length > 1) {
+                $.ajax({
+                    url: "/search-products", // Update this to match your actual route
+                    method: "GET",
+                    data: {
+                        search: query // This now matches the PHP parameter
+                    },
+                    success: function(data) {
+                        console.log('Search results:', data);
+                        let suggestions = '';
+                        if (data.length) {
+                            suggestions = data.map(item =>
+                                `<li>${item.name}</li>`
+                            ).join('');
+                        } else {
+                            suggestions =
+                                '<li style="text-align: center; list-style: none;">No results found</li>';
+                        }
+                        $('#suggestionsmoblie').html(suggestions).show();
+                    },
+                    error: function(xhr, status, error) {
+                        console.log('Search error:', error);
+                        $('#suggestionsmoblie').hide();
+                    }
+                });
+            } else {
+                $('#suggestionsmoblie').hide();
+            }
+        });
+
+
         // Handle suggestion clicks
         $(document).on('click', '#suggestions li', function() {
             let name = $(this).text();
@@ -338,6 +403,25 @@
         $(document).on('click', function(e) {
             if (!$(e.target).closest('.d_search_form').length) {
                 $('#suggestions').hide();
+            }
+        });
+
+        // Handle suggestion clicks
+        $(document).on('click', '#suggestions li', function() {
+            let name = $(this).text();
+
+            // Set the selected value in the search input
+            $('#searchmoblie').val(name);
+            $('#suggestionsmoblie').hide();
+
+            // Redirect to allproducts without ID
+            window.location.href = '/allproducts';
+        });
+
+        // Hide suggestions when clicking outside
+        $(document).on('click', function(e) {
+            if (!$(e.target).closest('.d_search_form').length) {
+                $('#suggestionsmoblie').hide();
             }
         });
     });
