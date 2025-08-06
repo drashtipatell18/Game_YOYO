@@ -1,5 +1,29 @@
 @extends('frontend.layouts.main')
 @section('content')
+<style>
+    .x_blog-desc {
+        display: -webkit-box;
+        -webkit-line-clamp: 5;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .x_blog-desc.expanded {
+        -webkit-line-clamp: unset;
+        overflow: visible;
+    }
+
+    .show-more-link {
+        color: #007bff;
+        cursor: pointer;
+        font-weight: 500;
+        display: inline-block;
+        margin-top: 5px;
+    }
+</style>
     <!-- page title section -->
     <section class="x_contact-hero-section">
         <div class="x_contact-hero-overlay">
@@ -31,59 +55,56 @@
                 <div class="col-lg-8 x_blog-main mb-2  MB-MD-5 p-0 mb-lg-0">
                     <div id="blogPostsContainer">
                         <!-- Blog Post 1 -->
-                        @foreach ($blogs as $blog)
+                      @foreach ($blogs as $index => $blog)
                             @php
-                                $image = $blog->image;
-                                if (is_string($image) && str_starts_with($image, '[')) {
-                                    $imageArray = json_decode($image, true);
-                                    $image = $imageArray[0] ?? null;
+                                $images = [];
+                                if (is_string($blog->image) && str_starts_with($blog->image, '[')) {
+                                    $images = json_decode($blog->image, true) ?? [];
+                                } elseif (is_string($blog->image)) {
+                                    $images[] = $blog->image;
                                 }
-                            @endphp
-                            <div class="x_blog-post mb-3">
-                                <div class="x_blog-media mb-3">
-                                    @if ($blog->video)
-                                        <div class="video-container"
-                                            style="position: relative; width: 100%; max-width: 800px;">
-                                            <video controls
-                                                style="width: 100%; height: auto; max-height: 400px; object-fit: contain;"
-                                                preload="metadata">
-                                                <source src="{{ asset('videos/blogs/' . $blog->video) }}" type="video/mp4">
-                                                Your browser does not support the video tag.
-                                            </video>
-                                        </div>
-                                    @elseif($blog->image)
-                                        <div class="video-container"
-                                            style="position: relative; width: 100%; max-width: 800px;">
-                                            <img src="{{ asset('images/blogs/' . $image) }}" class="img-fluid"
-                                                alt="Blog image">
-                                        </div>
-                                    @endif
-                                </div>
 
-                                <div class="x_blog-meta mb-1">{{ $blog->category ?? 'Uncategorized' }}</div>
+                                $carouselId = 'x_blogCarousel_' . $index;
+                            @endphp
+
+                            <div class="x_blog-post mb-3">
+                                @if (!empty($images))
+                                    <div id="{{ $carouselId }}" class="carousel slide x_blog-carousel mb-3" data-bs-ride="carousel">
+                                        <div class="carousel-inner">
+                                            @foreach ($images as $imgIndex => $img)
+                                                <div class="carousel-item @if ($imgIndex === 0) active @endif">
+                                                    <img src="{{ asset('images/blogs/' . $img) }}" class="d-block w-100" alt="Blog Image {{ $imgIndex + 1 }}">
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                        @if (count($images) > 1)
+                                            <button class="carousel-control-prev" type="button" data-bs-target="#{{ $carouselId }}" data-bs-slide="prev">
+                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                <span class="visually-hidden">Previous</span>
+                                            </button>
+                                            <button class="carousel-control-next" type="button" data-bs-target="#{{ $carouselId }}" data-bs-slide="next">
+                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                <span class="visually-hidden">Next</span>
+                                            </button>
+                                        @endif
+                                    </div>
+                                @endif
 
                                 <h2 class="x_blog-title">{{ $blog->name }}</h2>
 
-                                <p class="x_blog-desc">{{ Str::limit($blog->description, 200) }}</p>
+                                <p class="x_blog-desc" id="desc-{{ $index }}">
+                                    {{ $blog->description }}
+                                </p>
+                                <span class="show-more-link" onclick="showMore({{ $index }})" id="link-{{ $index }}">Show More</span>
 
                                 <div class="x_blog-footer d-flex align-items-center gap-3 mt-2">
                                     <span class="x_blog-author">
-                                        <img src="{{ $blog->user->profile_image ?? asset('frontend/images/user.jpg') }}"
-                                            class="x_blog-user-img"
-                                            onerror="this.onerror=null;this.classList.add('x_blog-user-default');this.src='{{ asset('frontend/images/user.jpg') }}';"
-                                            alt="User" />
+                                        <img src="{{ $blog->user->profile_image ?? asset('frontend/images/user.jpg') }}" class="x_blog-user-img"
+                                            onerror="this.onerror=null;this.classList.add('x_blog-user-default');this.src='{{ asset('frontend/images/user.jpg') }}';" alt="User" />
                                         by {{ $blog->user->name ?? 'admin' }}
                                     </span>
-
-                                    <span class="x_blog-date">
-                                        <i class="fa-regular fa-calendar me-1"></i>
-                                        {{ $blog->created_at->format('F d, Y') }}
-                                    </span>
-
-                                    <span class="x_blog-comments">
-                                        <i class="fa-regular fa-comment me-1"></i>
-                                        {{ $blog->comments_count ?? 0 }}
-                                    </span>
+                                    <span class="x_blog-date"><i class="fa-regular fa-calendar me-1"></i>{{ $blog->created_at->format('F d, Y') }}</span>
+                                    <span class="x_blog-comments"><i class="fa-regular fa-comment me-1"></i>{{ $blog->comments_count ?? 0 }}</span>
                                 </div>
                             </div>
                         @endforeach
@@ -250,5 +271,14 @@
             // Show first page initially
             showPage(1);
         });
+    </script>
+    <script>
+        function showMore(index) {
+            const desc = document.getElementById('desc-' + index);
+            const link = document.getElementById('link-' + index);
+            
+            desc.classList.add('expanded');
+            link.style.display = 'none'; // hide the "Show More" link after expanding
+        }
     </script>
 @endpush

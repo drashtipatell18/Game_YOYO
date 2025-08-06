@@ -119,7 +119,7 @@
             </div>
             <hr class="border-secondary mt-4" />
             <div class="text-center d_footer_text small">
-                &copy; 2025 YOYO. All rights reserved.
+                &copy; 2025 YOYO Khel Pvt. Ltd. All rights reserved.
             </div>
     </div>
     </footer>
