@@ -661,7 +661,7 @@ async function getGeminiResponse(promptContent, imageData = null) {
 
     const payload = { contents: chatHistory };
 
-    const apiKey = "AIzaSyACVemh4DECvMqbIGJrl4RW3Xw6sVSPy4Q";
+    const apiKey = "AIzaSyAxZ_5rUmaaVDr_CquqgyTcIk4Rto4ggsQ";
 
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
