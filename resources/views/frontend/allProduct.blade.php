@@ -187,8 +187,8 @@
                             <i id="listView" class="fa-solid fa-list me-2 text-white d-md-block d-none"></i>
                         </div>
                         <!-- <div class="mb-3">
-                                                                                                <span id="productCount" >Showing 6 products</span>
-                                                                                            </div> -->
+                                                                                                            <span id="productCount" >Showing 6 products</span>
+                                                                                                        </div> -->
                         <div class="d-block d-lg-none">
                             <button class="btn border text-white" type="button" data-bs-toggle="offcanvas"
                                 data-bs-target="#filterOffcanvas" aria-controls="filterOffcanvas">Filters
@@ -236,66 +236,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Existing variables
         let cardsData = [];
         let allProducts = [];
         let allCategories = [];
         let filteredProducts = [];
         let currentSort = 'featured';
-
-        // document.addEventListener("DOMContentLoaded", function() {
-        //     // Universal event delegation for card clicks
-        //     document.body.addEventListener('click', function(e) {
-        //         const gameCard = e.target.closest('.game-card');
-
-        //         if (gameCard) {
-        //             // Prevent navigation if the click was on the ADD TO CART button
-        //             if (e.target.closest('.custom-cart-btn')) return;
-
-        //             const productId = gameCard.getAttribute('data-id');
-        //             if (productId) {
-        //                 const baseUrl = window.location.origin;
-        //                 window.location.href = `${baseUrl}/productDetails/${productId}`;
-        //             }
-        //         }
-        //     });
-
-        //     // Main data fetching and initialization
-        //     Promise.all([
-        //         fetch("productsJson").then(res => res.json()),
-        //         fetch("categoriesJson").then(res => res.json())
-        //     ]).then(([products, categories]) => {
-        //         // Store globally for other functions
-        //         allProducts = products;
-        //         allCategories = categories;
-
-        //         // Map category id to name for quick lookup
-        //         const catMap = {};
-        //         categories.forEach(cat => {
-        //             catMap[cat.id] = cat.name;
-        //         });
-
-        //         cardsData = products.map(product => ({
-        //             id: product.id,
-        //             name: product.name,
-        //             price: `$${parseFloat(product.price).toFixed(2)}`,
-        //             image: product.image,
-        //             description: product.description || '',
-        //             category: product.category_id ? product.category_id.toString() : '',
-        //             category_name: catMap[product.category_id] || "Unknown"
-        //         }));
-
-        //         // Initialize with all data
-        //         filteredData = [...cardsData];
-        //         totalItems = filteredData.length;
-        //         currentPage = 1;
-
-        //         // Render first page
-        //         renderCurrentPage();
-        //         renderPagination();
-        //         updatePaginationInfo(); // Add this to show pagination info
-        //     });
-        // });
+        let currentPage = 1;
 
         document.addEventListener("DOMContentLoaded", function() {
             initializeApp();
@@ -309,22 +255,38 @@
                     fetch("categoriesJson").then(res => res.json())
                 ]);
 
+                // Store data globally
                 allProducts = products;
-
                 allCategories = categories;
+
+                // Create category map for quick lookup
+                const catMap = {};
+                categories.forEach(cat => {
+                    catMap[cat.id] = cat.name;
+                });
+
+                // Transform products data to include category names
+                allProducts = allProducts.map(product => ({
+                    ...product,
+                    category_name: catMap[product.category_id] || catMap[product.cat_id] || "Unknown"
+                }));
+
                 filteredProducts = [...allProducts];
-                console.log('filteredProducts:', filteredProducts);
+
+                console.log('Products loaded:', allProducts);
+                console.log('Categories loaded:', allCategories);
 
                 // Initialize UI
                 renderCategoryFilters();
                 renderProducts();
                 setupEventListeners();
-
-                // Initialize user info
-                initializeUserInfo();
+                updateProductCount();
             } catch (error) {
                 console.error('Failed to initialize app:', error);
-                document.getElementById('productCount').textContent = 'Failed to load products';
+                const productCount = document.getElementById('productCount');
+                if (productCount) {
+                    productCount.textContent = 'Failed to load products';
+                }
             }
         }
 
@@ -333,33 +295,51 @@
             const mobileList = document.getElementById("categoryFilterListMobile");
 
             const categoryHTML = allCategories.map(cat =>
-                `<li><input type="checkbox" name="category" value="${cat.id}"> ${cat.name}</li>`
+                `<li><input type="checkbox" name="category" value="${cat.id}" id="cat_${cat.id}">
+         <label for="cat_${cat.id}">${cat.name}</label></li>`
             ).join('');
 
-            if (desktopList) desktopList.innerHTML = categoryHTML;
-            if (mobileList) mobileList.innerHTML = categoryHTML;
+            if (desktopList) {
+                desktopList.innerHTML = categoryHTML;
+            }
+            if (mobileList) {
+                mobileList.innerHTML = categoryHTML;
+            }
         }
 
         function applyFilters() {
+            console.log('Applying filters...');
+
             // Get selected filters
             const selectedPrices = Array.from(document.querySelectorAll('input[name="price"]:checked')).map(i => i.value);
             const selectedCategories = Array.from(document.querySelectorAll('input[name="category"]:checked')).map(i =>
-                Number(i.value));
+                parseInt(i.value));
+
+            console.log('Selected categories:', selectedCategories);
+            console.log('Selected prices:', selectedPrices);
 
             // Filter products
             filteredProducts = allProducts.filter(product => {
                 // Price filter
+                const productPrice = parseFloat(product.price);
                 const priceMatch = selectedPrices.length === 0 || selectedPrices.some(range => {
                     const [min, max] = range.split('-').map(Number);
-                    return product.price >= min && product.price <= max;
+                    return productPrice >= min && productPrice <= max;
                 });
 
-                // Category filter
-                const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(product
-                    .cat_id);
+                // Category filter - check both category_id and cat_id fields
+                const productCategoryId = product.category_id || product.cat_id;
+                const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(parseInt(
+                    productCategoryId));
+
+                console.log(
+                    `Product ${product.name}: categoryId=${productCategoryId}, priceMatch=${priceMatch}, categoryMatch=${categoryMatch}`
+                );
 
                 return priceMatch && categoryMatch;
             });
+
+            console.log('Filtered products:', filteredProducts);
 
             // Apply sorting
             applySorting();
@@ -367,21 +347,22 @@
             // Reset to first page when filters change
             currentPage = 1;
             renderProducts();
+            updateProductCount();
         }
 
         function applySorting() {
             switch (currentSort) {
                 case 'name-asc':
-                    filteredProducts.sort((a, b) => a.title.localeCompare(b.title));
+                    filteredProducts.sort((a, b) => (a.name || a.title || '').localeCompare(b.name || b.title || ''));
                     break;
                 case 'name-desc':
-                    filteredProducts.sort((a, b) => b.title.localeCompare(a.title));
+                    filteredProducts.sort((a, b) => (b.name || b.title || '').localeCompare(a.name || a.title || ''));
                     break;
                 case 'price-asc':
-                    filteredProducts.sort((a, b) => Number(a.price) - Number(b.price));
+                    filteredProducts.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
                     break;
                 case 'price-desc':
-                    filteredProducts.sort((a, b) => Number(b.price) - Number(a.price));
+                    filteredProducts.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
                     break;
                 default:
                     // Featured or default - keep original order
@@ -391,22 +372,27 @@
 
         function renderProducts() {
             const gridContainer = document.getElementById('gridContainer');
-            const productCount = document.getElementById('productCount');
-            const pagination = document.getElementById('pagination');
+            const listContainer = document.getElementById('listContainer');
+
+            if (!gridContainer) {
+                console.error('Grid container not found');
+                return;
+            }
 
             // Clear containers
             gridContainer.innerHTML = "";
-            pagination.innerHTML = "";
+            if (listContainer) {
+                listContainer.innerHTML = "";
+            }
 
             // Calculate pagination
             const productsPerPage = 12;
             const totalProducts = filteredProducts.length;
             const totalPages = Math.ceil(totalProducts / productsPerPage);
 
-            const urlParams = new URLSearchParams(window.location.search);
-            let currentPage = parseInt(urlParams.get('page')) || 1;
+            // Ensure current page is valid
             if (currentPage < 1) currentPage = 1;
-            if (currentPage > totalPages) currentPage = totalPages;
+            if (currentPage > totalPages && totalPages > 0) currentPage = totalPages;
 
             // Calculate start and end indices
             const startIndex = (currentPage - 1) * productsPerPage;
@@ -415,57 +401,90 @@
             // Get products for current page
             const currentPageProducts = filteredProducts.slice(startIndex, endIndex);
 
-            // Update product count
-            productCount.textContent = `Showing ${startIndex + 1}-${endIndex} of ${totalProducts} products`;
-
-
-            // Create category map
-            const catMap = {};
-            allCategories.forEach(cat => {
-                catMap[cat.id] = cat.name;
-            });
+            console.log(`Rendering ${currentPageProducts.length} products for page ${currentPage}`);
 
             // Render products
             currentPageProducts.forEach(product => {
-
                 const categoryName = product.category_name || "Unknown";
                 const firstImage = (product.image && typeof product.image === 'string') ?
                     product.image.split(',')[0].trim() :
                     'default.jpg';
-                console.log(categoryName);
+
+                const productPrice = parseFloat(product.price).toFixed(2);
+
                 gridContainer.innerHTML += `
-                    <div class="col-xl-4 col-lg-6 col-md-4 col-sm-6 col-12 mb-4 d-flex justify-content-center">
-                        <div class="game-card position-relative" data-id="${product.id}">
-                            <img src="${firstImage}" alt="${product.name}" class="card-img-top" />
-                            <div class="position-absolute card-content">
-                                <!--
-                                <div class="icons d-flex gap-2 mb-3">
-                                    <i class="fa-brands fa-apple"></i>
-                                    <i class="fa-brands fa-windows"></i>
-                                </div>
-                                -->
-                                <h3>${product.name}</h3>
-                                <h3 class="mb-0">${Number(product.price).toFixed(2)}</h3>
-                                <span class="badge bg-secondary mt-2">${categoryName}</span>
+            <div class="col-xl-4 col-lg-6 col-md-4 col-sm-6 col-12 mb-4 d-flex justify-content-center">
+                <div class="game-card position-relative" data-id="${product.id}">
+                    <img src="${firstImage}" alt="${product.name}" class="card-img-top" />
+                    <div class="position-absolute card-content">
+                        <h3>${product.name}</h3>
+                        <h3 class="mb-0">$${productPrice}</h3>
+                        <span class="badge bg-secondary mt-2">${categoryName}</span>
+                    </div>
+                    <div class="card-actions d-flex align-items-center gap-3">
+                        <div class="d_main_button w-100">
+                            <button class="custom-cart-btn w-100" data-id="${product.id}">ADD TO CART</button>
+                            <div class="d_border"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+                // Render list view if container exists
+                if (listContainer) {
+                    listContainer.innerHTML += `
+                <div class="card mb-3 list-card border-1 border-light" style="background: rgba(34,34,34,0.92); color:#fff; border:none;">
+                    <div class="row g-0 align-items-center">
+                        <div class="col-sm-4 d-flex align-items-center justify-content-center" style="min-height:180px;">
+                            <div style="background:rgba(24,24,24,0.95); border-radius:16px; padding:12px; display:flex; align-items:center; justify-content:center; width:130px; height:130px;">
+                                <img src="${firstImage}" alt="${product.name}" style="width: 120px; height: 120px; object-fit: cover; border-radius: 12px; box-shadow:0 2px 8px rgba(0,0,0,0.2); background:#181818;" />
                             </div>
-                            <div class="card-actions d-flex align-items-center gap-3">
-                                <div class="d_main_button w-100">
-                                    <button class="custom-cart-btn w-100" data-id="${product.id}">ADD TO CART</button>
-                                    <div class="d_border"></div>
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="card-body d-flex flex-column justify-content-between h-100" style="min-height: 160px;">
+                                <div>
+                                    <h5 class="card-title mb-2" style="color:#ad9d79;">${product.name}</h5>
+                                    <p class="card-text fw-bold mb-1 text-white">$${productPrice}</p>
+                                    <p class="card-text mb-2 text-white"><small>${product.description || ''}</small></p>
+                                    <span class="badge bg-secondary">${categoryName}</span>
+                                </div>
+                                <div class="d-flex align-items-center gap-3 mt-auto">
+                                    <button class="btn btn-sm s_cart_btn custom-cart-btn" data-id="${product.id}">ADD TO CART</button>
+                                    <i class="fa-regular fa-heart fs-5" onclick="toggleWishlist(${product.id})" style="cursor:pointer;"></i>
+                                    <i class="fa-solid fa-eye fs-6" onclick="viewDetails(${product.id})" style="cursor:pointer;"></i>
                                 </div>
                             </div>
                         </div>
                     </div>
-                `;
+                </div>
+            `;
+                }
             });
 
-            // Generate pagination
+            // Generate pagination if needed
             if (totalPages > 1) {
                 generatePagination(currentPage, totalPages);
             }
 
             // Add event listeners to product cards and buttons
             addProductEventListeners();
+        }
+
+        function updateProductCount() {
+            const productCount = document.getElementById('productCount');
+            if (productCount) {
+                const productsPerPage = 12;
+                const totalProducts = filteredProducts.length;
+                const startIndex = (currentPage - 1) * productsPerPage;
+                const endIndex = Math.min(startIndex + productsPerPage, totalProducts);
+
+                if (totalProducts > 0) {
+                    productCount.textContent = `Showing ${startIndex + 1}-${endIndex} of ${totalProducts} products`;
+                } else {
+                    productCount.textContent = 'No products found';
+                }
+            }
         }
 
         function generatePagination(currentPage, totalPages) {
