@@ -94,6 +94,7 @@
         padding: 5px 20px;
         text-decoration: none
     }
+
     .badge-container {
         display: flex;
         gap: 8px;
@@ -109,6 +110,36 @@
         border-radius: 5px;
         font-size: 0.75rem;
         font-weight: 500;
+        display: inline-block;
+    }
+
+    .d_search_form {
+        position: relative;
+        display: inline-block;
+    }
+
+    #suggestions {
+        display: none;
+        cursor: default;
+        width: 99%;
+        max-height: 300px;
+        overflow-y: auto;
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        border: 1px solid #ccc;
+        position: absolute;
+        background: #8a775a;
+        z-index: 1000;
+    }
+
+    #suggestions li {
+        padding: 8px;
+        cursor: pointer;
+    }
+
+    #suggestions li:hover {
+        background-color: #000000;
     }
 </style>
 
@@ -155,9 +186,11 @@
                 </ul>
 
 
-                <form class="d_search_form ">
-                    <input type="search" placeholder="Search games..." />
+                <form class="d_search_form" method="POST">
+                    <!-- @csrf would go here in Laravel -->
+                    <input type="search" placeholder="Search games..." id="search" name="search" />
                     <button type="submit"><i class="fas fa-search"></i></button>
+                    <ul id="suggestions"></ul>
                 </form>
 
                 <div class="d_social_icons me-3">
@@ -247,5 +280,67 @@
     </div>
 
 </body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#search').on('keypress', function(event) {
+            if (event.which === 13) { // Enter key
+                event.preventDefault();
+            }
+        });
+
+        $('#search').on('keyup', function() {
+            let query = $(this).val().trim();
+
+            if (query.length > 1) {
+                $.ajax({
+                    url: "/search-products", // Update this to match your actual route
+                    method: "GET",
+                    data: {
+                        search: query // This now matches the PHP parameter
+                    },
+                    success: function(data) {
+                        console.log('Search results:', data);
+                        let suggestions = '';
+                        if (data.length) {
+                            suggestions = data.map(item =>
+                                `<li>${item.name}</li>`
+                            ).join('');
+                        } else {
+                            suggestions =
+                                '<li style="text-align: center; list-style: none;">No results found</li>';
+                        }
+                        $('#suggestions').html(suggestions).show();
+                    },
+                    error: function(xhr, status, error) {
+                        console.log('Search error:', error);
+                        $('#suggestions').hide();
+                    }
+                });
+            } else {
+                $('#suggestions').hide();
+            }
+        });
+
+        // Handle suggestion clicks
+        $(document).on('click', '#suggestions li', function() {
+            let name = $(this).text();
+
+            // Set the selected value in the search input
+            $('#search').val(name);
+            $('#suggestions').hide();
+
+            // Redirect to allproducts without ID
+            window.location.href = '/allproducts';
+        });
+
+        // Hide suggestions when clicking outside
+        $(document).on('click', function(e) {
+            if (!$(e.target).closest('.d_search_form').length) {
+                $('#suggestions').hide();
+            }
+        });
+    });
+</script>
 
 </html>

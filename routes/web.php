@@ -198,6 +198,9 @@ Route::get('/blogfronted', [FrontendBlogController::class, 'blogfronted'])->name
 Route::post('/profile/update/{id}', [FrontendLoginController::class, 'updateProfile'])->name('profile.update');
 Route::get('/productDetails/{id}', [FrontendProductController::class, 'productDetails'])->name('productDetails');
 Route::post('/submit-review', [FrontendProductController::class, 'storeReviewProduct'])->name('frontReviewStore')->middleware('auth');
+Route::get('/search-products', [FrontendProductController::class, 'search'])->name('search.suggest');
+
+
 
 Route::get('/invoice/{payment_id}', [InvoiceController::class, 'invoice'])->name('invoice.show');
 
