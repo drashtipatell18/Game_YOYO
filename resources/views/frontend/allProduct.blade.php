@@ -187,8 +187,8 @@
                             <i id="listView" class="fa-solid fa-list me-2 text-white d-md-block d-none"></i>
                         </div>
                         <!-- <div class="mb-3">
-                                                                                                            <span id="productCount" >Showing 6 products</span>
-                                                                                                        </div> -->
+                                                                                                                <span id="productCount" >Showing 6 products</span>
+                                                                                                            </div> -->
                         <div class="d-block d-lg-none">
                             <button class="btn border text-white" type="button" data-bs-toggle="offcanvas"
                                 data-bs-target="#filterOffcanvas" aria-controls="filterOffcanvas">Filters
@@ -487,8 +487,10 @@
             }
         }
 
-        function generatePagination(currentPage, totalPages) {
+        function generatePagination(currentPageParam, totalPages) {
             const pagination = document.getElementById('pagination');
+            if (!pagination) return;
+
             pagination.innerHTML = '';
 
             function addPage(page, text = page, active = false, disabled = false) {
@@ -499,15 +501,23 @@
                 element.className = 'page-link';
                 element.innerHTML = text;
 
-
                 if (!disabled && !active) {
                     element.href = '#';
                     element.onclick = (e) => {
                         e.preventDefault();
+                        // Update the global currentPage variable
+                        currentPage = page;
+
+                        // Update URL (optional)
                         const url = new URL(window.location);
                         url.searchParams.set('page', page);
                         window.history.pushState({}, '', url);
+
+                        // Re-render products with new page
                         renderProducts();
+
+                        // Update product count
+                        updateProductCount();
                     };
                 }
 
@@ -516,18 +526,17 @@
             }
 
             // Previous button
-            addPage(currentPage - 1, '<i class="fa fa-angle-left"></i>', false, currentPage === 1);
-
+            addPage(currentPageParam - 1, '<i class="fa fa-angle-left"></i>', false, currentPageParam === 1);
 
             // Mobile-friendly pagination logic
             if (totalPages <= 5) {
                 // Show all pages if 5 or fewer
                 for (let i = 1; i <= totalPages; i++) {
-                    addPage(i, i, i === currentPage);
+                    addPage(i, i, i === currentPageParam);
                 }
             } else {
                 // Mobile pagination: Show first, current, and last page with dots
-                if (currentPage === 1) {
+                if (currentPageParam === 1) {
                     // First page: show 1, 2, ..., last
                     addPage(1, '1', true);
                     addPage(2, '2', false);
@@ -538,7 +547,7 @@
                     pagination.appendChild(dots);
 
                     addPage(totalPages, totalPages, false);
-                } else if (currentPage === totalPages) {
+                } else if (currentPageParam === totalPages) {
                     // Last page: show 1, ..., last-1, last
                     addPage(1, '1', false);
 
@@ -558,7 +567,7 @@
                     dots1.innerHTML = '<span class="page-link">...</span>';
                     pagination.appendChild(dots1);
 
-                    addPage(currentPage, currentPage, true);
+                    addPage(currentPageParam, currentPageParam, true);
 
                     const dots2 = document.createElement('li');
                     dots2.className = 'page-item disabled';
@@ -570,8 +579,19 @@
             }
 
             // Next button
-            addPage(currentPage + 1, '<i class="fa fa-angle-right"></i>', false, currentPage === totalPages);
+            addPage(currentPageParam + 1, '<i class="fa fa-angle-right"></i>', false, currentPageParam === totalPages);
+        }
 
+        // Also add this function to handle URL-based pagination on page load
+        function initializePaginationFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const pageParam = urlParams.get('page');
+            if (pageParam) {
+                const pageNum = parseInt(pageParam);
+                if (pageNum > 0) {
+                    currentPage = pageNum;
+                }
+            }
         }
 
         function addProductEventListeners() {
