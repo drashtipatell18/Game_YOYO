@@ -104,7 +104,6 @@
                                         by {{ $blog->user->name ?? 'admin' }}
                                     </span>
                                     <span class="x_blog-date"><i class="fa-regular fa-calendar me-1"></i>{{ $blog->created_at->format('F d, Y') }}</span>
-                                    <span class="x_blog-comments"><i class="fa-regular fa-comment me-1"></i>{{ $blog->comments_count ?? 0 }}</span>
                                 </div>
                             </div>
                         @endforeach
