@@ -16,24 +16,33 @@
             background-color: #928e75 !important;
             color: #fff !important;
         }
+
         .toast-success {
-            background-color: #28a745 !important;  /* Bootstrap's green */
+            background-color: #28a745 !important;
+            /* Bootstrap's green */
             color: white !important;
         }
+
         .toast-error {
-            background-color: #dc3545 !important;  /* Bootstrap's red */
+            background-color: #dc3545 !important;
+            /* Bootstrap's red */
             color: white !important;
         }
+
         .usd-badge {
             background: linear-gradient(135deg, rgb(94, 77, 58), rgb(138, 119, 90));
             color: white;
-            font-size: 13px !important;       /* Smaller font */
+            font-size: 13px !important;
+            /* Smaller font */
             font-weight: 500;
-            padding: 2px 5px;        /* Small padding */
-            border-radius: 4px;      /* Slight rounding */
+            padding: 2px 5px;
+            /* Small padding */
+            border-radius: 4px;
+            /* Slight rounding */
             line-height: 1;
             display: inline-block;
-            vertical-align: middle;  /* Align with price */
+            vertical-align: middle;
+            /* Align with price */
         }
     </style>
     <!-- x_game-product-section START -->
@@ -126,7 +135,7 @@
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link x_tab-link" id="reviews-tab" data-bs-toggle="tab"
                                     data-bs-target="#reviews" type="button" role="tab">Reviews
-                                    </button>
+                                </button>
                             </li>
                         </ul>
                         <div class="tab-content x_tab-content p-4 bg-opacity-75" id="x_productTabContent">
@@ -134,17 +143,61 @@
                                 {{ $product['description'] ?? 'No description available.' }}
                             </div>
                             <div class="tab-pane fade" id="addinfo" role="tabpanel">
-                                <div class="x_additional-info">
-                                    <h5 class="mb-3">Additional information</h5>
-                                    <div class="row mb-2">
-                                        <div class="col-4 col-md-2">Weight</div>
-                                        <div class="col-8 col-md-10">{{ $product['weight'] ?? 'N/A' }}</div>
-                                    </div>
-                                    <div class="row mb-2">
-                                        <div class="col-4 col-md-2">Dimensions</div>
-                                        <div class="col-8 col-md-10">{{ $product['dimensions'] ?? 'N/A' }}</div>
-                                    </div>
+                                <div class="system-requirements">
+                                    <h4>SYSTEM REQUIREMENTS</h4>
+                                    <table>
+                                        <tr>
+                                            <th></th>
+                                            <th>MINIMUM:</th>
+                                            <th>RECOMMENDED:</th>
+                                        </tr>
+                                        <tr>
+                                            <td>Requires</td>
+                                            <td>A 64-bit processor and operating system</td>
+                                            <td>A 64-bit processor and operating system</td>
+                                        </tr>
+                                        <tr>
+                                            <td>OS:</td>
+                                            <td>Windows® 10 64-bit (latest Service Pack)</td>
+                                            <td>Windows® 10 64-bit (latest Service Pack)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Processor:</td>
+                                            <td>Intel® Core™ i3 3250 3.5 GHz or Intel Pentium G4560 3.5 GHz / AMD FX-4350
+                                                4.2 GHz</td>
+                                            <td>Intel® Core™ i5 2400 3.4 GHz or i5 7400 3.5 GHz / AMD Ryzen R5 1600X 3.6 GHz
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Memory:</td>
+                                            <td>6 GB RAM</td>
+                                            <td>8 GB RAM</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Graphics:</td>
+                                            <td>NVIDIA® GeForce® GTX 660 2GB or GTX 1050 2GB / AMD Radeon HD 7850 2GB</td>
+                                            <td>NVIDIA® GeForce® GTX 970 4GB or GTX 1060 6GB / AMD R9 390 8GB</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Network:</td>
+                                            <td>Broadband Internet connection</td>
+                                            <td>Broadband Internet connection</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Storage:</td>
+                                            <td>105 GB available space</td>
+                                            <td>105 GB available space</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Additional Notes:</td>
+                                            <td>Beginning on June 4, 2024, Destiny 2 is ending support for Windows 7,
+                                                Windows 8, and Windows 8.1 operating systems.</td>
+                                            <td>Beginning on June 4, 2024, Destiny 2 is ending support for Windows 7,
+                                                Windows 8, and Windows 8.1 operating systems.</td>
+                                        </tr>
+                                    </table>
                                 </div>
+
                             </div>
 
                             <div class="tab-pane fade" id="reviews" role="tabpanel">
@@ -209,10 +262,10 @@
                         <!-- Cards will be injected here by JS -->
                     </div>
                     <!-- Add navigation buttons
-                            <div class="swiper-button-next"></div>
-                            <div class="swiper-button-prev"></div>
-                            Add pagination
-                            <div class="swiper-pagination"></div> -->
+                                        <div class="swiper-button-next"></div>
+                                        <div class="swiper-button-prev"></div>
+                                        Add pagination
+                                        <div class="swiper-pagination"></div> -->
                 </div>
             </div>
         </div>
