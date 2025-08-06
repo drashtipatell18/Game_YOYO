@@ -57,7 +57,7 @@
             vertical-align: middle;
         }
 
-    
+
 
         @media (max-width: 576px) {
 
@@ -78,7 +78,7 @@
     <!-- Hero Section Start -->
     <div class="Z_cards_hero">
         <div class="Z_cart_hero-overlay">
-            <h1 class="Z_about_title">Yoyo Store</h1>
+            <h1 class="Z_about_title">YOYO STORE</h1>
         </div>
     </div>
 
