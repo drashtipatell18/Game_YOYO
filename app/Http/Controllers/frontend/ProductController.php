@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Reviews;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Category;
 
 class ProductController extends Controller
 {
@@ -28,7 +29,7 @@ class ProductController extends Controller
 
                             // dd($relatedProducts);
 
-      
+
         return view('frontend.singleProduct',compact('product','images','reviewCount','relatedProducts'));
     }
 
@@ -75,4 +76,15 @@ class ProductController extends Controller
         return response()->json(['message' => 'Review submitted successfully'], 201);
     }
 
+    public function search(Request $request)
+    {
+        $query = trim($request->input('search'));
+        $escapedQuery = str_replace(['%', '_'], ['\%', '\_'], $query);
+
+    $suggestions = Product::whereRaw('name LIKE ?', ["%{$escapedQuery}%"])
+            ->select('id', 'name')
+            ->limit(10) // Add limit for better performance
+            ->get();
+        return response()->json($suggestions);
+    }
 }

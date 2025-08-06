@@ -55,6 +55,7 @@
                                         <div class="position-absolute card-content">
                                             <h3>{{ $game->name }}</h3>
                                             <h3 class="mb-0">${{ number_format($game->price, 2) }}</h3>
+                                            <span class="badge usd-badge">USD</span>
                                             <span class="badge bg-secondary mt-2">{{ $game->category->name ?? 'No Category' }}</span>
                                         </div>
                                     </div>
@@ -190,5 +191,41 @@
         });
     });
     </script>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const cards = document.querySelectorAll(".d_coming_card");
+
+        cards.forEach(card => {
+            const releaseDate = new Date(card.getAttribute("data-date")).getTime();
+
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const distance = releaseDate - now;
+
+                if (distance < 0) {
+                    card.querySelector(".days").innerText = "00";
+                    card.querySelector(".hours").innerText = "00";
+                    card.querySelector(".minutes").innerText = "00";
+                    card.querySelector(".seconds").innerText = "00";
+                    return; // Stop updating
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                card.querySelector(".days").innerText = String(days).padStart(2, '0');
+                card.querySelector(".hours").innerText = String(hours).padStart(2, '0');
+                card.querySelector(".minutes").innerText = String(minutes).padStart(2, '0');
+                card.querySelector(".seconds").innerText = String(seconds).padStart(2, '0');
+            }
+
+            updateCountdown(); // Initial run
+            setInterval(updateCountdown, 1000); // Update every second
+        });
+    });
+</script>
  
 @endsection

@@ -95,7 +95,7 @@
                     <!-- Right Form -->
                     <div class="col-12 col-lg-5 col-md-6 d-flex align-items-center justify-content-center">
                         <div class="text-center login-content w-100">
-                            <h2 class="mb-4">Welcome<br />The Yoyo Game</h2>
+                            <h2 class="mb-4">Welcome<br />The YOYO Khel</h2>
                             <form action={{ route('frontlogin') }} method="post" id="frontendlogin">
                                 @csrf
                                 <!-- Email -->
@@ -182,7 +182,7 @@
                 const passwordInput = $("#db_password_input");
                 const type = passwordInput.attr("type") === "password" ? "text" : "password";
                 passwordInput.attr("type", type);
-                
+
                 // Toggle icon class
                 $(this).toggleClass("fa-eye fa-eye-slash");
             });

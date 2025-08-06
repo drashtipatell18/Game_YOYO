@@ -1,5 +1,5 @@
 @extends('frontend.layouts.main')
-@section('title', 'YOYO Games: About Us')
+@section('title', 'YOYO Khel: About Us')
 
 @section('content')
     <div class="Z_about_hero">

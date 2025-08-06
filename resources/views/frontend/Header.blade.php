@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>@yield('title', 'YoYo Games')</title>
+    <title>@yield('title', 'YOYO Khel')</title>
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
@@ -94,6 +94,53 @@
         padding: 5px 20px;
         text-decoration: none
     }
+
+    .badge-container {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    /* USD badge with gradient */
+    .usd-badge {
+        background: linear-gradient(135deg, rgb(94, 77, 58), rgb(138, 119, 90));
+        color: white;
+        padding: 6px 10px;
+        border-radius: 5px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        display: inline-block;
+    }
+
+    .d_search_form {
+        position: relative;
+        display: inline-block;
+    }
+
+    #suggestions {
+        display: none;
+        cursor: default;
+        width: 99%;
+        max-height: 300px;
+        overflow-y: auto;
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        border: 1px solid #ccc;
+        position: absolute;
+        background: #8a775a;
+        z-index: 1000;
+    }
+
+    #suggestions li {
+        padding: 8px;
+        cursor: pointer;
+    }
+
+    #suggestions li:hover {
+        background-color: #000000;
+    }
 </style>
 
 <body>
@@ -139,9 +186,11 @@
                 </ul>
 
 
-                <form class="d_search_form ">
-                    <input type="search" placeholder="Search games..." />
+                <form class="d_search_form" method="POST">
+                    <!-- @csrf would go here in Laravel -->
+                    <input type="search" placeholder="Search games..." id="search" name="search" />
                     <button type="submit"><i class="fas fa-search"></i></button>
+                    <ul id="suggestions"></ul>
                 </form>
 
                 <div class="d_social_icons me-3">
@@ -189,15 +238,30 @@
             <button class="close_btn" aria-label="Close Menu">&times;</button>
             <nav>
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link active" href="{{ route('index') }}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('allProducts') }}">Games</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('blogfronted') }}">Blog</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('aboutus') }}">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('frontendcontactus') }}">Contact</a>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('index') ? 'active' : '' }}"
+                            href="{{ route('index') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('allProducts') ? 'active' : '' }}"
+                            href="{{ route('allProducts') }}">Games</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('blogfronted') ? 'active' : '' }}"
+                            href="{{ route('blogfronted') }}">Blog</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('aboutus') ? 'active' : '' }}"
+                            href="{{ route('aboutus') }}">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('frontendcontactus') ? 'active' : '' }}"
+                            href="{{ route('frontendcontactus') }}">Contact</a>
                     </li>
                     <li class="nav-item px-2">
                         <a href="{{ route('yin.index') }}">
-                            <button class="d_search_form btn_gem">
+                            <button
+                                class="d_search_form btn_gem {{ request()->routeIs('yin.index') ? 'active' : '' }}">
                                 Yin
                             </button>
                         </a>
@@ -216,5 +280,67 @@
     </div>
 
 </body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#search').on('keypress', function(event) {
+            if (event.which === 13) { // Enter key
+                event.preventDefault();
+            }
+        });
+
+        $('#search').on('keyup', function() {
+            let query = $(this).val().trim();
+
+            if (query.length > 1) {
+                $.ajax({
+                    url: "/search-products", // Update this to match your actual route
+                    method: "GET",
+                    data: {
+                        search: query // This now matches the PHP parameter
+                    },
+                    success: function(data) {
+                        console.log('Search results:', data);
+                        let suggestions = '';
+                        if (data.length) {
+                            suggestions = data.map(item =>
+                                `<li>${item.name}</li>`
+                            ).join('');
+                        } else {
+                            suggestions =
+                                '<li style="text-align: center; list-style: none;">No results found</li>';
+                        }
+                        $('#suggestions').html(suggestions).show();
+                    },
+                    error: function(xhr, status, error) {
+                        console.log('Search error:', error);
+                        $('#suggestions').hide();
+                    }
+                });
+            } else {
+                $('#suggestions').hide();
+            }
+        });
+
+        // Handle suggestion clicks
+        $(document).on('click', '#suggestions li', function() {
+            let name = $(this).text();
+
+            // Set the selected value in the search input
+            $('#search').val(name);
+            $('#suggestions').hide();
+
+            // Redirect to allproducts without ID
+            window.location.href = '/allproducts';
+        });
+
+        // Hide suggestions when clicking outside
+        $(document).on('click', function(e) {
+            if (!$(e.target).closest('.d_search_form').length) {
+                $('#suggestions').hide();
+            }
+        });
+    });
+</script>
 
 </html>

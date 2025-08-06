@@ -20,7 +20,7 @@
                 <ul class="list-unstyled">
                     <li><strong>Agreement to Terms:</strong>
                         <ul>
-                            <li>By visiting or using the YoYo Game website, you acknowledge and agree to comply with these Terms and Conditions.</li>
+                            <li>By visiting or using the YOYO Khel website, you acknowledge and agree to comply with these Terms and Conditions.</li>
                             <li>If you do not agree with any part of these terms, please do not use our services.</li>
                         </ul>
                     </li>
