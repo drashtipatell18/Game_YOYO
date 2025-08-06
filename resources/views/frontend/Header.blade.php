@@ -189,15 +189,30 @@
             <button class="close_btn" aria-label="Close Menu">&times;</button>
             <nav>
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link active" href="{{ route('index') }}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('allProducts') }}">Games</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('blogfronted') }}">Blog</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('aboutus') }}">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('frontendcontactus') }}">Contact</a>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('index') ? 'active' : '' }}"
+                            href="{{ route('index') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('allProducts') ? 'active' : '' }}"
+                            href="{{ route('allProducts') }}">Games</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('blogfronted') ? 'active' : '' }}"
+                            href="{{ route('blogfronted') }}">Blog</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('aboutus') ? 'active' : '' }}"
+                            href="{{ route('aboutus') }}">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('frontendcontactus') ? 'active' : '' }}"
+                            href="{{ route('frontendcontactus') }}">Contact</a>
                     </li>
                     <li class="nav-item px-2">
                         <a href="{{ route('yin.index') }}">
-                            <button class="d_search_form btn_gem">
+                            <button
+                                class="d_search_form btn_gem {{ request()->routeIs('yin.index') ? 'active' : '' }}">
                                 Yin
                             </button>
                         </a>
