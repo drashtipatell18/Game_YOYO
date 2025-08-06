@@ -31,6 +31,7 @@ use App\Http\Controllers\BannerController;
 use App\Http\Controllers\InvoiceController;
 
 use App\Http\Controllers\Yin\YinIndexController;
+use Illuminate\Http\Request;
 
 Auth::routes();
 
@@ -175,6 +176,11 @@ Route::get('auth/facebook/callback',[FrontGoogleAuthController::class,'handleFac
 Route::get('/frontend-login',[FrontendLoginController::class,'login'])->name('frontend.login');
 Route::post('frontlogin', [FrontendLoginController::class, 'frontLogin'])->name('frontlogin');
 Route::get('frontregister', [FrontendLoginController::class, 'frontRegister'])->name('frontregister');
+Route::post('/check-email-exists', function(Request $request) {
+    $exists = \App\Models\User::where('email', $request->email)->exists();
+    return response()->json(['exists' => $exists]);
+})->name('check.email.exists');
+
 Route::post('/front-register', [FrontendLoginController::class, 'showRegisterForm'])->name('front.register');
 Route::get('/frontlogout',[FrontendLoginController::class,'frontlogout'])->name('frontlogout');
 

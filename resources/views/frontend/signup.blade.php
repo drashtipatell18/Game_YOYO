@@ -121,11 +121,11 @@
     <script>
         $(document).ready(function() {
             // Password toggle functionality
-            $("#db_toggle_password").click(function () {
+            $("#db_toggle_password").click(function() {
                 const passwordInput = $("#db_password_input");
                 const type = passwordInput.attr("type") === "password" ? "text" : "password";
                 passwordInput.attr("type", type);
-                
+
                 // Toggle icon class
                 $(this).toggleClass("fa-eye fa-eye-slash");
             });
@@ -133,10 +133,49 @@
             // Add custom strong password validation method
             $.validator.addMethod("strongPassword", function(value, element) {
                     return this.optional(element) ||
-                        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/.test(value);
+                        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/.test(
+                            value);
                 },
                 "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
             );
+
+            // Add email exists validation method
+            $.validator.addMethod("emailExists", function(value, element) {
+                if (!value) return true; // Skip if empty, let required rule handle it
+
+                var isValid = false;
+                var $element = $(element);
+
+                // Show checking message
+                $element.next('.checking-email').remove();
+                $element.after(
+                    '<span class="checking-email">Checking email availability...</span>');
+
+                $.ajax({
+                    url: "{{ route('check.email.exists') }}", // You need to create this route
+                    type: "POST",
+                    data: {
+                        email: value,
+                        _token: $('meta[name="csrf-token"]').attr('content') || $(
+                            'input[name="_token"]').val()
+                    },
+                    async: false,
+                    success: function(response) {
+                        $element.next('.checking-email').remove();
+                        if (response.exists) {
+                            isValid = false;
+                        } else {
+                            isValid = true;
+                        }
+                    },
+                    error: function() {
+                        $element.next('.checking-email').remove();
+                        isValid = true; // Allow form submission if AJAX fails
+                    }
+                });
+
+                return isValid;
+            }, "This email is already registered. Please use a different email address.");
 
             // Form validation setup
             $("#frontendregister").validate({
@@ -148,7 +187,8 @@
                     email: {
                         required: true,
                         email: true,
-                        maxlength: 100
+                        maxlength: 100,
+                        emailExists: true
                     },
                     password: {
                         required: true,
@@ -172,6 +212,8 @@
                     }
                 },
                 errorPlacement: function(error, element) {
+                    // Remove checking message if exists
+                    element.next('.checking-email').remove();
                     error.insertAfter(element);
                 },
                 highlight: function(element) {
@@ -179,27 +221,48 @@
                 },
                 unhighlight: function(element) {
                     $(element).removeClass('is-invalid');
+                    // Remove checking message when field becomes valid
+                    $(element).next('.checking-email').remove();
                 },
                 submitHandler: function(form) {
                     // Optional: Add loading state
                     var submitBtn = $(form).find('button[type="submit"]');
                     var originalText = submitBtn.text();
                     submitBtn.prop('disabled', true).text('Processing...');
+
+                    // Reset button after 10 seconds in case of issues
+                    setTimeout(function() {
+                        submitBtn.prop('disabled', false).text(originalText);
+                    }, 10000);
+
                     // Submit the form
                     form.submit();
                 }
             });
 
-            // Real-time validation on input
-            $('#username, #email, #password').on('keyup blur', function() {
+            // Real-time validation on input (with debouncing for email)
+            var emailTimeout;
+            $('#username, #password').on('keyup blur', function() {
                 $(this).valid();
             });
 
+            $('#email').on('keyup blur', function() {
+                var $this = $(this);
+                clearTimeout(emailTimeout);
+
+                if ($(this).val().length > 0) {
+                    emailTimeout = setTimeout(function() {
+                        $this.valid();
+                    }, 800); // Wait 800ms after user stops typing
+                }
+            });
+
             // Social icon click handlers
-            $('.social-icons .icon').on('click', function() {
-                const platform = $(this).attr('class').split(' ')[0];
+            $('.social-icons .icon a').on('click', function(e) {
+                // Let the social login proceed normally
+                const platform = $(this).closest('.icon').attr('class').split(' ')[0];
                 const platformName = platform.charAt(0).toUpperCase() + platform.slice(1);
-                toastr.info(`${platformName} login clicked!`);
+                toastr.info(`Redirecting to ${platformName} login...`);
             });
         });
     </script>

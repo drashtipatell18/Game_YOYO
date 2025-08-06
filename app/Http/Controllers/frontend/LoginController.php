@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\FrontForgotPasswordMail;
+use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
 {
@@ -150,4 +151,5 @@ class LoginController extends Controller
             return redirect()->route('index')->with('success', 'Password successfully reset.');
         }
     }
+
 }
