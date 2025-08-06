@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Password Reset Request - Yoyo Game</title>
+    <title>Password Reset Request - YOYO Khel</title>
     <!--[if mso]>
     <noscript>
         <xml>
@@ -319,7 +319,7 @@
                     <div class="header">
                         <span class="icon">🎮</span>
                         <h1 style="color: white !important">Password Reset Request</h1>
-                        <p class="subtitle">Yoyo Game - Secure Your Gaming Adventure</p>
+                        <p class="subtitle">YOYO Khel - Secure Your Gaming Adventure</p>
                     </div>
 
                     <div class="content">
