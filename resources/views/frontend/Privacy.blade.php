@@ -17,7 +17,7 @@
     <div class="x_space">
         <div class="x_privacy-content bg-opacity-75 p-4">
             <h1 class="x_privacy-title mb-0">Privacy Policy</h1>
-            <p>At <strong>YOYO Khel Web</strong>, your privacy is important to us. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website <em>[insert URL]</em> or play any of our games.</p>
+            <p>At <strong>YOYO Khel Web</strong>, your privacy is important to us. This Privacy Policy explains how we collect, use, disclose, and safeguard your information.
             <p>By using our site or services, you agree to the terms of this Privacy Policy. If you do not agree with these terms, please do not use our website or games.</p>
 
             <h4>1. Information We Collect</h4>

@@ -16,13 +16,13 @@
         overflow: visible;
     }
 
-    .show-more-link {
-        color: #007bff;
-        cursor: pointer;
-        font-weight: 500;
-        display: inline-block;
-        margin-top: 5px;
-    }
+   .show-more-link {
+    display: block; /* 👈 Forces it to appear on a new line */
+    color: #007bff;
+    cursor: pointer;
+    font-weight: 500;
+    margin-top: 5px;
+}
 </style>
     <!-- page title section -->
     <section class="x_contact-hero-section">
@@ -95,7 +95,7 @@
                                 <p class="x_blog-desc" id="desc-{{ $index }}">
                                     {{ $blog->description }}
                                 </p>
-                                <span class="show-more-link" onclick="showMore({{ $index }})" id="link-{{ $index }}">Show More</span>
+                               <span class="show-more-link" onclick="showMore({{ $index }})" id="link-{{ $index }}">Show More</span>
 
                                 <div class="x_blog-footer d-flex align-items-center gap-3 mt-2">
                                     <span class="x_blog-author">
@@ -131,30 +131,20 @@
                     <div class="x_blog-widget mb-4">
                         <h5 class="x_blog-widget-title">Top Articles</h5>
                         <div class="x_blog-top-articles">
-                            <div class="d-flex align-items-center mb-3">
-                                <img src="{{ asset('frontend/images/blog1.jpg') }}" class="x_blog-top-thumb me-3"
-                                    alt="Black Angel" width="50">
-                                <div>
-                                    <div class="x_blog-top-title">Black Angel</div>
-                                    <div class="x_blog-top-date">June 7, 2017</div>
+                            @foreach ($topArticle as $article)
+                                <div class="d-flex align-items-center mb-3">
+                                    <img src="{{ asset('images/articles/' . $article->image) }}" 
+                                        class="x_blog-top-thumb me-3"
+                                        alt="{{ $article->name }}" width="50">
+
+                                    <div>
+                                        <div class="x_blog-top-title">{{ $article->name }}</div>
+                                        <div class="x_blog-top-date">
+                                            {{ \Carbon\Carbon::parse($article->created_at)->format('F d, Y') }}
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="d-flex align-items-center x_line_li_tb mb-3">
-                                <img src="{{ asset('frontend/images/blog2.jpg') }}" class="x_blog-top-thumb me-3"
-                                    alt="Black Castle" width="50">
-                                <div>
-                                    <div class="x_blog-top-title">Black Castle</div>
-                                    <div class="x_blog-top-date">June 7, 2017</div>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center">
-                                <img src="{{ asset('frontend/images/blog3.jpg') }}" class="x_blog-top-thumb me-3"
-                                    alt="Black Wings" width="50">
-                                <div>
-                                    <div class="x_blog-top-title">Black Wings</div>
-                                    <div class="x_blog-top-date">June 6, 2017</div>
-                                </div>
-                            </div>
+                            @endforeach
                         </div>
                     </div>
                     <div class="x_blog-widget mb-4">
