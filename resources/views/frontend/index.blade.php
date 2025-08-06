@@ -1,6 +1,6 @@
 @extends('frontend.layouts.main')
 @section('content')
- 
+
     <body style="padding-right: 0px;">
         <section class="d_hero-section">
             <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">

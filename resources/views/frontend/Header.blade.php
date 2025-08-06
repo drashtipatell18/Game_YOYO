@@ -85,6 +85,14 @@
         white-space: normal;
         /* Ensures text wraps normally */
     }
+        .btn_gem{
+      background-color: #8a775a;
+      border: 1px solid #8a775a;
+      border-radius: 20px;
+      color: #fff;
+      padding: 5px 20px;
+      text-decoration: none
+    }
 </style>
 
 <body>
@@ -167,7 +175,7 @@
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item"><a class="nav-link active" href="{{ route('index') }}">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('allProducts') }}">Games</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('blog') }}">Blog</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('blogfronted') }}">Blog</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('aboutus') }}">About</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('frontendcontactus') }}">Contact</a>
                     </li>
