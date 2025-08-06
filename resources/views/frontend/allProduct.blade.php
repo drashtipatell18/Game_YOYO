@@ -144,8 +144,8 @@
                                     <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                         data-bs-target="#collapseMobileOne" aria-expanded="true"
                                         aria-controls="collapseMobileOne">
-                                        <h5 class="mb-0"> Price</h5>
-                                        <span class="badge usd-badge">USD</span>
+                                        <h5 class="mb-0"> Price
+                                        <span class="badge usd-badge">USD</span></h5>
                                     </button>
                                 </h2>
                                 <div id="collapseMobileOne" class="accordion-collapse collapse show"
@@ -422,8 +422,8 @@
                     <img src="${firstImage}" alt="${product.name}" class="card-img-top" />
                     <div class="position-absolute card-content">
                         <h3>${product.name}</h3>
-                        <h3 class="mb-0">$${productPrice}</h3>
-                        <span class="badge usd-badge">USD</span>
+                        <h3 class="mb-0">$${productPrice}
+                        <span class="badge usd-badge">USD</span></h3>
                         <span class="badge bg-secondary mt-2">${categoryName}</span>
                     </div>
                     <div class="card-actions d-flex align-items-center gap-3">
@@ -451,6 +451,7 @@
                                 <div>
                                     <h5 class="card-title mb-2" style="color:#ad9d79;">${product.name}</h5>
                                     <p class="card-text fw-bold mb-1 text-white">$${productPrice}</p>
+                                    <span class="badge usd-badge">USD</span>
                                     <p class="card-text mb-2 text-white"><small>${product.description || ''}</small></p>
                                     <span class="badge bg-secondary">${categoryName}</span>
                                 </div>
@@ -776,7 +777,8 @@
                     </div>
                     -->
                     <h3>${cardData.name}</h3>
-                    <h3 class="mb-0">${cardData.price}</h3>
+                    <h3 class="mb-0">${cardData.price}
+                    <span class="badge usd-badge">USD</span></h3>
                 </div>
                 <div class="card-actions d-flex align-items-center gap-3">
                     <div class="d_main_button w-100">
@@ -808,6 +810,7 @@
                         <div>
                             <h5 class="card-title mb-2" style="color:#ad9d79;">${cardData.name}</h5>
                             <p class="card-text fw-bold mb-1 text-white">${cardData.price}</p>
+                            <span class="badge usd-badge">USD</span>
                             <p class="card-text mb-2 text-white"><small class="">${cardData.description}</small></p>
                         </div>
                         <div class="d-flex align-items-center gap-3 mt-auto">

@@ -489,15 +489,9 @@
                 <div class="game-card position-relative" data-id="${card.id}" style="cursor: pointer;">
                     <img src="${card.image}" alt="${card.name}" class="card-img-top" />
                     <div class="position-absolute card-content">
-                        <!--
-                        <div class="icons d-flex gap-2 mb-3">
-                            <i class="fa-brands fa-apple"></i>
-                            <i class="fa-brands fa-windows"></i>
-                        </div>
-                        -->
                         <h3>${card.name}</h3>
-                        <h3 class="mb-0">${card.price}</h3>&nbsp;
-                        <span class="badge usd-badge">USD</span>
+                        <h3 class="mb-0">${card.price}
+                        <span class="badge usd-badge">USD</span></h3>
                        <span class="badge bg-secondary mt-2">${card.category}</span>
                     </div>
                     <div class="card-actions d-flex align-items-center gap-3">
