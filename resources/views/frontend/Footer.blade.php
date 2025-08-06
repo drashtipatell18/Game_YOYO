@@ -336,7 +336,7 @@
         });
     </script>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             fetch("/categoriesJson")
                 .then(res => res.json())
                 .then(categories => {
@@ -345,15 +345,18 @@
 
                     categories.forEach(cat => {
                         wrapper.innerHTML += `
-                                <div class="d_category_card">
-                                    <img src="${cat.image}" alt="${cat.name} Game" />
-                                    <div class="d_category_overlay">
-                                        <div class="d_category_text">${cat.name}</div>
-                                    </div>
-
-                                    <img src="${cat.icon}" class="d_icon_top" alt="${cat.name} Icon" />
+                            <div class="d_category_card">
+                                <img src="${cat.image}" alt="${cat.name} Game"
+                                   onerror="this.onerror=null;this.src='/images/products/dummy_product.png';" />
+                                
+                                <div class="d_category_overlay">
+                                    <div class="d_category_text">${cat.name}</div>
                                 </div>
-                            `;
+
+                                <img src="${cat.icon}" class="d_icon_top" alt="${cat.name} Icon"
+                                    onerror="this.onerror=null;this.src='/images/products/dummy_product.png';" />
+                            </div>
+                        `;
                     });
                 })
                 .catch(() => {
