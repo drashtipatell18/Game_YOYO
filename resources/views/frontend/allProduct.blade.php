@@ -57,6 +57,8 @@
             vertical-align: middle;
         }
 
+    
+
         @media (max-width: 576px) {
 
             .pagination a,
@@ -91,7 +93,8 @@
                                 <h2 class="accordion-header">
                                     <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                         data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                        <h5> Price</h5>
+                                        <h5> Price</h5>&nbsp
+                                        <span class="badge usd-badge">USD</span>
                                     </button>
                                 </h2>
                                 <div id="collapseOne" class="accordion-collapse collapse show"
@@ -142,6 +145,7 @@
                                         data-bs-target="#collapseMobileOne" aria-expanded="true"
                                         aria-controls="collapseMobileOne">
                                         <h5 class="mb-0"> Price</h5>
+                                        <span class="badge usd-badge">USD</span>
                                     </button>
                                 </h2>
                                 <div id="collapseMobileOne" class="accordion-collapse collapse show"
@@ -419,6 +423,7 @@
                     <div class="position-absolute card-content">
                         <h3>${product.name}</h3>
                         <h3 class="mb-0">$${productPrice}</h3>
+                        <span class="badge usd-badge">USD</span>
                         <span class="badge bg-secondary mt-2">${categoryName}</span>
                     </div>
                     <div class="card-actions d-flex align-items-center gap-3">

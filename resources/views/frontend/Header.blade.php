@@ -94,6 +94,22 @@
         padding: 5px 20px;
         text-decoration: none
     }
+    .badge-container {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    /* USD badge with gradient */
+    .usd-badge {
+        background: linear-gradient(135deg, rgb(94, 77, 58), rgb(138, 119, 90));
+        color: white;
+        padding: 6px 10px;
+        border-radius: 5px;
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
 </style>
 
 <body>

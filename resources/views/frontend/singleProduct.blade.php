@@ -24,6 +24,17 @@
             background-color: #dc3545 !important;  /* Bootstrap's red */
             color: white !important;
         }
+        .usd-badge {
+            background: linear-gradient(135deg, rgb(94, 77, 58), rgb(138, 119, 90));
+            color: white;
+            font-size: 13px !important;       /* Smaller font */
+            font-weight: 500;
+            padding: 2px 5px;        /* Small padding */
+            border-radius: 4px;      /* Slight rounding */
+            line-height: 1;
+            display: inline-block;
+            vertical-align: middle;  /* Align with price */
+        }
     </style>
     <!-- x_game-product-section START -->
     <section class="x_game-shop a_header_container">
@@ -58,9 +69,11 @@
                     <div class="col-md-6 x_product-info text-white">
                         <div class="x_shop_info mt-3 mt-sm-0">
                             <h2 class="x_product-title">{{ $product['name'] ?? 'Unknown Product' }}</h2>
-                            <div class="x_product-price mb-3">
-                                ${{ number_format($product['price'] ?? 0, 2) }}
+                            <div class="x_product-price mb-3 d-flex align-items-center gap-2">
+                                <span>${{ number_format($product['price'] ?? 0, 2) }}</span>
+                                <span class="badge usd-badge">USD</span>
                             </div>
+                            
 
                             @if (isset($product['description']))
                                 <div class="x_product-description mb-3">
@@ -483,7 +496,8 @@
                         </div>
                         -->
                         <h3>${card.name}</h3>
-                        <h3 class="mb-0">${card.price}</h3>
+                        <h3 class="mb-0">${card.price}</h3>&nbsp;
+                        <span class="badge usd-badge">USD</span>
                        <span class="badge bg-secondary mt-2">${card.category}</span>
                     </div>
                     <div class="card-actions d-flex align-items-center gap-3">

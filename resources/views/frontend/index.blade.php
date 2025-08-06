@@ -55,6 +55,7 @@
                                         <div class="position-absolute card-content">
                                             <h3>{{ $game->name }}</h3>
                                             <h3 class="mb-0">${{ number_format($game->price, 2) }}</h3>
+                                            <span class="badge usd-badge">USD</span>
                                             <span class="badge bg-secondary mt-2">{{ $game->category->name ?? 'No Category' }}</span>
                                         </div>
                                     </div>
