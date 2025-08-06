@@ -81,7 +81,7 @@ class ProductController extends Controller
         $query = trim($request->input('search'));
         $escapedQuery = str_replace(['%', '_'], ['\%', '\_'], $query);
 
-        $suggestions = Product::whereRaw('LOWER(name) LIKE LOWER(?)', ["%{$escapedQuery}%"])
+    $suggestions = Product::whereRaw('name LIKE ?', ["%{$escapedQuery}%"])
             ->select('id', 'name')
             ->limit(10) // Add limit for better performance
             ->get();
