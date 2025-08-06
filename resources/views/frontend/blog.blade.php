@@ -6,7 +6,9 @@
             <div class="container text-center py-5">
                 <h1 class="contact-hero-title">Blog</h1>
                 <nav class="breadcrumb-nav">
-                    <span>Home</span> <span class="mx-2">/</span> <span class="active">Blog</span>
+                    <a href="{{ route('index') }}" class="text-decoration-none text-white">
+                        <span>Home</span>
+                    </a> <span class="mx-2">/</span> <span class="active">Blog</span>
                 </nav>
             </div>
         </div>
@@ -50,10 +52,11 @@
                                             </video>
                                         </div>
                                     @elseif($blog->image)
-                                        <div class="video-container" style="position: relative; width: 100%; max-width: 800px;"> 
-                                                <img src="{{ asset('images/blogs/' . $image) }}" class="img-fluid" alt="Blog image">
+                                        <div class="video-container"
+                                            style="position: relative; width: 100%; max-width: 800px;">
+                                            <img src="{{ asset('images/blogs/' . $image) }}" class="img-fluid"
+                                                alt="Blog image">
                                         </div>
-                                        
                                     @endif
                                 </div>
 
