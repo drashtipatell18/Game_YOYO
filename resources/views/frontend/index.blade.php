@@ -84,17 +84,17 @@
                             our new collection delivers next-gen excitement. Get early access, exclusive bonuses, and
                             unmatched discounts now.
                         </p>
-                       <button onclick="window.location='{{ route('aboutus') }}'" class="d_feature_btn">
+                       <button onclick="window.location='{{ route('allProducts') }}'" class="d_feature_btn">
                             Explore Now
                         </button>
-                        
+
                     </div>
                 </div>
             </div>
         </section>
         <!-- comming soon start  -->
         <div class="d_coming_wrapper">
-            
+
             <section class="d_coming_section">
                 <div class="container">
                     <h2><i class="fa-solid fa-bolt me2"></i>Upcoming Premium Games</h2>
@@ -129,7 +129,7 @@
                     </div>
                 </div>
             </section>
-        
+
         </div>
         <!-- Founder & Team Section -->
         {{-- <section class="d_founder_section">
@@ -144,13 +144,13 @@
                                     $image = $team->image ?? '';
                                     $imagePath = public_path('images/ourteam/' . $image);
                                 @endphp
- 
+
                                 @if (!empty($image) && file_exists($imagePath))
                                     <img src="{{ asset('images/ourteam/' . $image) }}" alt="{{ $team->name }}" class="d_member_img">
                                 @else
                                     <img src="{{ asset('assets/images/user.png') }}" alt="User Image" class="d_member_img">
                                 @endif
- 
+
                                 <div class="d_member_content">
                                     <h4 class="d_member_name">{{ $team->name }}</h4>
                                     <p class="d_member_role"><i class="fas fa-gamepad"></i> {{ $team->designation }}</p>
@@ -163,7 +163,7 @@
                         </div>
                     @endforeach
                 </div>
- 
+
             </div>
         </section> --}}
     </body>
@@ -227,5 +227,5 @@
         });
     });
 </script>
- 
+
 @endsection
