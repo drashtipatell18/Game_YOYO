@@ -111,7 +111,7 @@
                     <li class="nav-item"><a class="nav-link" href="{{ route('allProducts') }}">Games</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('blogfronted') }}">Blog</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('aboutus') }}">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('frontendcontactus') }}">Contact</a>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('frontendcontactus') }}">Contact</a></li>
                         <!-- <li class="nav-item"><a class="nav-link" href="./Contact_us.html">Contact</a></li> -->
                     <li class="nav-item px-2">
                         <a href="{{ route('yin.index') }}">
@@ -120,7 +120,7 @@
                             </button>
                         </a>
                     </li>
-                    </li>
+                    
                 </ul>
 
                 <form class="d_search_form ">
@@ -178,6 +178,13 @@
                     <li class="nav-item"><a class="nav-link" href="{{ route('blogfronted') }}">Blog</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('aboutus') }}">About</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('frontendcontactus') }}">Contact</a>
+                    </li>
+                    <li class="nav-item px-2">
+                        <a href="{{ route('yin.index') }}">
+                            <button class="d_search_form btn_gem">
+                                Yin
+                            </button>
+                        </a>
                     </li>
                 </ul>
             </nav>
