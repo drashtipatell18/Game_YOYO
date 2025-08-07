@@ -275,10 +275,23 @@
                     category_name: catMap[product.category_id] || catMap[product.cat_id] || "Unknown"
                 }));
 
-                filteredProducts = [...allProducts];
+                const urlParams = new URLSearchParams(window.location.search);
+                    const categoryIdFromUrl = urlParams.get('category');  // e.g. '7'
+
+                    if (categoryIdFromUrl) {
+                        // Filter products by category from URL
+                        filteredProducts = allProducts.filter(product =>
+                            product.category_id == categoryIdFromUrl || product.cat_id == categoryIdFromUrl
+                        );
+                    } else {
+                        filteredProducts = [...allProducts];
+                    }
+
+               
 
                 console.log('Products loaded:', allProducts);
                 console.log('Categories loaded:', allCategories);
+                 console.log('Filtered products by category:', filteredProducts);
 
                 // Initialize UI
                 renderCategoryFilters();

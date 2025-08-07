@@ -335,19 +335,20 @@
             dbUserDropdown.style.display = 'none';
         });
     </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            fetch("/categoriesJson")
-                .then(res => res.json())
-                .then(categories => {
-                    const wrapper = document.getElementById("categoryWrapper");
-                    wrapper.innerHTML = "";
+   <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch("/categoriesJson")
+            .then(res => res.json())
+            .then(categories => {
+                const wrapper = document.getElementById("categoryWrapper");
+                wrapper.innerHTML = "";
 
-                    categories.forEach(cat => {
-                        wrapper.innerHTML += `
+                categories.forEach(cat => {
+                    wrapper.innerHTML += `
+                        <a href="/allproducts?category=${cat.id}" class="category-link">
                             <div class="d_category_card">
                                 <img src="${cat.image}" alt="${cat.name} Game"
-                                   onerror="this.onerror=null;this.src='/images/products/dummy_product.png';" />
+                                    onerror="this.onerror=null;this.src='/images/products/dummy_product.png';" />
                                 
                                 <div class="d_category_overlay">
                                     <div class="d_category_text">${cat.name}</div>
@@ -356,15 +357,17 @@
                                 <img src="${cat.icon}" class="d_icon_top" alt="${cat.name} Icon"
                                     onerror="this.onerror=null;this.src='/images/products/dummy_product.png';" />
                             </div>
-                        `;
-                    });
-                })
-                .catch(() => {
-                    document.getElementById("categoryWrapper").innerHTML =
-                        "<div class='text-danger'>Failed to load categories.</div>";
+                        </a>
+                    `;
                 });
-        });
-    </script>
+            })
+            .catch(() => {
+                document.getElementById("categoryWrapper").innerHTML =
+                    "<div class='text-danger'>Failed to load categories.</div>";
+            });
+    });
+</script>
+
 
     <script>
         async function fetchAndRenderSwiperCards() {

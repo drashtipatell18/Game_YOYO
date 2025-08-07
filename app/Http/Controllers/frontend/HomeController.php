@@ -41,16 +41,23 @@ class HomeController extends Controller
         return response()->json($categories);
     }
 
-    public function getProductJson()
+    public function getProductJson(Request $request)
     {
-        $products = Product::with('category:id,name') // eager load category with only id & name
-            ->select('id', 'category_id', 'SKU', 'tags', 'name', 'price', 'image', 'description', 'weight', 'dimensions')
-            ->get();
+        $query = Product::with('category:id,name') // eager load category
+            ->select('id', 'category_id', 'SKU', 'tags', 'name', 'price', 'image', 'description', 'weight', 'dimensions');
 
+        // Check for category filter
+        if ($request->has('category')) {
+            $query->where('category_id', $request->category);
+        }
+
+        $products = $query->get();
+
+        // Format each product
         foreach ($products as $product) {
-            $product->image = asset('images/products/' . $product->image); // Full URL for image
+            $product->image = asset('images/products/' . $product->image); // Full image URL
             $product->category_name = $product->category->name ?? 'Unknown'; // Add category name
-            unset($product->category); // Optional: remove raw relationship data if not needed
+            unset($product->category); // Clean up if not needed
         }
 
         return response()->json($products);
