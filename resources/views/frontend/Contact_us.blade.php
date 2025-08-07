@@ -5,7 +5,6 @@
       <div class="container text-center py-5">
          <h1 class="contact-hero-title">CONTACT US</h1>
          <nav class="breadcrumb-nav">
-            <span>Home</span> <span class="mx-2">/</span> <span class="active">Contact</span>
               <a href="{{ route('index') }}" class="text-decoration-none text-white">
                         <span>Home</span>
                     </a> <span class="mx-2">/</span> <span class="active">Contact</span>
