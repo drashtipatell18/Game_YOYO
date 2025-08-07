@@ -74,6 +74,11 @@
                 font-size: 15px;
             }
         }
+
+        .pagination {
+            --bs-pagination-padding-x: 0!important;
+            --bs-pagination-padding-y: 0!important;
+        }
     </style>
     <!-- Hero Section Start -->
     <div class="Z_cards_hero">
@@ -145,7 +150,8 @@
                                         data-bs-target="#collapseMobileOne" aria-expanded="true"
                                         aria-controls="collapseMobileOne">
                                         <h5 class="mb-0"> Price
-                                        <span class="badge usd-badge">USD</span></h5>
+                                            <span class="badge usd-badge">USD</span>
+                                        </h5>
                                     </button>
                                 </h2>
                                 <div id="collapseMobileOne" class="accordion-collapse collapse show"
@@ -191,8 +197,8 @@
                             <i id="listView" class="fa-solid fa-list me-2 text-white d-md-block d-none"></i>
                         </div>
                         <!-- <div class="mb-3">
-                                                                                                                <span id="productCount" >Showing 6 products</span>
-                                                                                                            </div> -->
+                                                                                                                    <span id="productCount" >Showing 6 products</span>
+                                                                                                                </div> -->
                         <div class="d-block d-lg-none">
                             <button class="btn border text-white" type="button" data-bs-toggle="offcanvas"
                                 data-bs-target="#filterOffcanvas" aria-controls="filterOffcanvas">Filters
@@ -276,22 +282,22 @@
                 }));
 
                 const urlParams = new URLSearchParams(window.location.search);
-                    const categoryIdFromUrl = urlParams.get('category');  // e.g. '7'
+                const categoryIdFromUrl = urlParams.get('category'); // e.g. '7'
 
-                    if (categoryIdFromUrl) {
-                        // Filter products by category from URL
-                        filteredProducts = allProducts.filter(product =>
-                            product.category_id == categoryIdFromUrl || product.cat_id == categoryIdFromUrl
-                        );
-                    } else {
-                        filteredProducts = [...allProducts];
-                    }
+                if (categoryIdFromUrl) {
+                    // Filter products by category from URL
+                    filteredProducts = allProducts.filter(product =>
+                        product.category_id == categoryIdFromUrl || product.cat_id == categoryIdFromUrl
+                    );
+                } else {
+                    filteredProducts = [...allProducts];
+                }
 
 
 
                 console.log('Products loaded:', allProducts);
                 console.log('Categories loaded:', allCategories);
-                 console.log('Filtered products by category:', filteredProducts);
+                console.log('Filtered products by category:', filteredProducts);
 
                 // Initialize UI
                 renderCategoryFilters();
