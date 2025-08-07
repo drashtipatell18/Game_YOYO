@@ -107,7 +107,7 @@
                     <ul class="list-unstyled d_footer-links d_footer_text">
                         <li><i class="fas fa-envelope me-2"></i> info@yoyokhel.com</li>
                         <li><i class="fas fa-phone me-2"></i>1800-9797-6361</li>
-                        <li><i class="fas fa-location-dot me-2"></i>264 Weber St W, Kitchener, ON N2H 4A6, Canada</li>
+                        <li><i class="fas fa-location-dot me-2"></i>264 Weber St W, Kitchener, <br/> ON N2H 4A6, Canada</li>
                     </ul>
                     <div class="d_footer-social mt-3">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
