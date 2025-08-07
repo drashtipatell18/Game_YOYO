@@ -14,11 +14,19 @@ class HomeController extends Controller
 {
     public function index()
     {    
+        $tomorrowStart = Carbon::tomorrow()->startOfDay();
+
+        Product::where('status', 'inactive')
+            ->where('release_date', '<=', $tomorrowStart)  // activate if release date is <= tomorrow 00:00:00
+            ->update(['status' => 'active']);
+
         $ourTeams = OutTeam::all();
-        // $upcomingProduct = Product::where('status', 'inactive')->get();
+    
         $upcomingProduct = Product::where('status', 'inactive')
-        ->where('release_date', '>', Carbon::now())
-        ->get();
+            ->where('release_date', '>', $tomorrowStart)  // products after tomorrow
+            ->orderBy('release_date', 'asc')
+            ->get();
+
         $banners = Banner::select('id', 'title', 'subtitle', 'link', 'image')->get();
         $banners = $banners->map(function ($banner) {
             $banner->image = url('images/banners/' . $banner->image);
@@ -26,9 +34,9 @@ class HomeController extends Controller
         });
         
         $featuteProducts = Product::with('category')->orderBy('created_at', 'desc')->get();
+        
         return view('frontend.index',compact('ourTeams', 'featuteProducts','upcomingProduct','banners'));
     }
-
     public function getCategoriesJson()
     {
         $categories = Category::select('id','name', 'image', 'icon')->get();

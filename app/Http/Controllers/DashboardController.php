@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -18,8 +19,8 @@ class DashboardController extends Controller
     public function index(){
         $users = User::count();
         $blog = Blog::count();
-        $service = Service::count();
-        return view('dashboard',compact('users','blog','service'));
+        $product = Product::count();
+        return view('dashboard',compact('users','blog','product'));
     }
 
     public function showForgetPasswordForm()
