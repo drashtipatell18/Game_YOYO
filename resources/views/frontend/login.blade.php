@@ -112,7 +112,7 @@
                                         <i class="fa-solid fa-eye-slash" id="db_toggle_password"
                                             style="
                                                 position: absolute;
-                                                top: 35%;
+                                                top: 47%;
                                                 right: 15px;
                                                 transform: translateY(-50%);
                                                 cursor: pointer;
