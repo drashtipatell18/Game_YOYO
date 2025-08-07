@@ -360,8 +360,8 @@
             <div class="stat-icon">
                 <i class="bi bi-gear-fill"></i>
             </div>
-            <div class="stat-title">Total Services</div>
-            <div class="stat-number pulse-animation">{{ $service ?? '6' }}</div>
+            <div class="stat-title">Total Products</div>
+            <div class="stat-number pulse-animation">{{ $product ?? '0' }}</div>
             <div class="stat-description">Available service offerings</div>
         </div>
     </div>
