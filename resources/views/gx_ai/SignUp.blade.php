@@ -126,7 +126,6 @@
                 <a href="{{ route('yin.login') }}" class="text-[--add-btn] hover:underline">Login</a>
             </p>
             <div class="flex gap-5 items-center mt-4 justify-center">
-                <a href=""><i class="fa-brands fa-apple text-3xl text-[#666666] "></i></a>
                 <a href=""><i class="fa-brands fa-facebook text-2xl text-[#0866FF] "></i></a>
                 <a href="#" class="inline-block">
                     <svg class="w-[23px] h-[23px]" viewBox="-3 0 262 262" xmlns="http://www.w3.org/2000/svg"

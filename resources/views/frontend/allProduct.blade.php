@@ -287,7 +287,7 @@
                         filteredProducts = [...allProducts];
                     }
 
-               
+
 
                 console.log('Products loaded:', allProducts);
                 console.log('Categories loaded:', allCategories);
@@ -783,12 +783,6 @@
             <div class="game-card position-relative" data-id="${cardData.id}">
                 <img src="${firstImage}" alt="${cardData.name}" class="card-img-top" />
                 <div class="position-absolute card-content">
-                    <!--
-                    <div class="icons d-flex gap-2 mb-3">
-                        <i class="fa-brands fa-apple"></i>
-                        <i class="fa-brands fa-windows"></i>
-                    </div>
-                    -->
                     <h3>${cardData.name}</h3>
                     <h3 class="mb-0">${cardData.price}
                     <span class="badge usd-badge">USD</span></h3>
