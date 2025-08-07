@@ -73,12 +73,13 @@
             .pagination .page-link i {
                 font-size: 15px;
             }
+            .pagination {
+                --bs-pagination-padding-x: 0!important;
+                --bs-pagination-padding-y: 0!important;
+            }
         }
 
-        .pagination {
-            --bs-pagination-padding-x: 0!important;
-            --bs-pagination-padding-y: 0!important;
-        }
+       
     </style>
     <!-- Hero Section Start -->
     <div class="Z_cards_hero">
