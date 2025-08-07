@@ -1,3 +1,4 @@
+
 @extends('frontend.layouts.main')
 @section('content')
 
@@ -147,15 +148,6 @@
                             </div>
                         @endforeach
                     </div>
-                </div>
-
-                <div class="x_blog-widget mb-4">
-                    <h5 class="x_blog-widget-title">Categories</h5>
-                    <ul class="x_blog-categories list-unstyled mb-0">
-                        <li class="x_blog-category-item x_line_auto_b">Epic</li>
-                        <li class="x_blog-category-item x_line_auto_b">Playing</li>
-                        <li class="x_blog-category-item">Uncategorized</li>
-                    </ul>
                 </div>
             </div>
 
