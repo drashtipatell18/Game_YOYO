@@ -79,6 +79,7 @@
         .social-icons .icon {
             cursor: pointer;
         }
+
     </style>
 </head>
 
@@ -109,16 +110,16 @@
                                         <input type="password" name="password"
                                             class="form-control rounded-end py-2 px-4 pe-5 text-black"
                                             placeholder="Enter Password" id="db_password_input" />
-                                        <i class="fa-solid fa-eye-slash" id="db_toggle_password"
-                                            style="
-                                                position: absolute;
-                                                top: 47%;
-                                                right: 15px;
-                                                transform: translateY(-50%);
-                                                cursor: pointer;
-                                                color: #888;
-                                                z-index: 5;
-                                    "></i>
+                                       <i class="fa-solid fa-eye-slash" id="db_toggle_password"
+            style="
+                position: absolute;
+                top: 35%;
+                right: 31px;
+                transform: translateY(-50%);
+                cursor: pointer;
+                color: #888;
+                z-index: 5;
+            "></i>
                                     </div>
                                     <!-- Custom Checkbox + Forgot Password -->
                                     <div class="d-flex justify-content-between align-items-center mt-2">
@@ -178,21 +179,15 @@
         $(document).ready(function() {
 
             // Password toggle
-           $("#db_toggle_password").click(function () {
-                const passwordInput = $("#db_password_input");
-                const type = passwordInput.attr("type") === "password" ? "text" : "password";
-                passwordInput.attr("type", type);
+          $('#db_toggle_password').on('click', function () {
+    const passwordInput = $('#password');
+    const icon = $(this);
+    const type = passwordInput.attr('type') === 'password' ? 'text' : 'password';
+    passwordInput.attr('type', type);
+    icon.toggleClass('fa-eye fa-eye-slash');
+});
 
-                // Toggle icon class
-                $(this).toggleClass("fa-eye fa-eye-slash");
-            });
-
-            // Add custom strong password method
-            // $.validator.addMethod("strongPassword", function(value, element) {
-            //     return this.optional(element) ||
-            //         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/.test(value);
-            // }, "Password must contain upper/lowercase, number, and special character");
-
+       
             // Form validation rules
             $("#frontendlogin").validate({
                 rules: {
