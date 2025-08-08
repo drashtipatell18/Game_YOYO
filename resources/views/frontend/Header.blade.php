@@ -145,7 +145,7 @@
         display: none;
         cursor: default;
         width: 99%;
-        max-height: 300px;
+        max-height: 40px;
         overflow-y: auto;
         list-style-type: none;
         padding: 0;
