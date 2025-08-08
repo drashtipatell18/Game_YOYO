@@ -3,60 +3,6 @@
 @section('title', isset($product) ? 'Edit Product' : 'Create Product')
 
 @section('content')
-    <style>
-        .form-switch {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 34px;
-        }
-
-        .form-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .form-switch input:checked+.form-check-label::before {
-            background-color: #4caf50;
-        }
-
-        .form-check-label {
-            position: relative;
-            padding-left: 70px;
-            cursor: pointer;
-        }
-
-        .form-check-label::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 60px;
-            height: 34px;
-            background-color: #ccc;
-            border-radius: 34px;
-            transition: background-color 0.4s;
-        }
-
-        .form-check-label::after {
-            content: '';
-            position: absolute;
-            top: 4px;
-            left: 4px;
-            width: 26px;
-            height: 26px;
-            background-color: white;
-            border-radius: 50%;
-            transition: transform 0.4s;
-        }
-
-        .form-switch input:checked+.form-check-label::after {
-            transform: translateX(26px);
-        }
-    </style>
-
-    </style>
     <div class="row">
         <div class="col-md-6 grid-margin stretch-card" style="margin: 0 auto;">
             <div class="card">
@@ -146,7 +92,7 @@
                             <textarea name="description" id="description" class="form-control" rows="4">{{ old('description', $product->description ?? '') }}</textarea>
                         </div>
 
-                       
+
 
                         {{-- Weight and Dimensions --}}
                         <div class="row">
@@ -160,17 +106,28 @@
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
                                     <label for="status">Status</label>
-                                    <div class="form-check form-switch d-flex align-items-start gap-2">
-                                        <input class="form-check-input" type="checkbox" id="status" name="status"
-                                            value="active"
-                                            {{ isset($product) && $product->status === 'active' ? 'checked' : '' }}
-                                            onchange="updateStatusLabel(this)">
-                                        <label class="form-check-label" for="status" id="status-label">
-                                            {{ isset($product) && $product->status === 'active' ? 'Active' : 'Inactive' }}
-                                        </label>
+                                    <div class="d-flex align-items-center gap-4"> <!-- use gap-4 for more spacing -->
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="radio" id="status_active" name="status"
+                                                value="active"
+                                                {{ isset($product) && $product->status === 'active' ? 'checked' : '' }}>
+                                            <label class="form-check-label ms-2" for="status_active">
+                                                <!-- add ms-2 for spacing -->
+                                                Active
+                                            </label>
+                                        </div>
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="radio" id="status_inactive"
+                                                name="status" value="inactive"
+                                                {{ isset($product) && $product->status === 'inactive' ? 'checked' : '' }}>
+                                            <label class="form-check-label ms-2" for="status_inactive">
+                                                Inactive
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                         <div class="form-group mb-3">
                             <label>Dimensions (cm)</label>
