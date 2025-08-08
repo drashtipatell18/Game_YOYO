@@ -78,13 +78,32 @@ class ProductController extends Controller
 
     public function search(Request $request)
     {
-        $query = trim($request->input('search'));
-        $escapedQuery = str_replace(['%', '_'], ['\%', '\_'], $query);
+        $search = trim($request->input('search'));
 
-    $suggestions = Product::whereRaw('name LIKE ?', ["%{$escapedQuery}%"])
-            ->select('id', 'name')
-            ->limit(10) // Add limit for better performance
+        if (empty($search)) {
+            return response()->json([
+                'message' => 'Search term is required.'
+            ], 400);
+        }
+
+        // Optional: escape % and _
+        $escapedSearch = str_replace(['%', '_'], ['\%', '\_'], $search);
+
+        $products = Product::with('category:id,name')
+            ->select('id', 'category_id', 'SKU', 'tags', 'name', 'price', 'image', 'description', 'weight', 'dimensions')
+            ->where('name', 'LIKE', "%{$escapedSearch}%")
+            ->limit(10)
             ->get();
-        return response()->json($suggestions);
+
+            
+
+        // Format each product
+        foreach ($products as $product) {
+            $product->image = asset('images/products/' . $product->image);
+            $product->category_name = $product->category->name ?? 'Unknown';
+            unset($product->category);
+        }
+
+        return response()->json($products);
     }
 }

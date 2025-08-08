@@ -59,6 +59,12 @@ class HomeController extends Controller
             $query->where('category_id', $request->category);
         }
 
+          if ($request->has('search') && trim($request->search) !== '') {
+        $search = str_replace(['%', '_'], ['\%', '\_'], trim($request->search));
+        $query->where('name', 'LIKE', "%{$search}%");
+    }
+        
+
         $products = $query->get();
 
         // Format each product

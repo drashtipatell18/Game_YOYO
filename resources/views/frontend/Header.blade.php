@@ -209,7 +209,7 @@
                 </ul>
 
 
-                <form class="d_search_form" method="POST">
+                <form class="d_search_form" method="GET">
                     <!-- @csrf would go here in Laravel -->
                     <input type="search" placeholder="Search games..." id="search" name="search" />
                     <button type="submit"><i class="fas fa-search"></i></button>
@@ -307,124 +307,183 @@
 </body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function() {
-        $('#search').on('keypress', function(event) {
-            if (event.which === 13) { // Enter key
-                event.preventDefault();
-            }
-        });
-
-         $('#searchmoblie').on('keypress', function(event) {
-            if (event.which === 13) { // Enter key
-                event.preventDefault();
-            }
-        });
-
-        $('#search').on('keyup', function() {
-            let query = $(this).val().trim();
-
-            if (query.length > 1) {
-                $.ajax({
-                    url: "/search-products", // Update this to match your actual route
-                    method: "GET",
-                    data: {
-                        search: query // This now matches the PHP parameter
-                    },
-                    success: function(data) {
-                        console.log('Search results:', data);
-                        let suggestions = '';
-                        if (data.length) {
-                            suggestions = data.map(item =>
-                                `<li>${item.name}</li>`
-                            ).join('');
-                        } else {
-                            suggestions =
-                                '<li style="text-align: center; list-style: none;">No results found</li>';
-                        }
-                        $('#suggestions').html(suggestions).show();
-                    },
-                    error: function(xhr, status, error) {
-                        console.log('Search error:', error);
-                        $('#suggestions').hide();
-                    }
-                });
-            } else {
-                $('#suggestions').hide();
-            }
-        });
-
-         $('#searchmoblie').on('keyup', function() {
-            let query = $(this).val().trim();
-
-            if (query.length > 1) {
-                $.ajax({
-                    url: "/search-products", // Update this to match your actual route
-                    method: "GET",
-                    data: {
-                        search: query // This now matches the PHP parameter
-                    },
-                    success: function(data) {
-                        console.log('Search results:', data);
-                        let suggestions = '';
-                        if (data.length) {
-                            suggestions = data.map(item =>
-                                `<li>${item.name}</li>`
-                            ).join('');
-                        } else {
-                            suggestions =
-                                '<li style="text-align: center; list-style: none;">No results found</li>';
-                        }
-                        $('#suggestionsmoblie').html(suggestions).show();
-                    },
-                    error: function(xhr, status, error) {
-                        console.log('Search error:', error);
-                        $('#suggestionsmoblie').hide();
-                    }
-                });
-            } else {
-                $('#suggestionsmoblie').hide();
-            }
-        });
-
-
-        // Handle suggestion clicks
-        $(document).on('click', '#suggestions li', function() {
-            let name = $(this).text();
-
-            // Set the selected value in the search input
-            $('#search').val(name);
-            $('#suggestions').hide();
-
-            // Redirect to allproducts without ID
-            window.location.href = '/allproducts';
-        });
-
-        // Hide suggestions when clicking outside
-        $(document).on('click', function(e) {
-            if (!$(e.target).closest('.d_search_form').length) {
-                $('#suggestions').hide();
-            }
-        });
-
-        // Handle suggestion clicks
-        $(document).on('click', '#suggestions li', function() {
-            let name = $(this).text();
-
-            // Set the selected value in the search input
-            $('#searchmoblie').val(name);
-            $('#suggestionsmoblie').hide();
-
-            // Redirect to allproducts without ID
-            window.location.href = '/allproducts';
-        });
-
-        // Hide suggestions when clicking outside
-        $(document).on('click', function(e) {
-            if (!$(e.target).closest('.d_search_form').length) {
-                $('#suggestionsmoblie').hide();
-            }
-        });
+$(document).ready(function() {
+    // Prevent form submission on Enter for both search inputs
+    $('#search, #searchmoblie').on('keypress', function(event) {
+        if (event.which === 13) {
+            event.preventDefault();
+        }
     });
+
+    let searchResults = [];  // store results globally
+
+    // Handle keyup on main search input
+    $('#search').on('keyup', function() {
+        let query = $(this).val().trim();
+
+        if (query.length > 1) {
+            $.ajax({
+                url: "/search-products",
+                method: "GET",
+                data: { search: query },
+                success: function(data) {
+                    searchResults = data;  // store search data
+
+                    let suggestions = '';
+                    if (data.length) {
+                        suggestions = data.map(item =>
+                            `<li class="suggestion-item" data-id="${item.id}" style="cursor:pointer;">${item.name}</li>`
+                        ).join('');
+                    } else {
+                        suggestions = '<li style="text-align: center; list-style: none;">No results found</li>';
+                    }
+                    $('#suggestions').html(suggestions).show();
+                },
+                error: function(xhr, status, error) {
+                    console.log('Search error:', error);
+                    $('#suggestions').hide();
+                }
+            });
+        } else {
+            $('#suggestions').hide();
+        }
+    });
+
+    // Handle click on suggestion item (desktop)
+    $(document).on('click', '#suggestions .suggestion-item', function() {
+        const id = $(this).data('id');
+        const name = $(this).text();
+
+        if (!id) return;
+
+        // Hide suggestions dropdown after click
+        $('#suggestions').hide();
+
+        // Set the clicked name in the search input
+        $('#search').val(name);
+
+        // Find clicked product in cached search results
+        const product = searchResults.find(p => p.id === id);
+        if (product) {
+            renderSingleProduct(product);
+        } else {
+            // Optional: fetch full product data from server if not found
+            $.ajax({
+                url: '/get-product',
+                method: 'GET',
+                data: { id: id },
+                success: function(productData) {
+                    renderSingleProduct(productData);
+                },
+                error: function() {
+                    alert('Failed to load product details.');
+                }
+            });
+        }
+    });
+
+    // Handle keyup on mobile search input
+    $('#searchmoblie').on('keyup', function() {
+        let query = $(this).val().trim();
+
+        if (query.length > 1) {
+            $.ajax({
+                url: "/search-products",
+                method: "GET",
+                data: { search: query },
+                success: function(data) {
+                    searchResults = data;
+
+                    let suggestions = '';
+                    if (data.length) {
+                        suggestions = data.map(item =>
+                            `<li class="suggestion-item" data-id="${item.id}" style="cursor:pointer;">${item.name}</li>`
+                        ).join('');
+                    } else {
+                        suggestions = '<li style="text-align: center; list-style: none;">No results found</li>';
+                    }
+                    $('#suggestionsmoblie').html(suggestions).show();
+                },
+                error: function() {
+                    $('#suggestionsmoblie').hide();
+                }
+            });
+        } else {
+            $('#suggestionsmoblie').hide();
+        }
+    });
+
+    // Handle click on suggestion item (mobile)
+    $(document).on('click', '#suggestionsmoblie .suggestion-item', function() {
+        const id = $(this).data('id');
+        const name = $(this).text();
+
+        if (!id) return;
+
+        $('#suggestionsmoblie').hide();
+        $('#searchmoblie').val(name);
+
+        // Optionally render product or redirect
+        const product = searchResults.find(p => p.id === id);
+        if (product) {
+            renderSingleProduct(product);
+        } else {
+            $.ajax({
+                url: '/get-product',
+                method: 'GET',
+                data: { id: id },
+                success: function(productData) {
+                    renderSingleProduct(productData);
+                },
+                error: function() {
+                    alert('Failed to load product details.');
+                }
+            });
+        }
+    });
+
+    // Hide suggestions when clicking outside for desktop and mobile
+    $(document).on('click', function(e) {
+        if (!$(e.target).closest('.d_search_form').length) {
+            $('#suggestions').hide();
+            $('#suggestionsmoblie').hide();
+        }
+    });
+
+    // Render a single product card in #gridContainer
+    function renderSingleProduct(product) {
+        const gridContainer = $('#gridContainer');
+        gridContainer.empty();
+
+        const firstImage = (product.image && typeof product.image === 'string')
+            ? product.image.split(',')[0].trim()
+            : 'default.jpg';
+
+        const categoryName = product.category_name || "Unknown";
+        const productPrice = parseFloat(product.price).toFixed(2);
+
+        const cardHtml = `
+            <div class="col-xl-4 col-lg-6 col-md-4 col-sm-6 col-12 mb-4 d-flex justify-content-center">
+                <div class="game-card position-relative" data-id="${product.id}">
+                    <img src="${firstImage}" alt="${product.name}" class="card-img-top" />
+                    <div class="position-absolute card-content">
+                        <h3>${product.name}</h3>
+                        <h3 class="mb-0">$${productPrice} <span class="badge usd-badge">USD</span></h3>
+                        <span class="badge bg-secondary mt-2">${categoryName}</span>
+                    </div>
+                    <div class="card-actions d-flex align-items-center gap-3">
+                        <div class="d_main_button w-100">
+                            <button class="custom-cart-btn w-100" data-id="${product.id}">ADD TO CART</button>
+                            <div class="d_border"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        gridContainer.append(cardHtml);
+    }
+});
 </script>
+
 
 </html>
