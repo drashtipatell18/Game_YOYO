@@ -141,6 +141,7 @@
     #suggestions li:hover {
         background-color: #000000;
     }
+
     #suggestionsmoblie {
         display: none;
         cursor: default;
@@ -163,6 +164,38 @@
 
     #suggestionsmoblie li:hover {
         background-color: #000000;
+    }
+
+    .search-wrapper {
+        position: relative;
+    }
+
+    #search-icon,
+    #clear-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 10px;
+        color: #333;
+    }
+
+    input[type="search"]::-webkit-search-cancel-button {
+        -webkit-appearance: none;
+        appearance: none;
+        display: none;
+    }
+
+    .search-wrapper {
+        position: relative;
+    }
+
+    #searchmoblie-icon,
+    #clearmoblie-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 10px;
+        color: #333;
     }
 </style>
 
@@ -202,10 +235,18 @@
 
 
                 <form class="d_search_form" method="GET">
-                 @csrf
-                    <input type="search" placeholder="Search games..." id="search" name="search" />
-                    <button type="submit"><i class="fas fa-search"></i></button>
-                    <ul id="suggestions"></ul>
+                    @csrf
+                    <div class="search-wrapper">
+                        <input type="search" placeholder="Search games..." id="search" name="search" />
+
+                        <!-- Search Icon -->
+                        <i id="search-icon" class="fas fa-search"></i>
+
+                        <!-- Clear Button (X) -->
+                        <span id="clear-btn" style="display:none; cursor:pointer;">&#10005;</span>
+
+                        <ul id="suggestions"></ul>
+                    </div>
                 </form>
 
                 <div class="d_social_icons me-3">
@@ -275,12 +316,21 @@
                     </li>
                 </ul>
             </nav>
-             <form class="d_search_form" method="GET">
+            <form class="d_search_form" method="GET">
                 @csrf
+                <div class="search-wrapper">
                     <input type="search" placeholder="Search games..." id="searchmoblie" name="searchmoblie" />
-                    <button type="submit"><i class="fas fa-search"></i></button>
+
+                    <!-- Search Icon -->
+                    <i id="searchmoblie-icon" class="fas fa-search"></i>
+
+                    <!-- Clear Button -->
+                    <span id="clearmoblie-btn" style="display:none; cursor:pointer;">&#10005;</span>
+
                     <ul id="suggestionsmoblie"></ul>
-                </form>
+                </div>
+            </form>
+
             <div class="d_social_icons_offcanvas">
                 <a href="{{ route('cart') }}"><i class="fa fa-cart-plus"></i></a>
                 <a href="{{ route('profile', Auth::id()) }}"><i class="fas fa-user-circle"></i></a>
@@ -291,139 +341,185 @@
 </body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-$(document).ready(function() {
-    // Prevent form submission on Enter for both search inputs
-   $('#search, #searchmoblie').on('keypress', function (event) {
-        if (event.which === 13) {
-            event.preventDefault();
-            const query = $(this).val().trim();
-            if (query.length > 1) {
-                window.location.href = '/allproducts?search=' + encodeURIComponent(query);
+    $(document).ready(function() {
+        // Prevent form submission on Enter for both search inputs
+        $('#search, #searchmoblie').on('keypress', function(event) {
+            if (event.which === 13) {
+                event.preventDefault();
+                const query = $(this).val().trim();
+                if (query.length > 1) {
+                    window.location.href = '/allproducts?search=' + encodeURIComponent(query);
+                }
             }
-        }
-    });
+        });
 
-    let searchResults = [];  // store results globally
+        let searchResults = []; // store results globally
 
-    // Handle keyup on main search input
-    $('#search').on('keyup', function() {
-        let query = $(this).val().trim();
+        // Handle keyup on main search input
+        $('#search').on('keyup', function() {
+            let query = $(this).val().trim();
 
-        if (query.length > 1) {
-            $.ajax({
-                url: "/search-products",
-                method: "GET",
-                data: { search: query },
-                success: function(data) {
-                    searchResults = data;  // store search data
+            if (query.length > 1) {
+                $.ajax({
+                    url: "/search-products",
+                    method: "GET",
+                    data: {
+                        search: query
+                    },
+                    success: function(data) {
+                        searchResults = data; // store search data
 
-                    let suggestions = '';
-                    if (data.length) {
-                        suggestions = data.map(item =>
-                            `<li class="suggestion-item" data-id="${item.id}" style="cursor:pointer;">${item.name}</li>`
-                        ).join('');
-                    } else {
-                        suggestions = '<li style="text-align: center; list-style: none;">No results found</li>';
+                        let suggestions = '';
+                        if (data.length) {
+                            suggestions = data.map(item =>
+                                `<li class="suggestion-item" data-id="${item.id}" style="cursor:pointer;">${item.name}</li>`
+                            ).join('');
+                        } else {
+                            suggestions =
+                                '<li style="text-align: center; list-style: none;">No results found</li>';
+                        }
+                        $('#suggestions').html(suggestions).show();
+                    },
+                    error: function(xhr, status, error) {
+                        console.log('Search error:', error);
+                        $('#suggestions').hide();
                     }
-                    $('#suggestions').html(suggestions).show();
-                },
-                error: function(xhr, status, error) {
-                    console.log('Search error:', error);
-                    $('#suggestions').hide();
-                }
-            });
-        } else {
+                });
+            } else {
+                $('#suggestions').hide();
+            }
+        });
+
+        // Handle click on suggestion item (desktop)
+        $(document).on('click', '#suggestions .suggestion-item', function() {
+            const id = $(this).data('id');
+            const name = $(this).text().trim();
+
+            if (!id) return;
+
+            // Hide suggestions dropdown after click
             $('#suggestions').hide();
-        }
-    });
 
-    // Handle click on suggestion item (desktop)
-    $(document).on('click', '#suggestions .suggestion-item', function() {
-        const id = $(this).data('id');
-        const name = $(this).text().trim();
+            // Set the clicked name in the search input
+            $('#search').val(name);
 
-        if (!id) return;
+            // redirect to allproducts page with search value.
 
-        // Hide suggestions dropdown after click
-        $('#suggestions').hide();
+            // http://127.0.0.1:8000/allproducts?search=vice_city
 
-        // Set the clicked name in the search input
-        $('#search').val(name);
-
-        // redirect to allproducts page with search value.
-
-        // http://127.0.0.1:8000/allproducts?search=vice_city
-
-        if (name.length > 1) {
-            console.log('enterrrr');
-            window.location.href = '/allproducts?search=' + encodeURIComponent(name);
-        }
+            if (name.length > 1) {
+                console.log('enterrrr');
+                window.location.href = '/allproducts?search=' + encodeURIComponent(name);
+            }
 
 
-        // Find clicked product in cached search results
-        const product = searchResults.find(p => p.id === id);
-        if (product) {
-            renderSingleProduct(product);
-        } else {
-            // Optional: fetch full product data from server if not found
-            $.ajax({
-                url: '/',
-                method: 'GET',
-                data: { id: id },
-                success: function(productData) {
-                    renderSingleProduct(productData);
-                },
-                error: function() {
-                    alert('Failed to load product details.');
-                }
-            });
-        }
-    });
-
-
-
-
-
-    // Handle keyup on mobile search input
-    $('#searchmoblie').on('keyup', function() {
-        let query = $(this).val().trim();
-
-        if (query.length > 1) {
-            $.ajax({
-                url: "/search-products",
-                method: "GET",
-                data: { search: query },
-                success: function(data) {
-                    searchResults = data;
-
-                    let suggestions = '';
-                    if (data.length) {
-                        suggestions = data.map(item =>
-                            `<li class="suggestion-item" data-id="${item.id}" style="cursor:pointer;">${item.name}</li>`
-                        ).join('');
-                    } else {
-                        suggestions = '<li style="text-align: center; list-style: none;">No results found</li>';
+            // Find clicked product in cached search results
+            const product = searchResults.find(p => p.id === id);
+            if (product) {
+                renderSingleProduct(product);
+            } else {
+                // Optional: fetch full product data from server if not found
+                $.ajax({
+                    url: '/',
+                    method: 'GET',
+                    data: {
+                        id: id
+                    },
+                    success: function(productData) {
+                        renderSingleProduct(productData);
+                    },
+                    error: function() {
+                        alert('Failed to load product details.');
                     }
-                    $('#suggestionsmoblie').html(suggestions).show();
-                },
-                error: function() {
-                    $('#suggestionsmoblie').hide();
-                }
-            });
-        } else {
+                });
+            }
+        });
+
+
+
+
+
+        // Handle keyup on mobile search input
+        $('#searchmoblie').on('keyup', function() {
+            let query = $(this).val().trim();
+
+            if (query.length > 1) {
+                $.ajax({
+                    url: "/search-products",
+                    method: "GET",
+                    data: {
+                        search: query
+                    },
+                    success: function(data) {
+                        searchResults = data;
+
+                        let suggestions = '';
+                        if (data.length) {
+                            suggestions = data.map(item =>
+                                `<li class="suggestion-item" data-id="${item.id}" style="cursor:pointer;">${item.name}</li>`
+                            ).join('');
+                        } else {
+                            suggestions =
+                                '<li style="text-align: center; list-style: none;">No results found</li>';
+                        }
+                        $('#suggestionsmoblie').html(suggestions).show();
+                    },
+                    error: function() {
+                        $('#suggestionsmoblie').hide();
+                    }
+                });
+            } else {
+                $('#suggestionsmoblie').hide();
+            }
+        });
+
+        // Handle click on suggestion item (mobile)
+        $(document).on('click', '#suggestionsmoblie .suggestion-item', function() {
+            const id = $(this).data('id');
+            const name = $(this).text();
+
+            if (!id) return;
+
             $('#suggestionsmoblie').hide();
-        }
-    });
+            $('#searchmoblie').val(name);
 
     // Handle click on suggestion item (mobile)
     $(document).on('click', '#suggestionsmoblie .suggestion-item', function() {
         const id = $(this).data('id');
          const name = $(this).text().trim();
+            // Optionally render product or redirect
+            const product = searchResults.find(p => p.id === id);
+            if (product) {
+                renderSingleProduct(product);
+            } else {
+                $.ajax({
+                    url: '/get-product',
+                    method: 'GET',
+                    data: {
+                        id: id
+                    },
+                    success: function(productData) {
+                        renderSingleProduct(productData);
+                    },
+                    error: function() {
+                        alert('Failed to load product details.');
+                    }
+                });
+            }
+        });
 
-        if (!id) return;
+        // Hide suggestions when clicking outside for desktop and mobile
+        $(document).on('click', function(e) {
+            if (!$(e.target).closest('.d_search_form').length) {
+                $('#suggestions').hide();
+                $('#suggestionsmoblie').hide();
+            }
+        });
 
-        $('#suggestionsmoblie').hide();
-        $('#searchmoblie').val(name);
+        // Render a single product card in #gridContainer
+        function renderSingleProduct(product) {
+            const gridContainer = $('#gridContainer');
+            gridContainer.empty();
 
         if (name.length > 1) {
             window.location.href = '/allproducts?search=' + encodeURIComponent(name);
@@ -448,28 +544,14 @@ $(document).ready(function() {
             });
         }
     });
+            const firstImage = (product.image && typeof product.image === 'string') ?
+                product.image.split(',')[0].trim() :
+                'default.jpg';
 
-    // Hide suggestions when clicking outside for desktop and mobile
-    $(document).on('click', function(e) {
-        if (!$(e.target).closest('.d_search_form').length) {
-            $('#suggestions').hide();
-            $('#suggestionsmoblie').hide();
-        }
-    });
+            const categoryName = product.category_name || "Unknown";
+            const productPrice = parseFloat(product.price).toFixed(2);
 
-    // Render a single product card in #gridContainer
-    function renderSingleProduct(product) {
-        const gridContainer = $('#gridContainer');
-        gridContainer.empty();
-
-        const firstImage = (product.image && typeof product.image === 'string')
-            ? product.image.split(',')[0].trim()
-            : 'default.jpg';
-
-        const categoryName = product.category_name || "Unknown";
-        const productPrice = parseFloat(product.price).toFixed(2);
-
-        const cardHtml = `
+            const cardHtml = `
             <div class="col-xl-4 col-lg-6 col-md-4 col-sm-6 col-12 mb-4 d-flex justify-content-center">
                 <div class="game-card position-relative" data-id="${product.id}">
                     <img src="${firstImage}" alt="${product.name}" class="card-img-top" />
@@ -487,9 +569,48 @@ $(document).ready(function() {
                 </div>
             </div>
         `;
-        gridContainer.append(cardHtml);
-    }
-});
+            gridContainer.append(cardHtml);
+        }
+    });
+    const searchInput = document.getElementById('search');
+    const searchIcon = document.getElementById('search-icon');
+    const clearBtn = document.getElementById('clear-btn');
+
+    searchInput.addEventListener('input', () => {
+        if (searchInput.value.trim() !== '') {
+            searchIcon.style.display = 'none';
+            clearBtn.style.display = 'inline';
+        } else {
+            searchIcon.style.display = 'inline';
+            clearBtn.style.display = 'none';
+        }
+    });
+
+    clearBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        searchInput.dispatchEvent(new Event('input'));
+        searchInput.focus();
+    });
+
+    const searchInputMob = document.getElementById('searchmoblie');
+    const searchIconMob = document.getElementById('searchmoblie-icon');
+    const clearBtnMob = document.getElementById('clearmoblie-btn');
+
+    searchInputMob.addEventListener('input', () => {
+        if (searchInputMob.value.trim() !== '') {
+            searchIconMob.style.display = 'none';
+            clearBtnMob.style.display = 'inline';
+        } else {
+            searchIconMob.style.display = 'inline';
+            clearBtnMob.style.display = 'none';
+        }
+    });
+
+    clearBtnMob.addEventListener('click', () => {
+        searchInputMob.value = '';
+        searchInputMob.dispatchEvent(new Event('input'));
+        searchInputMob.focus();
+    });
 </script>
 
 
