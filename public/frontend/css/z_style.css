@@ -756,7 +756,7 @@ s_bg_img_overlay,
 }
 .contact-input {
   border: 1.5px solid #2a004f;
-  
+
   border-radius: 8px;
   font-size: 1rem;
   padding: 0.75rem 1rem;
@@ -765,13 +765,13 @@ s_bg_img_overlay,
 .contact-input:focus {
   border-color: #8a775a;
   box-shadow: 0 0 0 2px #8a775a33;
-  
+
 }
 .contact-send-btn {
   background: #ad9d79 !important;
   color: #fff !important;
   font-weight: 600;
-  border-radius: 0 18px 18px 0;
+  border-radius: 18px 18px 18px 18px;
   padding: 0.7rem 2.2rem;
   border: none;
   margin-top: 0.5rem;
