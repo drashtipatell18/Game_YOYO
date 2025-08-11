@@ -191,6 +191,7 @@ Route::get('/front-reset/{token}', [FrontendLoginController::class, 'frontreset'
 Route::post('/front-reset/{token}', [FrontendLoginController::class, 'frontpostReset'])->name('frontpost_reset');
 Route::get('/index', [FrontendHomeController::class, 'index'])->name('index');
 Route::get('/aboutsus', [AboutUSController::class, 'aboutus'])->name(name: 'aboutus');
+Route::get('/chatboat', [FrontendHomeController::class, 'FrontendChatboat'])->name('chatboat');
 
 Route::get('/contactus', [FrontendContactUsController::class, 'contactus'])->name('frontendcontactus');
 Route::post('/contactus/store', [FrontendContactUsController::class, 'contactusStore'])->name('contactus.store');
