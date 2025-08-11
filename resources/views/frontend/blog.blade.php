@@ -52,6 +52,13 @@
         pointer-events: none; /* So it doesn't block typing */
         font-size: 16px;
     }
+    @media (max-width: 576px) {
+        .x_blog-search {
+            font-size: 14px;
+            padding-right: 44px; 
+            color: white !important;
+        }
+    }
     /* End Css Override Icon */
 
 </style>
@@ -193,9 +200,11 @@
                 <div class="offcanvas-body">
                     <div class="x_blog-widget mb-4">
                         <h5 class="x_blog-widget-title">Blog Search</h5>
-                        <div class="x_blog-search-wrap">
-                            <input type="text" class="form-control x_blog-search" placeholder="Search">
-                            <span class="x_blog-search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+                          <div class="x_blog-search-wrap">
+                            <input type="text" class="x_blog-search" placeholder="Search">
+                            <span class="x_blog-search-icon">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </span>
                         </div>
                     </div>
 
