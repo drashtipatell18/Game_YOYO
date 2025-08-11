@@ -276,10 +276,10 @@
                 </ul>
             </nav>
              <form class="d_search_form" method="GET">
-                    <!-- @csrf would go here in Laravel -->
+                @csrf
                     <input type="search" placeholder="Search games..." id="searchmoblie" name="searchmoblie" />
                     <button type="submit"><i class="fas fa-search"></i></button>
-                    <ul id="suggestions"></ul>
+                    <ul id="suggestionsmoblie"></ul>
                 </form>
             <div class="d_social_icons_offcanvas">
                 <a href="{{ route('cart') }}"><i class="fa fa-cart-plus"></i></a>
@@ -380,14 +380,7 @@ $(document).ready(function() {
         }
     });
 
-    // $(document).on('click', '#suggestions .suggestion-item', function() {
-    //     const name = $(this).text().trim();
 
-    //     if (name) {
-    //         // Redirect to allproducts page with search query
-    //         window.location.href = '/allproducts?search=' + encodeURIComponent(name);
-    //     }
-    // });
 
 
 
