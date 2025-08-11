@@ -10,32 +10,45 @@ use App\Models\Product;
 use App\Models\Banner;
 use Carbon\Carbon;
 
+use Illuminate\Support\Facades\Log;
 class HomeController extends Controller
 {
     public function index()
-    {    
-        $tomorrowStart = Carbon::tomorrow()->startOfDay();
+    {
+        $now = Carbon::now('Asia/Kolkata');
+        $todayStart = Carbon::today('Asia/Kolkata');
+        $todayEnd = Carbon::today('Asia/Kolkata')->endOfDay();
 
-        Product::where('status', 'inactive')
-            ->where('release_date', '<=', $tomorrowStart)  // activate if release date is <= tomorrow 00:00:00
+        // Activate products whose release_date has passed
+        $updatedCount = Product::where('status', 'inactive')
+            ->where('release_date', '<=', $now)
             ->update(['status' => 'active']);
 
         $ourTeams = OutTeam::all();
-    
-        $upcomingProduct = Product::where('status', 'inactive')
-            ->where('release_date', '>', $tomorrowStart)  // products after tomorrow
-            ->orderBy('release_date', 'asc')
-            ->get();
+
+        // Get upcoming products + today's scheduled products
+        $upcomingProduct = Product::where(function($query) use ($now, $todayStart, $todayEnd) {
+            // Future products that are inactive
+            $query->where('status', 'inactive')
+                ->where('release_date', '>', $now);
+        })
+        ->orWhere(function($query) use ($todayStart, $todayEnd, $now) {
+            // Today's products (regardless of status) that haven't been released yet
+            $query->whereBetween('release_date', [$todayStart, $todayEnd])
+                ->where('release_date', '>', $now);
+        })
+        ->orderBy('release_date', 'asc')
+        ->get();
 
         $banners = Banner::select('id', 'title', 'subtitle', 'link', 'image')->get();
         $banners = $banners->map(function ($banner) {
             $banner->image = url('images/banners/' . $banner->image);
             return $banner;
         });
-        
+
         $featuteProducts = Product::with('category')->orderBy('created_at', 'desc')->get();
-        
-        return view('frontend.index',compact('ourTeams', 'featuteProducts','upcomingProduct','banners'));
+
+        return view('frontend.index', compact('ourTeams', 'featuteProducts', 'upcomingProduct', 'banners'));
     }
     public function getCategoriesJson()
     {
@@ -63,7 +76,7 @@ class HomeController extends Controller
         $search = str_replace(['%', '_'], ['\%', '\_'], trim($request->search));
         $query->where('name', 'LIKE', "%{$search}%");
     }
-        
+
 
         $products = $query->get();
 

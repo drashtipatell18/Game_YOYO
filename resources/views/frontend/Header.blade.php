@@ -145,7 +145,7 @@
         display: none;
         cursor: default;
         width: 99%;
-        max-height: 300px;
+        max-height: 40px;
         overflow-y: auto;
         list-style-type: none;
         padding: 0;
@@ -198,19 +198,11 @@
                         <a class="nav-link {{ request()->routeIs('frontendcontactus') ? 'active' : '' }}"
                             href="{{ route('frontendcontactus') }}">Contact</a>
                     </li>
-                    {{-- <li class="nav-item px-2">
-                        <a href="{{ route('yin.index') }}">
-                            <button
-                                class="d_search_form btn_gem {{ request()->routeIs('yin.index') ? 'active' : '' }}">
-                                Yin
-                            </button>
-                        </a>
-                    </li> --}}
                 </ul>
 
 
                 <form class="d_search_form" method="GET">
-                    <!-- @csrf would go here in Laravel -->
+                 @csrf
                     <input type="search" placeholder="Search games..." id="search" name="search" />
                     <button type="submit"><i class="fas fa-search"></i></button>
                     <ul id="suggestions"></ul>
@@ -281,22 +273,14 @@
                         <a class="nav-link {{ request()->routeIs('frontendcontactus') ? 'active' : '' }}"
                             href="{{ route('frontendcontactus') }}">Contact</a>
                     </li>
-                    {{-- <li class="nav-item px-2">
-                        <a href="{{ route('yin.index') }}">
-                            <button
-                                class="d_search_form btn_gem {{ request()->routeIs('yin.index') ? 'active' : '' }}">
-                                Yin
-                            </button>
-                        </a>
-                    </li> --}}
                 </ul>
             </nav>
-            <form class="d_search_form" method="POST">
-                <!-- @csrf would go here in Laravel -->
-                <input type="search" placeholder="Search games..." id="searchmoblie" name="searchmoblie" />
-                <button type="submit"><i class="fas fa-search"></i></button>
-                <ul id="suggestionsmoblie"></ul>
-            </form>
+             <form class="d_search_form" method="GET">
+                    <!-- @csrf would go here in Laravel -->
+                    <input type="search" placeholder="Search games..." id="searchmoblie" name="searchmoblie" />
+                    <button type="submit"><i class="fas fa-search"></i></button>
+                    <ul id="suggestions"></ul>
+                </form>
             <div class="d_social_icons_offcanvas">
                 <a href="{{ route('cart') }}"><i class="fa fa-cart-plus"></i></a>
                 <a href="{{ route('profile', Auth::id()) }}"><i class="fas fa-user-circle"></i></a>
@@ -309,9 +293,13 @@
 <script>
 $(document).ready(function() {
     // Prevent form submission on Enter for both search inputs
-    $('#search, #searchmoblie').on('keypress', function(event) {
+   $('#search, #searchmoblie').on('keypress', function (event) {
         if (event.which === 13) {
             event.preventDefault();
+            const query = $(this).val().trim();
+            if (query.length > 1) {
+                window.location.href = '/allproducts?search=' + encodeURIComponent(query);
+            }
         }
     });
 
@@ -352,7 +340,7 @@ $(document).ready(function() {
     // Handle click on suggestion item (desktop)
     $(document).on('click', '#suggestions .suggestion-item', function() {
         const id = $(this).data('id');
-        const name = $(this).text();
+        const name = $(this).text().trim();
 
         if (!id) return;
 
@@ -362,6 +350,16 @@ $(document).ready(function() {
         // Set the clicked name in the search input
         $('#search').val(name);
 
+        // redirect to allproducts page with search value.
+
+        // http://127.0.0.1:8000/allproducts?search=vice_city
+
+        if (name.length > 1) {
+            console.log('enterrrr');
+            window.location.href = '/allproducts?search=' + encodeURIComponent(name);
+        }
+
+
         // Find clicked product in cached search results
         const product = searchResults.find(p => p.id === id);
         if (product) {
@@ -369,7 +367,7 @@ $(document).ready(function() {
         } else {
             // Optional: fetch full product data from server if not found
             $.ajax({
-                url: '/get-product',
+                url: '/',
                 method: 'GET',
                 data: { id: id },
                 success: function(productData) {
@@ -381,6 +379,17 @@ $(document).ready(function() {
             });
         }
     });
+
+    // $(document).on('click', '#suggestions .suggestion-item', function() {
+    //     const name = $(this).text().trim();
+
+    //     if (name) {
+    //         // Redirect to allproducts page with search query
+    //         window.location.href = '/allproducts?search=' + encodeURIComponent(name);
+    //     }
+    // });
+
+
 
     // Handle keyup on mobile search input
     $('#searchmoblie').on('keyup', function() {

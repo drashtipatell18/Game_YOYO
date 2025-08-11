@@ -79,7 +79,7 @@
             }
         }
 
-       
+
     </style>
     <!-- Hero Section Start -->
     <div class="Z_cards_hero">
@@ -266,7 +266,7 @@
                     fetch("categoriesJson").then(res => res.json())
                 ]);
 
-                // Store data globally
+                // Store data gllobally
                 allProducts = products;
                 allCategories = categories;
 
@@ -284,6 +284,7 @@
 
                 const urlParams = new URLSearchParams(window.location.search);
                 const categoryIdFromUrl = urlParams.get('category'); // e.g. '7'
+                const searchQueryFromUrl = urlParams.get('search');  // e.g. 'Dhruvish'
 
                 if (categoryIdFromUrl) {
                     // Filter products by category from URL
@@ -292,6 +293,15 @@
                     );
                 } else {
                     filteredProducts = [...allProducts];
+                }
+
+
+                if (searchQueryFromUrl) {
+                    const lowerSearch = searchQueryFromUrl.toLowerCase();
+                    filteredProducts = filteredProducts.filter(product =>
+                        product.name.toLowerCase().includes(lowerSearch) ||
+                        product.category_name.toLowerCase().includes(lowerSearch)
+                    );
                 }
 
 
