@@ -24,7 +24,6 @@ class ProductController extends Controller
 
         $relatedProducts = Product::where('category_id', $product->category_id)
                               ->where('id', '!=', $product->id)
-                              ->take(10)
                               ->get();
 
                             // dd($relatedProducts);
