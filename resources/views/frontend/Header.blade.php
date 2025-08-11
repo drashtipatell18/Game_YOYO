@@ -418,12 +418,17 @@ $(document).ready(function() {
     // Handle click on suggestion item (mobile)
     $(document).on('click', '#suggestionsmoblie .suggestion-item', function() {
         const id = $(this).data('id');
-        const name = $(this).text();
+         const name = $(this).text().trim();
 
         if (!id) return;
 
         $('#suggestionsmoblie').hide();
         $('#searchmoblie').val(name);
+
+        if (name.length > 1) {
+            window.location.href = '/allproducts?search=' + encodeURIComponent(name);
+        }
+
 
         // Optionally render product or redirect
         const product = searchResults.find(p => p.id === id);
