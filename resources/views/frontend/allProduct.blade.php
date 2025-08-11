@@ -419,6 +419,16 @@
                 listContainer.innerHTML = "";
             }
 
+            if (filteredProducts.length === 0) {
+                const pagination = document.getElementById('pagination');
+                if (pagination) {
+                    pagination.innerHTML = '';
+                    pagination.style.display = 'none';
+                }
+                return;
+            }
+            
+
             // Calculate pagination
             const productsPerPage = 12;
             const totalProducts = filteredProducts.length;
