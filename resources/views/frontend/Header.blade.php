@@ -185,10 +185,6 @@
         display: none;
     }
 
-    .search-wrapper {
-        position: relative;
-    }
-
     #searchmoblie-icon,
     #clearmoblie-btn {
         position: absolute;
@@ -330,7 +326,6 @@
                     <ul id="suggestionsmoblie"></ul>
                 </div>
             </form>
-
             <div class="d_social_icons_offcanvas">
                 <a href="{{ route('cart') }}"><i class="fa fa-cart-plus"></i></a>
                 <a href="{{ route('profile', Auth::id()) }}"><i class="fas fa-user-circle"></i></a>
@@ -483,10 +478,6 @@
             $('#suggestionsmoblie').hide();
             $('#searchmoblie').val(name);
 
-    // Handle click on suggestion item (mobile)
-    $(document).on('click', '#suggestionsmoblie .suggestion-item', function() {
-        const id = $(this).data('id');
-         const name = $(this).text().trim();
             // Optionally render product or redirect
             const product = searchResults.find(p => p.id === id);
             if (product) {
@@ -521,29 +512,6 @@
             const gridContainer = $('#gridContainer');
             gridContainer.empty();
 
-        if (name.length > 1) {
-            window.location.href = '/allproducts?search=' + encodeURIComponent(name);
-        }
-
-
-        // Optionally render product or redirect
-        const product = searchResults.find(p => p.id === id);
-        if (product) {
-            renderSingleProduct(product);
-        } else {
-            $.ajax({
-                url: '/get-product',
-                method: 'GET',
-                data: { id: id },
-                success: function(productData) {
-                    renderSingleProduct(productData);
-                },
-                error: function() {
-                    alert('Failed to load product details.');
-                }
-            });
-        }
-    });
             const firstImage = (product.image && typeof product.image === 'string') ?
                 product.image.split(',')[0].trim() :
                 'default.jpg';
@@ -591,7 +559,6 @@
         searchInput.dispatchEvent(new Event('input'));
         searchInput.focus();
     });
-
     const searchInputMob = document.getElementById('searchmoblie');
     const searchIconMob = document.getElementById('searchmoblie-icon');
     const clearBtnMob = document.getElementById('clearmoblie-btn');
