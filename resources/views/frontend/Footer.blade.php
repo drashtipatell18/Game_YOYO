@@ -106,9 +106,18 @@
                     <h5 class="text-white mb-3">Contact</h5>
                     <ul class="list-unstyled d_footer-links d_footer_text">
                         <li><i class="fas fa-envelope me-2"></i> info@yoyokhel.com</li>
-                        <li><i class="fas fa-phone me-2"></i>1800-9797-6361</li>
-                        <li><i class="fas fa-location-dot me-2"></i>264 Weber St W, Kitchener, <br/> ON N2H 4A6, Canada</li>
+                        <li><i class="fas fa-phone me-2"></i> 1800-9797-6361</li>
+                        <li>
+                            <div class="d-flex align-items-start">
+                                <i class="fas fa-location-dot me-2 mt-1"></i>
+                                <div>
+                                    264 Weber St W, Kitchener,<br />
+                                    ON N2H 4A6, Canada
+                                </div>
+                            </div>
+                        </li>
                     </ul>
+
                     <div class="d_footer-social mt-3">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
                         <a href="#"><i class="fab fa-x-twitter"></i></a>
@@ -335,21 +344,21 @@
             dbUserDropdown.style.display = 'none';
         });
     </script>
-   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        fetch("/categoriesJson")
-            .then(res => res.json())
-            .then(categories => {
-                const wrapper = document.getElementById("categoryWrapper");
-                wrapper.innerHTML = "";
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch("/categoriesJson")
+                .then(res => res.json())
+                .then(categories => {
+                    const wrapper = document.getElementById("categoryWrapper");
+                    wrapper.innerHTML = "";
 
-                categories.forEach(cat => {
-                    wrapper.innerHTML += `
+                    categories.forEach(cat => {
+                        wrapper.innerHTML += `
                         <a href="/allproducts?category=${cat.id}" class="category-link">
                             <div class="d_category_card">
                                 <img src="${cat.image}" alt="${cat.name} Game"
                                     onerror="this.onerror=null;this.src='/images/products/dummy_product.png';" />
-                                
+
                                 <div class="d_category_overlay">
                                     <div class="d_category_text">${cat.name}</div>
                                 </div>
@@ -359,14 +368,14 @@
                             </div>
                         </a>
                     `;
+                    });
+                })
+                .catch(() => {
+                    document.getElementById("categoryWrapper").innerHTML =
+                        "<div class='text-danger'>Failed to load categories.</div>";
                 });
-            })
-            .catch(() => {
-                document.getElementById("categoryWrapper").innerHTML =
-                    "<div class='text-danger'>Failed to load categories.</div>";
-            });
-    });
-</script>
+        });
+    </script>
 
 
     <script>
