@@ -111,6 +111,10 @@
             }
 
         }
+
+        p.text-muted {
+            color: #cfcfcf!important;
+        }
     </style>
     <!-- x_game-product-section START -->
     <section class="x_game-shop a_header_container">
@@ -396,10 +400,10 @@
                         <!-- Cards will be injected here by JS -->
                     </div>
                     <!-- Add navigation buttons
-                                                                                            <div class="swiper-button-next"></div>
-                                                                                            <div class="swiper-button-prev"></div>
-                                                                                            Add pagination
-                                                                                            <div class="swiper-pagination"></div> -->
+                                                                                                <div class="swiper-button-next"></div>
+                                                                                                <div class="swiper-button-prev"></div>
+                                                                                                Add pagination
+                                                                                                <div class="swiper-pagination"></div> -->
                 </div>
             </div>
         </div>
@@ -597,7 +601,7 @@
                             // Update counter
                             $('#reviewsCounter').text(
                                 `Showing ${currentOffset} of ${response.totalReviews} reviews`
-                                );
+                            );
 
                             // Show "Show Less" button after loading more
                             $('#showLessBtn').removeClass('d-none');
