@@ -202,7 +202,7 @@
 
 
                 <form class="d_search_form" method="GET">
-                    <!-- @csrf would go here in Laravel -->
+                 @csrf
                     <input type="search" placeholder="Search games..." id="search" name="search" />
                     <button type="submit"><i class="fas fa-search"></i></button>
                     <ul id="suggestions"></ul>
@@ -340,7 +340,7 @@ $(document).ready(function() {
     // Handle click on suggestion item (desktop)
     $(document).on('click', '#suggestions .suggestion-item', function() {
         const id = $(this).data('id');
-        const name = $(this).text();
+        const name = $(this).text().trim();
 
         if (!id) return;
 
@@ -349,6 +349,16 @@ $(document).ready(function() {
 
         // Set the clicked name in the search input
         $('#search').val(name);
+
+        // redirect to allproducts page with search value.
+
+        // http://127.0.0.1:8000/allproducts?search=vice_city
+
+        if (name.length > 1) {
+            console.log('enterrrr');
+            window.location.href = '/allproducts?search=' + encodeURIComponent(name);
+        }
+
 
         // Find clicked product in cached search results
         const product = searchResults.find(p => p.id === id);
