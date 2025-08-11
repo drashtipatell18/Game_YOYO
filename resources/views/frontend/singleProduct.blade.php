@@ -56,6 +56,11 @@
             padding: 10px;
             text-align: left;
         }
+        .label-white {
+            color: rgba(255, 255, 255, 0.89);
+            font-weight: bold; /* optional */
+        }
+
 
         /* Responsive layout below 1024px */
         @media (max-width: 1024px) {
@@ -109,7 +114,10 @@
                 padding-bottom: 15px;
                 margin-bottom: 15px;
             }
-
+            .label-white {
+                color: rgba(255, 255, 255, 0.89);
+                font-weight: bold; /* optional */
+            }
         }
     </style>
     <!-- x_game-product-section START -->
@@ -140,7 +148,29 @@
                             src="{{ isset($images[0]) ? asset('images/products/' . trim($images[0])) : asset('images/products/dummy_product.png') }}"
                             alt="main">
                     </div>
+                     {{-- <div class="col-md-1 d-flex d-md-none flex-row align-items-center justify-content-center x_thumb-list gap-2 mt-2 p-0 mx-auto">
+                        <img src="./images/gg1.png" style="width: 80px;" class="img-fluid mb-3 x_thumb-img" alt="thumb1">
+                        <img src="./images/gg1.png" style="width: 80px;" class="img-fluid mb-3 x_thumb-img" alt="thumb2">
+                        <img src="./images/gg2.png" style="width: 80px;" class="img-fluid mb-3 x_thumb-img" alt="thumb3">
+                    </div> --}}
 
+                     <div class="col-md-1 d-flex d-md-none flex-row align-items-center justify-content-center x_thumb-list gap-2 mt-2 p-0 mx-auto">
+                         @if (!empty($images) && count($images) > 0)
+                            @foreach ($images as $index => $img)
+                                <img src="{{ asset('images/products/' . trim($img)) }}"
+                                    class="img-fluid mb-3 x_thumb-img {{ $index === 0 ? 'active' : '' }}"
+                                    style="width: 80px;"
+                                    alt="thumb{{ $index + 1 }}" onclick="changeMainImage(this)">
+                            @endforeach
+                        @else
+                            <!-- Optional: dummy thumbnail -->
+                            <img src="{{ asset('images/products/dummy_product.png') }}"
+                                class="img-fluid mb-3 x_thumb-img active" alt="default-thumb">
+                        @endif
+                        {{-- <img src="./images/gg1.png" style="width: 80px;" class="img-fluid mb-3 x_thumb-img" alt="thumb1">
+                        <img src="./images/gg1.png" style="width: 80px;" class="img-fluid mb-3 x_thumb-img" alt="thumb2">
+                        <img src="./images/gg2.png" style="width: 80px;" class="img-fluid mb-3 x_thumb-img" alt="thumb3"> --}}
+                    </div>
                     <!-- Product Info -->
                     <div class="col-md-6 x_product-info text-white">
                         <div class="x_shop_info mt-3 mt-sm-0">
@@ -172,7 +202,7 @@
                                 </button>
                             </div>
 
-                            <div class="x_product-meta x_line_tb mb-2">
+                            {{-- <div class="x_product-meta x_line_tb mb-2">
                                 <div>SKU: {{ $product['SKU'] ?? ($product['id'] ?? '000') }}</div>
                                 <div>Category: {{ $product->category->name ?? 'Games' }}</div>
                                 @if (isset($product['tags']))
@@ -182,7 +212,19 @@
                                 @else
                                     <div>Tags: gaming, entertainment</div>
                                 @endif
+                            </div> --}}
+                            <div class="x_product-meta x_line_tb mb-2">
+                                <div><span class="label-white">SKU:</span> {{ $product['SKU'] ?? ($product['id'] ?? '000') }}</div>
+                                <div><span class="label-white">Category:</span> {{ $product->category->name ?? 'Games' }}</div>
+                                @if (isset($product['tags']))
+                                    <div><span class="label-white">Tags:</span>
+                                        {{ is_array($product['tags']) ? implode(', ', $product['tags']) : $product['tags'] }}
+                                    </div>
+                                @else
+                                    <div><span class="label-white">Tags:</span> gaming, entertainment</div>
+                                @endif
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -316,7 +358,7 @@
                                             <p class="mb-0">{{ $review->review }}</p>
                                         </div>
                                     @empty
-                                        <p class="text-muted">No reviews yet.</p>
+                                      <p class="text-muted" style="color: #cfcfcf !important;">No reviews yet.</p>
                                     @endforelse
 
 
