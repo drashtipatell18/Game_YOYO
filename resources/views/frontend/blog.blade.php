@@ -25,6 +25,35 @@
         font-weight: 500;
         margin-top: 5px;
     }
+
+    /* Search Icon Over ride Text Css */
+   .x_blog-search-wrap {
+        position: relative;
+        width: 100%;
+    }
+
+    .x_blog-search {
+        width: 100%;
+        padding: 10px 40px 10px 10px; /* Add right padding for icon */
+        font-size: 16px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        color: rgb(214, 200, 200);
+        background-color: #000; /* or your actual background */
+    }
+
+    .x_blog-search-icon {
+        position: absolute;
+        top: 50%;
+        right: 12px;
+        transform: translateY(-50%);
+        color: #888;
+        pointer-events: none; /* So it doesn't block typing */
+        font-size: 16px;
+    }
+    /* End Css Override Icon */
+
 </style>
 
 <!-- page title section -->
@@ -128,8 +157,10 @@
                 <div class="x_blog-widget mb-4">
                     <h5 class="x_blog-widget-title">Blog Search</h5>
                     <div class="x_blog-search-wrap">
-                        <input type="text" class="form-control x_blog-search" placeholder="Search" style="color: rgb(214, 200, 200)";>
-                        <span class="x_blog-search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+                        <input type="text" class="x_blog-search" placeholder="Search">
+                        <span class="x_blog-search-icon">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </span>
                     </div>
                 </div>
 
