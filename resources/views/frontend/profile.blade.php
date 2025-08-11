@@ -27,7 +27,7 @@
     <!-- Hero Section Start -->
     <div class="Z_profile_hero">
         <div class="Z_cart_hero-overlay">
-            <h1 class="Z_about_title">Profile</h1>
+            <h1 class="Z_about_title">PROFILE</h1>
         </div>
     </div>
     <section class="Z_profile_page">

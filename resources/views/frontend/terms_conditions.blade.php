@@ -3,9 +3,11 @@
     <section class="xs_contact-hero-section">
         <div class="xs_contact-hero-overlay">
             <div class="container text-center py-5">
-                <h1 class="contact-hero-title">Terms Conditions</h1>
+                <h1 class="contact-hero-title">TERMS CONDITIONS</h1>
                 <nav class="breadcrumb-nav">
-                    <span>Home</span> <span class="mx-2">/</span> <span class="active">Terms Conditions</span>
+                     <a href="{{ route('index') }}" class="text-decoration-none text-white">
+                    <span>Home</span> <span class="mx-2">/</span>  </a>
+                    <span class="active">Terms Conditions</span>
                 </nav>
             </div>
         </div>
