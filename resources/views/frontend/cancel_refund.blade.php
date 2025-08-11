@@ -5,7 +5,9 @@
             <div class="container text-center py-5">
                 <h1 class="contact-hero-title">Cancel Refund</h1>
                 <nav class="breadcrumb-nav">
-                    <span>Home</span> <span class="mx-2">/</span> <span class="active">Cancel Refund</span>
+                    <a href="{{ route('index') }}" class="text-decoration-none text-white">
+                        <span>Home</span>
+                    </a> <span class="mx-2">/</span> <span class="active">Cancel Refund</span>
                 </nav>
             </div>
         </div>
