@@ -193,6 +193,87 @@
         right: 10px;
         color: #333;
     }
+
+/* Explore Genras Mobile Responsive Code */
+
+    .d_category_section {
+        padding: 2rem 0;
+    }
+
+    .d_category_scroll_wrapper {
+        display: flex;
+        gap: 1rem;
+        overflow-x: auto;
+        padding-bottom: 1rem;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .category-link {
+        flex: 0 0 auto;
+        scroll-snap-align: start;
+        text-decoration: none;
+    }
+
+    .d_category_card {
+        width: 150px; /* or use % like 40% for fluid width */
+        height: 220px;
+        border-radius: 1rem;
+        overflow: hidden;
+        position: relative;
+        background-color: #000;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .d_category_card img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    .d_icon_top {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        width: 32px;
+        height: 32px;
+    }
+
+    .d_category_overlay {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        background: rgba(0,0,0,0.6);
+        padding: 0.5rem;
+        text-align: center;
+    }
+
+    .d_category_text {
+        color: #fff;
+        font-weight: bold;
+        font-size: 1rem;
+    }
+
+    @media (max-width: 768px) {
+        .d_category_card {
+            width: 120px;
+            height: 180px;
+        }
+
+        .d_category_text {
+            font-size: 0.9rem;
+        }
+
+        .d_icon_top {
+            width: 24px;
+            height: 24px;
+        }
+    }
+
+/* End Resposive Code */
+
 </style>
 
 <body>
