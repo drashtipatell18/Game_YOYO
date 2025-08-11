@@ -206,6 +206,8 @@ Route::post('/profile/update/{id}', [FrontendLoginController::class, 'updateProf
 Route::get('/productDetails/{id}', [FrontendProductController::class, 'productDetails'])->name('productDetails');
 Route::post('/submit-review', [FrontendProductController::class, 'storeReviewProduct'])->name('frontReviewStore')->middleware('auth');
 Route::get('/search-products', [FrontendProductController::class, 'search'])->name('search.suggest');
+Route::get('/product/{productId}/reviews/load-more', [FrontendProductController::class, 'loadMoreReviews'])
+    ->name('product.reviews.loadMore');
 
 
 

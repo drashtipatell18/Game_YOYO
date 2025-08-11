@@ -16,22 +16,59 @@ class ProductController extends Controller
         return view('frontend.allProduct');
     }
 
-    public function productDetails($id)
-    {
-        $product = Product::findOrFail($id);
-        $images = explode(',', $product->image);
-        $reviewCount = $product->reviews()->count();
+   public function productDetails($id)
+   {
+        $product = Product::with(['category'])->findOrFail($id);
 
+        // Get only first 2 reviews initially
+        $initialReviews = $product->reviews()
+            ->with('user')
+            ->orderBy('created_at', 'desc')
+            ->take(2)
+            ->get();
+
+        // Count total reviews
+        $totalReviews = $product->reviews()->count();
+
+        // Get related products
         $relatedProducts = Product::where('category_id', $product->category_id)
-                              ->where('id', '!=', $product->id)
-                              ->get();
+            ->where('id', '!=', $product->id)
+            ->take(10)
+            ->get();
 
-                            // dd($relatedProducts);
+        // Split images
+        $images = !empty($product->image) ? explode(',', $product->image) : [];
 
-
-        return view('frontend.singleProduct',compact('product','images','reviewCount','relatedProducts'));
+        return view('frontend.singleProduct', compact(
+            'product',
+            'initialReviews',
+            'totalReviews',
+            'relatedProducts',
+            'images'
+        ));
     }
 
+    public function loadMoreReviews(Request $request, $productId)
+    {
+        $offset = $request->get('offset', 0);
+        $limit = $request->get('limit', 2);
+
+        $reviews = Reviews::where('product_id', $productId)
+            ->with('user')
+            ->orderBy('created_at', 'desc')
+            ->skip($offset)
+            ->take($limit)
+            ->get();
+
+        $totalReviews = Reviews::where('product_id', $productId)->count();
+        $hasMore = ($offset + $limit) < $totalReviews;
+
+        return response()->json([
+            'reviews' => $reviews,
+            'hasMore' => $hasMore,
+            'totalReviews' => $totalReviews
+        ]);
+    }
     public function getproductDetailJson($id)
     {
         $product = Product::find($id);
@@ -94,7 +131,7 @@ class ProductController extends Controller
             ->limit(10)
             ->get();
 
-            
+
 
         // Format each product
         foreach ($products as $product) {
