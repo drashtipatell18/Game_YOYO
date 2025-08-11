@@ -464,22 +464,22 @@
                             href="{{ route('frontendcontactus') }}">Contact</a>
                     </li>
                     <li class="nav-item px-2">
-                        <button class="d_search_form btn_gem" id="chatToggleNav">
+                        <button class="d_search_form btn_gem" id="navChatToggle">
                             Chatbox
                         </button>
                     </li>
 
-                    <div class="chatbox" id="chatbox">
+                   <div class="chatbox" id="navChatbox">
                         <div class="chatbox-header">
                             🎮 GameStore AI
-                            <span id="closeChat">✖</span>
+                            <span id="navCloseChat">✖</span>
                         </div>
-                        <div class="chatbox-messages" id="chatMessages">
+                        <div class="chatbox-messages" id="navChatMessages">
                             <div class="message bot">Hi! I’m your gaming assistant. How can I help you today?</div>
                         </div>
                         <div class="chatbox-input">
-                            <input type="text" id="userInput" placeholder="Type your message...">
-                            <button id="sendMessage">➤</button>
+                            <input type="text" id="navUserInput" placeholder="Type your message...">
+                            <button id="navSendMessage">➤</button>
                         </div>
                     </div>
 
