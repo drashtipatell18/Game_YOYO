@@ -419,6 +419,20 @@
                 listContainer.innerHTML = "";
             }
 
+           if (filteredProducts.length === 0) {
+                if (pagination) {
+                    pagination.innerHTML = '';
+                    pagination.style.display = 'none';
+                }
+                updateProductCount(); // Will show "No products found"
+                return;
+            } else {
+                if (pagination) {
+                    pagination.style.display = ''; // show pagination if it was hidden
+                }
+            }
+            
+
             // Calculate pagination
             const productsPerPage = 12;
             const totalProducts = filteredProducts.length;

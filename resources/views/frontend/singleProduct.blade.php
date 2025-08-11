@@ -119,6 +119,10 @@
                 font-weight: bold; /* optional */
             }
         }
+
+        p.text-muted {
+            color: #cfcfcf!important;
+        }
     </style>
     <!-- x_game-product-section START -->
     <section class="x_game-shop a_header_container">
@@ -316,52 +320,82 @@
 
                             <div class="tab-pane fade" id="reviews" role="tabpanel">
                                 <div class="x_reviews">
-                                    <h5 class="mb-3"> Reviews</h5>
+                                    <h5 class="mb-3">Reviews ({{ $totalReviews }})</h5>
 
-                                    @forelse ($product->reviews as $review)
-                                        <div class="border-bottom pb-3 mb-3">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div class="d-flex align-items-center">
-                                                    <!-- User Photo -->
-                                                    @if ($review->user && $review->user->image)
-                                                        <img src="{{ asset('images/users/' . $review->user->image) }}"
-                                                            alt="User Photo" class="rounded-circle me-2" width="40"
-                                                            height="40">
-                                                    @else
-                                                        <!-- Fallback Image -->
-                                                        <img src="{{ asset('images/default-user.png') }}"
-                                                            alt="Default User" class="rounded-circle me-2" width="40"
-                                                            height="40">
-                                                    @endif
+                                    <!-- Reviews Container -->
+                                    <div id="reviewsContainer">
+                                        @forelse ($initialReviews as $review)
+                                            <div class="border-bottom pb-3 mb-3 review-item">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="d-flex align-items-center">
+                                                        <!-- User Photo -->
+                                                        @if ($review->user && $review->user->image)
+                                                            <img src="{{ asset('images/users/' . $review->user->image) }}"
+                                                                alt="User Photo" class="rounded-circle me-2" width="40"
+                                                                height="40">
+                                                        @else
+                                                            <!-- Fallback Image -->
+                                                            <img src="{{ asset('images/users/dummy_profile.jpg') }}"
+                                                                alt="Default User" class="rounded-circle me-2"
+                                                                width="40" height="40">
+                                                        @endif
 
-                                                    <!-- User Name -->
-                                                    <strong>{{ $review->user->name ?? 'Anonymous' }}</strong>
+                                                        <!-- User Name -->
+                                                        <strong>{{ $review->user->name ?? 'Anonymous' }}</strong>
+                                                    </div>
+
+                                                    <!-- Review Date -->
+                                                    <small
+                                                        class="text-muted">{{ $review->created_at->format('M d, Y') }}</small>
                                                 </div>
 
-                                                <!-- Review Date -->
-                                                <small
-                                                    class="text-muted">{{ $review->created_at->format('M d, Y') }}</small>
-                                            </div>
+                                                <!-- Star Rating -->
+                                                <div class="mb-2">
+                                                    @for ($i = 1; $i <= 5; $i++)
+                                                        @if ($i <= $review->rating)
+                                                            <i class="fa-solid fa-star text-warning"></i>
+                                                        @else
+                                                            <i class="fa-regular fa-star text-muted"></i>
+                                                        @endif
+                                                    @endfor
+                                                </div>
 
-                                            <!-- Star Rating -->
-                                            <div class="mb-2">
-                                                @for ($i = 1; $i <= 5; $i++)
-                                                    @if ($i <= $review->rating)
-                                                        <i class="fa-solid fa-star text-warning"></i>
-                                                    @else
-                                                        <i class="fa-regular fa-star text-muted"></i>
-                                                    @endif
-                                                @endfor
+                                                <!-- Review Text -->
+                                                <p class="mb-0">{{ $review->review }}</p>
                                             </div>
+                                        @empty
+                                            <p class="text-muted" id="noReviewsMsg">No reviews yet.</p>
+                                        @endforelse
+                                    </div>
 
-                                            <!-- Review Text -->
-                                            <p class="mb-0">{{ $review->review }}</p>
+                                    <!-- Load More Button -->
+                                    @if ($totalReviews > 2)
+                                        <div class="text-center mb-4" id="reviewsButtonContainer">
+                                            <button id="loadMoreBtn" class="btn btn-outline-light" data-offset="2">
+                                                <span class="btn-text">Load More</span>
+                                                <div class="spinner-border spinner-border-sm ms-2 d-none" role="status">
+                                                </div>
+                                            </button>
+
+                                            <button id="showLessBtn" class="btn btn-outline-secondary ms-2 d-none">
+                                                <span class="btn-text">Show Less</span>
+                                                <div class="spinner-border spinner-border-sm ms-2 d-none" role="status">
+                                                </div>
+                                            </button>
+
+                                            <div id="reviewsCounter" class="mt-2 text-muted small">
+                                                Showing {{ min(2, $totalReviews) }} of {{ $totalReviews }} reviews
+                                            </div>
                                         </div>
+<<<<<<< HEAD
                                     @empty
                                       <p class="text-muted" style="color: #cfcfcf !important;">No reviews yet.</p>
                                     @endforelse
 
 
+=======
+                                    @endif
+>>>>>>> aee8f4121f4cfed6ae40d3bbe798245d732c32a5
                                     <form class="x_review-form">
                                         <input type="hidden" id="product_id" value="{{ $product->id }}">
                                         <!-- Add this -->
@@ -416,10 +450,10 @@
                         <!-- Cards will be injected here by JS -->
                     </div>
                     <!-- Add navigation buttons
-                                                                    <div class="swiper-button-next"></div>
-                                                                    <div class="swiper-button-prev"></div>
-                                                                    Add pagination
-                                                                    <div class="swiper-pagination"></div> -->
+                                                                                                <div class="swiper-button-next"></div>
+                                                                                                <div class="swiper-button-prev"></div>
+                                                                                                Add pagination
+                                                                                                <div class="swiper-pagination"></div> -->
                 </div>
             </div>
         </div>
@@ -556,156 +590,310 @@
     </script>
     <script>
         $(document).ready(function() {
-        // Thumbnail image click
-        $('.x_thumb-img').on('click', function() {
-            var newSrc = $(this).attr('src');
-            $('.x_main-img').attr('src', newSrc);
-            $('.x_thumb-img').removeClass('active');
-            $(this).addClass('active');
-        });
-
-        // Set first thumbnail as active
-        $('.x_thumb-img').first().addClass('active');
-
-        // Star rating click
-        $('.x_rating-stars i').on('click', function() {
-            var index = $(this).index();
-            $('.x_rating-stars i').each(function(i) {
-                if (i <= index) {
-                    $(this).removeClass('fa-regular').addClass('fa-solid');
-                } else {
-                    $(this).removeClass('fa-solid').addClass('fa-regular');
-                }
+            // Thumbnail image click
+            $('.x_thumb-img').on('click', function() {
+                var newSrc = $(this).attr('src');
+                $('.x_main-img').attr('src', newSrc);
+                $('.x_thumb-img').removeClass('active');
+                $(this).addClass('active');
             });
-            $('.x_review-form').data('rating', index + 1);
-        });
 
-        // Review form submission with validation
-        $('.x_review-form').on('submit', function(e) {
-            e.preventDefault();
+            // Set first thumbnail as active
+            $('.x_thumb-img').first().addClass('active');
 
-            if (!isLoggedIn) {
-                window.location.href = loginUrl;
-                return;
-            }
+            // Star rating click
+            $('.x_rating-stars i').on('click', function() {
+                var index = $(this).index();
+                $('.x_rating-stars i').each(function(i) {
+                    if (i <= index) {
+                        $(this).removeClass('fa-regular').addClass('fa-solid');
+                    } else {
+                        $(this).removeClass('fa-solid').addClass('fa-regular');
+                    }
+                });
+                $('.x_review-form').data('rating', index + 1);
+            });
 
-            var valid = true;
-            var rating = $(this).data('rating') || 0;
-            var review = $('#review').val().trim();
-            var name = $('#name').val().trim();
-            var email = $('#email').val().trim();
-            var product_id = $('#product_id').val();
-            var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            let currentOffset = 2; // We already loaded 2 reviews initially
+            const reviewsPerLoad = 2; // Load 2 more at a time
+            const initialReviewsCount = 2; // Remember initial count
 
-            // Reset previous errors
-            $('.x_rating-error, .x_review-error, .x_name-error, .x_email-error').hide().text('');
-            $('#review, #name, #email').removeClass('is-invalid');
-            $('.x_rating-stars').removeClass('is-invalid');
+            // Load More Reviews functionality
+            $('#loadMoreBtn').on('click', function() {
+                const button = $(this);
+                const btnText = button.find('.btn-text');
+                const spinner = button.find('.spinner-border');
+                const productId = $('#product_id').val();
 
-            // Validation checks
-            if (rating === 0) {
-                $('.x_rating-error').text('Please select a rating.').show();
-                $('.x_rating-stars').addClass('is-invalid');
-                valid = false;
-            }
-            if (review.length < 5) {
-                $('.x_review-error').text('Please enter a review (min 5 characters).').show();
-                $('#review').addClass('is-invalid');
-                valid = false;
-            }
-            if (name.length < 2) {
-                $('.x_name-error').text('Please enter your name.').show();
-                $('#name').addClass('is-invalid');
-                valid = false;
-            }
-            if (!emailPattern.test(email)) {
-                $('.x_email-error').text('Please enter a valid email address.').show();
-                $('#email').addClass('is-invalid');
-                valid = false;
-            }
+                // Show loading state
+                btnText.text('Loading...');
+                spinner.removeClass('d-none');
+                button.prop('disabled', true);
 
-            if (!valid) return;
+                $.ajax({
+                    url: `/product/${productId}/reviews/load-more`,
+                    method: 'GET',
+                    data: {
+                        offset: currentOffset,
+                        limit: reviewsPerLoad
+                    },
+                    success: function(response) {
+                        if (response.reviews && response.reviews.length > 0) {
+                            // Add new reviews to the container
+                            response.reviews.forEach(function(review) {
+                                const reviewHtml = createReviewHTML(review);
+                                $('#reviewsContainer').append(reviewHtml);
+                            });
 
-            // Show loading state
-            $('.submitReviewButton').prop('disabled', true).text('Submitting...');
+                            // Update offset for next load
+                            currentOffset += response.reviews.length;
 
-            // Submit via AJAX
-            $.ajax({
-                url: "{{ route('frontReviewStore') }}",
-                method: "POST",
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                data: {
-                    product_id: product_id,
-                    rating: rating,
-                    review: review,
-                    name: name,
-                    email: email
-                },
-                success: function(response) {
-                    // Show success message
-                    toastr.success('Review submitted successfully!');
+                            // Update counter
+                            $('#reviewsCounter').text(
+                                `Showing ${currentOffset} of ${response.totalReviews} reviews`
+                            );
 
-                    // Create new review HTML
-                    var newReviewHtml = createReviewHTML({
-                        user: {
-                            name: name,
-                            image: response.user_image ||
-                                null // Get from response if available
-                        },
+                            // Show "Show Less" button after loading more
+                            $('#showLessBtn').removeClass('d-none');
+
+                            // Hide "Load More" button if no more reviews
+                            if (!response.hasMore) {
+                                button.addClass('d-none');
+                            }
+
+                            // Smooth scroll to show new reviews
+                            $('html, body').animate({
+                                scrollTop: $(
+                                        '#reviewsContainer .review-item:nth-last-child(' +
+                                        response.reviews.length + ')').offset().top -
+                                    100
+                            }, 300);
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error('Error loading more reviews:', xhr);
+                        toastr.error('Failed to load more reviews. Please try again.');
+                    },
+                    complete: function() {
+                        // Reset button state
+                        btnText.text('Load More Reviews');
+                        spinner.addClass('d-none');
+                        button.prop('disabled', false);
+                    }
+                });
+            });
+
+            // Show Less Reviews functionality
+            $('#showLessBtn').on('click', function() {
+                const button = $(this);
+                const btnText = button.find('.btn-text');
+                const spinner = button.find('.spinner-border');
+
+                // Show loading state
+                btnText.text('Collapsing...');
+                spinner.removeClass('d-none');
+                button.prop('disabled', true);
+
+                // Animate the removal of extra reviews
+                const allReviews = $('#reviewsContainer .review-item');
+                const reviewsToRemove = allReviews.slice(initialReviewsCount);
+
+                // Fade out extra reviews
+                reviewsToRemove.fadeOut(400, function() {
+                    // Remove the extra reviews from DOM
+                    reviewsToRemove.remove();
+
+                    // Reset counter and buttons
+                    currentOffset = initialReviewsCount;
+                    const totalReviews = parseInt($('#reviewsCounter').text().split('of ')[1].split(
+                        ' reviews')[0]);
+                    $('#reviewsCounter').text(
+                        `Showing ${initialReviewsCount} of ${totalReviews} reviews`);
+
+                    // Hide "Show Less" button
+                    $('#showLessBtn').addClass('d-none');
+
+                    // Show "Load More" button again
+                    $('#loadMoreBtn').removeClass('d-none');
+
+                    // Reset button state
+                    btnText.text('Show Less');
+                    spinner.addClass('d-none');
+                    button.prop('disabled', false);
+
+                    // Scroll to top of reviews section
+                    $('html, body').animate({
+                        scrollTop: $('#reviewsContainer').offset().top - 100
+                    }, 300);
+                });
+            });
+
+            // Review form submission with validation
+            $('.x_review-form').on('submit', function(e) {
+                e.preventDefault();
+
+                if (!isLoggedIn) {
+                    window.location.href = loginUrl;
+                    return;
+                }
+
+                var valid = true;
+                var rating = $(this).data('rating') || 0;
+                var review = $('#review').val().trim();
+                var name = $('#name').val().trim();
+                var email = $('#email').val().trim();
+                var product_id = $('#product_id').val();
+                var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                // Reset previous errors
+                $('.x_rating-error, .x_review-error, .x_name-error, .x_email-error').hide().text('');
+                $('#review, #name, #email').removeClass('is-invalid');
+                $('.x_rating-stars').removeClass('is-invalid');
+
+                // Validation checks
+                if (rating === 0) {
+                    $('.x_rating-error').text('Please select a rating.').show();
+                    $('.x_rating-stars').addClass('is-invalid');
+                    valid = false;
+                }
+                if (review.length < 5) {
+                    $('.x_review-error').text('Please enter a review (min 5 characters).').show();
+                    $('#review').addClass('is-invalid');
+                    valid = false;
+                }
+                if (name.length < 2) {
+                    $('.x_name-error').text('Please enter your name.').show();
+                    $('#name').addClass('is-invalid');
+                    valid = false;
+                }
+                if (!emailPattern.test(email)) {
+                    $('.x_email-error').text('Please enter a valid email address.').show();
+                    $('#email').addClass('is-invalid');
+                    valid = false;
+                }
+
+                if (!valid) return;
+
+                // Show loading state
+                $('.submitReviewButton').prop('disabled', true).text('Submitting...');
+
+                // Submit via AJAX
+                $.ajax({
+                    url: "{{ route('frontReviewStore') }}",
+                    method: "POST",
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    data: {
+                        product_id: product_id,
                         rating: rating,
                         review: review,
-                        created_at: new Date().toLocaleDateString('en-US', {
-                            year: 'numeric',
-                            month: 'short',
-                            day: 'numeric'
-                        })
-                    });
+                        name: name,
+                        email: email
+                    },
+                    success: function(response) {
+                        // Show success message
+                        toastr.success('Review submitted successfully!');
 
-                    // Check if "No reviews yet" message exists and remove it
-                    if ($('.x_reviews p.text-muted:contains("No reviews yet.")').length) {
-                        $('.x_reviews p.text-muted:contains("No reviews yet.")').remove();
+                        // Create new review HTML
+                        var newReviewHtml = createReviewHTML({
+                            user: {
+                                name: name,
+                                image: response.user_image ||
+                                    null // Get from response if available
+                            },
+                            rating: rating,
+                            review: review,
+                            created_at: new Date().toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'short',
+                                day: 'numeric'
+                            })
+                        });
+
+                        // Check if "No reviews yet" message exists and remove it
+                        if ($('.x_reviews p.text-muted:contains("No reviews yet.")').length) {
+                            $('.x_reviews p.text-muted:contains("No reviews yet.")').remove();
+                        }
+
+                        // Add new review at the top of reviews list (before the form)
+                        $('.x_review-form').before(newReviewHtml);
+
+                        // Reset form
+                        $('.x_review-form')[0].reset();
+                        $('.x_rating-stars i').removeClass('fa-solid').addClass('fa-regular');
+                        $('.x_review-form').removeData('rating');
+
+                        // Reset button state
+                        $('.submitReviewButton').prop('disabled', false).text('SUBMIT');
+
+                        // Scroll to the new review
+                        $('html, body').animate({
+                            scrollTop: $('.x_reviews .border-bottom:first').offset()
+                                .top - 100
+                        }, 500);
+                    },
+                    error: function(xhr) {
+                        // Reset button state
+                        $('.submitReviewButton').prop('disabled', false).text('SUBMIT');
+
+                        if (xhr.status === 422 && xhr.responseJSON.errors) {
+                            const errors = xhr.responseJSON.errors;
+                            if (errors.rating) $('.x_rating-error').text(errors.rating[0])
+                                .show();
+                            if (errors.review) $('.x_review-error').text(errors.review[0])
+                                .show();
+                            if (errors.name) $('.x_name-error').text(errors.name[0]).show();
+                            if (errors.email) $('.x_email-error').text(errors.email[0]).show();
+                        } else {
+                            console.error(xhr);
+                            toastr.error('Something went wrong. Please try again.');
+                        }
                     }
-
-                    // Add new review at the top of reviews list (before the form)
-                    $('.x_review-form').before(newReviewHtml);
-
-                    // Reset form
-                    $('.x_review-form')[0].reset();
-                    $('.x_rating-stars i').removeClass('fa-solid').addClass('fa-regular');
-                    $('.x_review-form').removeData('rating');
-
-                    // Reset button state
-                    $('.submitReviewButton').prop('disabled', false).text('SUBMIT');
-
-                    // Scroll to the new review
-                    $('html, body').animate({
-                        scrollTop: $('.x_reviews .border-bottom:first').offset()
-                            .top - 100
-                    }, 500);
-                },
-                error: function(xhr) {
-                    // Reset button state
-                    $('.submitReviewButton').prop('disabled', false).text('SUBMIT');
-
-                    if (xhr.status === 422 && xhr.responseJSON.errors) {
-                        const errors = xhr.responseJSON.errors;
-                        if (errors.rating) $('.x_rating-error').text(errors.rating[0])
-                        .show();
-                        if (errors.review) $('.x_review-error').text(errors.review[0])
-                        .show();
-                        if (errors.name) $('.x_name-error').text(errors.name[0]).show();
-                        if (errors.email) $('.x_email-error').text(errors.email[0]).show();
-                    } else {
-                        console.error(xhr);
-                        toastr.error('Something went wrong. Please try again.');
-                    }
-                }
+                });
             });
         });
-        });
-        });
+
+        function createReviewHTML(review) {
+            const userImage = review.user && review.user.image ?
+                `{{ asset('images/users/') }}/${review.user.image}` :
+                `{{ asset('images/default-user.png') }}`;
+
+            const userName = review.user ? review.user.name : 'Anonymous';
+
+            // Create star rating HTML
+            let starsHtml = '';
+            for (let i = 1; i <= 5; i++) {
+                if (i <= review.rating) {
+                    starsHtml += '<i class="fa-solid fa-star text-warning"></i>';
+                } else {
+                    starsHtml += '<i class="fa-regular fa-star text-muted"></i>';
+                }
+            }
+
+            // Format date
+            const reviewDate = typeof review.created_at === 'string' ?
+                review.created_at :
+                new Date(review.created_at).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                });
+
+            return `
+        <div class="border-bottom pb-3 mb-3 review-item">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                    <img src="${userImage}" alt="User Photo" class="rounded-circle me-2" width="40" height="40">
+                    <strong>${userName}</strong>
+                </div>
+                <small class="text-muted">${reviewDate}</small>
+            </div>
+            <div class="mb-2">${starsHtml}</div>
+            <p class="mb-0">${review.review}</p>
+        </div>
+    `;
+        }
     </script>
 
     <script>
