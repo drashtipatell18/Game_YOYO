@@ -102,6 +102,14 @@
             .system-requirements {
                 font-size: 14px;
             }
+
+            /* Optional styling for user reviews */
+            .x_reviews .border-bottom {
+                border-color: #aaa !important;
+                padding-bottom: 15px;
+                margin-bottom: 15px;
+            }
+
         }
     </style>
     <!-- x_game-product-section START -->
@@ -266,12 +274,52 @@
 
                             <div class="tab-pane fade" id="reviews" role="tabpanel">
                                 <div class="x_reviews">
-                                    <h5 class="mb-3">Reviews</h5>
-                                    <p>There are no reviews yet.</p>
-                                    <p>Be the first to review <b>"Falldown Republic"</b></p>
-                                    <p class="mb-1">Your email address will not be published. Required fields are marked
-                                        *</p>
-                                    <div class="alert alert-success x_review-success" style="display:none;"></div>
+                                    <h5 class="mb-3"> Reviews</h5>
+
+                                    @forelse ($product->reviews as $review)
+                                        <div class="border-bottom pb-3 mb-3">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="d-flex align-items-center">
+                                                    <!-- User Photo -->
+                                                    @if ($review->user && $review->user->image)
+                                                        <img src="{{ asset('images/users/' . $review->user->image) }}"
+                                                            alt="User Photo" class="rounded-circle me-2" width="40"
+                                                            height="40">
+                                                    @else
+                                                        <!-- Fallback Image -->
+                                                        <img src="{{ asset('images/default-user.png') }}"
+                                                            alt="Default User" class="rounded-circle me-2" width="40"
+                                                            height="40">
+                                                    @endif
+
+                                                    <!-- User Name -->
+                                                    <strong>{{ $review->user->name ?? 'Anonymous' }}</strong>
+                                                </div>
+
+                                                <!-- Review Date -->
+                                                <small
+                                                    class="text-muted">{{ $review->created_at->format('M d, Y') }}</small>
+                                            </div>
+
+                                            <!-- Star Rating -->
+                                            <div class="mb-2">
+                                                @for ($i = 1; $i <= 5; $i++)
+                                                    @if ($i <= $review->rating)
+                                                        <i class="fa-solid fa-star text-warning"></i>
+                                                    @else
+                                                        <i class="fa-regular fa-star text-muted"></i>
+                                                    @endif
+                                                @endfor
+                                            </div>
+
+                                            <!-- Review Text -->
+                                            <p class="mb-0">{{ $review->review }}</p>
+                                        </div>
+                                    @empty
+                                        <p class="text-muted">No reviews yet.</p>
+                                    @endforelse
+
+
                                     <form class="x_review-form">
                                         <input type="hidden" id="product_id" value="{{ $product->id }}">
                                         <!-- Add this -->
@@ -326,10 +374,10 @@
                         <!-- Cards will be injected here by JS -->
                     </div>
                     <!-- Add navigation buttons
-                                                    <div class="swiper-button-next"></div>
-                                                    <div class="swiper-button-prev"></div>
-                                                    Add pagination
-                                                    <div class="swiper-pagination"></div> -->
+                                                                    <div class="swiper-button-next"></div>
+                                                                    <div class="swiper-button-prev"></div>
+                                                                    Add pagination
+                                                                    <div class="swiper-pagination"></div> -->
                 </div>
             </div>
         </div>
@@ -466,120 +514,155 @@
     </script>
     <script>
         $(document).ready(function() {
-            // Thumbnail image click
-            $('.x_thumb-img').on('click', function() {
-                var newSrc = $(this).attr('src');
-                $('.x_main-img').attr('src', newSrc);
-                $('.x_thumb-img').removeClass('active');
-                $(this).addClass('active');
+        // Thumbnail image click
+        $('.x_thumb-img').on('click', function() {
+            var newSrc = $(this).attr('src');
+            $('.x_main-img').attr('src', newSrc);
+            $('.x_thumb-img').removeClass('active');
+            $(this).addClass('active');
+        });
+
+        // Set first thumbnail as active
+        $('.x_thumb-img').first().addClass('active');
+
+        // Star rating click
+        $('.x_rating-stars i').on('click', function() {
+            var index = $(this).index();
+            $('.x_rating-stars i').each(function(i) {
+                if (i <= index) {
+                    $(this).removeClass('fa-regular').addClass('fa-solid');
+                } else {
+                    $(this).removeClass('fa-solid').addClass('fa-regular');
+                }
             });
+            $('.x_review-form').data('rating', index + 1);
+        });
 
-            // Set first thumbnail as active
-            $('.x_thumb-img').first().addClass('active');
+        // Review form submission with validation
+        $('.x_review-form').on('submit', function(e) {
+            e.preventDefault();
 
-            // Star rating click
-            $('.x_rating-stars i').on('click', function() {
-                var index = $(this).index();
-                $('.x_rating-stars i').each(function(i) {
-                    if (i <= index) {
-                        $(this).removeClass('fa-regular').addClass('fa-solid');
-                    } else {
-                        $(this).removeClass('fa-solid').addClass('fa-regular');
-                    }
-                });
-                $('.x_review-form').data('rating', index + 1);
-            });
+            if (!isLoggedIn) {
+                window.location.href = loginUrl;
+                return;
+            }
 
-            // Review form submission with validation
-            $('.x_review-form').on('submit', function(e) {
-                e.preventDefault();
+            var valid = true;
+            var rating = $(this).data('rating') || 0;
+            var review = $('#review').val().trim();
+            var name = $('#name').val().trim();
+            var email = $('#email').val().trim();
+            var product_id = $('#product_id').val();
+            var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-                if (!isLoggedIn) {
-                    window.location.href = loginUrl;
-                    return;
-                }
+            // Reset previous errors
+            $('.x_rating-error, .x_review-error, .x_name-error, .x_email-error').hide().text('');
+            $('#review, #name, #email').removeClass('is-invalid');
+            $('.x_rating-stars').removeClass('is-invalid');
 
-                var valid = true;
-                var rating = $(this).data('rating') || 0;
-                var review = $('#review').val().trim();
-                var name = $('#name').val().trim();
-                var email = $('#email').val().trim();
-                var product_id = $('#product_id').val();
-                var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            // Validation checks
+            if (rating === 0) {
+                $('.x_rating-error').text('Please select a rating.').show();
+                $('.x_rating-stars').addClass('is-invalid');
+                valid = false;
+            }
+            if (review.length < 5) {
+                $('.x_review-error').text('Please enter a review (min 5 characters).').show();
+                $('#review').addClass('is-invalid');
+                valid = false;
+            }
+            if (name.length < 2) {
+                $('.x_name-error').text('Please enter your name.').show();
+                $('#name').addClass('is-invalid');
+                valid = false;
+            }
+            if (!emailPattern.test(email)) {
+                $('.x_email-error').text('Please enter a valid email address.').show();
+                $('#email').addClass('is-invalid');
+                valid = false;
+            }
 
-                // Reset previous errors
-                $('.x_rating-error, .x_review-error, .x_name-error, .x_email-error').hide().text('');
-                $('#review, #name, #email').removeClass('is-invalid');
-                $('.x_rating-stars').removeClass('is-invalid');
+            if (!valid) return;
 
-                // Validation checks
-                if (rating === 0) {
-                    $('.x_rating-error').text('Please select a rating.').show();
-                    $('.x_rating-stars').addClass('is-invalid');
-                    valid = false;
-                }
-                if (review.length < 5) {
-                    $('.x_review-error').text('Please enter a review (min 5 characters).').show();
-                    $('#review').addClass('is-invalid');
-                    valid = false;
-                }
-                if (name.length < 2) {
-                    $('.x_name-error').text('Please enter your name.').show();
-                    $('#name').addClass('is-invalid');
-                    valid = false;
-                }
-                if (!emailPattern.test(email)) {
-                    $('.x_email-error').text('Please enter a valid email address.').show();
-                    $('#email').addClass('is-invalid');
-                    valid = false;
-                }
+            // Show loading state
+            $('.submitReviewButton').prop('disabled', true).text('Submitting...');
 
-                if (!valid) return;
+            // Submit via AJAX
+            $.ajax({
+                url: "{{ route('frontReviewStore') }}",
+                method: "POST",
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                data: {
+                    product_id: product_id,
+                    rating: rating,
+                    review: review,
+                    name: name,
+                    email: email
+                },
+                success: function(response) {
+                    // Show success message
+                    toastr.success('Review submitted successfully!');
 
-                // Submit via AJAX
-                $.ajax({
-                    url: "{{ route('frontReviewStore') }}",
-                    method: "POST",
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    data: {
-                        product_id: product_id,
+                    // Create new review HTML
+                    var newReviewHtml = createReviewHTML({
+                        user: {
+                            name: name,
+                            image: response.user_image ||
+                                null // Get from response if available
+                        },
                         rating: rating,
                         review: review,
-                        name: name,
-                        email: email
-                    },
-                    success: function(response) {
-                        // Show success message
-                        toastr.success('Review submitted successfully!');
+                        created_at: new Date().toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric'
+                        })
+                    });
 
-                        // Reset form
-                        $('.x_review-form')[0].reset();
-                        $('.x_rating-stars i').removeClass('fa-solid').addClass('fa-regular');
-                        $('.x_review-form').removeData('rating');
-
-                        // Hide alert after 4 seconds
-                        setTimeout(function() {
-                            $('.x_review-success').fadeOut();
-                        }, 4000);
-                    },
-                    error: function(xhr) {
-                        if (xhr.status === 422 && xhr.responseJSON.errors) {
-                            const errors = xhr.responseJSON.errors;
-                            if (errors.rating) $('.x_rating-error').text(errors.rating[0])
-                                .show();
-                            if (errors.review) $('.x_review-error').text(errors.review[0])
-                                .show();
-                            if (errors.name) $('.x_name-error').text(errors.name[0]).show();
-                            if (errors.email) $('.x_email-error').text(errors.email[0]).show();
-                        } else {
-                            console.error(xhr);
-                            toastr.error('Something went wrong. Please try again.');
-                        }
+                    // Check if "No reviews yet" message exists and remove it
+                    if ($('.x_reviews p.text-muted:contains("No reviews yet.")').length) {
+                        $('.x_reviews p.text-muted:contains("No reviews yet.")').remove();
                     }
-                });
+
+                    // Add new review at the top of reviews list (before the form)
+                    $('.x_review-form').before(newReviewHtml);
+
+                    // Reset form
+                    $('.x_review-form')[0].reset();
+                    $('.x_rating-stars i').removeClass('fa-solid').addClass('fa-regular');
+                    $('.x_review-form').removeData('rating');
+
+                    // Reset button state
+                    $('.submitReviewButton').prop('disabled', false).text('SUBMIT');
+
+                    // Scroll to the new review
+                    $('html, body').animate({
+                        scrollTop: $('.x_reviews .border-bottom:first').offset()
+                            .top - 100
+                    }, 500);
+                },
+                error: function(xhr) {
+                    // Reset button state
+                    $('.submitReviewButton').prop('disabled', false).text('SUBMIT');
+
+                    if (xhr.status === 422 && xhr.responseJSON.errors) {
+                        const errors = xhr.responseJSON.errors;
+                        if (errors.rating) $('.x_rating-error').text(errors.rating[0])
+                        .show();
+                        if (errors.review) $('.x_review-error').text(errors.review[0])
+                        .show();
+                        if (errors.name) $('.x_name-error').text(errors.name[0]).show();
+                        if (errors.email) $('.x_email-error').text(errors.email[0]).show();
+                    } else {
+                        console.error(xhr);
+                        toastr.error('Something went wrong. Please try again.');
+                    }
+                }
             });
+        });
+        });
         });
     </script>
 
