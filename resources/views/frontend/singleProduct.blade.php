@@ -44,6 +44,65 @@
             vertical-align: middle;
             /* Align with price */
         }
+
+        .system-requirements table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .system-requirements th,
+        .system-requirements td {
+            /* border: 1px solid #ccc; */
+            padding: 10px;
+            text-align: left;
+        }
+
+        /* Responsive layout below 1024px */
+        @media (max-width: 1024px) {
+
+            .system-requirements table,
+            .system-requirements thead,
+            .system-requirements tbody,
+            .system-requirements th,
+            .system-requirements td,
+            .system-requirements tr {
+                display: block;
+                width: 100%;
+            }
+
+            .system-requirements thead tr {
+                display: none;
+            }
+
+            .system-requirements td {
+                position: relative;
+                padding-left: 50%;
+                border: none;
+                border-bottom: 1px solid #444;
+            }
+
+            .system-requirements td::before {
+                content: attr(data-label);
+                position: absolute;
+                top: 10px;
+                left: 10px;
+                font-weight: bold;
+                color: #fff;
+            }
+
+            .system-requirements td:last-child {
+                margin-bottom: 20px;
+            }
+
+            .system-requirements tr {
+                margin-bottom: 20px;
+                border-bottom: 2px solid #aaa;
+            }
+
+            .system-requirements {
+                font-size: 14px;
+            }
+        }
     </style>
     <!-- x_game-product-section START -->
     <section class="x_game-shop a_header_container">
@@ -146,55 +205,60 @@
                                 <div class="system-requirements">
                                     <h4>SYSTEM REQUIREMENTS</h4>
                                     <table>
-                                        <tr>
-                                            <th></th>
-                                            <th>MINIMUM:</th>
-                                            <th>RECOMMENDED:</th>
-                                        </tr>
-                                        <tr>
-                                            <td>Requires</td>
-                                            <td>A 64-bit processor and operating system</td>
-                                            <td>A 64-bit processor and operating system</td>
-                                        </tr>
-                                        <tr>
-                                            <td>OS:</td>
-                                            <td>Windows® 10 64-bit (latest Service Pack)</td>
-                                            <td>Windows® 10 64-bit (latest Service Pack)</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Processor:</td>
-                                            <td>Intel® Core™ i3 3250 3.5 GHz or Intel Pentium G4560 3.5 GHz / AMD FX-4350
-                                                4.2 GHz</td>
-                                            <td>Intel® Core™ i5 2400 3.4 GHz or i5 7400 3.5 GHz / AMD Ryzen R5 1600X 3.6 GHz
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Memory:</td>
-                                            <td>6 GB RAM</td>
-                                            <td>8 GB RAM</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Graphics:</td>
-                                            <td>NVIDIA® GeForce® GTX 660 2GB or GTX 1050 2GB / AMD Radeon HD 7850 2GB</td>
-                                            <td>NVIDIA® GeForce® GTX 970 4GB or GTX 1060 6GB / AMD R9 390 8GB</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Network:</td>
-                                            <td>Broadband Internet connection</td>
-                                            <td>Broadband Internet connection</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Storage:</td>
-                                            <td>105 GB available space</td>
-                                            <td>105 GB available space</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Additional Notes:</td>
-                                            <td>Beginning on June 4, 2024, Destiny 2 is ending support for Windows 7,
-                                                Windows 8, and Windows 8.1 operating systems.</td>
-                                            <td>Beginning on June 4, 2024, Destiny 2 is ending support for Windows 7,
-                                                Windows 8, and Windows 8.1 operating systems.</td>
-                                        </tr>
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>MINIMUM:</th>
+                                                <th>RECOMMENDED:</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Requires</td>
+                                                <td data-label="Minimum">A 64-bit processor and operating system</td>
+                                                <td data-label="Recommended">A 64-bit processor and operating system</td>
+                                            </tr>
+                                            <tr>
+                                                <td>OS:</td>
+                                                <td data-label="Minimum">Windows® 10 64-bit (latest Service Pack)</td>
+                                                <td data-label="Recommended">Windows® 10 64-bit (latest Service Pack)</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Processor:</td>
+                                                <td data-label="Minimum">Intel® Core™ i3 3250 3.5 GHz or Intel Pentium G4560
+                                                    3.5 GHz / AMD FX-4350 4.2 GHz</td>
+                                                <td data-label="Recommended">Intel® Core™ i5 2400 3.4 GHz or i5 7400 3.5 GHz
+                                                    / AMD Ryzen R5 1600X 3.6 GHz</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Memory:</td>
+                                                <td data-label="Minimum">6 GB RAM</td>
+                                                <td data-label="Recommended">8 GB RAM</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Graphics:</td>
+                                                <td data-label="Minimum">GTX 660 2GB or GTX 1050 2GB / AMD HD 7850 2GB</td>
+                                                <td data-label="Recommended">GTX 970 4GB or GTX 1060 6GB / AMD R9 390 8GB
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Network:</td>
+                                                <td data-label="Minimum">Broadband Internet connection</td>
+                                                <td data-label="Recommended">Broadband Internet connection</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Storage:</td>
+                                                <td data-label="Minimum">105 GB available space</td>
+                                                <td data-label="Recommended">105 GB available space</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Additional Notes:</td>
+                                                <td data-label="Minimum">Destiny 2 ends support for Windows 7, 8, 8.1 (from
+                                                    June 4, 2024)</td>
+                                                <td data-label="Recommended">Destiny 2 ends support for Windows 7, 8, 8.1
+                                                    (from June 4, 2024)</td>
+                                            </tr>
+                                        </tbody>
                                     </table>
                                 </div>
 
@@ -262,10 +326,10 @@
                         <!-- Cards will be injected here by JS -->
                     </div>
                     <!-- Add navigation buttons
-                                        <div class="swiper-button-next"></div>
-                                        <div class="swiper-button-prev"></div>
-                                        Add pagination
-                                        <div class="swiper-pagination"></div> -->
+                                                    <div class="swiper-button-next"></div>
+                                                    <div class="swiper-button-prev"></div>
+                                                    Add pagination
+                                                    <div class="swiper-pagination"></div> -->
                 </div>
             </div>
         </div>
