@@ -289,7 +289,7 @@
                                                                 height="40">
                                                         @else
                                                             <!-- Fallback Image -->
-                                                            <img src="{{ asset('images/default-user.png') }}"
+                                                            <img src="{{ asset('images/users/dummy_profile.jpg') }}"
                                                                 alt="Default User" class="rounded-circle me-2"
                                                                 width="40" height="40">
                                                         @endif
