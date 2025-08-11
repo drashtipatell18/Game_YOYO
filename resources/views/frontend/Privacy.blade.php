@@ -24,14 +24,20 @@
 
                     <h4>1. Information We Collect</h4>
                     <ul>
-                        <li>Name</li>
-                        <li>Email address (for support, newsletters, or accounts)</li>
+                        <strong>a. Personal Information (if voluntarily submitted):</strong>
+                        {{-- <ul> --}}
+                            <li>Name</li>
+                            <li>Email address (for support, newsletters, or accounts)</li>
+                        {{-- </ul> --}}
 
-                        <li>IP address</li>
-                        <li>Browser type</li>
-                        <li>Device information</li>
-                        <li>Game scores or in-game activity</li>
-                        <li>Cookies and usage data</li>
+                        <strong>b. Non-Personal Information:</strong>
+                        {{-- <ul> --}}
+                            <li>IP address</li>
+                            <li>Browser type</li>
+                            <li>Device information</li>
+                            <li>Game scores or in-game activity</li>
+                            <li>Cookies and usage data</li>
+                        {{-- </ul> --}}
                     </ul>
 
                     <h4>2. How We Use Your Information</h4>
