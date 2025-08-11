@@ -21,7 +21,9 @@ class Product extends Model
         'weight',
         'dimensions',
         'status',
-        'release_date'
+        'release_date',
+        'platform'
+
     ];
 
     public function category()

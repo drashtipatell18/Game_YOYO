@@ -1,4 +1,7 @@
 @extends('layouts.app')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@coreui/coreui@5.4.1/dist/js/coreui.min.js" integrity="sha384-fVNSijNcClMqYMJaWXjuuUiwCtBvGDFCR1VnW6fp8/IEa+43QEe62TJ879bbJyYt" crossorigin="anonymous"></script>
 
 @section('title', isset($product) ? 'Edit Product' : 'Create Product')
 
@@ -12,6 +15,23 @@
                         method="POST" enctype="multipart/form-data" id="product-form">
                         @csrf
                         {{-- Category and Name --}}
+                        <div class="row">
+                             <div class="col-md-12">
+                                <div class="form-group mb-3">
+                                    <label for="platform">Select Technologies</label>
+                                    @php
+                                        $selectedPlatforms = old('platform', $selectedPlatforms ?? []);
+                                    @endphp
+
+                                    <select id="platform" class="form-control" multiple="multiple" name="platform[]">
+                                        <option value="android" {{ in_array('android', $selectedPlatforms) ? 'selected' : '' }}>Android</option>
+                                        <option value="ios" {{ in_array('ios', $selectedPlatforms) ? 'selected' : '' }}>iOS</option>
+                                        <option value="windows" {{ in_array('windows', $selectedPlatforms) ? 'selected' : '' }}>Windows</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
@@ -371,5 +391,14 @@
             const label = document.getElementById('status-label');
             label.textContent = checkbox.checked ? 'Active' : 'Inactive';
         }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+    <script>
+        const platform = new Choices('#platform', {
+            removeItemButton: true,
+            shouldSort: false,
+            placeholderValue: 'Select...',
+            searchPlaceholderValue: 'Search...',
+        });
     </script>
 @endpush

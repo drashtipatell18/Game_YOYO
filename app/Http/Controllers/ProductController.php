@@ -64,6 +64,10 @@ class ProductController extends Controller
             'dimensions' => $dimensions,
             'status' => $request->input('status'),
             'release_date' => $request->input('release_date'),
+           'platform' => is_array($request->input('platform')) 
+            ? implode(',', $request->input('platform')) 
+            : $request->input('platform'),
+
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -81,6 +85,7 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
         $categories = Category::pluck('name', 'id');
+        $selectedPlatforms = $product->platform ? explode(',', $product->platform) : [];
 
         // Extract dimensions into length, width, height
         if ($product && $product->dimensions) {
@@ -90,7 +95,7 @@ class ProductController extends Controller
             $product->height = $height;
         }
 
-        return view('product.create_product', compact('product', 'categories'));
+        return view('product.create_product', compact('product', 'categories','selectedPlatforms'));
     }
 
     public function DeleteProduct($id)
@@ -180,6 +185,9 @@ class ProductController extends Controller
             'status' => $request->input('status'),
             'dimensions' => $dimensions,
             'release_date' => $request->input('release_date'),
+            'platform' => is_array($request->input('platform')) 
+            ? implode(',', $request->input('platform')) 
+            : $request->input('platform'),
         ];
 
         $product->update($updateData);
