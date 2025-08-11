@@ -3,18 +3,10 @@
     <section class="xs_contact-hero-section">
         <div class="xs_contact-hero-overlay">
             <div class="container text-center py-5">
-<<<<<<< HEAD
-                <h1 class="contact-hero-title">PRIVACY POLICY</h1>
-                <nav class="breadcrumb-nav">
-                     <a href="{{ route('index') }}" class="text-decoration-none text-white">
-                    <span>Home</span> <span class="mx-2">/</span></a>
-                    <span class="active">Privacy Policy</span>
-=======
                 <h1 class="contact-hero-title">Privacy Policy</h1>
                 <a href="{{ route('index') }}" class="text-decoration-none text-white">
                     <span>Home</span>
                 </a> <span class="mx-2">/</span> <span class="active">Privacy Policy</span>
->>>>>>> aee8f4121f4cfed6ae40d3bbe798245d732c32a5
                 </nav>
             </div>
         </div>

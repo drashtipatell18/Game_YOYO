@@ -387,15 +387,12 @@
                                                 Showing {{ min(2, $totalReviews) }} of {{ $totalReviews }} reviews
                                             </div>
                                         </div>
-<<<<<<< HEAD
                                     @empty
                                       <p class="text-muted" style="color: #cfcfcf !important;">No reviews yet.</p>
                                     @endforelse
 
 
-=======
                                     @endif
->>>>>>> aee8f4121f4cfed6ae40d3bbe798245d732c32a5
                                     <form class="x_review-form">
                                         <input type="hidden" id="product_id" value="{{ $product->id }}">
                                         <!-- Add this -->

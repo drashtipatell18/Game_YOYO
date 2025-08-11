@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 {{-- 
-=======
->>>>>>> aee8f4121f4cfed6ae40d3bbe798245d732c32a5
 @extends('frontend.layouts.main')
 @section('content')
     <style>

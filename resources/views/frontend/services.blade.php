@@ -18,15 +18,9 @@
             <div class="container text-center py-5">
                 <h1 class="contact-hero-title">SERVICES</h1>
                 <nav class="breadcrumb-nav">
-<<<<<<< HEAD
-                     <a href="{{ route('index') }}" class="text-decoration-none text-white">
-                    <span>Home</span> <span class="mx-2">/</span></a>
-                    <span class="active">Services</span>
-=======
                     <a href="{{ route('index') }}" class="text-decoration-none text-white">
                         <span>Home</span>
                     </a> <span class="mx-2">/</span> <span class="active">Services</span>
->>>>>>> aee8f4121f4cfed6ae40d3bbe798245d732c32a5
                 </nav>
             </div>
         </div>
