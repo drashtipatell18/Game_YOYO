@@ -25,6 +25,40 @@
         background-repeat: no-repeat;
         background-size: cover;
     }
+
+    footer .contact-info,
+    footer .social-icons {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+        /* space between items */
+        justify-content: flex-start;
+        /* left align on desktop */
+    }
+
+    @media (max-width: 576px) {
+
+        footer .contact-info,
+        footer .social-icons {
+            justify-content: center;
+            /* center align on mobile */
+        }
+
+        footer .contact-info div,
+        footer .contact-info a {
+            flex-basis: 100%;
+            /* stack each contact item full width on small */
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        footer .social-icons a {
+            font-size: 1.2rem;
+            /* slightly bigger icons for tap */
+            margin: 0 8px;
+        }
+    }
 </style>
 
 <body>
@@ -108,22 +142,22 @@
                         <li><i class="fas fa-envelope me-2"></i> info@yoyokhel.com</li>
                         <li><i class="fas fa-phone me-2"></i> 1800-9797-6361</li>
                         <li>
-                            <div class="d-flex align-items-start">
-                                <i class="fas fa-location-dot me-2 mt-1"></i>
+                            <div class="contact-info">
+                                <div><i class="fas fa-envelope"></i> info@yoyokhel.com</div>
                                 <div>
-                                    264 Weber St W, Kitchener,<br />
-                                    ON N2H 4A6, Canada
+                                    <i class="fas fa-phone"></i> 1800-9797-6361
+                                </div>
+                                <div>
+                                    <i class="fas fa-location-dot"></i> 264 Weber St W, Kitchener, ON N2H 4A6, Canada
                                 </div>
                             </div>
-                        </li>
-                    </ul>
 
-                    <div class="d_footer-social mt-3">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-x-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        {{-- <a href="#"><i class="fab fa-discord"></i></a> --}}
-                    </div>
+                            {{-- <div class="social-icons">
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-x-twitter"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            </div> --}}
+
                 </div>
             </div>
             <hr class="border-secondary mt-4" />

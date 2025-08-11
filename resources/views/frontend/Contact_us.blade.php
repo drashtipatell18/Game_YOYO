@@ -65,14 +65,14 @@
                     <p class="contact-info-text mb-0">1800-9797-6361<br>info@yoyokhel.com</p>
                   </div>
                   <div>
-                     <h5 class="contact-info-title mb-2"><i class="fas fa-share-alt me-2"></i>JOIN OUR
+                     {{-- <h5 class="contact-info-title mb-2"><i class="fas fa-share-alt me-2"></i>JOIN OUR
                         COMMUNITY
-                     </h5>
-                     <div class="contact-social-icons mb-3">
-                        {{-- <a href="#"><i class="fab fa-discord"></i></a> --}}
-                        {{-- <a href="#"><i class="fab fa-twitch"></i></a> --}}
+                     </h5> --}}
+                     {{-- <div class="contact-social-icons mb-3">
+                        <a href="#"><i class="fab fa-discord"></i></a> 
+                      <a href="#"><i class="fab fa-twitch"></i></a> 
                         <a href="#"><i class="fab fa-twitter"></i></a>
-                     </div>
+                     </div> --}}
                      <div class="map-embed-wrapper rounded-4 overflow-hidden">
                         <iframe
                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.019019019019!2d-122.419415484681!3d37.7749297797597!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8085809c5b5b5b5b%3A0x5b5b5b5b5b5b5b5b!2sSan+Francisco%2C+CA!5e0!3m2!1sen!2sus!4v1680000000000!5m2!1sen!2sus"
