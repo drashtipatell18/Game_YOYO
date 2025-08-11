@@ -31,7 +31,7 @@
 <section class="x_contact-hero-section">
     <div class="x_contact-hero-overlay">
         <div class="container text-center py-5">
-            <h1 class="contact-hero-title">Blog</h1>
+            <h1 class="contact-hero-title">BLOG</h1>
             <nav class="breadcrumb-nav">
                 <a href="{{ route('index') }}" class="text-decoration-none text-white">
                     <span>Home</span>
@@ -88,7 +88,7 @@
                                             <span class="visually-hidden">Previous</span>
                                         </button>
                                         <button class="carousel-control-next" type="button" data-bs-target="#{{ $carouselId }}" data-bs-slide="next">
-                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="carousel-control-next-icon" ar ia-hidden="true"></span>
                                             <span class="visually-hidden">Next</span>
                                         </button>
                                     @endif
