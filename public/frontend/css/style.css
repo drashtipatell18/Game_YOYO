@@ -405,10 +405,10 @@ body {
   position: fixed;
   bottom: 90px;
   right: 20px;
-  width: 350px;
+  width: 450px;        /* Increased from 350px */
+  height: 700px;       /* Increased from 450px */
   max-width: 90%;
-  height: 450px;
-  background: #1c1c1c; /* Dark background */
+  background: #1c1c1c;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0,0,0,0.4);
   display: none;
@@ -469,6 +469,34 @@ body {
   cursor: pointer;
   font-size: 16px;
 }
+
+
+.chatbox-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px;
+  background: #1c1c1c;
+  border-top: 1px solid #333;
+  justify-content: center;
+}
+
+.chatbox-suggestions button {
+  background: #2e2e2e;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background 0.3s;
+}
+
+.chatbox-suggestions button:hover {
+  background: #444;
+}
+
+
 .chatbox-input button:hover { background: #7a694f; }
  
 /* ==== Scrollbar ==== */
@@ -478,3 +506,5 @@ body {
 @media (max-width: 500px) {
   .chatbox { height: 70vh; }
 }
+
+

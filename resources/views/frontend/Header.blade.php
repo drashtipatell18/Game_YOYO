@@ -322,64 +322,168 @@
                         <div class="chatbox-messages" id="chatMessages">
                             <div class="message bot">Hi! I’m your gaming assistant. How can I help you today?</div>
                         </div>
+                        <div class="chatbox-suggestions">
+                            <button onclick="handleSuggestion('What are the latest games?')">What are the latest games?</button>
+                            <button onclick="handleSuggestion('Do you have any offers?')">Do you have any offers?</button>
+                            <button onclick="handleSuggestion('What consoles do you sell?')">What consoles do you sell?</button>
+                        </div>
                         <div class="chatbox-input">
                             <input type="text" id="userInput" placeholder="Type your message...">
                             <button id="sendMessage">➤</button>
                         </div>
                     </div>
 
-                    <script>
-                        const chatToggleNav = document.getElementById("chatToggleNav");
-                        const chatbox = document.getElementById("chatbox");
-                        const closeChat = document.getElementById("closeChat");
-                        const sendMessageBtn = document.getElementById("sendMessage");
-                        const userInput = document.getElementById("userInput");
-                        const chatMessages = document.getElementById("chatMessages");
+    <!-- ChatBoat Question and Answer Script -->
+               <script>
+                    const chatToggleNav = document.getElementById("chatToggleNav");
+                    const chatbox = document.getElementById("chatbox");
+                    const closeChat = document.getElementById("closeChat");
+                    const sendMessageBtn = document.getElementById("sendMessage");
+                    const userInput = document.getElementById("userInput");
+                    const chatMessages = document.getElementById("chatMessages");
 
-                        // Open chat from navbar button
-                        chatToggleNav.addEventListener("click", () => {
-                            chatbox.style.display = "flex";
-                        });
+                    // Conversation flow state
+                    let conversationState = "askName";
+                    let userName = "";
+                    let userEmail = "";
 
-                        // Close chat
-                        closeChat.addEventListener("click", () => {
-                            chatbox.style.display = "none";
-                        });
+                    // Open chat and greet only once
+                    chatToggleNav.addEventListener("click", () => {
+                        chatbox.style.display = "flex";
+                        if (chatMessages.children.length === 0) {
+                            appendMessage("Hi! I’m your gaming assistant. 👋 What’s your name?", "bot");
+                        }
+                    });
 
-                        // Send message
-                        function sendMessage() {
-                            const message = userInput.value.trim();
-                            if (message === "") return;
+                    // Close chat
+                    closeChat.addEventListener("click", () => {
+                        chatbox.style.display = "none";
+                    });
 
-                            appendMessage(message, "user");
-                            userInput.value = "";
+                    // Send message
+                    function sendMessage() {
+                        const message = userInput.value.trim();
+                        if (message === "") return;
 
-                            setTimeout(() => {
-                                let reply = getBotReply(message);
-                                appendMessage(reply, "bot");
-                            }, 800);
+                        appendMessage(message, "user");
+                        userInput.value = "";
+
+                        setTimeout(() => {
+                            let reply = handleConversation(message);
+                            appendMessage(reply, "bot");
+                        }, 800);
+                    }
+
+                    function appendMessage(text, sender) {
+                        const msg = document.createElement("div");
+                        msg.classList.add("message", sender);
+                        msg.innerText = text;
+                        chatMessages.appendChild(msg);
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    }
+
+                    function handleConversation(message) {
+                        switch (conversationState) {
+                            case "askName":
+                                userName = message;
+                                conversationState = "askEmail";
+                                return `Nice to meet you, ${userName}! 😊 Can I have your email?`;
+                            case "askEmail":
+                                if (!validateEmail(message)) {
+                                    return "That doesn't seem like a valid email. Please enter it again.";
+                                }
+                                userEmail = message;
+                                conversationState = "chatReady";
+                                return `Thanks, ${userName}! You can now ask me anything about games. 🎮`;
+                            case "chatReady":
+                                return getBotReply(message);
+                            default:
+                                return "Let's start with your name. 😊";
+                        }
+                    }
+
+                    function validateEmail(email) {
+                        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+                    }
+
+                    function getBotReply(userMsg) {
+                        userMsg = userMsg.toLowerCase();
+
+                        // Platform-specific responses first
+                        if (userMsg.includes("android")) {
+                            return "For Android, we recommend Call of Duty Mobile, PUBG Mobile, Genshin Impact, and Asphalt 9. 📱";
+                        }
+                        if (userMsg.includes("ios") || userMsg.includes("iphone")) {
+                            return "Popular iOS games include Clash Royale, Monument Valley, and Among Us. Available on the App Store! 🍏";
+                        }
+                        if (userMsg.includes("windows") || userMsg.includes("pc games")) {
+                            return "On Windows PC, check out Cyberpunk 2077, Valorant, and Microsoft Flight Simulator. 🖥️";
+                        }
+                        if (userMsg.includes("mobile")) {
+                            return "We’ve got mobile game recommendations for both Android and iOS platforms! Want suggestions?";
+                        }
+                        if (userMsg.includes("platform") || userMsg.includes("available on")) {
+                            return "Most games are available on PC, PlayStation, Xbox, Nintendo Switch, Android, and iOS.";
                         }
 
-                        function appendMessage(text, sender) {
-                            const msg = document.createElement("div");
-                            msg.classList.add("message", sender);
-                            msg.innerText = text;
-                            chatMessages.appendChild(msg);
-                            chatMessages.scrollTop = chatMessages.scrollHeight;
+                        // General questions
+                        if (userMsg.includes("offer") || userMsg.includes("discount")) {
+                            return "Check out our deals page for discounts up to 50%! 🔥";
+                        }
+                        if (userMsg.includes("console")) {
+                            return "We sell PS5, Xbox Series X, and Nintendo Switch consoles.";
+                        }
+                        if (userMsg.includes("release") || userMsg.includes("new game")) {
+                            return "The newest releases this month include Elden Ring DLC and Spider-Man 3.";
+                        }
+                        if (userMsg.includes("top games") || userMsg.includes("popular games")) {
+                            return "Top games right now: GTA VI, Fortnite, Call of Duty: Black Ops, and FIFA 25.";
+                        }
+                        if (userMsg.includes("multiplayer") || userMsg.includes("co-op")) {
+                            return "Try Apex Legends, Valorant, or Overcooked 2 for co-op fun!";
+                        }
+                        if (userMsg.includes("single player") || userMsg.includes("story mode")) {
+                            return "Try God of War: Ragnarok or The Last of Us for an immersive story experience.";
+                        }
+                        if (userMsg.includes("pc requirements") || userMsg.includes("system requirements")) {
+                            return "System requirements are listed on each game's product page under 'Specs'.";
+                        }
+                        if (userMsg.includes("pre-order")) {
+                            return "Pre-orders are open for several upcoming titles! Check our Pre-Orders section.";
+                        }
+                        if (userMsg.includes("refund") || userMsg.includes("return")) {
+                            return "We offer refunds within 14 days if the game hasn't been played for more than 2 hours.";
+                        }
+                        if (userMsg.includes("subscription") || userMsg.includes("membership")) {
+                            return "We offer GamePass and PlayStation Plus subscriptions—monthly and yearly plans available.";
                         }
 
-                        function getBotReply(userMsg) {
-                            userMsg = userMsg.toLowerCase();
-                            if (userMsg.includes("game")) return "We have the latest trending games! 🎮";
-                            if (userMsg.includes("offer") || userMsg.includes("discount")) return "Check out our deals page for discounts up to 50%! 🔥";
-                            if (userMsg.includes("console")) return "We sell PS5, Xbox Series X, and Nintendo Switch consoles.";
-                            return "I’m not sure, but I can connect you to a human agent. 😊";
+                        // Fallback response
+                        return "I’m not sure about that, but I can connect you to a human agent. 😊";
+                    }
+
+
+                    function handleSuggestion(text) {
+                        if (conversationState !== "chatReady") {
+                            appendMessage("Please enter your name and email before asking game questions. 😊", "bot");
+                            return;
                         }
 
-                        sendMessageBtn.addEventListener("click", sendMessage);
-                        userInput.addEventListener("keypress", e => { if (e.key === "Enter") sendMessage(); });
-                    </script>
-                   
+                        appendMessage(text, "user");
+
+                        setTimeout(() => {
+                            let reply = getBotReply(text);
+                            appendMessage(reply, "bot");
+                        }, 500);
+                    }
+
+                    sendMessageBtn.addEventListener("click", sendMessage);
+                    userInput.addEventListener("keypress", e => {
+                        if (e.key === "Enter") sendMessage();
+                    });
+                </script>
+
+    <!-- End Question and Answer Script -->
                 </ul>
 
 
