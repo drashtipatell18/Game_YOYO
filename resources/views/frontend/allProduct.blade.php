@@ -563,138 +563,138 @@
                 }
             }
         }
-          function generatePagination(currentPage, totalPages) {
-    const pagination = document.getElementById('pagination');
-    pagination.innerHTML = '';
+//           function generatePagination(currentPage, totalPages) {
+//     const pagination = document.getElementById('pagination');
+//     pagination.innerHTML = '';
  
-    function addButton(page, text, disabled) {
-        const li = document.createElement('li');
-        li.className = `page-item ${disabled ? 'disabled' : ''}`;
-        const a = document.createElement('a');
-        a.className = 'page-link';
-        a.innerHTML = text;
-        if (!disabled) {
-            a.href = '#';
-            a.onclick = (e) => {
-                e.preventDefault();
-                const url = new URL(window.location);
-                url.searchParams.set('page', page);
-                window.history.pushState({}, '', url);
-                renderProducts();
-            };
+//     function addButton(page, text, disabled) {
+//         const li = document.createElement('li');
+//         li.className = `page-item ${disabled ? 'disabled' : ''}`;
+//         const a = document.createElement('a');
+//         a.className = 'page-link';
+//         a.innerHTML = text;
+//         if (!disabled) {
+//             a.href = '#';
+//             a.onclick = (e) => {
+//                 e.preventDefault();
+//                 const url = new URL(window.location);
+//                 url.searchParams.set('page', page);
+//                 window.history.pushState({}, '', url);
+//                 renderProducts();
+//             };
+//         }
+//         li.appendChild(a);
+//         pagination.appendChild(li);
+//     }
+ 
+//     // Previous Button
+//     addButton(currentPage - 1, '<i class="fa fa-angle-left"></i>', currentPage === 1);
+ 
+//     // Middle text "X of Y"
+//     const middle = document.createElement('li');
+//     middle.className = 'page-item';
+//     middle.innerHTML = `<span class="page-link">${currentPage} of ${totalPages}</span>`;
+//     pagination.appendChild(middle);
+ 
+//     // Next Button
+//     addButton(currentPage + 1, '<i class="fa fa-angle-right"></i>', currentPage === totalPages);
+// }
+ 
+
+        function generatePagination(currentPageParam, totalPages) {
+            const pagination = document.getElementById('pagination');
+            if (!pagination) return;
+
+            pagination.innerHTML = '';
+
+            function addPage(page, text = page, active = false, disabled = false) {
+                const li = document.createElement('li');
+                li.className = `page-item ${active ? 'active' : ''} ${disabled ? 'disabled' : ''}`;
+
+                const element = document.createElement(active || disabled ? 'span' : 'a');
+                element.className = 'page-link';
+                element.innerHTML = text;
+
+                if (!disabled && !active) {
+                    element.href = '#';
+                    element.onclick = (e) => {
+                        e.preventDefault();
+                        // Update the global currentPage variable
+                        currentPage = page;
+
+                        // Update URL (optional)
+                        const url = new URL(window.location);
+                        url.searchParams.set('page', page);
+                        window.history.pushState({}, '', url);
+
+                        // Re-render products with new page
+                        renderProducts();
+
+                        // Update product count
+                        updateProductCount();
+                    };
+                }
+
+                li.appendChild(element);
+                pagination.appendChild(li);
+            }
+
+            // Previous button
+            addPage(currentPageParam - 1, '<i class="fa fa-angle-left"></i>', false, currentPageParam === 1);
+
+            // Mobile-friendly pagination logic
+            if (totalPages <= 5) {
+                // Show all pages if 5 or fewer
+                for (let i = 1; i <= totalPages; i++) {
+                    addPage(i, i, i === currentPageParam);
+                }
+            } else {
+                // Mobile pagination: Show first, current, and last page with dots
+                if (currentPageParam === 1) {
+                    // First page: show 1, 2, ..., last
+                    addPage(1, '1', true);
+                    addPage(2, '2', false);
+
+                    const dots = document.createElement('li');
+                    dots.className = 'page-item disabled';
+                    dots.innerHTML = '<span class="page-link">...</span>';
+                    pagination.appendChild(dots);
+
+                    addPage(totalPages, totalPages, false);
+                } else if (currentPageParam === totalPages) {
+                    // Last page: show 1, ..., last-1, last
+                    addPage(1, '1', false);
+
+                    const dots = document.createElement('li');
+                    dots.className = 'page-item disabled';
+                    dots.innerHTML = '<span class="page-link">...</span>';
+                    pagination.appendChild(dots);
+
+                    addPage(totalPages - 1, totalPages - 1, false);
+                    addPage(totalPages, totalPages, true);
+                } else {
+                    // Middle pages: show 1, ..., current, ..., last
+                    addPage(1, '1', false);
+
+                    const dots1 = document.createElement('li');
+                    dots1.className = 'page-item disabled';
+                    dots1.innerHTML = '<span class="page-link">...</span>';
+                    pagination.appendChild(dots1);
+
+                    addPage(currentPageParam, currentPageParam, true);
+
+                    const dots2 = document.createElement('li');
+                    dots2.className = 'page-item disabled';
+                    dots2.innerHTML = '<span class="page-link">...</span>';
+                    pagination.appendChild(dots2);
+
+                    addPage(totalPages, totalPages, false);
+                }
+            }
+
+            // Next button
+            addPage(currentPageParam + 1, '<i class="fa fa-angle-right"></i>', false, currentPageParam === totalPages);
         }
-        li.appendChild(a);
-        pagination.appendChild(li);
-    }
- 
-    // Previous Button
-    addButton(currentPage - 1, '<i class="fa fa-angle-left"></i>', currentPage === 1);
- 
-    // Middle text "X of Y"
-    const middle = document.createElement('li');
-    middle.className = 'page-item';
-    middle.innerHTML = `<span class="page-link">${currentPage} of ${totalPages}</span>`;
-    pagination.appendChild(middle);
- 
-    // Next Button
-    addButton(currentPage + 1, '<i class="fa fa-angle-right"></i>', currentPage === totalPages);
-}
- 
-
-        // function generatePagination(currentPageParam, totalPages) {
-        //     const pagination = document.getElementById('pagination');
-        //     if (!pagination) return;
-
-        //     pagination.innerHTML = '';
-
-        //     function addPage(page, text = page, active = false, disabled = false) {
-        //         const li = document.createElement('li');
-        //         li.className = `page-item ${active ? 'active' : ''} ${disabled ? 'disabled' : ''}`;
-
-        //         const element = document.createElement(active || disabled ? 'span' : 'a');
-        //         element.className = 'page-link';
-        //         element.innerHTML = text;
-
-        //         if (!disabled && !active) {
-        //             element.href = '#';
-        //             element.onclick = (e) => {
-        //                 e.preventDefault();
-        //                 // Update the global currentPage variable
-        //                 currentPage = page;
-
-        //                 // Update URL (optional)
-        //                 const url = new URL(window.location);
-        //                 url.searchParams.set('page', page);
-        //                 window.history.pushState({}, '', url);
-
-        //                 // Re-render products with new page
-        //                 renderProducts();
-
-        //                 // Update product count
-        //                 updateProductCount();
-        //             };
-        //         }
-
-        //         li.appendChild(element);
-        //         pagination.appendChild(li);
-        //     }
-
-        //     // Previous button
-        //     addPage(currentPageParam - 1, '<i class="fa fa-angle-left"></i>', false, currentPageParam === 1);
-
-        //     // Mobile-friendly pagination logic
-        //     if (totalPages <= 5) {
-        //         // Show all pages if 5 or fewer
-        //         for (let i = 1; i <= totalPages; i++) {
-        //             addPage(i, i, i === currentPageParam);
-        //         }
-        //     } else {
-        //         // Mobile pagination: Show first, current, and last page with dots
-        //         if (currentPageParam === 1) {
-        //             // First page: show 1, 2, ..., last
-        //             addPage(1, '1', true);
-        //             addPage(2, '2', false);
-
-        //             const dots = document.createElement('li');
-        //             dots.className = 'page-item disabled';
-        //             dots.innerHTML = '<span class="page-link">...</span>';
-        //             pagination.appendChild(dots);
-
-        //             addPage(totalPages, totalPages, false);
-        //         } else if (currentPageParam === totalPages) {
-        //             // Last page: show 1, ..., last-1, last
-        //             addPage(1, '1', false);
-
-        //             const dots = document.createElement('li');
-        //             dots.className = 'page-item disabled';
-        //             dots.innerHTML = '<span class="page-link">...</span>';
-        //             pagination.appendChild(dots);
-
-        //             addPage(totalPages - 1, totalPages - 1, false);
-        //             addPage(totalPages, totalPages, true);
-        //         } else {
-        //             // Middle pages: show 1, ..., current, ..., last
-        //             addPage(1, '1', false);
-
-        //             const dots1 = document.createElement('li');
-        //             dots1.className = 'page-item disabled';
-        //             dots1.innerHTML = '<span class="page-link">...</span>';
-        //             pagination.appendChild(dots1);
-
-        //             addPage(currentPageParam, currentPageParam, true);
-
-        //             const dots2 = document.createElement('li');
-        //             dots2.className = 'page-item disabled';
-        //             dots2.innerHTML = '<span class="page-link">...</span>';
-        //             pagination.appendChild(dots2);
-
-        //             addPage(totalPages, totalPages, false);
-        //         }
-        //     }
-
-        //     // Next button
-        //     addPage(currentPageParam + 1, '<i class="fa fa-angle-right"></i>', false, currentPageParam === totalPages);
-        // }
 
         // Also add this function to handle URL-based pagination on page load
         function initializePaginationFromURL() {
