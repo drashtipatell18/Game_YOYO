@@ -404,6 +404,25 @@
             }
         }
 
+// Get Dynamic Platform
+        function getPlatformIcons(platformString) {
+            const platformMap = {
+                android: '<i class="fab fa-android text-success me-1" title="Android"></i>',
+                ios: '<i class="fab fa-apple text-light me-1" title="iOS"></i>',
+                windows: '<i class="fab fa-windows text-primary me-1" title="Windows"></i>',
+            };
+
+            if (!platformString) return '';
+
+            return platformString
+                .split(',')
+                .map(p => p.trim().toLowerCase())
+                .filter(p => platformMap[p])
+                .map(p => platformMap[p])
+                .join('');
+        }
+        
+
         function renderProducts() {
             const gridContainer = document.getElementById('gridContainer');
             const listContainer = document.getElementById('listContainer');
@@ -465,6 +484,10 @@
                 <div class="game-card position-relative" data-id="${product.id}">
                     <img src="${firstImage}" alt="${product.name}" class="card-img-top" />
                     <div class="position-absolute card-content">
+                        <div class="icons d-flex gap-2 mb-3">
+                            ${getPlatformIcons(product.platform)}
+                        </div>
+                       
                         <h3>${product.name}</h3>
                         <h3 class="mb-0">$${productPrice}
                         <span class="badge usd-badge">USD</span></h3>
@@ -493,6 +516,9 @@
                         <div class="col-sm-8">
                             <div class="card-body d-flex flex-column justify-content-between h-100" style="min-height: 160px;">
                                 <div>
+                                    <div class="icons d-flex gap-2 mb-3">
+                                        ${getPlatformIcons(product.platform)}
+                                    </div>
                                     <h5 class="card-title mb-2" style="color:#ad9d79;">${product.name}</h5>
                                     <p class="card-text fw-bold mb-1 text-white">$${productPrice}</p>
                                     <span class="badge usd-badge">USD</span>
@@ -520,6 +546,7 @@
             // Add event listeners to product cards and buttons
             addProductEventListeners();
         }
+
 
         function updateProductCount() {
             const productCount = document.getElementById('productCount');
@@ -851,6 +878,9 @@
             <div class="game-card position-relative" data-id="${cardData.id}">
                 <img src="${firstImage}" alt="${cardData.name}" class="card-img-top" />
                 <div class="position-absolute card-content">
+                    <div class="icons d-flex gap-2 mb-3">
+                        ${getPlatformIcons(product.platform)}
+                    </div>
                     <h3>${cardData.name}</h3>
                     <h3 class="mb-0">${cardData.price}
                     <span class="badge usd-badge">USD</span></h3>
@@ -883,6 +913,9 @@
                 <div class="col-sm-8">
                     <div class="card-body d-flex flex-column justify-content-between h-100" style="min-height: 160px;">
                         <div>
+                            <div class="icons d-flex gap-2 mb-3">
+                                        ${getPlatformIcons(product.platform)}
+                                    </div>
                             <h5 class="card-title mb-2" style="color:#ad9d79;">${cardData.name}</h5>
                             <p class="card-text fw-bold mb-1 text-white">${cardData.price}</p>
                             <span class="badge usd-badge">USD</span>

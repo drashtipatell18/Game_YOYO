@@ -65,7 +65,7 @@ class HomeController extends Controller
     public function getProductJson(Request $request)
     {
         $query = Product::with('category:id,name') // eager load category
-            ->select('id', 'category_id', 'SKU', 'tags', 'name', 'price', 'image', 'description', 'weight', 'dimensions');
+            ->select('id', 'category_id', 'SKU', 'tags', 'name', 'price', 'image', 'description', 'weight', 'dimensions','platform');
 
         // Check for category filter
         if ($request->has('category')) {
