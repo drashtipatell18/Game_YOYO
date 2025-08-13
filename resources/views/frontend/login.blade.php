@@ -271,7 +271,7 @@
                                 @csrf
                                 <!-- Email -->
                                 <div class="mb-3">
-                                    <input type="email" name="email"
+                                    <input type="email" name="email" id="db_email_input"
                                         class="form-control rounded py-2 px-4 text-black" placeholder="Enter Email" />
                                 </div>
                                 <!-- Password with eye icon -->
@@ -281,15 +281,15 @@
                                             class="form-control rounded-end py-2 px-4 pe-5 text-black"
                                             placeholder="Enter Password" id="db_password_input" />
                                        <i class="fa-solid fa-eye-slash" id="db_toggle_password"
-            style="
-                position: absolute;
-                top: 35%;
-                right: 31px;
-                transform: translateY(-50%);
-                cursor: pointer;
-                color: #888;
-                z-index: 5;
-            "></i>
+                                            style="
+                                                position: absolute;
+                                                top: 35%;
+                                                right: 31px;
+                                                transform: translateY(-50%);
+                                                cursor: pointer;
+                                                color: #888;
+                                                z-index: 5;
+                                            "></i>
                                     </div>
                                     <!-- Custom Checkbox + Forgot Password -->
                                     <div class="d-flex justify-content-between align-items-center mt-2">
@@ -300,10 +300,11 @@
                                         </label>
                                         <a href="{{ route('frontendforget')}}" class="text-white-50 small">Forgot Password?</a>
                                     </div>
+                                    <div id="credentialError" class="error"></div>
                                 </div>
 
                                 <!-- Slider Captcha -->
-                                <div class="captcha-container">
+                                <div class="captcha-container d-none" id="captchaCard">
                                     <div class="card-header">
                                         <span>Please complete security verification!</span>
                                     </div>
@@ -313,7 +314,7 @@
                                 </div>
 
                                 <!-- Sign In Button -->
-                                <button type="submit" id="loginBtn" class="btn btn-light w-100 rounded-pill py-2" disabled>
+                                <button type="submit" id="loginBtn" class="btn btn-light w-100 rounded-pill py-2">
                                     Sign In
                                 </button>
                             </form>
@@ -363,31 +364,24 @@
         $(document).ready(function() {
             var isCaptchaVerified = false;
 
-            // Initialize slider captcha
-            var captcha = sliderCaptcha({
-                id: 'captcha',
-                loadingText: 'Loading...',
-                failedText: 'Try again',
-                barText: 'Slide right to verify',
-                repeatIcon: 'fa fa-redo',
-                width: 280,
-                height: 120,
-                onSuccess: function () {
-                    isCaptchaVerified = true;
-                    $('#loginBtn').prop('disabled', false);
-                    setTimeout(function () {
-                        // Keep the success state, don't reset
-                    }, 1000);
-                },
-                onFail: function() {
-                    isCaptchaVerified = false;
-                    $('#loginBtn').prop('disabled', true);
-                },
-                onRefresh: function() {
-                    isCaptchaVerified = false;
-                    $('#loginBtn').prop('disabled', true);
-                }
-            });
+            var captchaInstance = null;
+            function initCaptcha(onSolved){
+                captchaInstance = sliderCaptcha({
+                    id: 'captcha',
+                    loadingText: 'Loading...',
+                    failedText: 'Try again',
+                    barText: 'Slide right to verify',
+                    repeatIcon: 'fa fa-redo',
+                    width: 280,
+                    height: 120,
+                    onSuccess: function () {
+                        isCaptchaVerified = true;
+                        if (typeof onSolved === 'function') { onSolved(); }
+                    },
+                    onFail: function() { isCaptchaVerified = false; },
+                    onRefresh: function() { isCaptchaVerified = false; }
+                });
+            }
 
             // Password toggle
             $('#db_toggle_password').on('click', function () {
@@ -431,24 +425,38 @@
                     $(element).removeClass('is-invalid');
                 },
                 submitHandler: function(form) {
-                    // Check if captcha is verified before submitting
-                    if (!isCaptchaVerified) {
-                        alert('Please complete the captcha verification first!');
-                        return false;
-                    }
-
-                    // Optional: Add loading state
                     var submitBtn = $(form).find('button[type="submit"]');
                     var originalText = submitBtn.text();
                     submitBtn.prop('disabled', true).text('Processing...');
 
-                    // Submit the form
-                    form.submit();
+                    $('#credentialError').text('');
+
+                    $.ajax({
+                        url: '{{ route('checkCredentials') }}',
+                        method: 'POST',
+                        dataType: 'json',
+                        data: {
+                            _token: $(form).find('input[name="_token"]').val(),
+                            email: $(form).find('input[name="email"]').val(),
+                            password: $(form).find('input[name="password"]').val()
+                        }
+                    }).done(function(res){
+                        if(res && res.success){
+                            $('#captchaCard').removeClass('d-none');
+                            initCaptcha(function(){ form.submit(); });
+                        } else {
+                            $('#credentialError').text('Invalid email or password');
+                            submitBtn.prop('disabled', false).text(originalText);
+                        }
+                    }).fail(function(){
+                        $('#credentialError').text('Unable to verify credentials. Please try again.');
+                        submitBtn.prop('disabled', false).text(originalText);
+                    });
                 }
             });
 
             // Real-time validation
-            $('#email, #db_password_input').on('keyup blur', function() {
+            $('#db_email_input, #db_password_input').on('keyup blur', function() {
                 $(this).valid();
             });
 

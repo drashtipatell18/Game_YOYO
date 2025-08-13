@@ -152,4 +152,15 @@ class LoginController extends Controller
         }
     }
 
+    public function checkCredentials(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::validate($credentials)) {
+            return response()->json(['success' => true]);
+        } else {
+            return response()->json(['success' => false]);
+        }
+    }
+
 }

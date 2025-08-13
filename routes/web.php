@@ -174,6 +174,9 @@ Route::get('auth/facebook',[FrontGoogleAuthController::class,'redirectToFacebook
 Route::get('auth/facebook/callback',[FrontGoogleAuthController::class,'handleFacebookCallback'])->name('FacebookAuthCallback');
 
 Route::get('/frontend-login',[FrontendLoginController::class,'login'])->name('frontend.login');
+Route::post('/check-credentials', [FrontendLoginController::class, 'checkCredentials'])->name('checkCredentials');
+
+
 Route::post('frontlogin', [FrontendLoginController::class, 'frontLogin'])->name('frontlogin');
 Route::get('frontregister', [FrontendLoginController::class, 'frontRegister'])->name('frontregister');
 Route::post('/check-email-exists', function(Request $request) {
