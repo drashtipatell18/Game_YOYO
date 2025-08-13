@@ -100,7 +100,7 @@ body {
 }
 .icons i {
   color: #000000 !important;
-  font-size: 16px !important;
+  font-size: 19px !important;
   background-color: #fff;
   padding: 6px;
   border-radius: 50%;
@@ -197,7 +197,7 @@ body {
     margin-bottom: 8px;
   }
   .icons i {
-    font-size: 13px;
+    font-size: 14px;
     height: 28px;
     width: 28px;
     padding: 4px;
