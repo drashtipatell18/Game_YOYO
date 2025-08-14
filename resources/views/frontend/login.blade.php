@@ -250,6 +250,46 @@
             opacity: 0.6;
             cursor: not-allowed;
         }
+
+        /* Captcha Responsive Fix */
+        @media (max-width: 768px) {
+            .captcha-container {
+                max-width: 100%;
+                overflow: hidden;
+                padding: 10px;
+                box-sizing: border-box;
+            }
+
+            .captcha-container img,
+            .captcha-container canvas {
+                max-width: 100% !important;
+                height: auto !important;
+                display: block;
+            }
+
+            .captcha-slider {
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+
+            .login-content {
+                padding: 15px;
+            }
+
+            /* Form inputs & buttons */
+            .login-content input,
+            .login-content button {
+                width: 100%;
+                box-sizing: border-box;
+            }
+        }
+
+        /* Extra small devices */
+        @media (max-width: 480px) {
+            .login-content {
+                padding: 10px;
+            }
+        }
     </style>
 </head>
 
@@ -280,7 +320,7 @@
                                         <input type="password" name="password"
                                             class="form-control rounded-end py-2 px-4 pe-5 text-black"
                                             placeholder="Enter Password" id="db_password_input" />
-                                       <i class="fa-solid fa-eye-slash" id="db_toggle_password"
+                                        <i class="fa-solid fa-eye-slash" id="db_toggle_password"
                                             style="
                                                 position: absolute;
                                                 top: 35%;
@@ -298,7 +338,8 @@
                                 <input type="checkbox" id="rememberMe" />
                                 <span class="checkmark"></span> --}}
                                         </label>
-                                        <a href="{{ route('frontendforget')}}" class="text-white-50 small">Forgot Password?</a>
+                                        <a href="{{ route('frontendforget') }}" class="text-white-50 small">Forgot
+                                            Password?</a>
                                     </div>
                                     <div id="credentialError" class="error"></div>
                                 </div>
@@ -358,15 +399,310 @@
     <!-- Slider Captcha Script -->
     <script>
         // Slider Captcha Implementation
-        (function () { "use strict"; function u(n) { var i = document.getElementById(n.id), r = typeof n == "object" && n; return new t(i, r) } var r = function () { var u = arguments.length, n = arguments[0] || {}, t, i, r; for (typeof n != "object" && typeof n != "function" && (n = {}), u == 1 && (n = this, t--), t = 1; t < u; t++) { i = arguments[t]; for (r in i) Object.prototype.hasOwnProperty.call(i, r) && (n[r] = i[r]) } return n }, i = function (n) { return typeof n == "function" && typeof n.nodeType != "number" }, t = function (n, i) { this.$element = n; this.options = r({}, t.DEFAULTS, i); this.$element.style.position = "relative"; this.$element.style.width = this.options.width + "px"; this.$element.style.margin = "0 auto"; this.init() }, n; t.VERSION = "1.0"; t.Author = "argo@163.com"; t.DEFAULTS = { width: 280, height: 155, PI: Math.PI, sliderL: 42, sliderR: 9, offset: 5, loadingText: "Loading...", failedText: "Try again", barText: "Slide right to fill", repeatIcon: "fa fa-repeat", maxLoadCount: 3, localImages: function () { return "https://picsum.photos/280/155/?image=" + Math.round(Math.random() * 20) }, verify: function (n, t) { var i = !1; return $.ajax({ url: t, data: { datas: JSON.stringify(n) }, dataType: "json", type: "post", async: !1, success: function (n) { i = JSON.stringify(n); console.log("Result: " + i) } }), i }, remoteUrl: null }; window.sliderCaptcha = u; window.sliderCaptcha.Constructor = t; n = t.prototype; n.init = function () { this.initDOM(); this.initImg(); this.bindEvents() }; n.initDOM = function () { var n = function (n, t) { var i = document.createElement(n); return i.className = t, i }, v = function (n, t) { var i = document.createElement("canvas"); return i.width = n, i.height = t, i }, f = v(this.options.width - 2, this.options.height), e = f.cloneNode(!0), t = n("div", "sliderContainer"), l = n("i", "refreshIcon " + this.options.repeatIcon), o = n("div", "sliderMask"), y = n("div", "sliderbg"), s = n("div", "slider"), a = n("i", "fa fa-arrow-right sliderIcon"), h = n("span", "sliderText"), u, c; e.className = "block"; h.innerHTML = this.options.barText; u = this.$element; u.appendChild(f); u.appendChild(l); u.appendChild(e); s.appendChild(a); o.appendChild(s); t.appendChild(y); t.appendChild(o); t.appendChild(h); u.appendChild(t); c = { canvas: f, block: e, sliderContainer: t, refreshIcon: l, slider: s, sliderMask: o, sliderIcon: a, text: h, canvasCtx: f.getContext("2d"), blockCtx: e.getContext("2d") }; i(Object.assign) ? Object.assign(this, c) : r(this, c) }; n.initImg = function () { var n = this, f = window.navigator.userAgent.indexOf("Trident") > -1, r = this.options.sliderL + this.options.sliderR * 2 + 3, e = function (t, i) { var r = n.options.sliderL, o = n.options.sliderR, s = n.options.PI, u = n.x, e = n.y; t.beginPath(); t.moveTo(u, e); t.arc(u + r / 2, e - o + 2, o, .72 * s, 2.26 * s); t.lineTo(u + r, e); t.arc(u + r + o - 2, e + r / 2, o, 1.21 * s, 2.78 * s); t.lineTo(u + r, e + r); t.lineTo(u, e + r); t.arc(u + o - 2, e + r / 2, o + .4, 2.76 * s, 1.24 * s, !0); t.lineTo(u, e); t.lineWidth = 2; t.fillStyle = "rgba(255, 255, 255, 0.7)"; t.strokeStyle = "rgba(255, 255, 255, 0.7)"; t.stroke(); t[i](); t.globalCompositeOperation = f ? "xor" : "destination-over" }, o = function (n, t) { return Math.round(Math.random() * (t - n) + n) }, t = new Image, u; t.crossOrigin = "Anonymous"; u = 0; t.onload = function () { n.x = o(r + 10, n.options.width - (r + 10)); n.y = o(10 + n.options.sliderR * 2, n.options.height - (r + 10)); e(n.canvasCtx, "fill"); e(n.blockCtx, "clip"); n.canvasCtx.drawImage(t, 0, 0, n.options.width - 2, n.options.height); n.blockCtx.drawImage(t, 0, 0, n.options.width - 2, n.options.height); var i = n.y - n.options.sliderR * 2 - 1, u = n.blockCtx.getImageData(n.x - 3, i, r, r); n.block.width = r; n.blockCtx.putImageData(u, 0, i + 1); n.text.textContent = n.text.getAttribute("data-text") }; t.onerror = function () { if (u++, window.location.protocol === "file:" && (u = n.options.maxLoadCount, console.error("can't load pic resource file from File protocal. Please try http or https")), u >= n.options.maxLoadCount) { n.text.textContent = "Loading failed"; return } t.src = n.options.localImages() }; t.setSrc = function () { var r = "", e; u = 0; i(n.options.setSrc) && (r = n.options.setSrc()); r && r !== "" || (r = "https://picsum.photos/" + n.options.width + "/" + n.options.height + "/?image=" + Math.round(Math.random() * 20)); f ? (e = new XMLHttpRequest, e.onloadend = function (n) { var i = new FileReader; i.readAsDataURL(n.target.response); i.onloadend = function (n) { t.src = n.target.result } }, e.open("GET", r), e.responseType = "blob", e.send()) : t.src = r }; t.setSrc(); this.text.setAttribute("data-text", this.options.barText); this.text.textContent = this.options.loadingText; this.img = t }; n.clean = function () { this.canvasCtx.clearRect(0, 0, this.options.width, this.options.height); this.blockCtx.clearRect(0, 0, this.options.width, this.options.height); this.block.width = this.options.width }; n.bindEvents = function () { var n = this; this.$element.addEventListener("selectstart", function () { return !1 }); this.refreshIcon.addEventListener("click", function () { n.text.textContent = n.options.barText; n.reset(); i(n.options.onRefresh) && n.options.onRefresh.call(n.$element) }); var r, u, f = [], t = !1, e = function (i) { n.text.classList.contains("text-danger") || (r = i.clientX || i.touches[0].clientX, u = i.clientY || i.touches[0].clientY, t = !0) }, o = function (i) { var o; if (!t) return !1; var s = i.clientX || i.touches[0].clientX, h = i.clientY || i.touches[0].clientY, e = s - r, c = h - u; if (e < 0 || e + 40 > n.options.width) return !1; n.slider.style.left = e - 1 + "px"; o = (n.options.width - 60) / (n.options.width - 40) * e; n.block.style.left = o + "px"; n.sliderContainer.classList.add("sliderContainer_active"); n.sliderMask.style.width = e + 4 + "px"; f.push(Math.round(c)) }, s = function (u) { var o, e; if (!t || (t = !1, o = u.clientX || u.changedTouches[0].clientX, o === r)) return !1; n.sliderContainer.classList.remove("sliderContainer_active"); n.trail = f; e = n.verify(); e.spliced && e.verified ? (n.sliderContainer.classList.add("sliderContainer_success"), i(n.options.onSuccess) && n.options.onSuccess.call(n.$element)) : (n.sliderContainer.classList.add("sliderContainer_fail"), i(n.options.onFail) && n.options.onFail.call(n.$element), setTimeout(function () { n.text.innerHTML = n.options.failedText; n.reset() }, 1e3)) }; this.slider.addEventListener("mousedown", e); this.slider.addEventListener("touchstart", e); document.addEventListener("mousemove", o); document.addEventListener("touchmove", o); document.addEventListener("mouseup", s); document.addEventListener("touchend", s); document.addEventListener("mousedown", function () { return !1 }); document.addEventListener("touchstart", function () { return !1 }); document.addEventListener("swipe", function () { return !1 }) }; n.verify = function () { var n = this.trail, r = parseInt(this.block.style.left), t = !1; if (this.options.remoteUrl !== null) t = this.options.verify(n, this.options.remoteUrl); else { var i = function (n, t) { return n + t }, u = function (n) { return n * n }, f = n.reduce(i) / n.length, e = n.map(function (n) { return n - f }), o = Math.sqrt(e.map(u).reduce(i) / n.length); t = o !== 0 } return { spliced: Math.abs(r - this.x) < this.options.offset, verified: t } }; n.reset = function () { this.sliderContainer.classList.remove("sliderContainer_fail"); this.sliderContainer.classList.remove("sliderContainer_success"); this.slider.style.left = 0; this.block.style.left = 0; this.sliderMask.style.width = 0; this.clean(); this.text.setAttribute("data-text", this.text.textContent); this.text.textContent = this.options.loadingText; this.img.setSrc() } })();
+        (function() {
+            "use strict";
+
+            function u(n) {
+                var i = document.getElementById(n.id),
+                    r = typeof n == "object" && n;
+                return new t(i, r)
+            }
+            var r = function() {
+                    var u = arguments.length,
+                        n = arguments[0] || {},
+                        t, i, r;
+                    for (typeof n != "object" && typeof n != "function" && (n = {}), u == 1 && (n = this, t--), t =
+                        1; t < u; t++) {
+                        i = arguments[t];
+                        for (r in i) Object.prototype.hasOwnProperty.call(i, r) && (n[r] = i[r])
+                    }
+                    return n
+                },
+                i = function(n) {
+                    return typeof n == "function" && typeof n.nodeType != "number"
+                },
+                t = function(n, i) {
+                    this.$element = n;
+                    this.options = r({}, t.DEFAULTS, i);
+                    this.$element.style.position = "relative";
+                    this.$element.style.width = this.options.width + "px";
+                    this.$element.style.margin = "0 auto";
+                    this.init()
+                },
+                n;
+            t.VERSION = "1.0";
+            t.Author = "argo@163.com";
+            t.DEFAULTS = {
+                width: 280,
+                height: 155,
+                PI: Math.PI,
+                sliderL: 42,
+                sliderR: 9,
+                offset: 5,
+                loadingText: "Loading...",
+                failedText: "Try again",
+                barText: "Slide right to fill",
+                repeatIcon: "fa fa-repeat",
+                maxLoadCount: 3,
+                localImages: function() {
+                    return "https://picsum.photos/280/155/?image=" + Math.round(Math.random() * 20)
+                },
+                verify: function(n, t) {
+                    var i = !1;
+                    return $.ajax({
+                        url: t,
+                        data: {
+                            datas: JSON.stringify(n)
+                        },
+                        dataType: "json",
+                        type: "post",
+                        async: !1,
+                        success: function(n) {
+                            i = JSON.stringify(n);
+                            console.log("Result: " + i)
+                        }
+                    }), i
+                },
+                remoteUrl: null
+            };
+            window.sliderCaptcha = u;
+            window.sliderCaptcha.Constructor = t;
+            n = t.prototype;
+            n.init = function() {
+                this.initDOM();
+                this.initImg();
+                this.bindEvents()
+            };
+            n.initDOM = function() {
+                var n = function(n, t) {
+                        var i = document.createElement(n);
+                        return i.className = t, i
+                    },
+                    v = function(n, t) {
+                        var i = document.createElement("canvas");
+                        return i.width = n, i.height = t, i
+                    },
+                    f = v(this.options.width - 2, this.options.height),
+                    e = f.cloneNode(!0),
+                    t = n("div", "sliderContainer"),
+                    l = n("i", "refreshIcon " + this.options.repeatIcon),
+                    o = n("div", "sliderMask"),
+                    y = n("div", "sliderbg"),
+                    s = n("div", "slider"),
+                    a = n("i", "fa fa-arrow-right sliderIcon"),
+                    h = n("span", "sliderText"),
+                    u, c;
+                e.className = "block";
+                h.innerHTML = this.options.barText;
+                u = this.$element;
+                u.appendChild(f);
+                u.appendChild(l);
+                u.appendChild(e);
+                s.appendChild(a);
+                o.appendChild(s);
+                t.appendChild(y);
+                t.appendChild(o);
+                t.appendChild(h);
+                u.appendChild(t);
+                c = {
+                    canvas: f,
+                    block: e,
+                    sliderContainer: t,
+                    refreshIcon: l,
+                    slider: s,
+                    sliderMask: o,
+                    sliderIcon: a,
+                    text: h,
+                    canvasCtx: f.getContext("2d"),
+                    blockCtx: e.getContext("2d")
+                };
+                i(Object.assign) ? Object.assign(this, c) : r(this, c)
+            };
+            n.initImg = function() {
+                var n = this,
+                    f = window.navigator.userAgent.indexOf("Trident") > -1,
+                    r = this.options.sliderL + this.options.sliderR * 2 + 3,
+                    e = function(t, i) {
+                        var r = n.options.sliderL,
+                            o = n.options.sliderR,
+                            s = n.options.PI,
+                            u = n.x,
+                            e = n.y;
+                        t.beginPath();
+                        t.moveTo(u, e);
+                        t.arc(u + r / 2, e - o + 2, o, .72 * s, 2.26 * s);
+                        t.lineTo(u + r, e);
+                        t.arc(u + r + o - 2, e + r / 2, o, 1.21 * s, 2.78 * s);
+                        t.lineTo(u + r, e + r);
+                        t.lineTo(u, e + r);
+                        t.arc(u + o - 2, e + r / 2, o + .4, 2.76 * s, 1.24 * s, !0);
+                        t.lineTo(u, e);
+                        t.lineWidth = 2;
+                        t.fillStyle = "rgba(255, 255, 255, 0.7)";
+                        t.strokeStyle = "rgba(255, 255, 255, 0.7)";
+                        t.stroke();
+                        t[i]();
+                        t.globalCompositeOperation = f ? "xor" : "destination-over"
+                    },
+                    o = function(n, t) {
+                        return Math.round(Math.random() * (t - n) + n)
+                    },
+                    t = new Image,
+                    u;
+                t.crossOrigin = "Anonymous";
+                u = 0;
+                t.onload = function() {
+                    n.x = o(r + 10, n.options.width - (r + 10));
+                    n.y = o(10 + n.options.sliderR * 2, n.options.height - (r + 10));
+                    e(n.canvasCtx, "fill");
+                    e(n.blockCtx, "clip");
+                    n.canvasCtx.drawImage(t, 0, 0, n.options.width - 2, n.options.height);
+                    n.blockCtx.drawImage(t, 0, 0, n.options.width - 2, n.options.height);
+                    var i = n.y - n.options.sliderR * 2 - 1,
+                        u = n.blockCtx.getImageData(n.x - 3, i, r, r);
+                    n.block.width = r;
+                    n.blockCtx.putImageData(u, 0, i + 1);
+                    n.text.textContent = n.text.getAttribute("data-text")
+                };
+                t.onerror = function() {
+                    if (u++, window.location.protocol === "file:" && (u = n.options.maxLoadCount, console.error(
+                            "can't load pic resource file from File protocal. Please try http or https")), u >=
+                        n.options.maxLoadCount) {
+                        n.text.textContent = "Loading failed";
+                        return
+                    }
+                    t.src = n.options.localImages()
+                };
+                t.setSrc = function() {
+                    var r = "",
+                        e;
+                    u = 0;
+                    i(n.options.setSrc) && (r = n.options.setSrc());
+                    r && r !== "" || (r = "https://picsum.photos/" + n.options.width + "/" + n.options.height +
+                        "/?image=" + Math.round(Math.random() * 20));
+                    f ? (e = new XMLHttpRequest, e.onloadend = function(n) {
+                        var i = new FileReader;
+                        i.readAsDataURL(n.target.response);
+                        i.onloadend = function(n) {
+                            t.src = n.target.result
+                        }
+                    }, e.open("GET", r), e.responseType = "blob", e.send()) : t.src = r
+                };
+                t.setSrc();
+                this.text.setAttribute("data-text", this.options.barText);
+                this.text.textContent = this.options.loadingText;
+                this.img = t
+            };
+            n.clean = function() {
+                this.canvasCtx.clearRect(0, 0, this.options.width, this.options.height);
+                this.blockCtx.clearRect(0, 0, this.options.width, this.options.height);
+                this.block.width = this.options.width
+            };
+            n.bindEvents = function() {
+                var n = this;
+                this.$element.addEventListener("selectstart", function() {
+                    return !1
+                });
+                this.refreshIcon.addEventListener("click", function() {
+                    n.text.textContent = n.options.barText;
+                    n.reset();
+                    i(n.options.onRefresh) && n.options.onRefresh.call(n.$element)
+                });
+                var r, u, f = [],
+                    t = !1,
+                    e = function(i) {
+                        n.text.classList.contains("text-danger") || (r = i.clientX || i.touches[0].clientX, u = i
+                            .clientY || i.touches[0].clientY, t = !0)
+                    },
+                    o = function(i) {
+                        var o;
+                        if (!t) return !1;
+                        var s = i.clientX || i.touches[0].clientX,
+                            h = i.clientY || i.touches[0].clientY,
+                            e = s - r,
+                            c = h - u;
+                        if (e < 0 || e + 40 > n.options.width) return !1;
+                        n.slider.style.left = e - 1 + "px";
+                        o = (n.options.width - 60) / (n.options.width - 40) * e;
+                        n.block.style.left = o + "px";
+                        n.sliderContainer.classList.add("sliderContainer_active");
+                        n.sliderMask.style.width = e + 4 + "px";
+                        f.push(Math.round(c))
+                    },
+                    s = function(u) {
+                        var o, e;
+                        if (!t || (t = !1, o = u.clientX || u.changedTouches[0].clientX, o === r)) return !1;
+                        n.sliderContainer.classList.remove("sliderContainer_active");
+                        n.trail = f;
+                        e = n.verify();
+                        e.spliced && e.verified ? (n.sliderContainer.classList.add("sliderContainer_success"), i(n
+                            .options.onSuccess) && n.options.onSuccess.call(n.$element)) : (n.sliderContainer
+                            .classList.add("sliderContainer_fail"), i(n.options.onFail) && n.options.onFail
+                            .call(n.$element), setTimeout(function() {
+                                n.text.innerHTML = n.options.failedText;
+                                n.reset()
+                            }, 1e3))
+                    };
+                this.slider.addEventListener("mousedown", e);
+                this.slider.addEventListener("touchstart", e);
+                document.addEventListener("mousemove", o);
+                document.addEventListener("touchmove", o);
+                document.addEventListener("mouseup", s);
+                document.addEventListener("touchend", s);
+                document.addEventListener("mousedown", function() {
+                    return !1
+                });
+                document.addEventListener("touchstart", function() {
+                    return !1
+                });
+                document.addEventListener("swipe", function() {
+                    return !1
+                })
+            };
+            n.verify = function() {
+                var n = this.trail,
+                    r = parseInt(this.block.style.left),
+                    t = !1;
+                if (this.options.remoteUrl !== null) t = this.options.verify(n, this.options.remoteUrl);
+                else {
+                    var i = function(n, t) {
+                            return n + t
+                        },
+                        u = function(n) {
+                            return n * n
+                        },
+                        f = n.reduce(i) / n.length,
+                        e = n.map(function(n) {
+                            return n - f
+                        }),
+                        o = Math.sqrt(e.map(u).reduce(i) / n.length);
+                    t = o !== 0
+                }
+                return {
+                    spliced: Math.abs(r - this.x) < this.options.offset,
+                    verified: t
+                }
+            };
+            n.reset = function() {
+                this.sliderContainer.classList.remove("sliderContainer_fail");
+                this.sliderContainer.classList.remove("sliderContainer_success");
+                this.slider.style.left = 0;
+                this.block.style.left = 0;
+                this.sliderMask.style.width = 0;
+                this.clean();
+                this.text.setAttribute("data-text", this.text.textContent);
+                this.text.textContent = this.options.loadingText;
+                this.img.setSrc()
+            }
+        })();
 
         // Initialize captcha and form validation
         $(document).ready(function() {
+
             var isCaptchaVerified = false;
 
-            var captchaInstance = null;
-            function initCaptcha(onSolved){
-                captchaInstance = sliderCaptcha({
+            function initCaptcha(onSolved) {
+                sliderCaptcha({
                     id: 'captcha',
                     loadingText: 'Loading...',
                     failedText: 'Try again',
@@ -374,17 +710,47 @@
                     repeatIcon: 'fa fa-redo',
                     width: 280,
                     height: 120,
-                    onSuccess: function () {
-                        isCaptchaVerified = true;
-                        if (typeof onSolved === 'function') { onSolved(); }
+
+                    // એક જ ઈમેજ use
+                    setSrc: function() {
+                        var images = [
+                            "{{ asset('frontend/captcha/img-1.jpg') }}",
+                            "{{ asset('frontend/captcha/img-2.jpg') }}",
+                            "{{ asset('frontend/captcha/img-3.jpg') }}"
+                        ];
+                        // random index select
+                        var randomIndex = Math.floor(Math.random() * images.length);
+                        return images[randomIndex];
                     },
-                    onFail: function() { isCaptchaVerified = false; },
-                    onRefresh: function() { isCaptchaVerified = false; }
+
+
+                    onReady: function() {
+                        if (!this.bgRemoved) { // Prevent multiple runs
+                            var bg = document.querySelector('.captcha-bg');
+                            if (bg) bg.remove();
+                            this.bgRemoved = true; // flag set
+                        }
+                    }, // ← અહીં comma મૂકવું જરૂરી છે
+
+                    onSuccess: function() {
+                        isCaptchaVerified = true;
+                        if (typeof onSolved === 'function') onSolved();
+                    },
+
+                    onFail: function() {
+                        isCaptchaVerified = false;
+                    },
+
+                    onRefresh: function() {
+                        isCaptchaVerified = false;
+                    }
                 });
             }
 
+
+
             // Password toggle
-            $('#db_toggle_password').on('click', function () {
+            $('#db_toggle_password').on('click', function() {
                 const passwordInput = $('#db_password_input');
                 const icon = $(this);
                 const type = passwordInput.attr('type') === 'password' ? 'text' : 'password';
@@ -440,16 +806,19 @@
                             email: $(form).find('input[name="email"]').val(),
                             password: $(form).find('input[name="password"]').val()
                         }
-                    }).done(function(res){
-                        if(res && res.success){
+                    }).done(function(res) {
+                        if (res && res.success) {
                             $('#captchaCard').removeClass('d-none');
-                            initCaptcha(function(){ form.submit(); });
+                            initCaptcha(function() {
+                                form.submit();
+                            });
                         } else {
                             $('#credentialError').text('Invalid email or password');
                             submitBtn.prop('disabled', false).text(originalText);
                         }
-                    }).fail(function(){
-                        $('#credentialError').text('Unable to verify credentials. Please try again.');
+                    }).fail(function() {
+                        $('#credentialError').text(
+                            'Unable to verify credentials. Please try again.');
                         submitBtn.prop('disabled', false).text(originalText);
                     });
                 }

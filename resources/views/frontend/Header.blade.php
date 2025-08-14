@@ -567,6 +567,10 @@
                         <a class="nav-link {{ request()->routeIs('frontendcontactus') ? 'active' : '' }}"
                             href="{{ route('frontendcontactus') }}">Contact</a>
                     </li>
+                      <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('frontlogout') ? 'active' : '' }}"
+                            href="{{ route('frontlogout') }}">Log Out</a>
+                    </li>
                     <li class="nav-item px-2">
                         <button class="d_search_form btn_gem" id="navChatToggle">
                             Chatbox
