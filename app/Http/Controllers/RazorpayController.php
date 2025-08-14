@@ -22,7 +22,7 @@ class RazorpayController extends Controller
         $order = $api->order->create([
             'receipt' => 'rcpt_' . uniqid(),
             'amount' => $product->price * 100, // in paise
-            'currency' => 'INR',
+            'currency' => 'USD',
         ]);
 
         return response()->json([
@@ -83,7 +83,7 @@ class RazorpayController extends Controller
         $order = $api->order->create([
             'receipt'         => 'cart_' . Str::random(10),
             'amount'          => round($total * 100), // amount in paise
-            'currency'        => 'INR',
+            'currency'        => 'USD',
             'payment_capture' => 1
         ]);
 

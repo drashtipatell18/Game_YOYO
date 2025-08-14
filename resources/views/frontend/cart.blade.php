@@ -311,8 +311,8 @@
                 .then(data => {
                     const options = {
                         "key": "{{ env('RAZORPAY_KEY') }}",
-                        "amount": Math.round(totalAmount * 100),
-                        "currency": "INR",
+                        "amount": data.amount * 100, // Convert $75 to 7500 cents
+                        "currency": "USD", // ✅ Set to USD
                         "name": data.name,
                         "description": data.description,
                         "image": data.image || '/default.png',
