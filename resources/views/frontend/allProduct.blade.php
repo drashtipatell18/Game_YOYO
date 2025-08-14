@@ -73,13 +73,12 @@
             .pagination .page-link i {
                 font-size: 15px;
             }
+
             .pagination {
-                --bs-pagination-padding-x: 0!important;
-                --bs-pagination-padding-y: 0!important;
+                --bs-pagination-padding-x: 0 !important;
+                --bs-pagination-padding-y: 0 !important;
             }
         }
-
-
     </style>
     <!-- Hero Section Start -->
     <div class="Z_cards_hero">
@@ -198,8 +197,8 @@
                             <i id="listView" class="fa-solid fa-list me-2 text-white d-md-block d-none"></i>
                         </div>
                         <!-- <div class="mb-3">
-                                                                                                                    <span id="productCount" >Showing 6 products</span>
-                                                                                                                </div> -->
+                                                                                                                        <span id="productCount" >Showing 6 products</span>
+                                                                                                                    </div> -->
                         <div class="d-block d-lg-none">
                             <button class="btn border text-white" type="button" data-bs-toggle="offcanvas"
                                 data-bs-target="#filterOffcanvas" aria-controls="filterOffcanvas">Filters
@@ -260,6 +259,7 @@
 
         async function initializeApp() {
             try {
+                alert('hgghfghfgh');
                 // Fetch data
                 const [products, categories] = await Promise.all([
                     fetch("productsJson").then(res => res.json()),
@@ -284,7 +284,7 @@
 
                 const urlParams = new URLSearchParams(window.location.search);
                 const categoryIdFromUrl = urlParams.get('category'); // e.g. '7'
-                const searchQueryFromUrl = urlParams.get('search');  // e.g. 'Dhruvish'
+                const searchQueryFromUrl = urlParams.get('search'); // e.g. 'Dhruvish'
 
                 if (categoryIdFromUrl) {
                     // Filter products by category from URL
@@ -325,13 +325,21 @@
         }
 
         function renderCategoryFilters() {
+            alert('gdfgdfg');
             const desktopList = document.getElementById("categoryFilterListDesktop");
             const mobileList = document.getElementById("categoryFilterListMobile");
 
-            const categoryHTML = allCategories.map(cat =>
-                `<li><input type="checkbox" name="category" value="${cat.id}" id="cat_${cat.id}">
-         <label for="cat_${cat.id}">${cat.name}</label></li>`
-            ).join('');
+            const urlParams = new URLSearchParams(window.location.search);
+            const categoryIdFromUrl = urlParams.get('category');
+            console.log(categoryIdFromUrl);
+
+            const categoryHTML = allCategories.map(cat => {
+                const checked = cat.id == categoryIdFromUrl ? 'checked' : '';
+                return `<li>
+                    <input type="checkbox" name="category" value="${cat.id}" id="cat_${cat.id}" ${checked}>
+                    <label for="cat_${cat.id}">${cat.name}</label>
+                </li>`;
+            }).join('');
 
             if (desktopList) {
                 desktopList.innerHTML = categoryHTML;
@@ -404,7 +412,7 @@
             }
         }
 
-// Get Dynamic Platform
+        // Get Dynamic Platform
         function getPlatformIcons(platformString) {
             const platformMap = {
                 android: '<i class="fab fa-android text-success me-1" title="Android"></i>',
@@ -421,7 +429,7 @@
                 .map(p => platformMap[p])
                 .join('');
         }
-        
+
 
         function renderProducts() {
             const gridContainer = document.getElementById('gridContainer');
@@ -438,7 +446,7 @@
                 listContainer.innerHTML = "";
             }
 
-           if (filteredProducts.length === 0) {
+            if (filteredProducts.length === 0) {
                 if (pagination) {
                     pagination.innerHTML = '';
                     pagination.style.display = 'none';
@@ -450,7 +458,7 @@
                     pagination.style.display = ''; // show pagination if it was hidden
                 }
             }
-            
+
 
             // Calculate pagination
             const productsPerPage = 12;
@@ -487,7 +495,7 @@
                         <div class="icons d-flex gap-2 mb-3">
                             ${getPlatformIcons(product.platform)}
                         </div>
-                       
+
                         <h3>${product.name}</h3>
                         <h3 class="mb-0">$${productPrice}
                         <span class="badge usd-badge">USD</span></h3>
@@ -563,43 +571,43 @@
                 }
             }
         }
-//           function generatePagination(currentPage, totalPages) {
-//     const pagination = document.getElementById('pagination');
-//     pagination.innerHTML = '';
- 
-//     function addButton(page, text, disabled) {
-//         const li = document.createElement('li');
-//         li.className = `page-item ${disabled ? 'disabled' : ''}`;
-//         const a = document.createElement('a');
-//         a.className = 'page-link';
-//         a.innerHTML = text;
-//         if (!disabled) {
-//             a.href = '#';
-//             a.onclick = (e) => {
-//                 e.preventDefault();
-//                 const url = new URL(window.location);
-//                 url.searchParams.set('page', page);
-//                 window.history.pushState({}, '', url);
-//                 renderProducts();
-//             };
-//         }
-//         li.appendChild(a);
-//         pagination.appendChild(li);
-//     }
- 
-//     // Previous Button
-//     addButton(currentPage - 1, '<i class="fa fa-angle-left"></i>', currentPage === 1);
- 
-//     // Middle text "X of Y"
-//     const middle = document.createElement('li');
-//     middle.className = 'page-item';
-//     middle.innerHTML = `<span class="page-link">${currentPage} of ${totalPages}</span>`;
-//     pagination.appendChild(middle);
- 
-//     // Next Button
-//     addButton(currentPage + 1, '<i class="fa fa-angle-right"></i>', currentPage === totalPages);
-// }
- 
+        //           function generatePagination(currentPage, totalPages) {
+        //     const pagination = document.getElementById('pagination');
+        //     pagination.innerHTML = '';
+
+        //     function addButton(page, text, disabled) {
+        //         const li = document.createElement('li');
+        //         li.className = `page-item ${disabled ? 'disabled' : ''}`;
+        //         const a = document.createElement('a');
+        //         a.className = 'page-link';
+        //         a.innerHTML = text;
+        //         if (!disabled) {
+        //             a.href = '#';
+        //             a.onclick = (e) => {
+        //                 e.preventDefault();
+        //                 const url = new URL(window.location);
+        //                 url.searchParams.set('page', page);
+        //                 window.history.pushState({}, '', url);
+        //                 renderProducts();
+        //             };
+        //         }
+        //         li.appendChild(a);
+        //         pagination.appendChild(li);
+        //     }
+
+        //     // Previous Button
+        //     addButton(currentPage - 1, '<i class="fa fa-angle-left"></i>', currentPage === 1);
+
+        //     // Middle text "X of Y"
+        //     const middle = document.createElement('li');
+        //     middle.className = 'page-item';
+        //     middle.innerHTML = `<span class="page-link">${currentPage} of ${totalPages}</span>`;
+        //     pagination.appendChild(middle);
+
+        //     // Next Button
+        //     addButton(currentPage + 1, '<i class="fa fa-angle-right"></i>', currentPage === totalPages);
+        // }
+
 
         function generatePagination(currentPageParam, totalPages) {
             const pagination = document.getElementById('pagination');
@@ -1522,3 +1530,4 @@
         });
     </script>
 @endpush
+
