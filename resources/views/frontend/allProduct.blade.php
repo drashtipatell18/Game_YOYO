@@ -259,7 +259,6 @@
 
         async function initializeApp() {
             try {
-                alert('hgghfghfgh');
                 // Fetch data
                 const [products, categories] = await Promise.all([
                     fetch("productsJson").then(res => res.json()),
@@ -325,7 +324,6 @@
         }
 
         function renderCategoryFilters() {
-            alert('gdfgdfg');
             const desktopList = document.getElementById("categoryFilterListDesktop");
             const mobileList = document.getElementById("categoryFilterListMobile");
 
