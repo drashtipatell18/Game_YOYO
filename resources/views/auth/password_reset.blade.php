@@ -236,7 +236,7 @@
         <!-- Footer -->
         <div class="footer">
             <p class="company-name">Kalathiya Infotech</p>
-            <p>If you have any questions, please contact us at kalathiyainfotech@gmail.com</p>
+            <p>If you have any questions, please contact us at info@yoyokhel.com</p>
         </div>
     </div>
 </body>

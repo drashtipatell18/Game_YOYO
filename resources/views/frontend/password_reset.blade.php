@@ -371,7 +371,7 @@
                         <p class="company-name">🚀 Kalathiya Infotech</p>
                         <p>
                             Questions? Contact us at
-                            <a href="mailto:kalathiyainfotech@gmail.com">kalathiyainfotech@gmail.com</a>
+                            <a href="mailto:info@yoyokhel.com">info@yoyokhel.com</a>
                         </p>
                         <p class="disclaimer">
                             This email was sent from a secure system. Please do not reply to this email.

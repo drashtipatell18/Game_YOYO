@@ -10,7 +10,7 @@
                             class="absolute right-0 mt-2 p-2 rounded-md bg-[var(--tooltip-bg)] text-[var(--tooltip-text)] text-sm shadow-lg opacity-0 group-hover:opacity-100 transition duration-200 z-10">
                             <div class="font-semibold">Google Account</div>
                             <div>denish.kalathiyainfotech</div>
-                            <div>denish.kalathiyainfotech@gmail.com</div>
+                            <div>denish.info@yoyokhel.com</div>
                         </div>
                     </div>
 
