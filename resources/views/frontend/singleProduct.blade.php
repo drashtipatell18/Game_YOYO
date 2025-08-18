@@ -146,7 +146,7 @@
                     </div>
 
                     <!-- Mobile Thumbnails: Horizontal Scroll -->
-                        <div class="col-12 d-md-none mb-3">
+                        <div class="col-12 d-md-none mb-3" style="margin-top:18px">
                             <div class="d-flex overflow-auto x_thumb-list-mobile">
                                 @if (!empty($images) && count($images) > 0)
                                     @foreach ($images as $index => $img)
