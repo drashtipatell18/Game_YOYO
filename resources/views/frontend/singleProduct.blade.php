@@ -145,6 +145,26 @@
                             alt="main">
                     </div>
 
+                    <!-- Mobile Thumbnails: Horizontal Scroll -->
+                        <div class="col-12 d-md-none mb-3">
+                            <div class="d-flex overflow-auto x_thumb-list-mobile">
+                                @if (!empty($images) && count($images) > 0)
+                                    @foreach ($images as $index => $img)
+                                        <img src="{{ asset('images/products/' . trim($img)) }}"
+                                            class="img-fluid me-2 x_thumb-img {{ $index === 0 ? 'active' : '' }}"
+                                            style="height: 60px;" alt="thumb{{ $index + 1 }}"
+                                            onclick="changeMainImage(this)">
+                                    @endforeach
+                                @else
+                                    <img src="{{ asset('images/products/dummy_product.png') }}"
+                                        class="img-fluid me-2 x_thumb-img active"
+                                        style="height: 60px;" alt="default-thumb">
+                                @endif
+                            </div>
+                        </div>
+                    <!-- End Mobile Device Images -->
+                
+
                     <!-- Product Info -->
                     <div class="col-md-6 x_product-info text-white">
                         <div class="x_shop_info mt-3 mt-sm-0">
