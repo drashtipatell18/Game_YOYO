@@ -27,7 +27,7 @@ class AddToCartController extends Controller
         AddToCart::create([
             'user_id' => $request->input('user_id'), // Assuming user_id is passed in the request
             'product_id' => $request->input('product_id'),
-            'quantity' => $request->input('quantity'),
+            // 'quantity' => $request->input('quantity'),
         ]);
 
         return redirect()->route('add-to-cart')->with('success', 'Product added to cart successfully.');
@@ -40,11 +40,13 @@ class AddToCartController extends Controller
         $users = User::pluck('name', 'id');
         return view('cart.create_cart', compact('cart', 'products', 'users'));
     }
-    public function updateCart(Request $request, $id)
+    public function UpdateAddToCart(Request $request, $id)
     {
         $cart = AddToCart::find($id);
         $cart->update([
-            'quantity' => $request->input('quantity'),
+            'user_id' => $request->input('user_id'), // Assuming user_id is passed in the request
+            'product_id' => $request->input('product_id'),
+            // 'quantity' => $request->input('quantity'),
         ]);
 
         return redirect()->route('add-to-cart')->with('success', 'Product updated to cart successfully.');

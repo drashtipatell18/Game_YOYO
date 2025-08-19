@@ -35,11 +35,11 @@
                                     </select>
                                 </div>
 
-                                <div class="form-group mb-3">
+                                {{-- <div class="form-group mb-3">
                                     <label for="quantity">Quantity</label>
                                     <input type="number" name="quantity" class="form-control"
                                         value="{{ isset($cart) ? $cart->quantity : 1 }}" required>
-                                </div>
+                                </div> --}}
 
                             </div>
                         </div>

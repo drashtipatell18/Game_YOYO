@@ -39,7 +39,7 @@
                         <div class="col-md-12">
                             <div class="card shadow">
                                 <div class="card-body">
-                                      <div class="mb-3 d-flex justify-content-between">
+                                    <div class="mb-3 d-flex justify-content-between">
                                         <h2 class="mb-2 page-title">Cart List</h2>
                                         <div class="mb-3">
                                             <a href="{{ route('add-to-cart.create') }}"
@@ -53,9 +53,9 @@
                                                 <th class="text-center">ID</th>
                                                 <th class="text-center">Product Name</th>
                                                 <th class="text-center">User Name</th>
-                                                <th class="text-center">Quantity</th>
+                                                {{-- <th class="text-center">Quantity</th> --}}
                                                 <th class="text-center">Price</th>
-                                                <th class="text-center">Total</th>
+                                                {{-- <th class="text-center">Total</th> --}}
                                                 <th class="text-center">Action</th>
                                             </tr>
                                         </thead>
@@ -63,20 +63,24 @@
                                             @foreach ($carts as $cart)
                                                 <tr>
                                                     <td class="text-center">{{ $cart->id }}</td>
-                                                    <td class="text-center">{{ $cart->product->name }}</td>
-                                                    <td class="text-center">{{ $cart->user->name }}</td>
-                                                    <td class="text-center">{{ $cart->quantity }}</td>
+                                                    <td class="text-center">
+                                                        {{ isset($cart->product) ? $cart->product->name : 'N/A' }}</td>
+                                                    <td class="text-center">
+                                                        {{ isset($cart->user) ? $cart->user->name : 'N/A' }}</td>
+                                                    {{-- <td class="text-center">{{ $cart->quantity }}</td> --}}
                                                     <td class="text-center">${{ $cart->product->price }}</td>
-                                                    <td class="text-center">${{ $cart->quantity * $cart->product->price }}</td>
+                                                    {{-- <td class="text-center">${{ $cart->quantity * $cart->product->price }} --}}
+                                                    </td>
                                                     <td class="text-center">
                                                         <a href="{{ route('add-to-cart.edit', $cart->id) }}"
-                                                            class="btn btn-warning btn-sm"><i class="fas fa-edit text-white"></i></a>
-                                                        <form action="{{ route('add-to-cart.destroy', $cart->id) }}" method="POST"
-                                                            style="display:inline;">
+                                                            class="btn btn-warning btn-sm"><i
+                                                                class="fas fa-edit text-white"></i></a>
+                                                        <form action="{{ route('add-to-cart.destroy', $cart->id) }}"
+                                                            method="POST" style="display:inline;">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit"
-                                                                class="btn btn-danger btn-sm"><i class="fas fa-trash-alt text-white"></i></button>
+                                                            <button type="submit" class="btn btn-danger btn-sm"><i
+                                                                    class="fas fa-trash-alt text-white"></i></button>
                                                         </form>
                                                     </td>
                                                 </tr>
