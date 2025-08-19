@@ -37,28 +37,13 @@
         /* left align on desktop */
     }
 
-    @media (max-width: 576px) {
+      
 
-        footer .contact-info,
-        footer .social-icons {
-            justify-content: center;
-            /* center align on mobile */
-        }
+        
 
-        footer .contact-info div,
-        footer .contact-info a {
-            flex-basis: 100%;
-            /* stack each contact item full width on small */
-            text-align: center;
-            margin-bottom: 5px;
-        }
+    
 
-        footer .social-icons a {
-            font-size: 1.2rem;
-            /* slightly bigger icons for tap */
-            margin: 0 8px;
-        }
-    }
+    
 </style>
 
 <body>
@@ -139,8 +124,18 @@
                 <div class="col-md-4">
                     <h5 class="text-white mb-3">Contact</h5>
                     <ul class="list-unstyled d_footer-links d_footer_text">
-                        <li><i class="fas fa-envelope me-2"></i> info@yoyokhel.com</li>
-                        <li><i class="fas fa-phone me-2"></i> 1800-9797-6361</li>
+                        <li>
+                            <i class="fas fa-envelope me-2"></i> 
+                            <a href="mailto:info@yoyokhel.com" class="text-white text-decoration-none">
+                                info@yoyokhel.com
+                            </a>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone me-2"></i> 
+                            <a href="tel:180097976361" class="text-white text-decoration-none">
+                                1800-9797-6361
+                            </a>
+                        </li>
                         <li>
                             <div class="contact-info">
 
@@ -585,7 +580,7 @@
     <script>
         async function renderLastFourProducts() {
             try {
-                const res = await fetch('/products');
+                const res = await fetch('/productsJson');
                 let products = await res.json();
 
                 // Reverse and get last 4
