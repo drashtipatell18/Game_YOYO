@@ -185,7 +185,9 @@ Route::post('/check-email-exists', function(Request $request) {
 })->name('check.email.exists');
 
 Route::post('/front-register', [FrontendLoginController::class, 'showRegisterForm'])->name('front.register');
-Route::post('/frontlogout',[FrontendLoginController::class,'frontlogout'])->name('frontlogout');
+Route::get('/frontlogout',[FrontendLoginController::class,'frontlogout'])->name('frontlogout');
+Route::post('/frontMobilelogout',[FrontendLoginController::class,'frontMobilelogout'])->name('frontMobilelogout');
+
 
 Route::get('demo', [FrontendLoginController::class, 'demo'])->name('demo');
 Route::get('/frontend-forget',[FrontendLoginController::class,'Forget'])->name('frontendforget');

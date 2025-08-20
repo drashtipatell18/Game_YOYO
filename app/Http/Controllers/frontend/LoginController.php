@@ -49,6 +49,14 @@ class LoginController extends Controller
         return redirect()->route('frontend.login')->with('success', 'Logout successful!');
     }
 
+    public function frontMobilelogout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route('frontend.login')->with('success', 'Logout successful!');
+    }
+
     public function forget(){
         return view('frontend.Frontend_change');
     }
@@ -107,12 +115,14 @@ class LoginController extends Controller
     }
 
     public function showRegisterForm(Request $request){
-        User::create([
+        $user = User::create([
             'username' => $request->input('username'),
             'email' => $request->input('email'),
             'role_id' => 2,
             'password' => Hash::make($request->input('password')),
         ]);
+
+        Auth::login($user);
 
         // Redirect or login the user
         return redirect()->route('index')->with('success', 'Account created successfully!');

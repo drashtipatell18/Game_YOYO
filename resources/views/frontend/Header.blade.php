@@ -513,7 +513,7 @@
                     <div class="d_user_icon" id="db_user_icon" title="User Profile">
                         @if (Auth::check())
                             <div class="user-initial">
-                                {{ strtoupper(Auth::user()->name[0]) }}
+                                {{ strtoupper(Auth::user()->username[0]) }}
                             </div>
                         @else
                             <i class="fas fa-user-circle"></i>
@@ -576,12 +576,12 @@
                     @endguest
 
                     @auth
-                        <a class="nav-link {{ request()->routeIs('frontlogout') ? 'active' : '' }}" href="#"
+                        <a class="nav-link {{ request()->routeIs('frontMobilelogout') ? 'active' : '' }}" href="#"
                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                             Log Out
                         </a>
 
-                        <form id="logout-form" action="{{ route('frontlogout') }}" method="POST"
+                        <form id="logout-form" action="{{ route('frontMobilelogout') }}" method="POST"
                             style="display: none;">
                             @csrf
                         </form>
