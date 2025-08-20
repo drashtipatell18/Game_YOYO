@@ -292,10 +292,7 @@
     }
 
     /* Custom toastr styling to match brown theme */
-    .toast-success {
-        background: var(--secondary-gradient) !important;
-        color: white !important;
-    }
+
 
     .toast-error {
         background: linear-gradient(135deg, #C4927A 0%, #B8704F 100%) !important;
