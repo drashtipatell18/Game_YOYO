@@ -361,7 +361,7 @@
                 <span class="text-muted text-center" style="font-weight: bold; font-size:16px">
                     Copyright © 2025.
                     <a style="font-weight: bold; font-size:16px; text-decoration: none; color: #8A775A;"
-                        href="https://kalathiyainfotech.com/" target="_blank">Kalathiya Infotech</a>
+                        href="https://https://yoyokhel.com.com" target="_blank">Yoyo Khel</a>
                 </span>
             </div>
         </footer>
