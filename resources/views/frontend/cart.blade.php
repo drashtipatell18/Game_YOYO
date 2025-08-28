@@ -301,7 +301,7 @@
         </script>
         
 <!-- Razor Pay Code -->
-    <script>
+    <!-- <script>
         function payNow(button) {
             const cartId = button.getAttribute('data-cart-id');
             const totalAmount = parseFloat(button.getAttribute('data-total')) || 0;
@@ -379,6 +379,58 @@
                     rzp.open();
                 });
         }
-        </script>
+        </script> -->
+
+
+
+
+
+
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+    async function payNow(button) {
+        const cartId = button.getAttribute('data-cart-id');
+        const totalAmount = parseFloat(button.getAttribute('data-total')) || 0;
+
+        try {
+            // Call your backend to create the Stripe session
+            const response = await fetch(`/get-stripe-session/${cartId}`, {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            });
+
+            const data = await response.json();
+
+            if (data.sessionId) {
+                const stripe = Stripe("{{ env('STRIPE_KEY') }}");
+                stripe.redirectToCheckout({ sessionId: data.sessionId });
+            } else {
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Could not initiate payment.',
+                    showConfirmButton: false,
+                    timer: 4000
+                });
+            }
+
+        } catch (error) {
+            console.error(error);
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'error',
+                title: 'Something went wrong.',
+                showConfirmButton: false,
+                timer: 4000
+            });
+        }
+    }
+</script>
+
     </body>
 @endpush

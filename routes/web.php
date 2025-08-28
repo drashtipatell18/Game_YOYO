@@ -29,6 +29,7 @@ use App\Http\Controllers\frontend\GoogleAuthController as FrontGoogleAuthControl
 use App\Http\Controllers\RazorpayController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\StripePaymentController;
 
 use App\Http\Controllers\Yin\YinIndexController;
 use Illuminate\Http\Request;
@@ -239,11 +240,20 @@ Route::delete('/api/cart/{id}', [FrontendCartController::class, 'removeFromCart'
 // Razor Pay Routes
 Route::get('/get-payment-details/{productId}', [RazorpayController::class, 'getPaymentDetails'])->middleware('auth');
 Route::post('/payment/success', [RazorpayController::class, 'paymentSuccess'])->middleware('auth');
-
 Route::get('/get-payment-details-cart/{cartId}', [RazorpayController::class, 'getCartPaymentDetails'])->middleware('auth');
 Route::post('/cart/success', [RazorpayController::class, 'getCartpaymentSuccess'])->middleware('auth');
 
 
+// Stripe
+
+Route::post('/create-checkout-session', [StripePaymentController::class, 'createCheckoutSession']);
+Route::get('/payment-success', [StripePaymentController::class, 'success'])->name('payment.success');
+Route::get('/payment-cancel', [StripePaymentController::class, 'cancel'])->name('payment.cancel');
+
+Route::get('/get-stripe-session/{cartId}', [StripePaymentController::class, 'getStripeSession']);
+Route::get('/stripe/success', [StripePaymentController::class, 'getCartpaymentSuccessStripe'])->name('stripe.success');
+
+Route::get('/stripe-cancel', [StripePaymentController::class, 'stripeCancel'])->name('stripe.cancel');
 
 // ai route
 
