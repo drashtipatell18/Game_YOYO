@@ -513,7 +513,7 @@
                     <div class="d_user_icon" id="db_user_icon" title="User Profile">
                         @if (Auth::check())
                             <div class="user-initial">
-                                {{ strtoupper(Auth::user()->username[0]) }}
+                                {{ strtoupper(optional(Auth::user())->username[0] ?? Auth::user()->name[0] ?? 'U') }}
                             </div>
                         @else
                             <i class="fas fa-user-circle"></i>
