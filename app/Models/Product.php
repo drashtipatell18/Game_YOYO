@@ -22,7 +22,9 @@ class Product extends Model
         'dimensions',
         'status',
         'release_date',
-        'platform'
+        'platform',
+        'android_price',
+        'ios_price',
 
     ];
 

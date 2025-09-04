@@ -31,6 +31,26 @@
                                 </div>
                             </div>
                         </div>
+                        
+                        {{-- Dynamic Platform Prices --}}
+                        <div class="form-group mb-3 platform-price-group" id="android-price-group" style="display: none;">
+                            <label for="android_price">Android Price</label>
+                            <input type="number" name="android_price" id="android_price" class="form-control" step="0.01"
+                                value="{{ old('android_price', $product->android_price ?? '') }}">
+                        </div>
+
+                        <div class="form-group mb-3 platform-price-group" id="ios-price-group" style="display: none;">
+                            <label for="ios_price">iOS Price</label>
+                            <input type="number" name="ios_price" id="ios_price" class="form-control" step="0.01"
+                                value="{{ old('ios_price', $product->ios_price ?? '') }}">
+                        </div>
+                            <div class="col-md-6">
+                            <div class="form-group mb-3 platform-price-group" id="windows-price-group" style="display: none;"">
+                                <label for="windows_price">Windows Price</label>
+                                <input type="number" name="price" id="price" class="form-control" step="0.01"
+                                    value="{{ old('price', $product->price ?? '') }}">
+                            </div>
+                        </div>
 
                         <div class="row">
                             <div class="col-md-6">
@@ -50,28 +70,20 @@
 
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
-                                    <label for="name">Name</label>
-                                    <input type="text" name="name" id="name" class="form-control"
-                                        value="{{ old('name', $product->name ?? '') }}">
+                                    <label for="tags">Tags (comma separated)</label>
+                                    <input type="text" name="tags" id="tags" class="form-control"
+                                        value="{{ old('tags', $product->tags ?? '') }}">
                                 </div>
                             </div>
                         </div>
 
                         {{-- Price and Tags --}}
                         <div class="row">
-                            <div class="col-md-6">
+                             <div class="col-md-12">
                                 <div class="form-group mb-3">
-                                    <label for="price">Price</label>
-                                    <input type="number" name="price" id="price" class="form-control" step="0.01"
-                                        value="{{ old('price', $product->price ?? '') }}">
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                    <label for="tags">Tags (comma separated)</label>
-                                    <input type="text" name="tags" id="tags" class="form-control"
-                                        value="{{ old('tags', $product->tags ?? '') }}">
+                                    <label for="name">Name</label>
+                                    <input type="text" name="name" id="name" class="form-control"
+                                        value="{{ old('name', $product->name ?? '') }}">
                                 </div>
                             </div>
                         </div>
@@ -401,4 +413,26 @@
             searchPlaceholderValue: 'Search...',
         });
     </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const platformSelect = document.getElementById('platform');
+            const platformPriceGroups = {
+                'android': document.getElementById('android-price-group'),
+                'ios': document.getElementById('ios-price-group'),
+                'windows': document.getElementById('windows-price-group'),
+            };
+
+            function togglePriceFields() {
+                const selected = Array.from(platformSelect.selectedOptions).map(option => option.value);
+
+                for (const [platform, group] of Object.entries(platformPriceGroups)) {
+                    group.style.display = selected.includes(platform) ? 'block' : 'none';
+                }
+            }
+
+            platformSelect.addEventListener('change', togglePriceFields);
+            togglePriceFields(); // Call on page load
+    });
+</script>
 @endpush
