@@ -413,9 +413,9 @@
         // Get Dynamic Platform
         function getPlatformIcons(platformString) {
             const platformMap = {
-                android: '<i class="fab fa-android text-success me-1" title="Android"></i>',
-                ios: '<i class="fab fa-apple text-light me-1" title="iOS"></i>',
-                windows: '<i class="fab fa-windows text-primary me-1" title="Windows"></i>',
+                android: '<i class="fab fa-android text-success me-1 platform-icon" data-platform="android" title="Android"></i>',
+                ios: '<i class="fab fa-apple text-light me-1 platform-icon" data-platform="ios" title="iOS"></i>',
+                windows: '<i class="fab fa-windows text-primary me-1 platform-icon" data-platform="windows" title="Windows"></i>',
             };
 
             if (!platformString) return '';
@@ -483,7 +483,18 @@
                     product.image.split(',')[0].trim() :
                     'default.jpg';
 
-                const productPrice = parseFloat(product.price).toFixed(2);
+                let productPrice = product.price; // fallback
+                if (product.platform) {
+                    const firstPlatform = product.platform.split(',')[0].trim().toLowerCase();
+                    if (firstPlatform === 'android' && product.android_price) {
+                        productPrice = product.android_price;
+                    } else if (firstPlatform === 'ios' && product.ios_price) {
+                        productPrice = product.ios_price;
+                    } else if (firstPlatform === 'windows' && product.price) {
+                        productPrice = product.price;
+                    }
+                }
+                productPrice = parseFloat(productPrice).toFixed(2);
 
                 gridContainer.innerHTML += `
             <div class="col-xl-4 col-lg-6 col-md-4 col-sm-6 col-12 mb-4 d-flex justify-content-center">
@@ -551,7 +562,43 @@
 
             // Add event listeners to product cards and buttons
             addProductEventListeners();
+            addPlatformClickListeners();
         }
+
+        function addPlatformClickListeners() {
+            document.querySelectorAll('.platform-icon').forEach(icon => {
+                icon.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    
+                    const platform = icon.getAttribute('data-platform'); // android / ios / windows
+                    const card = icon.closest('.game-card'); // find the product card
+                    const productId = card.getAttribute('data-id'); // get product id
+                    
+                    // Find product details
+                    const product = filteredProducts.find(p => p.id == productId);
+                    if (!product) return;
+
+                    // Decide price based on platform
+                    let price = product.price; // default
+                    if (platform === 'android' && product.android_price) {
+                        price = product.android_price;
+                    } else if (platform === 'ios' && product.ios_price) {
+                        price = product.ios_price;
+                    } else if (platform === 'windows' && product.price) {
+                        price = product.price;
+                    }
+
+                    // Update price in card
+                    const priceElement = card.querySelector('.mb-0');
+                    if (priceElement) {
+                        priceElement.innerHTML = `$${parseFloat(price).toFixed(2)} <span class="badge usd-badge">USD</span>`;
+                    }
+
+                    // alert(`You selected ${platform}, Price: $${parseFloat(price).toFixed(2)}`);
+                });
+            });
+        }
+
 
 
         function updateProductCount() {
