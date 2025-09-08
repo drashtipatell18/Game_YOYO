@@ -57,16 +57,28 @@ class ProductController extends Controller
             'SKU' => $sku,
             'tags' => $request->input('tags'),
             'name' => $request->input('name'),
+// Windows
             'price' => $request->input('price'),
+            'windows_version'  => $request->input('windows_version'),
+            'windows_processor'=> $request->input('windows_processor'),
+            'windows_memory'   => $request->input('windows_memory'),
+            'windows_graphics' => $request->input('windows_graphics'),
+            'windows_storage'  => $request->input('windows_storage'),
+
+// Android
             'android_price' => $request->input('android_price'),
+            'android_version'  => $request->input('android_version'),
+// iOS
             'ios_price' => $request->input('ios_price'),
+            'ios_version'      => $request->input('ios_version'),
+
             'image' => implode(',', $imageNames),
             'description' => $request->input('description'),
             'weight' => $request->input('weight'),
             'dimensions' => $dimensions,
             'status' => $request->input('status'),
             'release_date' => $request->input('release_date'),
-           'platform' => is_array($request->input('platform')) 
+            'platform' => is_array($request->input('platform')) 
             ? implode(',', $request->input('platform')) 
             : $request->input('platform'),
 
@@ -180,9 +192,21 @@ class ProductController extends Controller
             'category_id' => $request->input('category_id'),
             'tags' => $request->input('tags'),
             'name' => $request->input('name'),
+// Windows
             'price' => $request->input('price'),
-            'android_price' => $request->input('android_price'),
-            'ios_price' => $request->input('ios_price'),
+            'windows_version'   => $request->input('windows_version'),
+            'windows_processor' => $request->input('windows_processor'),
+            'windows_memory'    => $request->input('windows_memory'),
+            'windows_graphics'  => $request->input('windows_graphics'),
+            'windows_storage'   => $request->input('windows_storage'),
+// Android
+            'android_price'     => $request->input('android_price'),
+            'android_version'   => $request->input('android_version'),
+
+// iOS
+            'ios_price'         => $request->input('ios_price'),
+            'ios_version'       => $request->input('ios_version'),
+            
             'image' => implode(',', $finalImages),
             'description' => $request->input('description'),
             'weight' => $request->input('weight'),

@@ -37,20 +37,56 @@
                             <label for="android_price">Android Price</label>
                             <input type="number" name="android_price" id="android_price" class="form-control" step="0.01"
                                 value="{{ old('android_price', $product->android_price ?? '') }}">
+
+                            <label for="android_version" class="mt-2">Android Version</label>
+                            <input type="text" name="android_version" id="android_version" class="form-control"
+                                placeholder="e.g. Android 10"
+                                value="{{ old('android_version', $product->android_version ?? '') }}">
                         </div>
 
                         <div class="form-group mb-3 platform-price-group" id="ios-price-group" style="display: none;">
                             <label for="ios_price">iOS Price</label>
                             <input type="number" name="ios_price" id="ios_price" class="form-control" step="0.01"
                                 value="{{ old('ios_price', $product->ios_price ?? '') }}">
+
+                            <label for="ios_version" class="mt-2">iOS Version</label>
+                            <input type="text" name="ios_version" id="ios_version" class="form-control"
+                                placeholder="e.g. iOS 14"
+                                value="{{ old('ios_version', $product->ios_version ?? '') }}">
                         </div>
-                            <div class="col-md-6">
-                            <div class="form-group mb-3 platform-price-group" id="windows-price-group" style="display: none;"">
-                                <label for="windows_price">Windows Price</label>
-                                <input type="number" name="price" id="price" class="form-control" step="0.01"
-                                    value="{{ old('price', $product->price ?? '') }}">
-                            </div>
+
+                        <!-- Windows -->
+                        <div class="form-group mb-3 platform-price-group" id="windows-price-group" style="display: none;">
+                            <label for="windows_price">Windows Price</label>
+                            <input type="number" name="price" id="price" class="form-control" step="0.01"
+                                value="{{ old('price', $product->price ?? '') }}">
+
+                            <label for="windows_version" class="mt-2">OS Version</label>
+                            <input type="text" name="windows_version" id="windows_version" class="form-control"
+                                placeholder="e.g. Windows 10"
+                                value="{{ old('windows_version', $product->windows_version ?? '') }}">
+
+                            <label for="windows_processor" class="mt-2">Processor</label>
+                            <input type="text" name="windows_processor" id="windows_processor" class="form-control"
+                                placeholder="e.g. Intel i5"
+                                value="{{ old('windows_processor', $product->windows_processor ?? '') }}">
+
+                            <label for="windows_memory" class="mt-2">Memory</label>
+                            <input type="text" name="windows_memory" id="windows_memory" class="form-control"
+                                placeholder="e.g. 8 GB"
+                                value="{{ old('windows_memory', $product->windows_memory ?? '') }}">
+
+                            <label for="windows_graphics" class="mt-2">Graphics</label>
+                            <input type="text" name="windows_graphics" id="windows_graphics" class="form-control"
+                                placeholder="e.g. NVIDIA GTX 1050"
+                                value="{{ old('windows_graphics', $product->windows_graphics ?? '') }}">
+
+                            <label for="windows_storage" class="mt-2">Storage</label>
+                            <input type="text" name="windows_storage" id="windows_storage" class="form-control"
+                                placeholder="e.g. 100 GB"
+                                value="{{ old('windows_storage', $product->windows_storage ?? '') }}">
                         </div>
+
 
                         <div class="row">
                             <div class="col-md-6">
@@ -161,32 +197,7 @@
                             </div>
 
                         </div>
-                        <div class="form-group mb-3">
-                            <label>Dimensions (cm)</label>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="length">Length</label>
-                                        <input type="number" name="length" id="length" class="form-control"
-                                            placeholder="Length" value="{{ old('length', $product->length ?? '') }}">
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="width">Width</label>
-                                        <input type="number" name="width" id="width" class="form-control"
-                                            placeholder="Width" value="{{ old('width', $product->width ?? '') }}">
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="height">Height</label>
-                                        <input type="number" name="height" id="height" class="form-control"
-                                            placeholder="Height" value="{{ old('height', $product->height ?? '') }}">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    
 
                         <div class="form-group mb-3">
                             <label for="release_date">Release Date</label>

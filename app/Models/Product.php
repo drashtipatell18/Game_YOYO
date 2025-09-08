@@ -16,6 +16,11 @@ class Product extends Model
         'tags',
         'name',
         'price',
+        'windows_version',
+        'windows_processor',
+        'windows_memory',
+        'windows_graphics',
+        'windows_storage',
         'image',
         'description',
         'weight',
@@ -23,9 +28,12 @@ class Product extends Model
         'status',
         'release_date',
         'platform',
+  // Android
         'android_price',
+        'android_version',
+  // iOS     
         'ios_price',
-
+        'ios_version',
     ];
 
     public function category()
