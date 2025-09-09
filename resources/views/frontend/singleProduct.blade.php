@@ -115,6 +115,24 @@
         p.text-muted {
             color: #cfcfcf!important;
         }
+
+
+        .platform-icon-wrapper {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.1); /* light translucent background */
+            margin-right: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .platform-icon-wrapper:hover {
+            background-color: rgba(255,255,255,0.2);
+        }
     </style>
     <!-- x_game-product-section START -->
     <section class="x_game-shop a_header_container">
@@ -169,7 +187,9 @@
                     <div class="col-md-6 x_product-info text-white">
                         <div class="x_shop_info mt-3 mt-sm-0">
                             <h2 class="x_product-title">{{ $product['name'] ?? 'Unknown Product' }}</h2>
-                            <div class="x_product-price mb-3 d-flex align-items-center gap-2">
+                            <div class="platform-icons mb-2" id="platformIcons"></div>
+                            
+                            <div class="x_product-price mb-3 d-flex align-items-center gap-2" id="productPrice">
                                 <span>${{ number_format($product['price'] ?? 0, 2) }}</span>
                                 <span class="badge usd-badge">USD</span>
                             </div>
@@ -186,9 +206,10 @@
                             @endphp
                             <div class="d-flex align-items-center mb-3">
                                 <button class="btn btn-outline-light x_add-cart-btn px-md-4 px-3 me-3"
-                                    onclick="payNow({{ $product['id'] ?? 0 }}, {{ $isLoggedIn ? 'true' : 'false' }})">
+                                    onclick="payNow({{ $product['id'] }}, selectedPlatform || 'windows', {{ auth()->check() ? 'true' : 'false' }})">
                                     BUY NOW
                                 </button>
+                                
 
                                 <button class="btn btn-outline-light x_add-cart-btn px-md-4 px-3"
                                     onclick="addToCart({{ $product['id'] ?? 0 }})">
@@ -1323,9 +1344,8 @@
         </script> -->
 
     <script src="https://js.stripe.com/v3/"></script>
-
     <script>
-        function payNow(productId, isLoggedIn) {
+        function payNow(productId, platform, isLoggedIn) {
             if (!isLoggedIn) {
                 window.location.href = "{{ route('frontend.login') }}";
                 return;
@@ -1337,12 +1357,14 @@
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
-                body: JSON.stringify({ product_id: productId })
+                body: JSON.stringify({
+                    product_id: productId,
+                    platform: platform
+                })
             })
             .then(response => response.json())
             .then(data => {
                 if (data.url) {
-                    // Redirect user to Stripe Checkout page
                     window.location.href = data.url;
                 } else if (data.error) {
                     alert("Payment initialization failed: " + data.error);
@@ -1355,6 +1377,91 @@
                 alert("Payment initialization failed.");
             });
         }
+
+
     </script>
+
+<!-- Different Platform Wise Price Show -->
+<script>
+    function getPlatformIcons(platformString) {
+        const platformMap = {
+            android: '<span class="platform-icon-wrapper" data-platform="android" title="Android"><i class="fab fa-android" style="color:#3ddc84; font-size:17px"></i></span>',
+            ios: '<span class="platform-icon-wrapper" data-platform="ios" title="iOS"><i class="fab fa-apple" style="color:#ffffff; font-size:17px"></i></span>',
+            windows: '<span class="platform-icon-wrapper" data-platform="windows" title="Windows"><i class="fab fa-windows" style="color:#00adef; font-size:17px"></i></span>',
+        };
+
+
+        if (!platformString) return '';
+
+        return platformString
+            .split(',')
+            .map(p => p.trim().toLowerCase())
+            .filter(p => platformMap[p])
+            .map(p => platformMap[p])
+            .join(' ');
+    }
+
+
+    let selectedPlatform = null;
+    let selectedPrice = null; // Keep track of the current price for payment
+
+    function updatePrice(card, platform, product) {
+        let price = product.price;
+        if (platform === 'android' && product.android_price) {
+            price = product.android_price;
+        } else if (platform === 'ios' && product.ios_price) {
+            price = product.ios_price;
+        } else if (platform === 'windows' && product.price) {
+            price = product.price;
+        }
+
+        const priceElement = card.querySelector('#productPrice');
+        if (priceElement) {
+            priceElement.innerHTML = `$${parseFloat(price).toFixed(2)} <span class="badge usd-badge">USD</span>`;
+        }
+
+        // Update global selected values for use in Stripe/payment
+        selectedPlatform = platform;
+        selectedPrice = price;
+    }
+
+    function addPlatformClickListeners(product) {
+        document.querySelectorAll('.platform-icon-wrapper').forEach(icon => {
+            icon.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const platform = icon.getAttribute('data-platform');
+                const card = icon.closest('.x_product-info');
+                updatePrice(card, platform, product);
+            });
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const platformContainer = document.getElementById("platformIcons");
+        const card = document.querySelector(".x_product-info");
+
+        const product = {
+            id: "{{ $product['id'] }}",
+            price: {{ $product['price'] ?? 0 }},
+            android_price: {{ $product['android_price'] ?? 'null' }},
+            ios_price: {{ $product['ios_price'] ?? 'null' }},
+        };
+
+        if (platformContainer) {
+            platformContainer.innerHTML = getPlatformIcons("{{ $product['platform'] ?? '' }}");
+
+            const firstPlatform = "{{ $product['platform'] ?? '' }}".split(',')[0]?.trim().toLowerCase();
+            if (firstPlatform) {
+                updatePrice(card, firstPlatform, product);
+            }
+        }
+
+        addPlatformClickListeners(product);
+    });
+
+  
+</script>
+
+
 
 @endpush

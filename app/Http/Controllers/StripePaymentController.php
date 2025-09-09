@@ -20,7 +20,22 @@ class StripePaymentController extends Controller
     public function createCheckoutSession(Request $request)
     {
         $productId = $request->input('product_id');
+        $platform = $request->input('platform'); // ⬅️ get platform
         $product = Product::findOrFail($productId);
+
+        // Determine price based on platform
+        switch ($platform) {
+            case 'android':
+                $price = $product->android_price ?? $product->price;
+                break;
+            case 'ios':
+                $price = $product->ios_price ?? $product->price;
+                break;
+            case 'windows':
+            default:
+                $price = $product->price;
+                break;
+        }
 
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
@@ -32,13 +47,14 @@ class StripePaymentController extends Controller
                     'product_data' => [
                         'name' => $product->name,
                     ],
-                    'unit_amount' => $product->price * 100,
+                    'unit_amount' => intval($price * 100), // Stripe requires amount in cents
                 ],
                 'quantity' => 1,
             ]],
             'mode' => 'payment',
             'metadata' => [
                 'product_id' => $product->id,
+                'platform' => $platform,
             ],
             'success_url' => route('payment.success') . '?session_id={CHECKOUT_SESSION_ID}',
             'cancel_url' => route('payment.cancel'),

@@ -257,58 +257,59 @@
 
 
 <script>
+    // Function to generate platform icons
     function getPlatformIcons(platformString) {
-    const platformMap = {
-        android: '<i class="fab fa-android text-success me-1 platform-icon" data-platform="android" title="Android"></i>',
-        ios: '<i class="fab fa-apple text-light me-1 platform-icon" data-platform="ios" title="iOS"></i>',
-        windows: '<i class="fab fa-windows text-primary me-1 platform-icon" data-platform="windows" title="Windows"></i>',
-    };
+        const platformMap = {
+            android: '<i class="fab fa-android text-success me-1 platform-icon" data-platform="android" title="Android"></i>',
+            ios: '<i class="fab fa-apple text-light me-1 platform-icon" data-platform="ios" title="iOS"></i>',
+            windows: '<i class="fab fa-windows text-primary me-1 platform-icon" data-platform="windows" title="Windows"></i>',
+        };
 
-    if (!platformString) return '';
+        if (!platformString) return '';
 
-    return platformString
-        .split(',')
-        .map(p => p.trim().toLowerCase())
-        .filter(p => platformMap[p])
-        .map(p => platformMap[p])
-        .join('');
-}
-</script>
+        return platformString
+            .split(',')
+            .map(p => p.trim().toLowerCase())
+            .filter(p => platformMap[p])
+            .map(p => platformMap[p])
+            .join('');
+    }
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll('.platform-icon').forEach(icon => {
-        icon.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
+    // Attach event listeners after DOM is fully loaded
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll('.platform-icon').forEach(icon => {
+            icon.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
 
-            const platform = icon.getAttribute('data-platform'); // android / ios / windows
-            const card = icon.closest('.game-card'); // parent card
+                const platform = icon.getAttribute('data-platform'); // android / ios / windows
+                const card = icon.closest('.game-card'); // parent card
 
-            // Find price element
-            const priceElement = card.querySelector('.mb-0');
+                // Find price element
+                const priceElement = card.querySelector('.mb-0');
 
-            // Default price
-            let price = card.getAttribute('data-price');
+                // Default price
+                let price = card.getAttribute('data-price');
 
-            // Platform-based price
-            if (platform === 'android') {
-                price = card.getAttribute('data-android-price');
-            } else if (platform === 'ios') {
-                price = card.getAttribute('data-ios-price');
-            } else if (platform === 'windows') {
-                price = card.getAttribute('data-price'); // windows = default
-            }
+                // Platform-based price
+                if (platform === 'android') {
+                    price = card.getAttribute('data-android-price');
+                } else if (platform === 'ios') {
+                    price = card.getAttribute('data-ios-price');
+                } else if (platform === 'windows') {
+                    price = card.getAttribute('data-price'); // windows = default
+                }
 
-            // Format price to 2 decimals
-            const formattedPrice = parseFloat(price).toFixed(2);
+                // Format price to 2 decimals
+                const formattedPrice = parseFloat(price).toFixed(2);
 
-            // Update the card price dynamically
-            priceElement.innerHTML = `$${formattedPrice} <span class="badge usd-badge">USD</span>`;
+                // Update the card price dynamically
+                priceElement.innerHTML = `$${formattedPrice} <span class="badge usd-badge">USD</span>`;
+            });
         });
     });
-});
 </script>
+
 
 
 @endsection
