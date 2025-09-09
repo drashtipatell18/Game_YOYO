@@ -47,14 +47,41 @@
                         @foreach ($featuteProducts as $game)
                             @php
                                 $image = explode(',', $game->image)[0] ?? '';
+                                $platforms = explode(',', $game->platform);
+                                    $firstPlatform = strtolower(trim($platforms[0] ?? ''));
+                                    $defaultPrice = $game->price;
+
+                                    if ($firstPlatform === 'android') {
+                                        $defaultPrice = $game->android_price ?? $game->price;
+                                    } elseif ($firstPlatform === 'ios') {
+                                        $defaultPrice = $game->ios_price ?? $game->price;
+                                    } elseif ($firstPlatform === 'windows') {
+                                        $defaultPrice = $game->price; // windows = default price
+                                    }
                             @endphp
                             <div class="swiper-slide d-flex justify-content-center">
                                 <a href="{{ route('productDetails', $game->id) }}" class="text-decoration-none text-dark">
-                                    <div class="game-card position-relative" data-id="{{ $game->id }}">
+                                    <div class="game-card position-relative" data-id="{{ $game->id }}"
+                                    data-price="{{ $game->price }}"
+                                    data-android-price="{{ $game->android_price ?? $game->price }}"
+                                    data-ios-price="{{ $game->ios_price ?? $game->price }}">
                                         <img src="{{ asset('images/products/' . trim($image)) }}" alt="{{ $game->name }}" class="card-img-top" />
                                         <div class="position-absolute card-content">
+                                            <div class="icons d-flex gap-2 mb-3">
+                                                @foreach(explode(',', $game->platform) as $platform)
+                                                    @php $platform = strtolower(trim($platform)); @endphp
+
+                                                    @if($platform === 'android')
+                                                        <i class="fab fa-android text-success me-1 platform-icon" data-platform="android" title="Android"></i>
+                                                    @elseif($platform === 'ios')
+                                                        <i class="fab fa-apple text-light me-1 platform-icon" data-platform="ios" title="iOS"></i>
+                                                    @elseif($platform === 'windows')
+                                                        <i class="fab fa-windows text-primary me-1 platform-icon" data-platform="windows" title="Windows"></i>
+                                                    @endif
+                                                @endforeach
+                                            </div>
                                             <h3>{{ $game->name }}</h3>
-                                            <h3 class="mb-0">${{ number_format($game->price, 2) }}
+                                            <h3 class="mb-0"> ${{ number_format($defaultPrice, 2) }}
                                             <span class="badge usd-badge">USD</span></h3>
                                             <span class="badge bg-secondary mt-2">{{ $game->category->name ?? 'No Category' }}</span>
                                         </div>
@@ -227,5 +254,61 @@
         });
     });
 </script>
+
+
+<script>
+    function getPlatformIcons(platformString) {
+    const platformMap = {
+        android: '<i class="fab fa-android text-success me-1 platform-icon" data-platform="android" title="Android"></i>',
+        ios: '<i class="fab fa-apple text-light me-1 platform-icon" data-platform="ios" title="iOS"></i>',
+        windows: '<i class="fab fa-windows text-primary me-1 platform-icon" data-platform="windows" title="Windows"></i>',
+    };
+
+    if (!platformString) return '';
+
+    return platformString
+        .split(',')
+        .map(p => p.trim().toLowerCase())
+        .filter(p => platformMap[p])
+        .map(p => platformMap[p])
+        .join('');
+}
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll('.platform-icon').forEach(icon => {
+        icon.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const platform = icon.getAttribute('data-platform'); // android / ios / windows
+            const card = icon.closest('.game-card'); // parent card
+
+            // Find price element
+            const priceElement = card.querySelector('.mb-0');
+
+            // Default price
+            let price = card.getAttribute('data-price');
+
+            // Platform-based price
+            if (platform === 'android') {
+                price = card.getAttribute('data-android-price');
+            } else if (platform === 'ios') {
+                price = card.getAttribute('data-ios-price');
+            } else if (platform === 'windows') {
+                price = card.getAttribute('data-price'); // windows = default
+            }
+
+            // Format price to 2 decimals
+            const formattedPrice = parseFloat(price).toFixed(2);
+
+            // Update the card price dynamically
+            priceElement.innerHTML = `$${formattedPrice} <span class="badge usd-badge">USD</span>`;
+        });
+    });
+});
+</script>
+
 
 @endsection
