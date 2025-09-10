@@ -120,7 +120,7 @@ class StripePaymentController extends Controller
         $cartItems = AddToCart::where('user_id', auth()->id())->get();
 
         $total = $cartItems->sum(function ($item) {
-            return $item->product->price * $item->quantity;
+            return $item->price * $item->quantity;
         });
 
         if ($total < 1) {
@@ -137,7 +137,7 @@ class StripePaymentController extends Controller
                     'product_data' => [
                         'name' => $item->product->name,
                     ],
-                    'unit_amount' => round($item->product->price * 100), // Amount in cents
+                    'unit_amount' => round($item->price * 100), // Amount in cents
                 ],
                 'quantity' => $item->quantity,
             ];

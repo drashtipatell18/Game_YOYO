@@ -51,13 +51,7 @@
                                         @if ($cart->product)
                                             <tr id="cart-row-{{ $cart->id }}">
                                                 <td class="Z_cart_td">
-                                                    {{-- <div class="d-flex align-items-center gap-3">
-                                                        <img src="{{ asset('images/products/' . ($cart->product->image ?? 'default.png')) }}"
-                                                            alt="{{ $cart->product->title ?? 'Product Image' }}"
-                                                            class="Z_cart_img">
-
-                                                        <span class="Z_cart_name">{{ $cart->product->title }}</span>
-                                                    </div> --}}
+                                                    
                                                     <div class="d-flex align-items-center gap-3">
                                                         @php
                                                             $images = explode(
@@ -78,7 +72,7 @@
 
                                                 </td>
                                                 <td class="Z_cart_td">{{ $cart->product->category->name ?? 'N/A' }}</td>
-                                                <td class="Z_cart_td">${{ number_format($cart->product->price, 2) }}</td>
+                                                <td class="Z_cart_td">${{ number_format($cart->price, 2) }}</td>
                                                 <td class="Z_cart_td text-center">
                                                     <button class="Z_cart_removebtn"
                                                         onclick="deleteItem({{ $cart->id }})">
@@ -300,92 +294,6 @@
             })();
         </script>
         
-<!-- Razor Pay Code -->
-    <!-- <script>
-        function payNow(button) {
-            const cartId = button.getAttribute('data-cart-id');
-            const totalAmount = parseFloat(button.getAttribute('data-total')) || 0;
-
-            fetch(`/get-payment-details-cart/${cartId}`)
-                .then(res => res.json())
-                .then(data => {
-                    const options = {
-                        "key": "{{ env('RAZORPAY_KEY') }}",
-                        "amount": data.amount * 100, // Convert $75 to 7500 cents
-                        "currency": "USD", // ✅ Set to USD
-                        "name": data.name,
-                        "description": data.description,
-                        "image": data.image || '/default.png',
-                        "order_id": data.razorpay_order_id,
-                        "handler": function (response) {
-                            fetch('/cart/success', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                                },
-                                body: JSON.stringify({
-                                    razorpay_payment_id: response.razorpay_payment_id,
-                                    razorpay_order_id: response.razorpay_order_id,
-                                    razorpay_signature: response.razorpay_signature,
-                                    amount: totalAmount,
-                                    cart_id: cartId 
-                                })
-                            }).then(res => res.json())
-                            .then(data => {
-                                if (data.status === 'success') {
-                                    Swal.fire({
-                                        toast: true,
-                                        position: 'top-end',
-                                        icon: 'success',
-                                        title: 'Payment Successful!',
-                                        showConfirmButton: false,
-                                        timer: 5000, // ⏱ Show for 5 seconds
-                                        timerProgressBar: true,
-                                        customClass: {
-                                            popup: 'swal2-success-toast'
-                                        }
-                                    }).then(() => {
-                                        // Redirect to invoice page
-                                        window.location.href = data.invoice_url;
-                                    });
-                                   
-
-                                    $('#cartTableBody').html('<tr><td colspan="4" class="text-center">Your cart is empty.</td></tr>');
-                                    $('#cartTotal').text('$0.00');
-                                    $('[data-bs-target="#paymentModal"]').prop('disabled', true);
-
-                                } else {
-                                    Swal.fire({
-                                        toast: true,
-                                        position: 'top-end',
-                                        icon: 'error',
-                                        title: 'Payment failed to store.',
-                                        showConfirmButton: false,
-                                        timer: 5000,
-                                        customClass: {
-                                            popup: 'swal2-danger-toast'
-                                        }
-                                    });
-                                }
-                            });
-                        },
-                        "theme": {
-                            "color": "#3399cc"
-                        }
-                    };
-
-                    const rzp = new Razorpay(options);
-                    rzp.open();
-                });
-        }
-        </script> -->
-
-
-
-
-
-
 <script src="https://js.stripe.com/v3/"></script>
 <script>
     async function payNow(button) {

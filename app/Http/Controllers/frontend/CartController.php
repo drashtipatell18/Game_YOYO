@@ -10,21 +10,25 @@ use App\Models\AddToCart;
 class CartController extends Controller
 {
     public function Cart(){
-       $userId = Auth::id(); // Get authenticated user ID
+        $userId = Auth::id(); // Get authenticated user ID
 
-    if (!$userId) {
-        return view('frontend.cart', ['carts' => collect(), 'cartTotal' => 0]);
-    }
+        if (!$userId) {
+            return view('frontend.cart', ['carts' => collect(), 'cartTotal' => 0]);
+        }
 
-    $carts = AddToCart::with(['product.category', 'user'])
-                     ->where('user_id', $userId)
-                     ->get();
-    // Calculate total
-    $cartTotal = $carts->sum(function($cart) {
-        return $cart->product ? $cart->product->price : 0;
-    });
+        $carts = AddToCart::with(['product.category', 'user'])
+                        ->where('user_id', $userId)
+                        ->get();
+        // Calculate total
+        // $cartTotal = $carts->sum(function($cart) {
+        //     return $cart->product ? $cart->product->price : 0;
+        // });
 
-    return view('frontend.cart', compact('carts', 'cartTotal'));
+        $cartTotal = $carts->sum(function($cart) {
+            return $cart->price * $cart->quantity;
+        });
+
+        return view('frontend.cart', compact('carts', 'cartTotal'));
 
     }
     public function FrontaddToCart(Request $request)
@@ -39,11 +43,13 @@ class CartController extends Controller
             }
 
             $request->validate([
-                'product_id' => 'required|exists:products,id'
+                'product_id' => 'required|exists:products,id',
+                'platform'   => 'required|string' // must send platform from frontend
             ]);
 
             $userId = Auth::id();
             $productId = $request->product_id;
+            $platform  = strtolower($request->platform);
 
             // Get product details
             $product = Product::find($productId);
@@ -54,21 +60,43 @@ class CartController extends Controller
                 ], 404);
             }
 
-            // Check if item already exists in cart
+            // Determine price based on selected platform
+            switch ($platform) {
+                case 'android':
+                    $price = $product->android_price ?? 0;
+                    break;
+                case 'ios':
+                    $price = $product->ios_price ?? 0;
+                    break;
+                case 'windows':
+                    $price = $product->windows_price ?? 0;
+                    break;
+                default:
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Invalid platform selected'
+                    ], 400);
+            }
+
+            // Check if item already exists in cart for this platform
             $existingCartItem = AddToCart::where('user_id', $userId)
-                                  ->where('product_id', $productId)
-                                  ->first();
+                                ->where('product_id', $productId)
+                                ->where('platform', $platform)
+                                ->first();
 
             if ($existingCartItem) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Product already in cart'
+                    'message' => 'Product already in cart for this platform'
                 ]);
             } else {
                 // Create new cart item
                 AddToCart::create([
-                    'user_id' => $userId,
-                    'product_id' => $productId
+                    'user_id'    => $userId,
+                    'product_id' => $productId,
+                    'platform'   => $platform,
+                    'price'      => $price,
+                    'quantity'   => 1
                 ]);
 
                 $message = 'Product added to cart successfully';
@@ -90,6 +118,7 @@ class CartController extends Controller
             ], 500);
         }
     }
+
 
     public function FrontgetCartItems()
     {

@@ -594,11 +594,15 @@
                         priceElement.innerHTML = `$${parseFloat(price).toFixed(2)} <span class="badge usd-badge">USD</span>`;
                     }
 
+                    card.setAttribute('data-selected-platform', platform);
+                    card.setAttribute('data-selected-price', price);
+
                     // alert(`You selected ${platform}, Price: $${parseFloat(price).toFixed(2)}`);
                 });
             });
         }
 
+        
 
 
         function updateProductCount() {
@@ -616,43 +620,7 @@
                 }
             }
         }
-        //           function generatePagination(currentPage, totalPages) {
-        //     const pagination = document.getElementById('pagination');
-        //     pagination.innerHTML = '';
-
-        //     function addButton(page, text, disabled) {
-        //         const li = document.createElement('li');
-        //         li.className = `page-item ${disabled ? 'disabled' : ''}`;
-        //         const a = document.createElement('a');
-        //         a.className = 'page-link';
-        //         a.innerHTML = text;
-        //         if (!disabled) {
-        //             a.href = '#';
-        //             a.onclick = (e) => {
-        //                 e.preventDefault();
-        //                 const url = new URL(window.location);
-        //                 url.searchParams.set('page', page);
-        //                 window.history.pushState({}, '', url);
-        //                 renderProducts();
-        //             };
-        //         }
-        //         li.appendChild(a);
-        //         pagination.appendChild(li);
-        //     }
-
-        //     // Previous Button
-        //     addButton(currentPage - 1, '<i class="fa fa-angle-left"></i>', currentPage === 1);
-
-        //     // Middle text "X of Y"
-        //     const middle = document.createElement('li');
-        //     middle.className = 'page-item';
-        //     middle.innerHTML = `<span class="page-link">${currentPage} of ${totalPages}</span>`;
-        //     pagination.appendChild(middle);
-
-        //     // Next Button
-        //     addButton(currentPage + 1, '<i class="fa fa-angle-right"></i>', currentPage === totalPages);
-        // }
-
+      
 
         function generatePagination(currentPageParam, totalPages) {
             const pagination = document.getElementById('pagination');
@@ -786,6 +754,9 @@
                 });
             });
         }
+
+
+        
 
         function setupEventListeners() {
             // Filter change listeners
@@ -1079,67 +1050,100 @@
             });
         });
 
+
+
+
+
+
         // Rest of the functions remain the same (addToCart, toggleWishlist, etc.)
         function addToCart(productId, quantity = 1, buttonElement = null) {
             if (buttonElement) {
                 setButtonLoading(buttonElement, true);
             }
 
+            const card = document.querySelector(`.game-card[data-id="${productId}"]`);
+            let selectedPlatform = card?.getAttribute('data-selected-platform') || null; // use let
+            let selectedPrice = card?.getAttribute('data-selected-price') || null;      // use let
+
+            // ✅ If no platform selected, use default (first available platform & price)
+            if (!selectedPlatform || !selectedPrice) {
+                const product = filteredProducts.find(p => p.id == productId);
+                if (product) {
+                    if (product.android_price) {
+                        selectedPlatform = "android";
+                        selectedPrice = product.android_price;
+                    } else if (product.ios_price) {
+                        selectedPlatform = "ios";
+                        selectedPrice = product.ios_price;
+                    } else {
+                        selectedPlatform = "windows"; // fallback
+                        selectedPrice = product.price;
+                    }
+
+                    // Update card attributes for consistency
+                    card.setAttribute("data-selected-platform", selectedPlatform);
+                    card.setAttribute("data-selected-price", selectedPrice);
+                }
+            }
+
             const formData = new FormData();
             formData.append('product_id', productId);
             formData.append('quantity', quantity);
+            formData.append('platform', selectedPlatform);
+            formData.append('price', selectedPrice);
 
             const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
 
             fetch('/cart/add', {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': csrfToken,
-                        'Accept': 'application/json',
-                    },
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        showNotification(data.message, 'success');
-                        updateCartCount(data.cart_count);
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Accept': 'application/json',
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification(data.message, 'success');
+                    updateCartCount(data.cart_count);
 
-                        if (buttonElement) {
-                            const originalText = buttonElement.querySelector('.btn-text').textContent;
-                            buttonElement.querySelector('.btn-text').textContent = 'ADDED!';
-                            buttonElement.classList.add('btn-success');
-
-                            setTimeout(() => {
-                                buttonElement.querySelector('.btn-text').textContent = originalText;
-                                buttonElement.classList.remove('btn-success');
-                            }, 2000);
-                        }
+                    if (buttonElement) {
+                        const originalText = buttonElement.querySelector('.btn-text').textContent;
+                        buttonElement.querySelector('.btn-text').textContent = 'ADDED!';
+                        buttonElement.classList.add('btn-success');
 
                         setTimeout(() => {
-                            window.location.href = '/cart';
-                        }, 1500);
-
-                    } else {
-                        showNotification(data.message, 'error');
-
-                        if (data.message.includes('login')) {
-                            setTimeout(() => {
-                                window.location.href = '/frontend-login';
-                            }, 2000);
-                        }
+                            buttonElement.querySelector('.btn-text').textContent = originalText;
+                            buttonElement.classList.remove('btn-success');
+                        }, 2000);
                     }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    showNotification('Something went wrong. Please try again.', 'error');
-                })
-                .finally(() => {
-                    if (buttonElement) {
-                        setButtonLoading(buttonElement, false);
+
+                    setTimeout(() => {
+                        window.location.href = '/cart';
+                    }, 1500);
+
+                } else {
+                    showNotification(data.message, 'error');
+
+                    if (data.message.includes('login')) {
+                        setTimeout(() => {
+                            window.location.href = '/frontend-login';
+                        }, 2000);
                     }
-                });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showNotification('Something went wrong. Please try again.', 'error');
+            })
+            .finally(() => {
+                if (buttonElement) {
+                    setButtonLoading(buttonElement, false);
+                }
+            });
         }
+
 
         function toggleWishlist(id) {
             const card = cardsData.find(c => c.id === id);
@@ -1574,5 +1578,7 @@
             });
         });
     </script>
+
+  
 @endpush
 
