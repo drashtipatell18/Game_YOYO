@@ -6,7 +6,7 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title">{{ isset($privacy) ? 'Edit Privacy' : 'Create Privacy' }}</h4>
-                    <form action="{{ isset($privacy) ? route('privacy.update', $privacy->id) : route('privacy.store') }}"
+                    <form action="{{ isset($privacy) ? route('update.privacy', $privacy->id) : route('privacy.store') }}"
                         method="post" id="privacy-form">
                         @csrf
                         <div class="form-group mb-3">
