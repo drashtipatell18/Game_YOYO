@@ -184,7 +184,7 @@
                 
 
                     <!-- Product Info -->
-                    <div class="col-md-6 x_product-info text-white">
+                    <div class="col-md-6 x_product-info text-white" data-product-id="{{ $product['id'] }}"  data-price="{{ $product['price'] ?? 0 }}" data-android-price="{{ $product['android_price'] ?? '' }}" data-ios-price="{{ $product['ios_price'] ?? '' }}">
                         <div class="x_shop_info mt-3 mt-sm-0">
                             <h2 class="x_product-title">{{ $product['name'] ?? 'Unknown Product' }}</h2>
                             <div class="platform-icons mb-2" id="platformIcons"></div>
@@ -212,7 +212,7 @@
                                 
 
                                 <button class="btn btn-outline-light x_add-cart-btn px-md-4 px-3"
-                                    onclick="addToCart({{ $product['id'] ?? 0 }})">
+                                    onclick="addToCart({{ $product['id'] }}, selectedPlatform) ">
                                     ADD TO CART
                                 </button>
                             </div>
@@ -1054,77 +1054,8 @@
     </script>
 
     <script>
-        function addToCart(productId, quantity = 1, buttonElement = null) {
-            // Show loading state if button element is provided
-            if (buttonElement) {
-                setButtonLoading(buttonElement, true);
-            }
 
-            // Prepare form data
-            const formData = new FormData();
-            formData.append('product_id', productId);
-            formData.append('quantity', quantity);
 
-            // Get CSRF token (make sure you have this in your HTML head)
-            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-
-            fetch('/cart/add', {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': csrfToken,
-                        'Accept': 'application/json',
-                    },
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Show success message
-                        showNotification(data.message, 'success');
-
-                        // Update cart count in UI if you have a cart counter
-                        updateCartCount(data.cart_count);
-
-                        // Optional: Change button text temporarily
-                        if (buttonElement) {
-                            const originalText = buttonElement.querySelector('.btn-text').textContent;
-                            buttonElement.querySelector('.btn-text').textContent = 'ADDED!';
-                            buttonElement.classList.add('btn-success');
-
-                            setTimeout(() => {
-                                buttonElement.querySelector('.btn-text').textContent = originalText;
-                                buttonElement.classList.remove('btn-success');
-                            }, 2000);
-                        }
-
-                        // Optional: Auto redirect to cart after delay
-                        setTimeout(() => {
-                            window.location.href = '/cart';
-                        }, 1500);
-
-                    } else {
-                        // Handle error
-                        showNotification(data.message, 'error');
-
-                        // If user not authenticated, redirect to login
-                        if (data.message.includes('login')) {
-                            setTimeout(() => {
-                                window.location.href = '/frontend-login';
-                            }, 2000);
-                        }
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    showNotification('Something went wrong. Please try again.', 'error');
-                })
-                .finally(() => {
-                    // Remove loading state
-                    if (buttonElement) {
-                        setButtonLoading(buttonElement, false);
-                    }
-                });
-        }
 
         // Function to show loading state on button
         function setButtonLoading(button, isLoading) {
@@ -1270,78 +1201,7 @@
 
 
 
-    <!-- Razor Pay Code -->
-        <!-- <script>
-            function payNow(productId, isLoggedIn) {
-                if (!isLoggedIn) {
-                    window.location.href = "{{ route('frontend.login') }}";
-                    return;
-                }
 
-                fetch(`/get-payment-details/${productId}`)
-                    .then(res => res.json())
-                    .then(data => {
-                        const options = {
-                            "key": "{{ env('RAZORPAY_KEY') }}",
-                        "amount": data.amount * 100, // Convert $75 to 7500 cents
-                            "currency": "USD", // ✅ Set to USD
-                            "name": data.name,
-                            "description": data.description,
-                            "image": data.image || '/default.png',
-                            "order_id": data.razorpay_order_id,
-                            "handler": function(response) {
-                                fetch('/payment/success', {
-                                        method: 'POST',
-                                        headers: {
-                                            'Content-Type': 'application/json',
-                                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                                        },
-                                        body: JSON.stringify({
-                                            razorpay_payment_id: response.razorpay_payment_id,
-                                            razorpay_order_id: response.razorpay_order_id,
-                                            razorpay_signature: response.razorpay_signature,
-                                            product_id: productId,
-                                        })
-                                    }).then(res => res.json())
-                                    .then(data => {
-                                        if (data.status === 'success') {
-                                            Swal.fire({
-                                                toast: true,
-                                                position: 'top-end',
-                                                icon: 'success',
-                                                title: 'Payment Successful!',
-                                                showConfirmButton: false,
-                                                timer: 5000, // ⏱ Show for 5 seconds
-                                                timerProgressBar: true,
-                                                customClass: {
-                                                    popup: 'swal2-success-toast'
-                                                }
-                                            });
-                                        } else {
-                                            Swal.fire({
-                                                toast: true,
-                                                position: 'top-end',
-                                                icon: 'error',
-                                                title: 'Payment failed to store.',
-                                                showConfirmButton: false,
-                                                timer: 5000,
-                                                customClass: {
-                                                    popup: 'swal2-danger-toast'
-                                                }
-                                            });
-                                        }
-                                    });
-                            },
-                            "theme": {
-                                "color": "#3399cc"
-                            }
-                        };
-
-                        const rzp = new Razorpay(options);
-                        rzp.open();
-                    });
-            }
-        </script> -->
 
     <script src="https://js.stripe.com/v3/"></script>
     <script>
@@ -1420,7 +1280,10 @@
             priceElement.innerHTML = `$${parseFloat(price).toFixed(2)} <span class="badge usd-badge">USD</span>`;
         }
 
-        // Update global selected values for use in Stripe/payment
+        // ✅ Store selected values directly on `.x_product-info`
+        card.setAttribute('data-selected-platform', platform);
+        card.setAttribute('data-selected-price', price);
+
         selectedPlatform = platform;
         selectedPrice = price;
     }
@@ -1431,10 +1294,19 @@
                 e.stopPropagation();
                 const platform = icon.getAttribute('data-platform');
                 const card = icon.closest('.x_product-info');
+
+                // Update price
                 updatePrice(card, platform, product);
+
+                // 🔹 Show alert with platform + price
+                alert(
+                    "You selected " + platform.toUpperCase() +
+                    " platform: $" + parseFloat(selectedPrice).toFixed(2)
+                );
             });
         });
     }
+
 
     document.addEventListener("DOMContentLoaded", function() {
         const platformContainer = document.getElementById("platformIcons");
@@ -1458,6 +1330,77 @@
 
         addPlatformClickListeners(product);
     });
+
+
+   function addToCart(productId, quantity = 1, buttonElement = null) {
+        if (buttonElement) {
+            setButtonLoading(buttonElement, true);
+        }
+
+        // ✅ Get card correctly
+        const card = document.querySelector(`.x_product-info[data-product-id="${productId}"]`);
+
+        const selectedPlatform = card?.getAttribute('data-selected-platform') || '';
+        const selectedPrice = card?.getAttribute('data-selected-price') || '';
+
+        console.log("Platform:", selectedPlatform, "Price:", selectedPrice);
+
+        const formData = new FormData();
+        formData.append('product_id', productId);
+        formData.append('quantity', quantity);
+        formData.append('platform', selectedPlatform);
+        formData.append('price', selectedPrice);
+
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+        fetch('/cart/add', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken,
+                'Accept': 'application/json',
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showNotification(data.message, 'success');
+                updateCartCount(data.cart_count);
+
+                if (buttonElement) {
+                    const originalText = buttonElement.querySelector('.btn-text').textContent;
+                    buttonElement.querySelector('.btn-text').textContent = 'ADDED!';
+                    buttonElement.classList.add('btn-success');
+
+                    setTimeout(() => {
+                        buttonElement.querySelector('.btn-text').textContent = originalText;
+                        buttonElement.classList.remove('btn-success');
+                    }, 2000);
+                }
+
+                setTimeout(() => {
+                    window.location.href = '/cart';
+                }, 1500);
+
+            } else {
+                showNotification(data.message, 'error');
+                if (data.message.includes('login')) {
+                    setTimeout(() => {
+                        window.location.href = '/frontend-login';
+                    }, 2000);
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showNotification('Something went wrong. Please try again.', 'error');
+        })
+        .finally(() => {
+            if (buttonElement) {
+                setButtonLoading(buttonElement, false);
+            }
+        });
+    }
 
   
 </script>

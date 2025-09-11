@@ -1065,6 +1065,8 @@
             let selectedPlatform = card?.getAttribute('data-selected-platform') || null; // use let
             let selectedPrice = card?.getAttribute('data-selected-price') || null;      // use let
 
+
+            console.log(selectedPlatform, selectedPrice)
             // ✅ If no platform selected, use default (first available platform & price)
             if (!selectedPlatform || !selectedPrice) {
                 const product = filteredProducts.find(p => p.id == productId);
