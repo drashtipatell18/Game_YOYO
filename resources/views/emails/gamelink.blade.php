@@ -10,7 +10,7 @@
     <p>Your game is ready. You can either:</p>
 
     <ul>
-        <li><strong>Download EXE:</strong> <a href="{{ $exeUrl }}" download>Click here to download the game</a></li>
+        <li><strong>Download EXE:</strong> <a href="{{ $exeUrl }}" download>{{ $exeUrl }}</a></li>
     </ul>
 
     <p>If Windows shows a security warning when opening the file, just click <strong>"Run"</strong>.</p>

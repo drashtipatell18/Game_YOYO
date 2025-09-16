@@ -93,6 +93,8 @@ class StripePaymentController extends Controller
             if (!$product) {
                 return redirect()->route('payment.cancel')->with('error', 'Product not found.');
             }
+
+            $exeUrl = asset('storage/games/mygame.exe'); // ✅ Correct URL
            
             Payment::create([
                 'product_id' => $product->id,
@@ -102,6 +104,14 @@ class StripePaymentController extends Controller
                 'payment_status' => 'completed',
                 'payment_type' =>  $session->payment_method_types[0] ?? 'card',
             ]);
+            $product->file_url = $exeUrl;
+            $product->save();
+
+            $user = auth()->user();
+            if ($user && $user->email) {
+                Mail::to($user->email)->send(new GameLinkMail($exeUrl));
+            }
+
             return view('payment.success');
 
         } catch (\Exception $e) {
@@ -190,7 +200,7 @@ class StripePaymentController extends Controller
         $cartIds = $cartItems->pluck('id')->toArray();
         $cartIdsString = implode(',', $cartIds);
 
-         $exeUrl = asset('storage/games/mygame.exe'); 
+        $exeUrl = asset('storage/games/mygame.exe'); // ✅ Correct URL
       
 
         // Save payment record
@@ -202,6 +212,14 @@ class StripePaymentController extends Controller
             'payment_status' => 'completed',
             'payment_type' => $paymentMethod,
         ]);
+
+        foreach ($cartItems as $cartItem) {
+            $product = Product::find($cartItem->product_id);
+            if ($product) {
+                $product->file_url = $exeUrl;
+                $product->save();
+            }
+        }
 
         // Clear cart
         AddToCart::where('user_id', auth()->id());

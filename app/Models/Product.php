@@ -34,6 +34,7 @@ class Product extends Model
   // iOS     
         'ios_price',
         'ios_version',
+        'file_url'
     ];
 
     public function category()
