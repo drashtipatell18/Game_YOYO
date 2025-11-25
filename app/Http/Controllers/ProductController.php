@@ -16,15 +16,18 @@ class ProductController extends Controller
 
     public function StoreProduct(Request $request)
     {
-        $imageNames = [];
-        if ($request->hasFile('image')) {
-            foreach ($request->file('image') as $image) {
-                $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-                $image->move(public_path('images/products'), $imageName);
-                $imageNames[] = $imageName;
-            }
-        }
+        $files = $request->file('image');
+        usort($files, function ($a, $b) {
+            return strcmp($a->getClientOriginalName(), $b->getClientOriginalName());
+        });
 
+        $imageNames = [];
+        foreach ($files as $img) {
+            $originalName = $img->getClientOriginalName();
+            $cleanName = time() . '_' . preg_replace('/[^A-Za-z0-9.\-_]/', '_', $originalName);
+            $img->move(public_path('images/products'), $cleanName);
+            $imageNames[] = $cleanName;
+        }
         // Handle dimensions as a string (e.g. "10x5x2")
         $dimensions = null;
         if ($request->filled('length') || $request->filled('width') || $request->filled('height')) {

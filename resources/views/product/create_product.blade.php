@@ -130,6 +130,7 @@
                                 @if (isset($product) && $product->image)
                                     @php
                                         $mediaFiles = explode(',', $product->image);
+                                        natsort($mediaFiles);
                                     @endphp
                                     @foreach ($mediaFiles as $index => $file)
                                         <div class="image-container position-relative" data-image="{{ $file }}">
