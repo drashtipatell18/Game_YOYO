@@ -56,57 +56,29 @@
             font-size: 18px;
             vertical-align: middle;
         }
-.game-card {
-    display: flex;
-    flex-direction: column;
-    background: #1a1a1a;
-    border-radius: 12px;
-    overflow: hidden;
-}
+        .game-card {
+            width: 100%;
+            height: 350px;             /* Full card height */
+            border-radius: 16px;
+            overflow: hidden;          /* Image fully inside card */
+            background: #111;
+            position: relative;
+        }
 
-.game-card .game-image {
-    width: 100%;
-    height: 220px;
-    overflow: hidden;
-    flex-shrink: 0; /* Image shrink nahi thase */
-    order: -1; /* Image ne top par bheje */
-}
+        .game-image {
+            width: 100%;
+            height: 100%;              /* Image container = full card height */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-.game-card .game-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    display: block;
-}
-
-/* Content section - image niche */
-.game-card .game-content {
-    padding: 16px;
-    flex-grow: 1;
-}
-
-/* Content inside card (overlays on image) */
-.card-content {
-    position: absolute;
-    bottom: 90px;
-    left: 20px;
-    right: 20px;
-    z-index: 2;
-    color: #fff;
-}
-
-/* Actions area */
-.card-actions {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    padding: 15px;
-    z-index: 2;
-    background: rgba(0,0,0,0.4);
-}
-
-
+        .game-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: fill;         /* FULL IMAGE COVER CARD */
+            border-radius: 16px;
+        } 
 
 
         @media (max-width: 576px) {
