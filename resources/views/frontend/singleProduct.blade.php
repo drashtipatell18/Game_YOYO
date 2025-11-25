@@ -140,16 +140,18 @@
             <div class="x_space">
 
                 <div class="row">
+                    @php
+                        $reverseImages = array_reverse($images);
+                    @endphp
                     <!-- Thumbnails -->
                     <div class="col-md-1 d-none d-md-flex flex-column align-items-center x_thumb-list">
                         @if (!empty($images) && count($images) > 0)
-                            @foreach ($images as $index => $img)
+                            @foreach ($reverseImages as $index => $img)
                                 <img src="{{ asset('images/products/' . trim($img)) }}"
                                     class="img-fluid mb-3 x_thumb-img {{ $index === 0 ? 'active' : '' }}"
                                     alt="thumb{{ $index + 1 }}" onclick="changeMainImage(this)">
                             @endforeach
                         @else
-                            <!-- Optional: dummy thumbnail -->
                             <img src="{{ asset('images/products/dummy_product.png') }}"
                                 class="img-fluid mb-3 x_thumb-img active" alt="default-thumb">
                         @endif
@@ -158,8 +160,8 @@
 
                     <!-- Main Image -->
                     <div class="col-md-5 text-center x_main-img-wrap">
-                        <img id="mainImage" class="img-fluid x_main-img"
-                            src="{{ isset($images[0]) ? asset('images/products/' . trim($images[0])) : asset('images/products/dummy_product.png') }}"
+                       <img id="mainImage" class="img-fluid x_main-img"
+                            src="{{ isset($reverseImages[0]) ? asset('images/products/' . trim($reverseImages[0])) : asset('images/products/dummy_product.png') }}"
                             alt="main">
                     </div>
 

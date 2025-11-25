@@ -56,6 +56,56 @@
             font-size: 18px;
             vertical-align: middle;
         }
+.game-card {
+    display: flex;
+    flex-direction: column;
+    background: #1a1a1a;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.game-card .game-image {
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+    flex-shrink: 0; /* Image shrink nahi thase */
+    order: -1; /* Image ne top par bheje */
+}
+
+.game-card .game-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+/* Content section - image niche */
+.game-card .game-content {
+    padding: 16px;
+    flex-grow: 1;
+}
+
+/* Content inside card (overlays on image) */
+.card-content {
+    position: absolute;
+    bottom: 90px;
+    left: 20px;
+    right: 20px;
+    z-index: 2;
+    color: #fff;
+}
+
+/* Actions area */
+.card-actions {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 15px;
+    z-index: 2;
+    background: rgba(0,0,0,0.4);
+}
+
 
 
 
@@ -479,9 +529,11 @@
             // Render products
             currentPageProducts.forEach(product => {
                 const categoryName = product.category_name || "Unknown";
-                const firstImage = (product.image && typeof product.image === 'string') ?
-                    product.image.split(',')[0].trim() :
-                    'default.jpg';
+                let firstImage = '/images/products/default.jpg';
+                if (product.image && typeof product.image === 'string') {
+                    let imgArray = product.image.split(',').map(i => i.trim());
+                    firstImage = "/images/products/" + imgArray[imgArray.length - 1];
+                }
 
                 let productPrice = product.price; // fallback
                 if (product.platform) {
@@ -497,19 +549,24 @@
                 productPrice = parseFloat(productPrice).toFixed(2);
 
                 gridContainer.innerHTML += `
-            <div class="col-xl-4 col-lg-6 col-md-4 col-sm-6 col-12 mb-4 d-flex justify-content-center">
-                <div class="game-card position-relative" data-id="${product.id}">
-                    <img src="${firstImage}" alt="${product.name}" class="card-img-top" />
-                    <div class="position-absolute card-content">
-                        <div class="icons d-flex gap-2 mb-3">
-                            ${getPlatformIcons(product.platform)}
+                    <div class="col-xl-4 col-lg-6 col-md-4 col-sm-6 col-12 mb-4 d-flex justify-content-center">
+                        <div class="game-card position-relative" data-id="${product.id}">
+                        <div class="game-image">
+                            <img src="${firstImage}" alt="${product.name}">
                         </div>
+                        <div class="card-content">
+                            <div class="icons d-flex gap-2 mb-3">
+                                ${getPlatformIcons(product.platform)}
+                            </div>
+                            <h3>${product.name}</h3>
 
-                        <h3>${product.name}</h3>
-                        <h3 class="mb-0">$${productPrice}
-                        <span class="badge usd-badge">USD</span></h3>
-                        <span class="badge bg-secondary mt-2">${categoryName}</span>
-                    </div>
+                            <h3 class="mb-0">
+                                $${productPrice}
+                                <span class="badge usd-badge">USD</span>
+                            </h3>
+
+                            <span class="badge bg-secondary mt-2">${categoryName}</span>
+                        </div>
                     <div class="card-actions d-flex align-items-center gap-3">
                         <div class="d_main_button w-100">
                             <button class="custom-cart-btn w-100" data-id="${product.id}">ADD TO CART</button>
