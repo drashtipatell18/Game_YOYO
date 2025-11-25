@@ -44,6 +44,9 @@
                                             <tr>
                                                 <th class="text-center">Id</th>
                                                 <th class="text-center">Category</th>
+                                                <th class="text-center"><i class="fab fa-windows"></i></th>
+                                                <th class="text-center"><i class="fab fa-android"></i></th>
+                                                <th class="text-center"><i class="fab fa-apple"></i></th>
                                                 <th class="text-center">Image</th>
                                                 <th class="text-center">Name</th>
                                                 <th class="text-center">Status</th>
@@ -57,6 +60,9 @@
                                                     <td class="text-center">
                                                         {{ $product->category->name ?? 'No Category' }}
                                                     </td>
+                                                    <td class="text-center">{{ $product->price ?? '-' }}</td>
+                                                    <td class="text-center">{{ $product->android_price ?? '-' }}</td>
+                                                    <td class="text-center">{{ $product->ios_price ?? '-' }}</td>
                                                     <td class="text-center">
                                                         @php
                                                             $firstImage = explode(',', $product->image)[0] ?? null;
