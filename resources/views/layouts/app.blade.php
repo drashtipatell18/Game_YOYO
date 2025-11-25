@@ -282,7 +282,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('service') }}">
                                 <span class="nav-icon">
-                                    <i class="fa-solid fa-shield-halved"></i>
+                                   <i class="fa-solid fa-cogs"></i>
                                 </span>
                                 <span class="nav-link-text">Service</span>
                             </a>
@@ -300,7 +300,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('blog') }}">
                                 <span class="nav-icon">
-                                    <i class="fa-solid fa-blog"></i>
+                                   <i class="fa-solid fa-newspaper"></i>
                                 </span>
                                 <span class="nav-link-text">Blog</span>
                             </a>
@@ -309,14 +309,15 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('articles') }}">
                                 <span class="nav-icon">
-                                    <i class="fa-solid fa-blog"></i>
+                                    <i class="fa-solid fa-file-lines"></i>
                                 </span>
                                 <span class="nav-link-text">Articles</span>
                             </a>
                         </li>
+                        <li>
                             <a class="nav-link" href="{{ route('members-say') }}">
                                 <span class="nav-icon">
-                                    <i class="fa-solid fa-people-group"></i>
+                                   <i class="fa-solid fa-comments"></i>
                                 </span>
                                 <span class="nav-link-text">Member Say</span>
                             </a>
@@ -325,7 +326,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('reviews') }}">
                                 <span class="nav-icon">
-                                    <i class="fa-solid fa-plus"></i>
+                                    <i class="fa-solid fa-star-half-stroke"></i>
                                 </span>
                                 <span class="nav-link-text">Reviews</span>
                             </a>
