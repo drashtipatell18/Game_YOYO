@@ -56,7 +56,7 @@
                                         <tbody>
                                             @foreach ($products as $product)
                                                 <tr>
-                                                    <td class="text-center">{{ $product->id }}</td>
+                                                    <td class="text-center">{{ $loop->iteration }}</td>
                                                     <td class="text-center">
                                                         {{ $product->category->name ?? 'No Category' }}
                                                     </td>

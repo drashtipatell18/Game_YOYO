@@ -167,13 +167,6 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
-                                    <label for="weight">Weight (kg)</label>
-                                    <input type="number" name="weight" id="weight" class="form-control" step="0.01"
-                                        value="{{ old('weight', $product->weight ?? '') }}">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group mb-3">
                                     <label for="status">Status</label>
                                     <div class="d-flex align-items-center gap-4"> <!-- use gap-4 for more spacing -->
                                         <div class="form-check d-flex align-items-center">
