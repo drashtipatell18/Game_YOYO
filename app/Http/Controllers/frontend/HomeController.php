@@ -67,17 +67,16 @@ class HomeController extends Controller
         $query = Product::with('category:id,name') // eager load category
             ->select('id', 'category_id', 'SKU', 'tags', 'name', 'price','android_price','ios_price', 'image', 'description', 'weight', 'dimensions','platform');
 
-        // Check for category filter
         if ($request->has('category')) {
             $query->where('category_id', $request->category);
         }
 
-          if ($request->has('search') && trim($request->search) !== '') {
-        $search = str_replace(['%', '_'], ['\%', '\_'], trim($request->search));
-        $query->where('name', 'LIKE', "%{$search}%");
-    }
+        if ($request->has('search') && trim($request->search) !== '') {
+            $search = str_replace(['%', '_'], ['\%', '\_'], trim($request->search));
+            $query->where('name', 'LIKE', "%{$search}%");
+        }
 
-
+        $query->orderBy('created_at', 'desc');  
         $products = $query->get();
 
         // Format each product
