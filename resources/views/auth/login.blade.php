@@ -368,7 +368,6 @@
                 <div class="input-wrapper">
                     <input type="text" id="email" class="form-control" name="email"
                         placeholder="Enter your email">
-                        <span class="input-icon">✉️</span>
                     </div>
                     @error('email')
                         <label class="error">{{ $message }}</label>
@@ -380,7 +379,14 @@
                 <div class="input-wrapper">
                     <input type="password" id="password" class="form-control" name="password"
                         placeholder="Enter your password">
-                    <span class="input-icon">🔒</span>
+                    <span id="togglePassword" style="
+                        position: absolute;
+                        right: 10px;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        cursor: pointer;
+                        user-select: none;
+                    ">👁️</span>
                 </div>
                 @error('password')
                     <label class="error">{{ $message }}</label>
@@ -515,6 +521,19 @@
                 document.body.removeChild(effect);
             }, 600);
         }
+    </script>
+    <script>
+        const togglePassword = document.querySelector('#togglePassword');
+        const passwordInput = document.querySelector('#password');
+
+        togglePassword.addEventListener('click', function () {
+            // Toggle the type attribute
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+
+            // Toggle icon (optional)
+            this.textContent = type === 'password' ? '👁️' : '🙈';
+        });
     </script>
     @if(session('success'))
         <script>
