@@ -244,7 +244,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('category') }}">
+                            <a class="nav-link" href="{{ request()route('category*') ? 'active' : '' }}">
                                 <span class="nav-icon">
                                     <i class="fa-solid fa-layer-group"></i>
                                 </span>
@@ -253,7 +253,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('contactUs') }}">
+                            <a class="nav-link" href="{{ request()->routeIs('contactUs') ? 'active' : '' }}">
                                 <span class="nav-icon">
                                     <i class="fa-solid fa-envelope"></i>
                                 </span>
@@ -262,7 +262,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('our_teams') }}">
+                            <a class="nav-link" href="{{ request()->routeIs('our_teams') ? 'active' : '' }}">
                                 <span class="nav-icon">
                                     <i class="fa-solid fa-people-group"></i>
                                 </span>
@@ -271,7 +271,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('privacy') }}">
+                            <a class="nav-link" href="{{ request()->routeIs('privacy') ? 'active' : '' }}">
                                 <span class="nav-icon">
                                     <i class="fa-solid fa-shield-halved"></i>
                                 </span>
@@ -280,7 +280,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('service') }}">
+                            <a class="nav-link" href="{{ request()->routeIs('service') ? 'active' : '' }}">
                                 <span class="nav-icon">
                                    <i class="fa-solid fa-cogs"></i>
                                 </span>
@@ -289,7 +289,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('product') }}">
+                            <a class="nav-link" href="{{ request()->routeIs('product') ? 'active' : '' }}">
                                 <span class="nav-icon">
                                     <i class="fa-solid fa-box"></i>
                                 </span>
@@ -298,7 +298,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('blog') }}">
+                            <a class="nav-link" href="{{ request()->routeIs('blog') ? 'active' : '' }}">
                                 <span class="nav-icon">
                                    <i class="fa-solid fa-newspaper"></i>
                                 </span>
@@ -307,7 +307,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('articles') }}">
+                            <a class="nav-link" href="{{ request()->routeIs('articles') ? 'active' : '' }}">
                                 <span class="nav-icon">
                                     <i class="fa-solid fa-file-lines"></i>
                                 </span>
@@ -315,7 +315,7 @@
                             </a>
                         </li>
                         <li>
-                            <a class="nav-link" href="{{ route('members-say') }}">
+                            <a class="nav-link" href="{{ request()->routeIs('members-say') ? 'active' : '' }}">
                                 <span class="nav-icon">
                                    <i class="fa-solid fa-comments"></i>
                                 </span>
@@ -324,7 +324,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('reviews') }}">
+                            <a class="nav-link" href="{{ request()->routeIs('reviews') ? 'active' : '' }}">
                                 <span class="nav-icon">
                                     <i class="fa-solid fa-star-half-stroke"></i>
                                 </span>
@@ -333,7 +333,7 @@
                         </li>
 
                         <li class="nav-item"></li>
-                            <a class="nav-link" href="{{ route('add-to-cart') }}">
+                            <a class="nav-link" href="{{ request()->routeIs('add-to-cart') ? 'active' : '' }}">
                                 <span class="nav-icon">
                                     <i class="fa-solid fa-cart-shopping"></i>
                                 </span>
