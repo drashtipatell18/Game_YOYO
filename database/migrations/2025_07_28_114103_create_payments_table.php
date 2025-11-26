@@ -16,9 +16,11 @@ return new class extends Migration
                 $table->unsignedBigInteger('user_id')->nullable();
                 $table->unsignedBigInteger('product_id')->nullable();
                 $table->unsignedBigInteger('cart_id')->nullable();
-                $table->decimal('price', 10, 2);
+                $table->string('transaction_id')->nullable();
+                $table->decimal('amount', 10, 2);
+                $table->string('platform')->nullable();
                 $table->string('payment_status')->default('pending');
-                $table->string('razorpay_payment_id')->nullable();
+                $table->timestamp('payment_date')->nullable();
                 $table->string('payment_type')->nullable();
                 $table->timestamps();
                 $table->softDeletes();

@@ -52,7 +52,7 @@ class StripePaymentController extends Controller
                 'quantity' => 1,
             ]],
             'mode' => 'payment',
-            'metadata' => [
+            'metadata' => [ 
                 'product_id' => $product->id,
                 'platform' => $platform,
             ],
@@ -63,63 +63,58 @@ class StripePaymentController extends Controller
         return response()->json(['url' => $session->url]);
     }
 
-
-
-
     public function success(Request $request)
     {
         $session_id = $request->get('session_id');
         if (!$session_id) {
             return redirect()->route('payment.cancel')->with('error', 'Invalid session.');
         }
+
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
         try {
-            $session = Session::retrieve([
-                'id' => $session_id,
-                'expand' => ['line_items', 'payment_intent']
-            ]);
-            $payment_status = $session->payment_status;
-            if ($payment_status !== 'paid') {
+            $session = Session::retrieve($session_id);
+            if ($session->payment_status !== 'paid') {
                 return redirect()->route('payment.cancel')->with('error', 'Payment not completed.');
             }
-            $product_id = $session->metadata->product_id ?? null;
 
-            if (!$product_id) {
-                return redirect()->route('payment.cancel')->with('error', 'Product info missing in session.');
+            if (!isset($session->metadata->product_id) || !isset($session->metadata->platform)) {
+                return redirect()->route('payment.cancel')->with('error', 'Product or platform missing.');
             }
-            $product = Product::find($product_id);
-        
+
+            $product = Product::find($session->metadata->product_id);
             if (!$product) {
                 return redirect()->route('payment.cancel')->with('error', 'Product not found.');
             }
 
-            $exeUrl = asset('storage/games/mygame.exe'); // ✅ Correct URL
-           
+            // Get payment data
+            $paymentIntentId = $session->payment_intent;
+            $amount = $session->amount_total / 100; // stripe amount is in cents
+            $platform = $session->metadata->platform;
+            $paymentType = $session->payment_method_types[0] ?? 'unknown';
+            $userId = Auth::id();
+
             Payment::create([
-                'product_id' => $product->id,
-                'user_id' => auth()->id() ?? null, 
-                'price' => $product->price,
-                'razorpay_payment_id' => $session->id,
-                'payment_status' => 'completed',
-                'payment_type' =>  $session->payment_method_types[0] ?? 'card',
+                'user_id'        => $userId,
+                'product_id'     => $product->id,
+                'transaction_id' => $paymentIntentId,
+                'amount'         => $amount,
+                'platform'       => $platform,
+                'payment_status' => 'success',
+                'payment_date'   => now(),
+                'payment_type'   => $paymentType, 
             ]);
-            $product->file_url = $exeUrl;
-            $product->save();
 
-            $user = auth()->user();
-            if ($user && $user->email) {
-                Mail::to($user->email)->send(new GameLinkMail($exeUrl));
-            }
-
-            return view('payment.success');
+            return redirect()->route('productDetails', $product->id)
+                 ->with('success', 'Payment successful!');
 
         } catch (\Exception $e) {
-            \Log::error('Payment verification failed: ' . $e->getMessage());
-
+            Log::error("Stripe Payment Error: " . $e->getMessage());
             return redirect()->route('payment.cancel')->with('error', 'Payment verification failed.');
         }
     }
+
+
 
 // Cart Payment
 
@@ -207,9 +202,10 @@ class StripePaymentController extends Controller
         $newPayment = Payment::create([
             'user_id' => auth()->id(),
             'cart_id' => $cartIdsString,
-            'price' => $amountTotal,
-            'razorpay_payment_id' => $paymentIntentId,
-            'payment_status' => 'completed',
+            'amount' => $amountTotal,
+            'transaction_id' => $paymentIntentId,
+            'payment_status' => 'success',
+            'payment_date'   => now(),
             'payment_type' => $paymentMethod,
         ]);
 

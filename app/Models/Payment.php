@@ -10,10 +10,12 @@ class Payment extends Model
         'user_id',
         'product_id',
         'cart_id',
-        'price',
+        'transaction_id',
+        'amount',
         'payment_status',
-        'razorpay_payment_id',
+        'payment_date',
         'payment_type',
+        'platform',
         'exe_url', // Added exe_url to store the path to the .exe file
     ];
 
