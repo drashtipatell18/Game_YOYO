@@ -174,24 +174,26 @@
                             <div class="app-utility-item app-user-dropdown dropdown">
                                 <a class="dropdown-toggle d-flex align-items-center" id="user-dropdown-toggle"
                                     data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
-                                   @if(Auth::check() && Auth::user()->name)
-                                    <img src="{{ Auth::user()->image ? asset('images/users/' . Auth::user()->image) : asset('assets/images/dummy-avatar.jpg') }}"
-                                        alt="User Profile"
-                                        style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; margin-right: 8px;">
-                                    <span>{{ Auth::user()->name }}</span>
-                                @endif
+                                    @if (Auth::check() && Auth::user()->name)
+                                        <img src="{{ Auth::user()->image ? asset('images/users/' . Auth::user()->image) : asset('assets/images/dummy-avatar.jpg') }}"
+                                            alt="User Profile"
+                                            style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; margin-right: 8px;">
+                                        <span>{{ Auth::user()->name }}</span>
+                                    @endif
 
                                 </a>
 
                                 <ul class="dropdown-menu" aria-labelledby="user-dropdown-toggle">
-                                    <li><a class="dropdown-item" href="{{ route('change-password') }}">Change Password</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('change-password') }}">Change
+                                            Password</a></li>
                                     <li><a class="dropdown-item" href="{{ route('backendlogout') }}"
                                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                             Log Out
                                         </a></li>
                                 </ul>
 
-                                <form id="logout-form" action="{{ route('backendlogout') }}" method="POST" class="d-none">
+                                <form id="logout-form" action="{{ route('backendlogout') }}" method="POST"
+                                    class="d-none">
                                     @csrf
                                 </form>
                             </div>
@@ -244,7 +246,8 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('category') }}">
+                            <a class="nav-link {{ request()->routeIs('category*') ? 'active' : '' }}"
+                                href="{{ route('category') }}">
                                 <span class="nav-icon">
                                     <i class="fa-solid fa-layer-group"></i>
                                 </span>
@@ -253,7 +256,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('contactUs') }}">
+                            <a class="nav-link {{ request()->routeIs('contactUs*') ? 'active' : '' }}" href="{{ route('contactUs') }}">
                                 <span class="nav-icon">
                                     <i class="fa-solid fa-envelope"></i>
                                 </span>
@@ -262,7 +265,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('our_teams') }}">
+                            <a class="nav-link {{ request()->routeIs('our_teams*') ? 'active' : '' }}" href="{{ route('our_teams') }}">
                                 <span class="nav-icon">
                                     <i class="fa-solid fa-people-group"></i>
                                 </span>
@@ -271,7 +274,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('privacy') }}">
+                            <a class="nav-link {{ request()->routeIs('privacy*') ? 'active' : '' }}" href="{{ route('privacy') }}">
                                 <span class="nav-icon">
                                     <i class="fa-solid fa-shield-halved"></i>
                                 </span>
@@ -280,16 +283,16 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('service') }}">
+                            <a class="nav-link {{ request()->routeIs('service*') ? 'active' : '' }}" href="{{ route('service') }}">
                                 <span class="nav-icon">
-                                   <i class="fa-solid fa-cogs"></i>
+                                    <i class="fa-solid fa-cogs"></i>
                                 </span>
                                 <span class="nav-link-text">Service</span>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('product') }}">
+                            <a class="nav-link {{ request()->routeIs('product*') ? 'active' : '' }}" href="{{ route('product') }}">
                                 <span class="nav-icon">
                                     <i class="fa-solid fa-box"></i>
                                 </span>
@@ -298,16 +301,16 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('blog') }}">
+                            <a class="nav-link {{ request()->routeIs('blog*') ? 'active' : '' }}" href="{{ route('blog') }}">
                                 <span class="nav-icon">
-                                   <i class="fa-solid fa-newspaper"></i>
+                                    <i class="fa-solid fa-newspaper"></i>
                                 </span>
                                 <span class="nav-link-text">Blog</span>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('articles') }}">
+                            <a class="nav-link {{ request()->routeIs('articles*') ? 'active' : '' }}" href="{{ route('articles') }}">
                                 <span class="nav-icon">
                                     <i class="fa-solid fa-file-lines"></i>
                                 </span>
@@ -315,16 +318,16 @@
                             </a>
                         </li>
                         <li>
-                            <a class="nav-link" href="{{ route('members-say') }}">
+                            <a class="nav-link {{ request()->routeIs('members-say*') ? 'active' : '' }}" href="{{ route('members-say') }}">
                                 <span class="nav-icon">
-                                   <i class="fa-solid fa-comments"></i>
+                                    <i class="fa-solid fa-comments"></i>
                                 </span>
                                 <span class="nav-link-text">Member Say</span>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('reviews') }}">
+                            <a class="nav-link {{ request()->routeIs('reviews*') ? 'active' : '' }}" href="{{ route('reviews') }}">
                                 <span class="nav-icon">
                                     <i class="fa-solid fa-star-half-stroke"></i>
                                 </span>
@@ -333,12 +336,12 @@
                         </li>
 
                         <li class="nav-item"></li>
-                            <a class="nav-link" href="{{ route('add-to-cart') }}">
-                                <span class="nav-icon">
-                                    <i class="fa-solid fa-cart-shopping"></i>
-                                </span>
-                                <span class="nav-link-text">Cart</span>
-                            </a>
+                        <a class="nav-link {{ request()->routeIs('add-to-cart*') ? 'active' : '' }}" href="{{ route('add-to-cart') }}">
+                            <span class="nav-icon">
+                                <i class="fa-solid fa-cart-shopping"></i>
+                            </span>
+                            <span class="nav-link-text">Cart</span>
+                        </a>
 
                         <!--//nav-item-->
                     </ul>
