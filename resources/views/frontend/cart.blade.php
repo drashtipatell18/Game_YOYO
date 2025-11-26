@@ -54,14 +54,12 @@
                                                     
                                                     <div class="d-flex align-items-center gap-3">
                                                         @php
-                                                            $images = explode(
-                                                                ',',
-                                                                $cart->product->image ?? 'default.png',
-                                                            );
+                                                            $images = explode(',', $cart->product->image ?? 'default.png');
                                                             $firstImage = trim($images[0]);
+                                                            $lastImage = trim(end($images));
                                                         @endphp
 
-                                                        <img src="{{ asset('images/products/' . $firstImage) }}"
+                                                        <img src="{{ asset('images/products/' . $lastImage) }}"
                                                             alt="{{ $cart->product->title ?? 'Product Image' }}"
                                                             class="Z_cart_img">
 
